@@ -1,10 +1,48 @@
 cmake_minimum_required(VERSION 3.15)
+
 project(JoJo_Run)
-
 set(CMAKE_CXX_STANDARD 11)
-add_executable(JoJo_Run ../../../../Desktop/JoJo_Run/main.cpp ../../../../Desktop/JoJo_Run/Hero.h ../../../../Desktop/JoJo_Run/Hero.cpp ../../../../Desktop/JoJo_Run/Observer.h ../../../../Desktop/JoJo_Run/Subject.h ../../../../Desktop/JoJo_Run/Block.h ../../../../Desktop/JoJo_Run/Block.cpp ../../../../Desktop/JoJo_Run/FireWall.h ../../../../Desktop/JoJo_Run/FireWall.cpp ../../../../Desktop/JoJo_Run/ScoreHUD.h ../../../../Desktop/JoJo_Run/ScoreHUD.cpp ../../../../Desktop/JoJo_Run/Map.h ../../../../Desktop/JoJo_Run/Map.cpp ../../../../Desktop/JoJo_Run/Factory.h ../../../../Desktop/JoJo_Run/Factory.cpp ../../../../Desktop/JoJo_Run/Enemy.h ../../../../Desktop/JoJo_Run/Enemy.cpp ../../../../Desktop/JoJo_Run/EmeraldEnemy.h ../../../../Desktop/JoJo_Run/EmeraldEnemy.cpp ../../../../Desktop/JoJo_Run/HamonEnemy.h ../../../../Desktop/JoJo_Run/HamonEnemy.cpp ../../../../Desktop/JoJo_Run/FireEnemy.h ../../../../Desktop/JoJo_Run/FireEnemy.cpp ../../../../Desktop/JoJo_Run/Shield.h ../../../../Desktop/JoJo_Run/Shield.cpp ../../../../Desktop/JoJo_Run/Knife.h ../../../../Desktop/JoJo_Run/Knife.cpp ../../../../Desktop/JoJo_Run/PowerUp.cpp ../../../../Desktop/JoJo_Run/PowerUp.h)
 
-if (SFML_FOUND)
-    include_directories(${SFML_INCLUDE_DIR})
-    target_link_libraries(${EXECUTABLE_NAME} ${SFML_LIBRARIES} ${SFML_DEPENDENCIES})
+set(TARGET JoJoRun)
+
+add_executable(${TARGET} "")
+
+
+#
+# SFML2, OPENGL
+#
+
+# OPENGL not enabled at the moment
+# find_package (OPENGL REQUIRED)
+# find_package (GLUT REQUIRED)
+# find_package (GLEW REQUIRED)
+
+# Configuration options
+set(SFML_STATIC_LIBRARIES FALSE CACHE BOOL "Use static SFML librares")
+# General compiler options
+if (SFML_STATIC_LIBRARIES)
+    add_definitions(-DSFML_STATIC)
 endif()
+# Add directory containing FindSFML.cmake to module path
+set (CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/CMake/;${CMAKE_MODULE_PATH}")
+find_package(SFML 2 COMPONENTS audio graphics window system network)
+# If found, include and link; otherwise output error message
+if(SFML_FOUND)
+    include_directories(${SFML_INCLUDE_DIR})
+else()
+    set(SFML_ROOT "" CACHE PATH "SFML top-level directory")
+    message("\n-> SFML directory not found. Set SFML_ROOT to SFML's top-level path (containing \"include\" and \"lib\" directories).")
+    message("-> Make sure the SFML libraries with the same configuration (Release/Debug, Static/Dynamic) exist.\n")
+endif()
+
+message("SFML_FOUND: " ${SFML_FOUND})
+message("SFML_INCLUDE_DIR: " ${SFML_INCLUDE_DIR})
+message("SFML_LIBRARIES: " ${SFML_LIBRARIES})
+message("SFML_DEPENDENCIES: " ${SFML_DEPENDENCIES})
+
+
+#
+# Components
+#
+add_subdirectory(Src)
+add_subdirectory(Test)
