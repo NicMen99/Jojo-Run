@@ -7,7 +7,6 @@ set(TARGET JoJoRun)
 
 add_executable(${TARGET} "")
 
-
 #
 # SFML2, OPENGL
 #

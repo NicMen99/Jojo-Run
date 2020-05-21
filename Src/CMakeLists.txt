@@ -34,7 +34,7 @@ target_include_directories(${TARGET}
         PUBLIC
         ${CMAKE_SOURCE_DIR}/Src
         ${SFML_INCLUDE_DIR}
-#       ${OPENGL_INCLUDE_DIRS}
+#        ${OPENGL_INCLUDE_DIRS}
 #        ${GLUT_INCLUDE_DIRS}
 #        ${GLEW_INCLUDE_DIRS}
         )
