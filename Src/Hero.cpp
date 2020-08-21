@@ -44,6 +44,19 @@ void Hero::throwKnife() {
 void Hero::renderHero(sf::RenderWindow &map) {
     map.draw(hero);
 }
+void Hero::notify() {
+    for (auto i = std::begin(observers); i != std::end(observers); i++)
+        (*i)->update();
+}
+
+void Hero::unsubscribe(Observer *o) {
+    observers.remove(o);
+}
+
+void Hero::subscribe(Observer *o) {
+    observers.push_back(o);
+}
+
 
 
 
