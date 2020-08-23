@@ -5,7 +5,7 @@ set(CMAKE_CXX_STANDARD 11)
 
 set(TARGET JoJoRun)
 
-add_executable(${TARGET} "")
+add_executable(${TARGET} "" Src/Game.h Src/Game.cpp)
 
 #
 # SFML2, OPENGL

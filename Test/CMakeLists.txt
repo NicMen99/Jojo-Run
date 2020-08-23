@@ -4,7 +4,7 @@ set(GOOGLETEST_VERSION 1.10.1)
 
 add_subdirectory(googletest)
 
-add_executable(testrunner "")
+add_executable(testrunner "" ../Src/Game.h ../Src/Game.cpp)
 
 target_sources(testrunner
         PUBLIC
