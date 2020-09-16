@@ -30,6 +30,13 @@ public:
     void notify() override;
     void unsubscribe(Observer *o) override;
     void subscribe(Observer *o) override;
+    int getHealth() const; //getter del parametro hp, scritto così per non cozzare nel main
+
+
+    // Funzioni place-holder; sono vuote servono giusto a far compilare il tutto
+
+    int getScore();
+
 private:
     void death() { isDead = true;}
     int hp = 300;

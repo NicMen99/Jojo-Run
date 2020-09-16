@@ -57,6 +57,14 @@ void Hero::subscribe(Observer *o) {
     observers.push_back(o);
 }
 
+int Hero::getScore() {
+    return 0;
+}
+
+int Hero::getHealth() const {
+    return hp;
+}
+
 
 
 
