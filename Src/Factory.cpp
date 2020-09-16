@@ -45,14 +45,14 @@ std::unique_ptr<Enemy> Factory::createEnemy(EnemyType type) {
         result->SpecialAction();
         return result;
     }
-    if (type == EnemyType::HamonEnemy){
+    else if (type == EnemyType::HamonEnemy){
         std::unique_ptr<Enemy> result = std::unique_ptr<Enemy> (new HamonEnemy);
         result->setSpeed(0.2);
         result->setDamage(90);
         result->SpecialAction();
         return result;
     }
-    if (type == EnemyType::FireEnemy){
+    else if (type == EnemyType::FireEnemy){
         std::unique_ptr<Enemy> result = std::unique_ptr<Enemy> (new FireEnemy);
         result->setSpeed(0.2);
         result->setDamage(90);
@@ -67,7 +67,7 @@ std::unique_ptr<PowerUp> Factory::createPowerUp(PowerUpType type) {
         result->setIsMovingPu(true);
         return result;
     }
-    if (type == PowerUpType::Knife){
+    else if (type == PowerUpType::Knife){
         std::unique_ptr<PowerUp> result = std::unique_ptr<PowerUp>(new Knife);
         result->setIsMovingPu(true);
         return result;

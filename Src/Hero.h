@@ -12,7 +12,6 @@
 
 class Hero : public sf::Sprite, public Subject{
 public:
-    //domani continuo ad aggiungere roba
     Hero ();
     virtual ~Hero() = default;
     bool gameOver();
@@ -30,12 +29,19 @@ public:
     void notify() override;
     void unsubscribe(Observer *o) override;
     void subscribe(Observer *o) override;
+    int getHealth() const;
+    int getScore() const;
+    void setScore(int score);
+    void setHealth(int hp);
+    // va cercato un modo per disegnare hero sulla mappa (render mi dà problemi)
 private:
     void death() { isDead = true;}
     int hp = 300;
     bool isDead = false;
     sf::Sprite hero;
+    sf::Texture playerTexture;
     int knives = 0;
+    int score;
     std::list<Observer*> observers;
 };
 

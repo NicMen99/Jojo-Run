@@ -30,14 +30,9 @@ public:
 
     const sf::Vector2f &getSpeed() const;
     int getMaxY() const;
-    int getBlocksSize() { return static_cast<int>(blocks.size()); };
     bool getisImmortalityOn() const;
-    int getScore() const;
-    int getLives() const;
     bool getIsCollided() const;
     float getCreationRate() const;
-    void setScore(unsigned int score);
-    void setLives(unsigned int lives);
 
 private:
     void createObj();
@@ -51,7 +46,7 @@ private:
     std::ofstream bestScoreFileWrite;
     std::ifstream bestScoreFileRead;
     Map map;
-    Hero robot;
+    Hero hero;
     Factory factory;
     bool isCreated;
     bool isShieldOn;
@@ -80,6 +75,19 @@ private:
     const float gLimit = 3.5;
     const float jumpLimit = 5.5;
     const float jumpPlus = 0.08;
+
+    sf::Texture blockTexture;
+    sf::Texture emeraldBlockTexture;
+    sf::Texture emeraldEnemyTexture;
+    sf::Texture fireEnemyTexture;
+    sf::Texture fireWallTexture;
+    sf::Texture hamonBlockTexture;
+    sf::Texture hamonEnemyTexture;
+    sf::Texture knifeTexture;
+    sf::Texture playerShiledTexture;
+    sf::Texture playerTexture;
+    // mancano le texture per il game over e per la mappa
+
 };
 
 #endif //JOJO_RUN_GAME_H
