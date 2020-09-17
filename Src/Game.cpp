@@ -201,13 +201,5 @@ void Game::moveEnemy() {
             e->move(-speed.x, e->getSpeed());
         } else
             e->move(-speed.x, 0);
+    }
 }
-
-
-
-
-
-
-
-
-
