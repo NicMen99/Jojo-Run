@@ -29,6 +29,14 @@ void Enemy::setDamage(int damage) {
     damage = 90;
 }
 
+void Enemy::setIsMovingEnemy() {
+    isMovingEnemy = true;
+}
+
+bool Enemy::getIsMovingEnemy() const {
+    return isMovingEnemy;
+}
+
 
 
 

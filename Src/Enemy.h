@@ -19,12 +19,15 @@ public:
     void setSpeed(float speed);
     int getDamage() const;
     void setDamage(int damage);
+    void setIsMovingEnemy();
+    bool getIsMovingEnemy() const;
 
 private:
     void death () { Hit = true; };
     bool Hit = false;
     float speed = 0.2;
     int damage = 90;
+    bool isMovingEnemy;
 };
 
 #endif //JOJO_RUN_ENEMY_H

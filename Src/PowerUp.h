@@ -12,7 +12,7 @@ public:
     PowerUp();
     ~PowerUp() = default;
 
-    bool isMovingPu() const;
+    bool getIsMovingPu() const;
     void setIsMovingPu(bool isMovingPu);
     float getSpeedPux() const;
     void setSpeedPux(float speedPUX);

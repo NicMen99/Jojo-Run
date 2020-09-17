@@ -16,7 +16,7 @@ public:
     virtual ~Hero() = default;
     bool gameOver();
     void setHeroTexture(const sf::Texture &heroTexture);
-    void setHeroPosition(float x, float y) {hero.setPosition(x,y);}
+    void setHeroPos(float x, float y) {hero.setPosition(x,y);}
     void setHP(unsigned int hp);
     bool getIsDead() const {return isDead;}
     void throwKnife();

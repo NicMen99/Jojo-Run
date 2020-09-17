@@ -42,6 +42,7 @@ private:
     void moveHero();
     void collision();
     void handleTxt();
+    void moveEnemy();
 
     std::ofstream file;
     std::ofstream bestScoreFileWrite;
@@ -50,6 +51,7 @@ private:
     Hero hero;
     Factory factory;
     bool isCreated;
+    bool isPUCreated;
     bool isShieldOn;
     bool isImmortalityOn;
     bool isCollided;
@@ -94,7 +96,17 @@ private:
     std::vector<std::unique_ptr<FireWall>> firewalls;
     std::vector<std::unique_ptr<PowerUp>> powerups;
 
+    sf::Clock objectClk;
+    sf::Clock enemyClk;
+    sf::Clock controlPU;
+    sf::Clock speedClk;
+    sf::Clock doubleClk;
+    sf::Clock scoreClk;
+    sf::Clock collisionClk;
+    sf::Clock shieldClk;
 
+    sf::Vector2f speed;
+    sf::Vector2f oldSpeed;
 };
 
 #endif //JOJO_RUN_GAME_H

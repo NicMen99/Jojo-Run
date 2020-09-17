@@ -4,7 +4,7 @@
 
 #include "PowerUp.h"
 
-bool PowerUp::isMovingPu() const {
+bool PowerUp::getIsMovingPu() const {
     return isMovingPU;
 }
 

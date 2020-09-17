@@ -12,7 +12,7 @@ bool FireWall::getIsMovingFW() const {
     return isMovingFW;
 }
 
-float FireWall::getBlockSpeedX() const {
+float FireWall::getFWSpeedX() const {
     return fireWallSpeedX;
 }
 

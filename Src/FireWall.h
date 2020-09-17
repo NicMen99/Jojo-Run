@@ -14,7 +14,7 @@ public:
     ~FireWall() final = default;
 
     bool getIsMovingFW() const;
-    float getBlockSpeedX() const;
+    float getFWSpeedX() const;
     void setIsMovingFW();
     void setFireWallSpeedX(float fireWallSpeedX);
     void setDamageFW(int damageFW);
