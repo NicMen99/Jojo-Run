@@ -12,7 +12,6 @@
 #include <SFML/Audio.hpp>
 
 #include "Map.h"
-#include "Block.h"
 #include "Hero.h"
 #include "Factory.h"
 
@@ -36,8 +35,10 @@ public:
 
 private:
     void createObj();
+    void createEnemy();
     void moveObject();
     void deleteObject();
+    void deleteEnemy();
     void moveHero();
     void collision();
     void handleTxt();
@@ -84,9 +85,15 @@ private:
     sf::Texture hamonBlockTexture;
     sf::Texture hamonEnemyTexture;
     sf::Texture knifeTexture;
-    sf::Texture playerShiledTexture;
+    sf::Texture playerShieldTexture;
     sf::Texture playerTexture;
     // mancano le texture per il game over e per la mappa
+
+    std::vector<std::unique_ptr<Block>> blocks;
+    std::vector<std::unique_ptr<Enemy>> enemies;
+    std::vector<std::unique_ptr<FireWall>> firewalls;
+    std::vector<std::unique_ptr<PowerUp>> powerups;
+
 
 };
 

@@ -8,7 +8,7 @@
 #include "Enemy.h"
 #include <SFML/Graphics.hpp>
 
-class FireEnemy : public sf::Sprite, public Enemy{
+class FireEnemy : public Enemy{
 public:
     std::unique_ptr<Block> SpecialAction() override;
 

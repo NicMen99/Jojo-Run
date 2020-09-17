@@ -8,7 +8,7 @@
 #include "Block.h"
 #include <SFML/Graphics.hpp>
 
-class Enemy {
+class Enemy : public sf::Sprite{
 
 public:
     Enemy ();

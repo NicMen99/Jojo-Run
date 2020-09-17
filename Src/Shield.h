@@ -7,7 +7,7 @@
 #include <SFML/Graphics.hpp>
 #include "PowerUp.h"
 
-class Shield : public PowerUp, public sf::Sprite {
+class Shield : public PowerUp {
 public:
     Shield ();
     ~Shield() = default;

@@ -42,6 +42,7 @@ std::unique_ptr<Enemy> Factory::createEnemy(EnemyType type) {
         std::unique_ptr<Enemy> result = std::unique_ptr<Enemy> (new EmeraldEnemy);
         result->setSpeed(0.2);
         result->setDamage(90);
+        result->setTexture(emeraldEnemyTexture);
         result->SpecialAction();
         return result;
     }
@@ -49,6 +50,7 @@ std::unique_ptr<Enemy> Factory::createEnemy(EnemyType type) {
         std::unique_ptr<Enemy> result = std::unique_ptr<Enemy> (new HamonEnemy);
         result->setSpeed(0.2);
         result->setDamage(90);
+        result->setTexture(hamonEnemyTexture);
         result->SpecialAction();
         return result;
     }
@@ -56,6 +58,7 @@ std::unique_ptr<Enemy> Factory::createEnemy(EnemyType type) {
         std::unique_ptr<Enemy> result = std::unique_ptr<Enemy> (new FireEnemy);
         result->setSpeed(0.2);
         result->setDamage(90);
+        result->setTexture(fireEnemyTexture);
         result->SpecialAction();
         return result;
     }
@@ -65,11 +68,13 @@ std::unique_ptr<PowerUp> Factory::createPowerUp(PowerUpType type) {
     if (type == PowerUpType::Shield){
         std::unique_ptr<PowerUp> result = std::unique_ptr<PowerUp>(new Shield);
         result->setIsMovingPu(true);
+        result->setTexture(shieldTexture);
         return result;
     }
     else if (type == PowerUpType::Knife){
         std::unique_ptr<PowerUp> result = std::unique_ptr<PowerUp>(new Knife);
         result->setIsMovingPu(true);
+        result->setTexture(knifeTexture);
         return result;
     }
 }

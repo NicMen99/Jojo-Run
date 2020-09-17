@@ -5,7 +5,9 @@
 #ifndef JOJO_RUN_POWERUP_H
 #define JOJO_RUN_POWERUP_H
 
-class PowerUp {
+#include <SFML/Graphics/Sprite.hpp>
+
+class PowerUp : public sf::Sprite{
 public:
     PowerUp();
     ~PowerUp() = default;

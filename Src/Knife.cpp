@@ -17,11 +17,12 @@ Knife::Knife() {
     isKnife = false;
 }
 
-bool Knife::getisKnife() const {
+bool Knife::getHisKnife() const {
     return isKnife;
 }
 
-void Knife::setIsKnife(bool isKnife) {
+void Knife::setHisKnife(bool isKnife) {
     isKnife = true;
 }
+
 

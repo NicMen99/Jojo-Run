@@ -8,15 +8,15 @@
 #include <SFML/Graphics.hpp>
 #include "PowerUp.h"
 
-class Knife :  public PowerUp, public sf::Sprite {
+class Knife :  public PowerUp {
 public:
     Knife ();
     ~Knife() final = default;
 
     int getAmmo() const;
     void setAmmo(int ammo);
-    bool getisKnife() const;
-    void setIsKnife(bool isKnife);
+    bool getHisKnife() const;
+    void setHisKnife(bool isKnife);
 
 private:
     int ammo = 4;
