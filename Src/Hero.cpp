@@ -38,12 +38,13 @@ void Hero::setKnives(int knives) {
 }
 
 void Hero::throwKnife() {
-      //da definire
+      //da implementare (se il coltello colpisce un nemico, la salute si rigenera in parte)
 }
 
 void Hero::renderHero(sf::RenderWindow &map) {
     map.draw(hero);
 }
+
 void Hero::notify() {
     for (auto i = std::begin(observers); i != std::end(observers); i++)
         (*i)->update();
@@ -74,6 +75,12 @@ void Hero::setHealth(int hp) {
     Hero::hp = hp;
     notify();
 }
+
+void Hero::collisionPU() {
+    //da implementare
+}
+
+
 
 
 

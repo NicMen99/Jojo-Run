@@ -166,7 +166,47 @@ void Game::moveObject() {
 }
 
 void Game::collision() {
-    //da impementare
+    if (!isImmortalityOn && !isCollided) {
+        for (int i = 0; i < blocks.size(); i++) {
+            if (blocks[i]->getGlobalBounds().intersects(hero.getHeroBounds())) {
+                //Se il robot ha lo scudo e interseca un blocco non muore
+                if (isShieldOn) {
+                    isShieldOn = false;
+                    controlPU.restart();
+                } else if (controlPU.getElapsedTime().asSeconds() >= toll) {
+                    hero.gameOver();
+                    isCollided = true;
+                    collisionClk.restart();
+                }
+            }
+        }
+        for (int j = 0; j < firewalls.size(); j++) {
+            if (firewalls[j]->getGlobalBounds().intersects(hero.getHeroBounds())) {
+                //Se il robot ha lo scudo e interseca l'oggetto non muore
+                if (isShieldOn) {
+                    isShieldOn = false;
+                    controlPU.restart();
+                } else if (controlPU.getElapsedTime().asSeconds() >= toll) {
+                    hero.gameOver();
+                    isCollided = true;
+                    collisionClk.restart();
+                }
+            }
+        }
+        for (int e = 0; e < enemies.size(); e++) {
+            if (enemies[e]->getGlobalBounds().intersects(hero.getHeroBounds())) {
+                //Se il robot ha lo scudo e interseca il nemico non muore
+                if (isShieldOn) {
+                    isShieldOn = false;
+                    controlPU.restart();
+                } else if (controlPU.getElapsedTime().asSeconds() >= toll) {
+                    hero.gameOver();
+                    isCollided = true;
+                    collisionClk.restart();
+                }
+            }
+        }
+    }
 }
 
 void Game::moveHero() {
@@ -203,3 +243,12 @@ void Game::moveEnemy() {
             e->move(-speed.x, 0);
     }
 }
+
+int Game::randomPosY() {
+    return (rand() % 3);
+}
+
+int Game::randomCreation() {
+    return (rand() % 3);
+}
+

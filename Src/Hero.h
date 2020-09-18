@@ -6,6 +6,7 @@
 #define JOJO_RUN_HERO_H
 
 #include "Subject.h"
+#include "PowerUp.h"
 #include <list>
 #include <string>
 #include <SFML/Graphics.hpp>
@@ -33,7 +34,7 @@ public:
     int getScore() const;
     void setScore(int score);
     void setHealth(int hp);
-    // va cercato un modo per disegnare hero sulla mappa (render mi dà problemi)
+    void collisionPU();
 private:
     void death() { isDead = true;}
     int hp = 300;
@@ -43,6 +44,7 @@ private:
     int knives = 0;
     int score;
     std::list<Observer*> observers;
+    std::vector<std::unique_ptr<PowerUp>> powerups;
 };
 
 #endif //JOJO_RUN_HERO_H
