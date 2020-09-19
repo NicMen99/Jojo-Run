@@ -15,6 +15,7 @@ class Hero : public sf::Sprite, public Subject{
 public:
     Hero ();
     virtual ~Hero() = default;
+
     bool gameOver();
     void setHeroTexture(const sf::Texture &heroTexture);
     void setHeroPos(float x, float y) {hero.setPosition(x,y);}
