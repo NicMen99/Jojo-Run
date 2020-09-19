@@ -107,7 +107,23 @@ void Game::createEnemy() {
 }
 
 void Game::handleTxt() {
-    //da implementare
+    scoreTxt.setFont(font);
+    scoreTxt.setString("Score: ");
+    scoreTxt.setPosition(10, 3);
+    scoreTxt.setCharacterSize(25);
+    scoreTxt.setFillColor(sf::Color::Black);
+
+    lifeTxt.setFont(font);
+    lifeTxt.setString("Life: ");
+    lifeTxt.setPosition(100, 3);
+    lifeTxt.setCharacterSize(25);
+    lifeTxt.setFillColor(sf::Color::Black);
+
+    bestScoreTxt.setFont(font);
+    bestScoreTxt.setString("High Score: ");
+    bestScoreTxt.setPosition(10, 3);
+    bestScoreTxt.setCharacterSize(25);
+    bestScoreTxt.setFillColor(sf::Color::Black);
 }
 
 void Game::deleteObject() {
@@ -169,7 +185,7 @@ void Game::collision() {
     if (!isImmortalityOn && !isCollided) {
         for (int i = 0; i < blocks.size(); i++) {
             if (blocks[i]->getGlobalBounds().intersects(hero.getHeroBounds())) {
-                //Se il robot ha lo scudo e interseca un blocco non muore
+                //Se ha lo scudo e interseca un blocco non muore
                 if (isShieldOn) {
                     isShieldOn = false;
                     controlPU.restart();
@@ -182,7 +198,7 @@ void Game::collision() {
         }
         for (int j = 0; j < firewalls.size(); j++) {
             if (firewalls[j]->getGlobalBounds().intersects(hero.getHeroBounds())) {
-                //Se il robot ha lo scudo e interseca l'oggetto non muore
+                //Se ha lo scudo e interseca l'oggetto non muore
                 if (isShieldOn) {
                     isShieldOn = false;
                     controlPU.restart();
@@ -195,7 +211,7 @@ void Game::collision() {
         }
         for (int e = 0; e < enemies.size(); e++) {
             if (enemies[e]->getGlobalBounds().intersects(hero.getHeroBounds())) {
-                //Se il robot ha lo scudo e interseca il nemico non muore
+                //Se ha lo scudo e interseca il nemico non muore
                 if (isShieldOn) {
                     isShieldOn = false;
                     controlPU.restart();
@@ -250,5 +266,9 @@ int Game::randomPosY() {
 
 int Game::randomCreation() {
     return (rand() % 3);
+}
+
+int Game::randomPU() {
+    return (rand() % 2);
 }
 

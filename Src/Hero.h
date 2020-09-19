@@ -35,6 +35,7 @@ public:
     void setScore(int score);
     void setHealth(int hp);
     void collisionPU();
+
 private:
     void death() { isDead = true;}
     int hp = 300;

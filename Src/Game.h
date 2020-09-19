@@ -20,6 +20,9 @@ public:
     Game();
     ~Game();
     Map *getMap() { return &map;}
+
+    // funzioni random
+
     int randomPosY();
     int randomCreation();
     int randomPU();
@@ -27,11 +30,15 @@ public:
     void update();
     void render();
 
+    //funzioni getter
+
     const sf::Vector2f &getSpeed() const;
     int getMaxY() const;
     bool getisImmortalityOn() const;
     bool getIsCollided() const;
     float getCreationRate() const;
+
+    //ci sono delle funzioni che derivano dall'observer ma bisogna far derivare la classe
 
 private:
     void createObj();
@@ -47,26 +54,34 @@ private:
     std::ofstream file;
     std::ofstream bestScoreFileWrite;
     std::ifstream bestScoreFileRead;
+
     Map map;
     Hero hero;
     Factory factory;
+
     bool isCreated;
     bool isPUCreated;
     bool isShieldOn;
     bool isImmortalityOn;
+    // sono necessari entrambi? perché non abbiamo shield e immortalità
     bool isCollided;
+
     int blockX;
     int maxY;
     int countCreation;
     int n;
     int txtCount;
+
     unsigned int score;
     unsigned int bestScore;
+
     float creationRate;
     float oldCreationRate;
     float toll = 0.2;
+
     double jump = 2.3f;
     double g = 1;
+
     const float ground = 63.0f;
     const float top = 68.0f;
     const float speedLimit = 9.f;
@@ -89,7 +104,15 @@ private:
     sf::Texture knifeTexture;
     sf::Texture playerShieldTexture;
     sf::Texture playerTexture;
-    // mancano le texture per il game over e per la mappa
+    // mancano le texture per il game over e per la mappa, ma in realtà solo per il game over
+
+
+    //Non ho idea di cosa servono, intanto li trascrivo e tiro su la funzione, a cancellare è un attimo
+    sf::Text scoreTxt;
+    sf::Text lifeTxt;
+    sf::Text bestScoreTxt;
+
+    sf::Font font;
 
     std::vector<std::unique_ptr<Block>> blocks;
     std::vector<std::unique_ptr<Enemy>> enemies;
