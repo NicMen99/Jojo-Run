@@ -37,6 +37,8 @@ public:
     void setHealth(int hp);
     void collisionPU();
 
+    float og_pos_x; //da inizializzare nella creazione di game
+
 private:
     void death() { isDead = true;}
     int hp = 300;

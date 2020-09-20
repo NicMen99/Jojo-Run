@@ -189,9 +189,10 @@ void Game::collision() {
                 if (isShieldOn) {
                     isShieldOn = false;
                     controlPU.restart();
+                    blocks.erase(blocks.begin()+i);
                 } else if (controlPU.getElapsedTime().asSeconds() >= toll) {
-                    hero.gameOver();
                     isCollided = true;
+                    BlockCollision = true;
                     collisionClk.restart();
                 }
             }
@@ -202,9 +203,10 @@ void Game::collision() {
                 if (isShieldOn) {
                     isShieldOn = false;
                     controlPU.restart();
-                } else if (controlPU.getElapsedTime().asSeconds() >= toll) {
-                    hero.gameOver();
+                    firewalls.erase(firewalls.begin()+j);
+                }else if (controlPU.getElapsedTime().asSeconds() >= toll) {
                     isCollided = true;
+                    FirewallCollision = true;
                     collisionClk.restart();
                 }
             }
@@ -215,13 +217,15 @@ void Game::collision() {
                 if (isShieldOn) {
                     isShieldOn = false;
                     controlPU.restart();
+                    enemies.erase(enemies.begin()+e);
                 } else if (controlPU.getElapsedTime().asSeconds() >= toll) {
-                    hero.gameOver();
                     isCollided = true;
+                    EnemyCollision = true;
                     collisionClk.restart();
                 }
             }
         }
+        //TODO implementare la collisione tra coltelli e nemici
     }
 }
 
@@ -270,5 +274,9 @@ int Game::randomCreation() {
 
 int Game::randomPU() {
     return (rand() % 2);
+}
+
+void Game::collisionResolution() {
+    //TODO da implementare
 }
 

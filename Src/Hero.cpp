@@ -77,7 +77,7 @@ void Hero::setHealth(int hp) {
 }
 
 void Hero::collisionPU() {
-    //da implementare
+    //TODO da implementare
 }
 
 
