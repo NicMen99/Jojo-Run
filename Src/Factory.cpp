@@ -82,3 +82,6 @@ std::unique_ptr<PowerUp> Factory::createPowerUp(PowerUpType type) {
     }
 }
 
+//std::unique_ptr<Knife> Factory::createKnife() {
+//    std::unique_ptr<Knife> result = std::unique_ptr<Knife>(new Knife)
+//}

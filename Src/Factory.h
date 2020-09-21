@@ -30,6 +30,7 @@ public:
     virtual std::unique_ptr<FireWall> createFireWall(FireWallType type);
     virtual std::unique_ptr<Enemy> createEnemy(EnemyType type);
     virtual std::unique_ptr<PowerUp> createPowerUp(PowerUpType type);
+    //virtual std::unique_ptr<Knife> createKnife();
 
 private:
 
