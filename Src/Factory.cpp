@@ -10,6 +10,7 @@ std::unique_ptr<Block> Factory::createBlock(BlockType type) {
         result->setIsMovingBlock();
     result->setScale(0.25, 0.25);
     result->setDamageB(50);
+    result->setBlockSpeedX(0.8);
     result->setTexture(blockTexture);
     return result;
 }
@@ -68,12 +69,14 @@ std::unique_ptr<PowerUp> Factory::createPowerUp(PowerUpType type) {
     if (type == PowerUpType::Shield){
         std::unique_ptr<PowerUp> result = std::unique_ptr<PowerUp>(new Shield);
         result->setIsMovingPu(true);
+        result->setSpeedPux(0.9);
         result->setTexture(shieldTexture);
         return result;
     }
     else if (type == PowerUpType::Knife){
         std::unique_ptr<PowerUp> result = std::unique_ptr<PowerUp>(new Knife);
         result->setIsMovingPu(true);
+        result->setSpeedPux(0.9);
         result->setTexture(knifeTexture);
         return result;
     }
