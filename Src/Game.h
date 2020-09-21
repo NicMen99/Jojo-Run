@@ -48,7 +48,6 @@ private:
     void deleteEnemy();
     void moveHero();
     void collision();
-    void collisionResolution();
     void handleTxt();
     void moveEnemy();
 
@@ -64,12 +63,11 @@ private:
     bool isPUCreated;
     bool isShieldOn;
     bool isImmortalityOn;
-    // sono necessari entrambi? perché non abbiamo shield e immortalità
     bool isCollided;
     bool BlockCollision;
     bool EnemyCollision;
     bool FirewallCollision;
-    bool KnifeCollision;
+    //bool KnifeCollision;
 
     int blockX;
     int maxY;
@@ -123,7 +121,7 @@ private:
     std::vector<std::unique_ptr<Enemy>> enemies;
     std::vector<std::unique_ptr<FireWall>> firewalls;
     std::vector<std::unique_ptr<PowerUp>> powerups;
-    std::vector<std::unique_ptr<Knife>> knives;
+    //std::vector<std::unique_ptr<Knife>> knives;
 
     sf::Clock objectClk;
     sf::Clock enemyClk;

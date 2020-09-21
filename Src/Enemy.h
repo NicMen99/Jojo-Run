@@ -21,6 +21,7 @@ public:
     void setDamage(int damage);
     void setIsMovingEnemy();
     bool getIsMovingEnemy() const;
+    sf::FloatRect getHeroBounds() const { return enemy.getGlobalBounds(); }
 
 private:
     void death () { Hit = true; };
@@ -28,6 +29,8 @@ private:
     float speed = 0.2;
     int damage = 90;
     bool isMovingEnemy;
+
+    sf::Sprite enemy;
 };
 
 #endif //JOJO_RUN_ENEMY_H

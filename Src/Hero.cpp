@@ -38,7 +38,9 @@ void Hero::setKnives(int knives) {
 }
 
 void Hero::throwKnife() {
-      //da implementare (se il coltello colpisce un nemico, la salute si rigenera in parte)
+    if (knives > 0){
+        return; //TODO da completare
+    }
 }
 
 void Hero::renderHero(sf::RenderWindow &map) {

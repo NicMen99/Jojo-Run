@@ -17,6 +17,7 @@ Game::~Game() {
     enemies.clear();
     firewalls.clear();
     powerups.clear();
+    //knives.clear();
 }
 
 void Game::createObj() {
@@ -225,7 +226,21 @@ void Game::collision() {
                 }
             }
         }
-        //TODO implementare la collisione tra coltelli e nemici
+        //for (int h = 0; h < knives.size(); h++) {
+        //    for (int q = 0; q < enemies.size(); q++ ){
+        //        if (knives[h]->getGlobalBounds().intersects(enemies[q]->getGlobalBounds())) {
+        //            if (isShieldOn) {
+        //                isShieldOn = false;
+        //                controlPU.restart();
+        //                knives.erase(knives.begin()+h);
+        //            } else if (controlPU.getElapsedTime().asSeconds() >= toll) {
+        //                isCollided = true;
+        //                KnifeCollision = true;
+        //                collisionClk.restart();
+        //            }
+        //        }
+        //    }
+        //}
     }
 }
 
@@ -276,7 +291,4 @@ int Game::randomPU() {
     return (rand() % 2);
 }
 
-void Game::collisionResolution() {
-    //TODO da implementare
-}
 
