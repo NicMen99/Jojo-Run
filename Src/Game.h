@@ -21,8 +21,6 @@ public:
     ~Game();
     Map *getMap() { return &map;}
 
-    // funzioni random
-
     int randomPosY();
     int randomCreation();
     int randomPU();
@@ -30,11 +28,8 @@ public:
     void update();
     void render();
 
-    //funzioni getter
-
     const sf::Vector2f &getSpeed() const;
     int getMaxY() const;
-    bool getisImmortalityOn() const;
     bool getIsCollided() const;
     float getCreationRate() const;
 
@@ -62,12 +57,11 @@ private:
     bool isCreated;
     bool isPUCreated;
     bool isShieldOn;
-    bool isImmortalityOn;
     bool isCollided;
     bool BlockCollision;
     bool EnemyCollision;
     bool FirewallCollision;
-    //bool KnifeCollision;
+    bool KnifeCollision;
 
     int blockX;
     int maxY;
@@ -109,7 +103,6 @@ private:
     sf::Texture playerTexture;
     // mancano le texture per il game over e per la mappa, ma in realtà solo per il game over
 
-
     //Non ho idea di cosa servono, intanto li trascrivo e tiro su la funzione, a cancellare è un attimo
     sf::Text scoreTxt;
     sf::Text lifeTxt;
@@ -121,7 +114,7 @@ private:
     std::vector<std::unique_ptr<Enemy>> enemies;
     std::vector<std::unique_ptr<FireWall>> firewalls;
     std::vector<std::unique_ptr<PowerUp>> powerups;
-    //std::vector<std::unique_ptr<Knife>> knives;
+    std::vector<std::unique_ptr<PowerUp>> knives;
 
     sf::Clock objectClk;
     sf::Clock enemyClk;

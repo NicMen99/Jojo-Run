@@ -19,7 +19,6 @@ public:
     bool gameOver();
     void setHeroTexture(const sf::Texture &heroTexture);
     void setHeroPos(float x, float y) {hero.setPosition(x,y);}
-    void setHP(unsigned int hp);
     bool getIsDead() const {return isDead;}
     void throwKnife();
     sf::Vector2f getHeroSize() const;

@@ -14,10 +14,6 @@ Hero::Hero() {
     hero.setPosition(65,100);
 }
 
-void Hero::setHP(unsigned int hp) {
-    Hero::hp = hp;
-}
-
 void Hero::setHeroTexture(const sf::Texture &heroTexture){
     hero.setTexture(heroTexture);
     hero.setScale(0.20, 0.20);

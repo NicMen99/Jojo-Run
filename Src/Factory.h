@@ -20,7 +20,7 @@
 enum class BlockType {MovingBlock,StillBlock};
 enum class FireWallType {MovingWall,StillWall};
 enum class EnemyType {FireEnemy,HamonEnemy,EmeraldEnemy, StillEnemy};
-enum class PowerUpType {Knife,Shield};
+enum class PowerUpType {Knife,Shield,ThrownKnife};
 
 class Factory {
 public:
@@ -30,7 +30,6 @@ public:
     virtual std::unique_ptr<FireWall> createFireWall(FireWallType type);
     virtual std::unique_ptr<Enemy> createEnemy(EnemyType type);
     virtual std::unique_ptr<PowerUp> createPowerUp(PowerUpType type);
-    //virtual std::unique_ptr<Knife> createKnife();
 
 private:
 

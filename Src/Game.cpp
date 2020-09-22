@@ -17,12 +17,11 @@ Game::~Game() {
     enemies.clear();
     firewalls.clear();
     powerups.clear();
-    //knives.clear();
 }
 
 void Game::createObj() {
     if (objectClk.getElapsedTime().asSeconds() >= creationRate) {
-        if (countCreation % 5 == 0 && randomCreation() == 0 && !isImmortalityOn ) {
+        if (countCreation % 5 == 0 && randomCreation() == 0) {
             std::unique_ptr<PowerUp> knife = factory.createPowerUp(PowerUpType::Knife);
             knife->setPosition(sf::Vector2f(2*map.getMapSize().x,randomPosY()));
             powerups.emplace_back(move(knife));
@@ -30,7 +29,7 @@ void Game::createObj() {
             objectClk.restart();
             countCreation++;
         }
-        if (countCreation % 5 == 0 && randomCreation() == 0 && !isImmortalityOn ) {
+        if (countCreation % 5 == 0 && randomCreation() == 0) {
             std::unique_ptr<PowerUp> shield = factory.createPowerUp(PowerUpType::Knife);
             shield->setPosition(sf::Vector2f(2*map.getMapSize().x,randomPosY()));
             powerups.emplace_back(move(shield));
@@ -180,10 +179,19 @@ void Game::moveObject() {
         } else
             f->move(-speed.x, 0);
     }
+    for (auto &k: knives) {
+        if (k->getIsMovingPu()) {
+            if (k->getPosition().y + k->getGlobalBounds().height >= map.getMapSize().y - ground ||
+                k->getPosition().y <= 0)
+                k->setSpeedPux(+k->getSpeedPux());
+            k->move(+speed.x, k->getSpeedPux());
+        } else
+            k->move(-speed.x, 0);
+    }
 }
 
 void Game::collision() {
-    if (!isImmortalityOn && !isCollided) {
+    if (!isCollided) {
         for (int i = 0; i < blocks.size(); i++) {
             if (blocks[i]->getGlobalBounds().intersects(hero.getHeroBounds())) {
                 //Se ha lo scudo e interseca un blocco non muore
@@ -226,21 +234,19 @@ void Game::collision() {
                 }
             }
         }
-        //for (int h = 0; h < knives.size(); h++) {
-        //    for (int q = 0; q < enemies.size(); q++ ){
-        //        if (knives[h]->getGlobalBounds().intersects(enemies[q]->getGlobalBounds())) {
-        //            if (isShieldOn) {
-        //                isShieldOn = false;
-        //                controlPU.restart();
-        //                knives.erase(knives.begin()+h);
-        //            } else if (controlPU.getElapsedTime().asSeconds() >= toll) {
-        //                isCollided = true;
-        //                KnifeCollision = true;
-        //                collisionClk.restart();
-        //            }
-        //        }
-        //    }
-        //}
+        for (int h = 0; h < hero.getKnives(); h++) {
+            for (auto & enemie : enemies){
+                if (knives[h]->getGlobalBounds().intersects(enemie->getGlobalBounds())) {
+                    if (controlPU.getElapsedTime().asSeconds() >= toll) {
+                        isCollided = true;
+                        KnifeCollision = true;
+                        hero.setHealth(hero.getHealth() + 20);
+                        // la vita dell'eroe si ricarica leggermente se colpisce un nemico col coltello
+                        collisionClk.restart();
+                    }
+                }
+            }
+        }
     }
 }
 
@@ -264,7 +270,7 @@ void Game::moveHero() {
     if (hero.getHeroPos().y + hero.getHeroSize().y >= map.getMapSize().y - ground)
         hero.setHeroPos(hero.getHeroPos().x, map.getMapSize().y - (hero.getHeroSize().y + ground));
     if (hero.getHeroPos().y <= top )
-        hero.setHeroPos(hero.getHeroPos().x, top );
+        hero.setHeroPos(hero.getHeroPos().x, top);
 }
 
 void Game::moveEnemy() {
@@ -289,6 +295,15 @@ int Game::randomCreation() {
 
 int Game::randomPU() {
     return (rand() % 2);
+}
+
+Game::Game() {
+    // da implementare e sarà luuuuuuuuuuuuuuuuuuuuuuuuuunghissimo
+}
+
+void Game::update() {
+    map.update();
+    //da implementare
 }
 
 

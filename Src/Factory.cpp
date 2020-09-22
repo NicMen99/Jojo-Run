@@ -66,14 +66,20 @@ std::unique_ptr<Enemy> Factory::createEnemy(EnemyType type) {
 }
 
 std::unique_ptr<PowerUp> Factory::createPowerUp(PowerUpType type) {
-    if (type == PowerUpType::Shield){
+    if (type == PowerUpType::Shield) {
         std::unique_ptr<PowerUp> result = std::unique_ptr<PowerUp>(new Shield);
         result->setIsMovingPu(true);
         result->setSpeedPux(0.9);
         result->setTexture(shieldTexture);
         return result;
-    }
-    else if (type == PowerUpType::Knife){
+    } else if (type == PowerUpType::Knife) {
+        std::unique_ptr<PowerUp> result = std::unique_ptr<PowerUp>(new Knife);
+        result->setIsMovingPu(true);
+        result->setSpeedPux(0.9);
+        result->setTexture(knifeTexture);
+        result->setRotation(45.f);
+        return result;
+    } else if (type == PowerUpType::ThrownKnife) {
         std::unique_ptr<PowerUp> result = std::unique_ptr<PowerUp>(new Knife);
         result->setIsMovingPu(true);
         result->setSpeedPux(0.9);
@@ -81,7 +87,3 @@ std::unique_ptr<PowerUp> Factory::createPowerUp(PowerUpType type) {
         return result;
     }
 }
-
-//std::unique_ptr<Knife> Factory::createKnife() {
-//    std::unique_ptr<Knife> result = std::unique_ptr<Knife>(new Knife)
-//}
