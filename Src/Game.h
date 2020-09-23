@@ -62,6 +62,8 @@ private:
     bool EnemyCollision;
     bool FirewallCollision;
     bool KnifeCollision;
+    bool ShieldPowerupCollision;
+    bool KnivesPowerupCollision;
 
     int blockX;
     int maxY;

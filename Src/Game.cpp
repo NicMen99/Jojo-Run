@@ -3,6 +3,7 @@
 //
 
 #include "Game.h"
+#include "string.h"
 
 bool Game::getIsCollided() const {
     return isCollided;
@@ -234,14 +235,30 @@ void Game::collision() {
                 }
             }
         }
-        for (int h = 0; h < hero.getKnives(); h++) {
-            for (auto & enemie : enemies){
-                if (knives[h]->getGlobalBounds().intersects(enemie->getGlobalBounds())) {
+        for (int m = 0; m < powerups.size(); m++) {
+            if (powerups[m]->getGlobalBounds().intersects(hero.getHeroBounds()) && strcmp(typeid(powerups[m]).name(), "Shield") == 0) {
+                if (controlPU.getElapsedTime().asSeconds() >= toll) {
+                    ShieldPowerupCollision = true;
+                    isCollided = true;
+                    powerups.erase(powerups.begin() + m);
+                    collisionClk.restart();
+                }
+            }else if (powerups[m]->getGlobalBounds().intersects(hero.getHeroBounds()) && strcmp(typeid(powerups[m]).name(), "Knife") == 0){
+                if (controlPU.getElapsedTime().asSeconds() >= toll){
+                    KnivesPowerupCollision = true;
+                    isCollided = true;
+                    powerups.erase(powerups.begin() + m);
+                    collisionClk.restart();
+                }
+            }
+        }
+        for (int h = 0; h < powerups.size(); h++) {
+            for (auto & enemy : enemies){
+                if (powerups[h]->getGlobalBounds().intersects(enemy->getGlobalBounds()) && (strcmp(typeid(powerups[h]).name(), "ThrownKnife") == 0)) {
                     if (controlPU.getElapsedTime().asSeconds() >= toll) {
                         isCollided = true;
                         KnifeCollision = true;
-                        hero.setHealth(hero.getHealth() + 20);
-                        // la vita dell'eroe si ricarica leggermente se colpisce un nemico col coltello
+                        powerups.erase(powerups.begin()+h);
                         collisionClk.restart();
                     }
                 }
