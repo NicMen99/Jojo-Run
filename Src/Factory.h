@@ -35,7 +35,7 @@ private:
 
     sf::Texture blockTexture;
     sf::Texture fireWallTexture;
-    sf::Texture shieldTexture;
+    sf::Texture shieldPowerUpTexture;
     sf::Texture knifeTexture;
     sf::Texture hamonEnemyTexture;
     sf::Texture fireEnemyTexture;

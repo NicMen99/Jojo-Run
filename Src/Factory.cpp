@@ -70,7 +70,7 @@ std::unique_ptr<PowerUp> Factory::createPowerUp(PowerUpType type) {
         std::unique_ptr<PowerUp> result = std::unique_ptr<PowerUp>(new Shield);
         result->setIsMovingPu(true);
         result->setSpeedPux(0.9);
-        result->setTexture(shieldTexture);
+        result->setTexture(shieldPowerUpTexture);
         return result;
     } else if (type == PowerUpType::Knife) {
         std::unique_ptr<PowerUp> result = std::unique_ptr<PowerUp>(new Knife);

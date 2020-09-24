@@ -93,19 +93,22 @@ private:
     const float jumpLimit = 5.5;
     const float jumpPlus = 0.08;
 
-    sf::Texture blockTexture;
-    sf::Texture emeraldBlockTexture;
-    sf::Texture emeraldEnemyTexture;
-    sf::Texture fireEnemyTexture;
-    sf::Texture fireWallTexture;
-    sf::Texture hamonBlockTexture;
-    sf::Texture hamonEnemyTexture;
-    sf::Texture knifeTexture;
-    sf::Texture playerShieldTexture;
-    sf::Texture playerTexture;
-    // mancano le texture per il game over e per la mappa, ma in realtà solo per il game over
+    sf::Texture heroTexture1;
+    sf::Texture heroTexture2;
+    sf::Texture heroTextureS1;
+    sf::Texture gameOverTexture;
+    sf::Texture layer1Texture;
+    sf::Texture layer2Texture;
+    sf::Texture layer3Texture;
+    sf::Texture layer4Texture;
 
-    //Non ho idea di cosa servono, intanto li trascrivo e tiro su la funzione, a cancellare è un attimo
+    sf::Sprite gameOver;
+    sf::Sprite livesSprite;
+    sf::Sprite layer1;
+    sf::Sprite layer2;
+    sf::Sprite layer3;
+    sf::Sprite layer4;
+
     sf::Text scoreTxt;
     sf::Text lifeTxt;
     sf::Text bestScoreTxt;
@@ -129,6 +132,16 @@ private:
 
     sf::Vector2f speed;
     sf::Vector2f oldSpeed;
+
+    sf::Music gameMusic;
+
+    sf::Sound gameOverSound;
+    sf::Sound collisionSound;
+    sf::Sound powerUpSound;
+
+    sf::SoundBuffer gameOverBuffer;
+    sf::SoundBuffer collisionBuffer;
+    sf::SoundBuffer powerUpBuffer;
 };
 
 #endif //JOJO_RUN_GAME_H
