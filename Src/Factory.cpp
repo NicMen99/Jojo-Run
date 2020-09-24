@@ -18,7 +18,7 @@ std::unique_ptr<Block> Factory::createBlock(BlockType type) {
 Factory::Factory() {
     blockTexture.loadFromFile("Texture/blockTexture.png");
     fireWallTexture.loadFromFile("Texture/fireWallTexture.png");
-    shieldTexture.loadFromFile("Texture/shieldTexture.png");
+    shieldPowerUpTexture.loadFromFile("Texture/shieldTexture.png");
     knifeTexture.loadFromFile("Texture/fnifeTexture.png");
     hamonEnemyTexture.loadFromFile("Texture/hamonEnemyTexture.png");
     fireEnemyTexture.loadFromFile("Texture/fireEnemyTexture.png");

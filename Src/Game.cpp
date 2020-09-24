@@ -3,7 +3,7 @@
 //
 
 #include "Game.h"
-#include "string.h"
+#include <cstring>
 #include <fstream>
 
 bool Game::getIsCollided() const {
@@ -316,72 +316,70 @@ int Game::randomPU() {
     return (rand() % 2);
 }
 
-Game::Game() {
-    Game::Game(): map("CryptoRobot", sf::Vector2u(1600, 1000)), hero(), layer1(), layer2(), layer3(), layer4(), factory(),
+Game::Game(): map("JoJoRun", sf::Vector2u(1600, 1000)), hero(), layer1(), layer2(), layer3(), layer4(), factory(),
             speed(sf::Vector2f(0.9,0.8)), oldSpeed(speed), blockX(100), isCreated(false), isCollided(false), BlockCollision(false), EnemyCollision(false),
             FirewallCollision(false), KnifeCollision(false), KnivesPowerupCollision(false), ShieldPowerupCollision(false), countCreation(1), creationRate(1.8f),
             oldCreationRate(creationRate), objectClk(), controlPU(), scoreClk(), speedClk(), doubleClk(), collisionClk(), shieldClk(), isShieldOn(false),
             n(1), score(0), txtCount(0),bestScore(0) {
 
-        //setting dei layers del background
-        layer1Texture.loadFromFile("Map/Background1.png");
-        layer1Texture.setRepeated(true);
-        layer1.setTexture(layer1Texture);
-        layer1.setTextureRect(sf::IntRect(0, 0, (500 * map.getMapSize().x), map.getMapSize().y + static_cast<int>(ground)));
-        layer2Texture.loadFromFile("Map/BG.png");
-        layer2Texture.setRepeated(true);
-        layer2.setTexture(layer2Texture);
-        layer2.setTextureRect(sf::IntRect(0, 0, (500 * map.getMapSize().x), map.getMapSize().y + static_cast<int>(ground)));
-        layer3Texture.loadFromFile("Map/Foregroung.png");
-        layer3Texture.setRepeated(true);
-        layer3.setTexture(layer3Texture);
-        layer3.setTextureRect(sf::IntRect(0, 0, (500 * map.getMapSize().x), map.getMapSize().y + static_cast<int>(ground)));
-        layer4Texture.loadFromFile("Map/middle.png");
-        layer4Texture.setRepeated(true);
-        layer4.setTexture(layer4Texture);
-        layer4.setTextureRect(sf::IntRect(0, 0, (500 * map.getMapSize().x), map.getMapSize().y + static_cast<int>(ground)));
+    //setting dei layers del background
+    layer1Texture.loadFromFile("Map/Background1.png");
+    layer1Texture.setRepeated(true);
+    layer1.setTexture(layer1Texture);
+    layer1.setTextureRect(sf::IntRect(0, 0, (500 * map.getMapSize().x), map.getMapSize().y + static_cast<int>(ground)));
+    layer2Texture.loadFromFile("Map/BG.png");
+    layer2Texture.setRepeated(true);
+    layer2.setTexture(layer2Texture);
+    layer2.setTextureRect(sf::IntRect(0, 0, (500 * map.getMapSize().x), map.getMapSize().y + static_cast<int>(ground)));
+    layer3Texture.loadFromFile("Map/Foregroung.png");
+    layer3Texture.setRepeated(true);
+    layer3.setTexture(layer3Texture);
+    layer3.setTextureRect(sf::IntRect(0, 0, (500 * map.getMapSize().x), map.getMapSize().y + static_cast<int>(ground)));
+    layer4Texture.loadFromFile("Map/middle.png");
+    layer4Texture.setRepeated(true);
+    layer4.setTexture(layer4Texture);
+    layer4.setTextureRect(sf::IntRect(0, 0, (500 * map.getMapSize().x), map.getMapSize().y + static_cast<int>(ground)));
 
-        //setting texture e sprite
-        heroTexture1.loadFromFile("Textures/playerTexture.png");
-        heroTexture2.loadFromFile("Textures/playerTextureUp.png");
-        hero.setTexture(heroTexture1);
-        heroTextureS1.loadFromFile("Textures/shieldPowerUpTexture.png");
+    //setting texture e sprite
+    heroTexture1.loadFromFile("Textures/playerTexture.png");
+    heroTexture2.loadFromFile("Textures/playerTextureUp.png");
+    hero.setTexture(heroTexture1);
+    heroTextureS1.loadFromFile("Textures/shieldPowerUpTexture.png");
 
-        gameOverTexture.loadFromFile("Textures/GameOverScreen.png");
-        gameOver.setTexture(gameOverTexture);
-        gameOver.setPosition(225,100);
-        gameOver.setScale(0.8,0.8);
+    gameOverTexture.loadFromFile("Textures/GameOverScreen.png");
+    gameOver.setTexture(gameOverTexture);
+    gameOver.setPosition(225,100);
+    gameOver.setScale(0.8,0.8);
 
-        // TODO settare la vita con le stringhe
-        livesSprite.setPosition(1480,10);
-        livesSprite.setScale(0.115, 0.115);
+    // TODO settare la vita con le stringhe
+    livesSprite.setPosition(1480,10);
+    livesSprite.setScale(0.115, 0.115);
 
-        //setting music
-        gameMusic.openFromFile("Music/soundtrack.wav");
-        gameMusic.setLoop(true);
-        gameMusic.setVolume(10.f);
-        gameMusic.play();
+    //setting music
+    gameMusic.openFromFile("Music/soundtrack.wav");
+    gameMusic.setLoop(true);
+    gameMusic.setVolume(10.f);
+    gameMusic.play();
 
-        gameOverBuffer.loadFromFile("Music/gameOverSound.wav");
-        gameOverSound.setBuffer(gameOverBuffer);
-        gameOverSound.setVolume(21.f);
+    gameOverBuffer.loadFromFile("Music/gameOverSound.wav");
+    gameOverSound.setBuffer(gameOverBuffer);
+    gameOverSound.setVolume(21.f);
 
-        collisionBuffer.loadFromFile("Music/collisionSound.wav");
-        collisionSound.setBuffer(collisionBuffer);
-        collisionSound.setVolume(22.f);
+    collisionBuffer.loadFromFile("Music/collisionSound.wav");
+    collisionSound.setBuffer(collisionBuffer);
+    collisionSound.setVolume(22.f);
 
-        powerUpBuffer.loadFromFile("Music/powerUp.wav");
-        powerUpSound.setBuffer(powerUpBuffer);
-        powerUpSound.setVolume(20.f);
+    powerUpBuffer.loadFromFile("Music/powerUp.wav");
+    powerUpSound.setBuffer(powerUpBuffer);
+    powerUpSound.setVolume(20.f);
 
-        srand((unsigned) time(nullptr));
-        maxY = static_cast<int>(map.getMapSize().y - (top + blockX));
-    }
+    srand((unsigned) time(nullptr));
+    maxY = static_cast<int>(map.getMapSize().y - (top + blockX));
 }
 
 void Game::update() {
     map.update();
-    //da implementare
+    //TODO da implementare
 }
 
 
