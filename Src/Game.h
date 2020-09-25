@@ -103,7 +103,6 @@ private:
     sf::Texture layer4Texture;
 
     sf::Sprite gameOver;
-    sf::Sprite livesSprite;
     sf::Sprite layer1;
     sf::Sprite layer2;
     sf::Sprite layer3;
@@ -112,6 +111,10 @@ private:
     sf::Text scoreTxt;
     sf::Text lifeTxt;
     sf::Text bestScoreTxt;
+    sf::Text scoreB;
+    sf::Text numScore;
+    sf::Text bestScoreB;
+    sf::Text bestScoreNum;
 
     sf::Font font;
 
@@ -138,10 +141,12 @@ private:
     sf::Sound gameOverSound;
     sf::Sound collisionSound;
     sf::Sound powerUpSound;
+    sf::Sound shieldOnSound;
 
     sf::SoundBuffer gameOverBuffer;
     sf::SoundBuffer collisionBuffer;
     sf::SoundBuffer powerUpBuffer;
+    sf::SoundBuffer shieldOnBuffer;
 };
 
 #endif //JOJO_RUN_GAME_H

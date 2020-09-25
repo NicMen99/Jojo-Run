@@ -117,16 +117,39 @@ void Game::handleTxt() {
     scoreTxt.setFillColor(sf::Color::Black);
 
     lifeTxt.setFont(font);
-    lifeTxt.setString("Life: ");
-    lifeTxt.setPosition(100, 3);
-    lifeTxt.setCharacterSize(25);
+    lifeTxt.setString(std::to_string(hero.getHealth()));
+    lifeTxt.setPosition(1550, 11);
+    lifeTxt.setCharacterSize(40);
     lifeTxt.setFillColor(sf::Color::Black);
+
+    numScore.setFont(font);
+    numScore.setString(std::to_string(score));
+    numScore.setPosition(100, 3);
+    numScore.setCharacterSize(25);
+    numScore.setFillColor(sf::Color::Black);
 
     bestScoreTxt.setFont(font);
     bestScoreTxt.setString("High Score: ");
-    bestScoreTxt.setPosition(10, 3);
-    bestScoreTxt.setCharacterSize(25);
-    bestScoreTxt.setFillColor(sf::Color::Black);
+    bestScoreTxt.setPosition(450, 800);
+    bestScoreTxt.setCharacterSize(75);
+    bestScoreTxt.setFillColor(sf::Color::White);
+
+    scoreB.setFont(font);
+    scoreB.setString("0");
+    scoreB.setCharacterSize(100);
+    scoreB.setFillColor(sf::Color::White);
+
+    bestScoreNum.setFont(font);
+    bestScoreNum.setString(std::to_string(bestScore));
+    bestScoreNum.setPosition(1000, 850);
+    bestScoreNum.setCharacterSize(100);
+    bestScoreNum.setFillColor(sf::Color::White);
+
+    bestScoreB.setFont(font);
+    bestScoreB.setString("h");
+    bestScoreB.setPosition(300, 600);
+    bestScoreB.setCharacterSize(110);
+    bestScoreB.setFillColor(sf::Color::Black);
 }
 
 void Game::deleteObject() {
@@ -351,10 +374,6 @@ Game::Game(): map("JoJoRun", sf::Vector2u(1600, 1000)), hero(), layer1(), layer2
     gameOver.setPosition(225,100);
     gameOver.setScale(0.8,0.8);
 
-    // TODO settare la vita con le stringhe
-    livesSprite.setPosition(1480,10);
-    livesSprite.setScale(0.115, 0.115);
-
     //setting music
     gameMusic.openFromFile("Music/soundtrack.wav");
     gameMusic.setLoop(true);
@@ -369,9 +388,13 @@ Game::Game(): map("JoJoRun", sf::Vector2u(1600, 1000)), hero(), layer1(), layer2
     collisionSound.setBuffer(collisionBuffer);
     collisionSound.setVolume(22.f);
 
-    powerUpBuffer.loadFromFile("Music/powerUp.wav");
+    powerUpBuffer.loadFromFile("Music/shieldSound.wav");
     powerUpSound.setBuffer(powerUpBuffer);
     powerUpSound.setVolume(20.f);
+
+    shieldOnBuffer.loadFromFile("Music/shieldOn.wav");
+    shieldOnSound.setBuffer(shieldOnBuffer);
+    shieldOnSound.setVolume(20.f);
 
     srand((unsigned) time(nullptr));
     maxY = static_cast<int>(map.getMapSize().y - (top + blockX));
@@ -379,7 +402,99 @@ Game::Game(): map("JoJoRun", sf::Vector2u(1600, 1000)), hero(), layer1(), layer2
 
 void Game::update() {
     map.update();
-    //TODO da implementare
+    layer1.move(-speed.x, 0);
+    layer2.move(-speed.x*0.9, 0);
+    layer3.move(-speed.x*0.8, 0);
+    layer4.move(-speed.x*0.7, 0);
+
+    if (hero.getIsDead() && txtCount == 0) {
+        file.open("Score.txt", std::ios::out | std::ios::app);
+        file << std::endl;
+        file << "Score: " << score;
+        file.close();
+        txtCount++;
+
+        gameMusic.stop();
+        collisionSound.stop();
+        shieldOnSound.stop();
+        powerUpSound.stop();
+        gameOverSound.play();
+
+        bestScoreFileRead.open("BestScore.txt");
+        bestScoreFileRead >> bestScore;
+        bestScoreFileRead.close();
+
+        bestScoreFileWrite.open("BestScore.txt");
+        if (score > bestScore) {
+            bestScore = score;
+        }
+        bestScoreFileWrite.clear();
+        bestScoreFileWrite << bestScore;
+        bestScoreFileWrite.close();
+    }
+
+    createObj();
+    moveObject();
+    moveHero();
+    deleteObject();
+    handleTxt();
+
+    //TODO da implementare ma pesno basti dichiarare un oggetto game nei parametri di hero
+    //per poi chiamare di continuo il metodo notify
 }
+
+const sf::Vector2f &Game::getSpeed() const {
+    return speed;
+}
+
+int Game::getMaxY() const {
+    return maxY;
+}
+
+void Game::render() {
+    map.clear();
+    map.draw(layer4);
+    map.draw(layer3);
+    map.draw(layer2);
+    map.draw(layer1);
+
+    if (!hero.getIsDead()) {
+        hero.renderHero(*map.getRenderMap());
+        for (auto &block : blocks)
+            map.draw(*block);
+        for (auto &movBlock : blocks)
+            map.draw(*movBlock);
+        for (auto &power : powerups)
+            map.draw(*power);
+        for (auto &enem : enemies)
+            map.draw(*enem);
+        for (auto &fire: firewalls)
+            map.draw(*fire);
+        for (auto &movFire: firewalls)
+            map.draw(*movFire);
+        map.draw(scoreTxt);
+        map.draw(numScore);
+        map.draw(lifeTxt);
+    }
+    else {
+        scoreTxt.setCharacterSize(80);
+        numScore.setCharacterSize(80);
+        scoreTxt.setPosition(600, 400);
+        numScore.setPosition(900, 400);
+        scoreB.setPosition(500, 390);
+
+        map.draw(scoreTxt);
+        map.draw(numScore);
+        map.draw(gameOver);
+        map.draw(scoreB);
+        map.draw(bestScoreTxt);
+        map.draw(bestScoreB);
+        map.draw(bestScoreNum);
+    }
+    map.display();
+}
+
+
+
 
 
