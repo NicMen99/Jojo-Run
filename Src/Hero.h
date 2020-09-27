@@ -7,6 +7,7 @@
 
 #include "Subject.h"
 #include "PowerUp.h"
+#include "Game.h"
 #include <list>
 #include <string>
 #include <SFML/Graphics.hpp>
@@ -42,6 +43,7 @@ private:
     void death() { isDead = true;}
     int hp = 300;
     bool isDead = false;
+    Game game;
     sf::Sprite hero;
     sf::Texture playerTexture;
     int knives = 0;

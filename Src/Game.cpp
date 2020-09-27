@@ -6,8 +6,8 @@
 #include <cstring>
 #include <fstream>
 
-bool Game::getIsCollided() const {
-    return isCollided;
+bool Game::getKnifeCollision() const {
+    return KnifeCollision;
 }
 
 float Game::getCreationRate() const {
@@ -342,7 +342,7 @@ int Game::randomPU() {
 Game::Game(): map("JoJoRun", sf::Vector2u(1600, 1000)), hero(), layer1(), layer2(), layer3(), layer4(), factory(),
             speed(sf::Vector2f(0.9,0.8)), oldSpeed(speed), blockX(100), isCreated(false), isCollided(false), BlockCollision(false), EnemyCollision(false),
             FirewallCollision(false), KnifeCollision(false), KnivesPowerupCollision(false), ShieldPowerupCollision(false), countCreation(1), creationRate(1.8f),
-            oldCreationRate(creationRate), objectClk(), controlPU(), scoreClk(), speedClk(), doubleClk(), collisionClk(), shieldClk(), isShieldOn(false),
+            oldCreationRate(creationRate), objectClk(), controlPU(), scoreClk(), speedClk(), collisionClk(), shieldClk(), isShieldOn(false),
             n(1), score(0), txtCount(0),bestScore(0) {
 
     //setting dei layers del background
@@ -492,6 +492,30 @@ void Game::render() {
         map.draw(bestScoreNum);
     }
     map.display();
+}
+
+bool Game::getFireWallCollision() const {
+    return FirewallCollision;
+}
+
+bool Game::getBlockCollision() const {
+    return BlockCollision;
+}
+
+bool Game::getEnemyCollision() const {
+    return EnemyCollision;
+}
+
+bool Game::getShieldPowerUpCollision() const {
+    return ShieldPowerupCollision;
+}
+
+bool Game::getKnivePowerUpCollision() const {
+    return KnivesPowerupCollision;
+}
+
+bool Game::getIsCollided() const{
+    return isCollided;
 }
 
 

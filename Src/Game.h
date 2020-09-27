@@ -30,6 +30,12 @@ public:
 
     const sf::Vector2f &getSpeed() const;
     int getMaxY() const;
+    bool getKnifeCollision() const;
+    bool getFireWallCollision() const;
+    bool getBlockCollision() const;
+    bool getEnemyCollision() const;
+    bool getShieldPowerUpCollision() const;
+    bool getKnivePowerUpCollision() const;
     bool getIsCollided() const;
     float getCreationRate() const;
 
@@ -84,7 +90,6 @@ private:
     const float ground = 63.0f;
     const float top = 68.0f;
     const float speedLimit = 9.f;
-    const unsigned int speedMul =  5;
     const float creationLimit = 0.4;
     const float creationPlus = 0.035;
     const float speedPlus = 0.08;
@@ -128,7 +133,6 @@ private:
     sf::Clock enemyClk;
     sf::Clock controlPU;
     sf::Clock speedClk;
-    sf::Clock doubleClk;
     sf::Clock scoreClk;
     sf::Clock collisionClk;
     sf::Clock shieldClk;
