@@ -39,6 +39,9 @@ void Hero::throwKnife() {
     }
 }
 
+int Hero::randomPU() {
+    return (rand() % 2);
+
 void Hero::renderHero(sf::RenderWindow &map) {
     map.draw(hero);
 }
@@ -74,8 +77,41 @@ void Hero::setHealth(int hp) {
     notify();
 }
 
-void Hero::collisionPU() {
-    //TODO da implementare
+void Hero::collisionAndUpdate() {
+    setScore(score);
+    setHealth(getHealth());
+
+    if (!getIsDead()) {
+        game.collision();
+    }
+    if (game.getisCollided()) {
+        if (collisionClk.getElapsedTime().asSeconds() >= 0.8f) {
+            if(game.getFireWallCollision() && getHealth() > 15){
+                setHealth(getHealth() - 15);
+                notify();
+                game.setFireWallCollision(false);
+            }
+            if(game.getBlockCollision() && getHealth() > 90){
+                setHealth(getHealth() - 70);
+                notify();
+                game.setBlockCollision(false);
+            }
+            if(game.getEnemyCollision() && getHealth() > 90){
+                setHealth(getHealth() - 90);
+                notify();
+                game.setEnemyCollision(false);
+            }
+            if(game.getShieldPowerupCollision()){
+
+                notify();
+                game.setEnemyCollision(false);
+            }
+
+
+            //manca roba sui power up, rimedierò domani
+        }
+        game.setIsCollided(false);
+    }
 }
 
 

@@ -23,7 +23,6 @@ public:
 
     int randomPosY();
     int randomCreation();
-    int randomPU();
 
     void update();
     void render();
@@ -37,6 +36,12 @@ public:
     bool getShieldPowerUpCollision() const;
     bool getKnivePowerUpCollision() const;
     bool getIsCollided() const;
+    void setFireWallCollision(bool FirewallCollision);
+    void setEnemyCollision(bool EnemyCollision);
+    void setBlockCollision(bool BlockCollision);
+    void setShieldPowerUpCollision(bool ShieldPowerupCollision);
+    void setKnifeCollision(bool KnifeCollision);
+    void setKnivesPowerUpCollision(bool KnivesPowerupCollision);
     float getCreationRate() const;
 
     //ci sono delle funzioni che derivano dall'observer ma bisogna far derivare la classe
@@ -117,6 +122,7 @@ private:
     sf::Text lifeTxt;
     sf::Text bestScoreTxt;
     sf::Text scoreB;
+    sf::Text knivesTxt;
     sf::Text numScore;
     sf::Text bestScoreB;
     sf::Text bestScoreNum;
@@ -132,10 +138,7 @@ private:
     sf::Clock objectClk;
     sf::Clock enemyClk;
     sf::Clock controlPU;
-    sf::Clock speedClk;
-    sf::Clock scoreClk;
     sf::Clock collisionClk;
-    sf::Clock shieldClk;
 
     sf::Vector2f speed;
     sf::Vector2f oldSpeed;
@@ -146,11 +149,18 @@ private:
     sf::Sound collisionSound;
     sf::Sound powerUpSound;
     sf::Sound shieldOnSound;
+    sf::Sound hamonEnemySound;
+    sf::Sound emeraldEnemySound;
+    sf::Sound fireEnemySound;
+
 
     sf::SoundBuffer gameOverBuffer;
     sf::SoundBuffer collisionBuffer;
     sf::SoundBuffer powerUpBuffer;
     sf::SoundBuffer shieldOnBuffer;
+    sf::SoundBuffer fireEnemyBuffer;
+    sf::SoundBuffer emeraldEnemyBuffer;
+    sf::SoundBuffer hamonEnemyBuffer;
 };
 
 #endif //JOJO_RUN_GAME_H

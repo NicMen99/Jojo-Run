@@ -76,6 +76,7 @@ void Game::createEnemy() {
         if (countCreation % 4 == 0 && randomCreation() == 0) {
             std::unique_ptr<Enemy> enemy = factory.createEnemy(EnemyType::HamonEnemy);
             enemy->setPosition(sf::Vector2f(2 * map.getMapSize().x, randomPosY()));
+            hamonEnemySound.play();
             enemies.emplace_back(move(enemy));
             isCreated = true;
             enemyClk.restart();
@@ -84,6 +85,7 @@ void Game::createEnemy() {
         if (countCreation % 5 == 0 && randomCreation() == 0) {
             std::unique_ptr<Enemy> enemy = factory.createEnemy(EnemyType::EmeraldEnemy);
             enemy->setPosition(sf::Vector2f(2 * map.getMapSize().x, randomPosY()));
+            emeraldEnemySound.play();
             enemies.emplace_back(move(enemy));
             isCreated = true;
             enemyClk.restart();
@@ -92,6 +94,7 @@ void Game::createEnemy() {
         if (countCreation % 6 == 0 && randomCreation() == 0) {
             std::unique_ptr<Enemy> enemy = factory.createEnemy(EnemyType::FireEnemy);
             enemy->setPosition(sf::Vector2f(2 * map.getMapSize().x, randomPosY()));
+            fireEnemySound.play();
             enemies.emplace_back(move(enemy));
             isCreated = true;
             enemyClk.restart();
@@ -121,6 +124,12 @@ void Game::handleTxt() {
     lifeTxt.setPosition(1550, 11);
     lifeTxt.setCharacterSize(40);
     lifeTxt.setFillColor(sf::Color::Black);
+
+    knivesTxt.setFont(font);
+    knivesTxt.setString(std::to_string(hero.getKnives()));
+    knivesTxt.setPosition(1500, 11);
+    knivesTxt.setCharacterSize(40);
+    knivesTxt.setFillColor(sf::Color::Black);
 
     numScore.setFont(font);
     numScore.setString(std::to_string(score));
@@ -223,10 +232,12 @@ void Game::collision() {
                 //Se ha lo scudo e interseca un blocco non muore
                 if (isShieldOn) {
                     isShieldOn = false;
+                    shieldOnSound.play();
                     controlPU.restart();
                     blocks.erase(blocks.begin()+i);
                 } else if (controlPU.getElapsedTime().asSeconds() >= toll) {
                     isCollided = true;
+                    collisionSound.play();
                     BlockCollision = true;
                     collisionClk.restart();
                 }
@@ -237,10 +248,12 @@ void Game::collision() {
                 //Se ha lo scudo e interseca l'oggetto non muore
                 if (isShieldOn) {
                     isShieldOn = false;
+                    shieldOnSound.play();
                     controlPU.restart();
                     firewalls.erase(firewalls.begin()+j);
                 }else if (controlPU.getElapsedTime().asSeconds() >= toll) {
                     isCollided = true;
+                    collisionSound.play();
                     FirewallCollision = true;
                     collisionClk.restart();
                 }
@@ -251,10 +264,12 @@ void Game::collision() {
                 //Se ha lo scudo e interseca il nemico non muore
                 if (isShieldOn) {
                     isShieldOn = false;
+                    shieldOnSound.play();
                     controlPU.restart();
                     enemies.erase(enemies.begin()+e);
                 } else if (controlPU.getElapsedTime().asSeconds() >= toll) {
                     isCollided = true;
+                    collisionSound.play();
                     EnemyCollision = true;
                     collisionClk.restart();
                 }
@@ -265,6 +280,7 @@ void Game::collision() {
                 if (controlPU.getElapsedTime().asSeconds() >= toll) {
                     ShieldPowerupCollision = true;
                     isCollided = true;
+                    powerUpSound.play();
                     powerups.erase(powerups.begin() + m);
                     collisionClk.restart();
                 }
@@ -335,14 +351,10 @@ int Game::randomCreation() {
     return (rand() % 3);
 }
 
-int Game::randomPU() {
-    return (rand() % 2);
-}
-
 Game::Game(): map("JoJoRun", sf::Vector2u(1600, 1000)), hero(), layer1(), layer2(), layer3(), layer4(), factory(),
             speed(sf::Vector2f(0.9,0.8)), oldSpeed(speed), blockX(100), isCreated(false), isCollided(false), BlockCollision(false), EnemyCollision(false),
             FirewallCollision(false), KnifeCollision(false), KnivesPowerupCollision(false), ShieldPowerupCollision(false), countCreation(1), creationRate(1.8f),
-            oldCreationRate(creationRate), objectClk(), controlPU(), scoreClk(), speedClk(), collisionClk(), shieldClk(), isShieldOn(false),
+            oldCreationRate(creationRate), objectClk(), controlPU(), collisionClk(), isShieldOn(false),
             n(1), score(0), txtCount(0),bestScore(0) {
 
     //setting dei layers del background
@@ -396,6 +408,18 @@ Game::Game(): map("JoJoRun", sf::Vector2u(1600, 1000)), hero(), layer1(), layer2
     shieldOnSound.setBuffer(shieldOnBuffer);
     shieldOnSound.setVolume(20.f);
 
+    fireEnemyBuffer.loadFromFile("Music/fireEnemyShout.wav");
+    fireEnemySound.setBuffer(fireEnemyBuffer);
+    fireEnemySound.setVolume(21.f);
+
+    emeraldEnemyBuffer.loadFromFile("Music/emeraldEnemyShout.wav");
+    emeraldEnemySound.setBuffer(emeraldEnemyBuffer);
+    emeraldEnemySound.setVolume(21.f);
+
+    hamonEnemyBuffer.loadFromFile("Music/hamonEnemyShout.wav");
+    hamonEnemySound.setBuffer(hamonEnemyBuffer);
+    hamonEnemySound.setVolume(21.f);
+
     srand((unsigned) time(nullptr));
     maxY = static_cast<int>(map.getMapSize().y - (top + blockX));
 }
@@ -418,6 +442,9 @@ void Game::update() {
         collisionSound.stop();
         shieldOnSound.stop();
         powerUpSound.stop();
+        hamonEnemySound.stop();
+        emeraldEnemySound.stop();
+        fireEnemySound.stop();
         gameOverSound.play();
 
         bestScoreFileRead.open("BestScore.txt");
@@ -432,15 +459,14 @@ void Game::update() {
         bestScoreFileWrite << bestScore;
         bestScoreFileWrite.close();
     }
-
     createObj();
+    createEnemy();
     moveObject();
     moveHero();
+    moveEnemy();
     deleteObject();
+    deleteEnemy();
     handleTxt();
-
-    //TODO da implementare ma pesno basti dichiarare un oggetto game nei parametri di hero
-    //per poi chiamare di continuo il metodo notify
 }
 
 const sf::Vector2f &Game::getSpeed() const {
@@ -475,6 +501,7 @@ void Game::render() {
         map.draw(scoreTxt);
         map.draw(numScore);
         map.draw(lifeTxt);
+        map.draw(knivesTxt);
     }
     else {
         scoreTxt.setCharacterSize(80);
@@ -516,6 +543,30 @@ bool Game::getKnivePowerUpCollision() const {
 
 bool Game::getIsCollided() const{
     return isCollided;
+}
+
+void Game::setFireWallCollision(bool FirewallCollision) {
+     Game::FirewallCollision = FirewallCollision;
+}
+
+void Game::setEnemyCollision(bool EnemyCollision) {
+    Game::EnemyCollision = EnemyCollision;
+}
+
+void Game::setBlockCollision(bool BlockCollision) {
+    Game::BlockCollision = BlockCollision;
+}
+
+void Game::setShieldPowerUpCollision(bool ShieldPowerupCollision) {
+    Game::ShieldPowerupCollision = ShieldPowerupCollision;
+}
+
+void Game::setKnifeCollision(bool KnifeCollision) {
+    Game::KnifeCollision = KnifeCollision;
+}
+
+void Game::setKnivesPowerUpCollision(bool KnivesPowerupCollision) {
+    Game::KnivesPowerupCollision = KnivesPowerupCollision;
 }
 
 
