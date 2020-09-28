@@ -34,13 +34,14 @@ void Hero::setKnives(int knives) {
 }
 
 void Hero::throwKnife() {
-    if (knives > 0){
-        return; //TODO da completare
+    if (this->knives > 0){
+        knifeThrown = true;
     }
 }
 
 int Hero::randomPU() {
     return (rand() % 2);
+}
 
 void Hero::renderHero(sf::RenderWindow &map) {
     map.draw(hero);
@@ -84,7 +85,7 @@ void Hero::collisionAndUpdate() {
     if (!getIsDead()) {
         game.collision();
     }
-    if (game.getisCollided()) {
+    if (game.getIsCollided()) {
         if (collisionClk.getElapsedTime().asSeconds() >= 0.8f) {
             if(game.getFireWallCollision() && getHealth() > 15){
                 setHealth(getHealth() - 15);
@@ -101,7 +102,7 @@ void Hero::collisionAndUpdate() {
                 notify();
                 game.setEnemyCollision(false);
             }
-            if(game.getShieldPowerupCollision()){
+            if(game.getShieldPowerUpCollision()){
 
                 notify();
                 game.setEnemyCollision(false);

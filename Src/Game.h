@@ -34,7 +34,7 @@ public:
     bool getBlockCollision() const;
     bool getEnemyCollision() const;
     bool getShieldPowerUpCollision() const;
-    bool getKnivePowerUpCollision() const;
+    bool getKnifePowerUpCollision() const;
     bool getIsCollided() const;
     void setFireWallCollision(bool FirewallCollision);
     void setEnemyCollision(bool EnemyCollision);
@@ -42,9 +42,10 @@ public:
     void setShieldPowerUpCollision(bool ShieldPowerupCollision);
     void setKnifeCollision(bool KnifeCollision);
     void setKnivesPowerUpCollision(bool KnivesPowerupCollision);
+    void setIsCollided(bool isCollided);
     float getCreationRate() const;
 
-    //ci sono delle funzioni che derivano dall'observer ma bisogna far derivare la classe
+    void collision(); //TODO se lo metti privato hero non lo piò chiamare, bisogna trovare una soluzione o lasciarlo pubblico
 
 private:
     void createObj();
@@ -53,9 +54,9 @@ private:
     void deleteObject();
     void deleteEnemy();
     void moveHero();
-    void collision();
     void handleTxt();
     void moveEnemy();
+    void spawnKnife();
 
     std::ofstream file;
     std::ofstream bestScoreFileWrite;

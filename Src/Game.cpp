@@ -26,7 +26,7 @@ void Game::createObj() {
     if (objectClk.getElapsedTime().asSeconds() >= creationRate) {
         if (countCreation % 5 == 0 && randomCreation() == 0) {
             std::unique_ptr<PowerUp> knife = factory.createPowerUp(PowerUpType::Knife);
-            knife->setPosition(sf::Vector2f(2*map.getMapSize().x,randomPosY()));
+            knife->setPosition(sf::Vector2f(2 * map.getMapSize().x, randomPosY()));
             powerups.emplace_back(move(knife));
             isCreated = true;
             objectClk.restart();
@@ -34,7 +34,7 @@ void Game::createObj() {
         }
         if (countCreation % 5 == 0 && randomCreation() == 0) {
             std::unique_ptr<PowerUp> shield = factory.createPowerUp(PowerUpType::Knife);
-            shield->setPosition(sf::Vector2f(2*map.getMapSize().x,randomPosY()));
+            shield->setPosition(sf::Vector2f(2 * map.getMapSize().x, randomPosY()));
             powerups.emplace_back(move(shield));
             isCreated = true;
             objectClk.restart();
@@ -42,7 +42,7 @@ void Game::createObj() {
         }
         if (countCreation % 2 == 0 && randomCreation() == 2 && !isCreated) {
             std::unique_ptr<Block> block = factory.createBlock(BlockType::MovingBlock);
-            block->setPosition(sf::Vector2f(2*map.getMapSize().x,randomPosY()));
+            block->setPosition(sf::Vector2f(2 * map.getMapSize().x, randomPosY()));
             blocks.emplace_back(move(block));
             isCreated = true;
             objectClk.restart();
@@ -50,7 +50,7 @@ void Game::createObj() {
         }
         if (countCreation % 2 == 0 && randomCreation() == 2 && !isCreated) {
             std::unique_ptr<FireWall> fireWall = factory.createFireWall(FireWallType::MovingWall);
-            fireWall->setPosition(sf::Vector2f(2*map.getMapSize().x,randomPosY()));
+            fireWall->setPosition(sf::Vector2f(2 * map.getMapSize().x, randomPosY()));
             firewalls.emplace_back(move(fireWall));
             isCreated = true;
             objectClk.restart();
@@ -58,16 +58,23 @@ void Game::createObj() {
         }
         if (!isCreated) {
             std::unique_ptr<Block> block = factory.createBlock(BlockType::StillBlock);
-            block->setPosition(sf::Vector2f(2*map.getMapSize().x, randomPosY()));
+            block->setPosition(sf::Vector2f(2 * map.getMapSize().x, randomPosY()));
             blocks.emplace_back(move(block));
             std::unique_ptr<FireWall> firewall = factory.createFireWall(FireWallType::StillWall);
-            firewall->setPosition(sf::Vector2f(2*map.getMapSize().x, randomPosY()));
+            firewall->setPosition(sf::Vector2f(2 * map.getMapSize().x, randomPosY()));
             firewalls.emplace_back(move(firewall));
             isCreated = true;
             objectClk.restart();
             countCreation++;
         }
         isCreated = false;
+    }
+}
+
+void Game::spawnKnife() {
+    if (hero.getKnifeThrown() == true){
+        std::unique_ptr<PowerUp> knife = factory.createPowerUp(PowerUpType::ThrownKnife);
+        knife->setPosition(sf::Vector2f(hero.getHeroPos().x, hero.getHeroPos().y));
     }
 }
 
@@ -537,7 +544,7 @@ bool Game::getShieldPowerUpCollision() const {
     return ShieldPowerupCollision;
 }
 
-bool Game::getKnivePowerUpCollision() const {
+bool Game::getKnifePowerUpCollision() const {
     return KnivesPowerupCollision;
 }
 
@@ -567,6 +574,10 @@ void Game::setKnifeCollision(bool KnifeCollision) {
 
 void Game::setKnivesPowerUpCollision(bool KnivesPowerupCollision) {
     Game::KnivesPowerupCollision = KnivesPowerupCollision;
+}
+
+void Game::setIsCollided(bool isCollided){
+    Game::isCollided = isCollided;
 }
 
 
