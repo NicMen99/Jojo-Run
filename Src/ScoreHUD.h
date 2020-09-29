@@ -6,13 +6,13 @@
 #define JOJO_RUN_SCOREHUD_H
 
 #include "Observer.h"
-#include "Hero.h"
+#include "Game.h"
 #include <fstream>
 #include <iostream>
 
 class Score: public Observer {
 public:
-    Score (Hero* hero);
+    Score (Game* game);
     virtual ~Score() {detach();}
 
     void update() override;
@@ -21,7 +21,7 @@ public:
 
 protected:
     unsigned int score, health;
-    Hero* hero;
+    Game* game;
 };
 
 #endif //JOJO_RUN_SCOREHUD_H

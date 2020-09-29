@@ -5,19 +5,19 @@
 #include "ScoreHUD.h"
 
 void Score::update() {
-    score = hero->getScore();
-    health = hero->getHealth();
+    score = game->getScore();
+    health = game->getHealth();
 }
 
 void Score::attach() {
-    hero->subscribe(this);
+    game->subscribe(this);
 }
 
 void Score::detach() {
-    hero->unsubscribe(this);
+    game->unsubscribe(this);
 }
 
-Score::Score(Hero *hero): hero(hero), score(0), health(0) {
+Score::Score(Game *game): game(game), score(0), health(0) {
     attach();
 }
 

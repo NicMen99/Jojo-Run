@@ -15,7 +15,7 @@
 #include "Hero.h"
 #include "Factory.h"
 
-class Game {
+class Game: public Subject {
 public:
     Game();
     ~Game();
@@ -29,23 +29,18 @@ public:
 
     const sf::Vector2f &getSpeed() const;
     int getMaxY() const;
-    bool getKnifeCollision() const;
-    bool getFireWallCollision() const;
-    bool getBlockCollision() const;
-    bool getEnemyCollision() const;
-    bool getShieldPowerUpCollision() const;
-    bool getKnifePowerUpCollision() const;
+    int getScore();
+    int getHealth();
     bool getIsCollided() const;
-    void setFireWallCollision(bool FirewallCollision);
-    void setEnemyCollision(bool EnemyCollision);
-    void setBlockCollision(bool BlockCollision);
-    void setShieldPowerUpCollision(bool ShieldPowerupCollision);
-    void setKnifeCollision(bool KnifeCollision);
-    void setKnivesPowerUpCollision(bool KnivesPowerupCollision);
-    void setIsCollided(bool isCollided);
     float getCreationRate() const;
+    void setScore(unsigned int score);
+    void setHealth(int hp);
 
-    void collision(); //TODO se lo metti privato hero non lo piò chiamare, bisogna trovare una soluzione o lasciarlo pubblico
+    void collision();
+    //TODO se lo metti privato hero non lo piò chiamare, bisogna trovare una soluzione o lasciarlo pubblico
+    void notify() override;
+    void unsubscribe(Observer *o) override;
+    void subscribe(Observer *o) override;
 
 private:
     void createObj();
@@ -162,6 +157,8 @@ private:
     sf::SoundBuffer fireEnemyBuffer;
     sf::SoundBuffer emeraldEnemyBuffer;
     sf::SoundBuffer hamonEnemyBuffer;
+
+    std::list<Observer*> observers;
 };
 
 #endif //JOJO_RUN_GAME_H

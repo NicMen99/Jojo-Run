@@ -6,10 +6,6 @@
 #include <cstring>
 #include <fstream>
 
-bool Game::getKnifeCollision() const {
-    return KnifeCollision;
-}
-
 float Game::getCreationRate() const {
     return creationRate;
 }
@@ -474,6 +470,48 @@ void Game::update() {
     deleteObject();
     deleteEnemy();
     handleTxt();
+
+    setScore(score);
+    setHealth(hero.getHealth());
+
+    if (!hero.getIsDead()) {
+        collision();
+    }
+    if (isCollided ) {
+        if (collisionClk.getElapsedTime().asSeconds() >= 0.8f) {
+            if(FirewallCollision && hero.getHealth() > 15){
+                hero.setHealth(hero.getHealth() - 15);
+                notify();
+                FirewallCollision =false;
+            }
+            if(BlockCollision && hero.getHealth() > 70){
+                hero.setHealth(hero.getHealth() - 70);
+                notify();
+                BlockCollision = false;
+            }
+            if(EnemyCollision && getHealth() > 90){
+                hero.setHealth(hero.getHealth() - 90);
+                notify();
+                EnemyCollision = false;
+            }
+            if(ShieldPowerupCollision){
+                //manca roba che metterò
+                notify();
+                ShieldPowerupCollision = false;
+            }
+            if(KnifeCollision){
+                //manca roba che metterò
+                notify();
+                KnifeCollision = false;
+            }
+            if(KnivesPowerupCollision){
+                //manca roba che metterò
+                notify();
+                KnivesPowerupCollision = false;
+            }
+        }
+        isCollided = false;
+    }
 }
 
 const sf::Vector2f &Game::getSpeed() const {
@@ -528,58 +566,40 @@ void Game::render() {
     map.display();
 }
 
-bool Game::getFireWallCollision() const {
-    return FirewallCollision;
+void Game::notify() {
+    for (auto i = std::begin(observers); i != std::end(observers); i++)
+        (*i)->update();
 }
 
-bool Game::getBlockCollision() const {
-    return BlockCollision;
+void Game::unsubscribe(Observer *o) {
+    observers.remove(o);
 }
 
-bool Game::getEnemyCollision() const {
-    return EnemyCollision;
+void Game::subscribe(Observer *o) {
+    observers.push_back(o);
 }
 
-bool Game::getShieldPowerUpCollision() const {
-    return ShieldPowerupCollision;
+int Game::getScore() {
+    return score;
 }
 
-bool Game::getKnifePowerUpCollision() const {
-    return KnivesPowerupCollision;
+int Game::getHealth() {
+    return hero.getHealth();
 }
 
-bool Game::getIsCollided() const{
+void Game::setScore(unsigned int score) {
+    Game::score = score;
+    notify();
+}
+
+void Game::setHealth(int hp) {
+    Game::hero.setHealth(hp);
+    notify();
+}
+
+bool Game::getIsCollided() const {
     return isCollided;
 }
-
-void Game::setFireWallCollision(bool FirewallCollision) {
-     Game::FirewallCollision = FirewallCollision;
-}
-
-void Game::setEnemyCollision(bool EnemyCollision) {
-    Game::EnemyCollision = EnemyCollision;
-}
-
-void Game::setBlockCollision(bool BlockCollision) {
-    Game::BlockCollision = BlockCollision;
-}
-
-void Game::setShieldPowerUpCollision(bool ShieldPowerupCollision) {
-    Game::ShieldPowerupCollision = ShieldPowerupCollision;
-}
-
-void Game::setKnifeCollision(bool KnifeCollision) {
-    Game::KnifeCollision = KnifeCollision;
-}
-
-void Game::setKnivesPowerUpCollision(bool KnivesPowerupCollision) {
-    Game::KnivesPowerupCollision = KnivesPowerupCollision;
-}
-
-void Game::setIsCollided(bool isCollided){
-    Game::isCollided = isCollided;
-}
-
 
 
 

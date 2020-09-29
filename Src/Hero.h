@@ -7,13 +7,12 @@
 
 #include "Subject.h"
 #include "PowerUp.h"
-#include "Game.h"
 #include <list>
 #include <string>
 #include <fstream>
 #include <SFML/Graphics.hpp>
 
-class Hero : public sf::Sprite, public Subject{
+class Hero : public sf::Sprite{
 public:
     Hero ();
     virtual ~Hero() = default;
@@ -29,30 +28,18 @@ public:
     sf::Vector2f getHeroPos() const { return hero.getPosition(); }
     int getKnives() const;
     void setKnives(int knives);
-    int randomPU();
     void renderHero(sf::RenderWindow &map);
-    void notify() override;
-    void unsubscribe(Observer *o) override;
-    void subscribe(Observer *o) override;
     int getHealth() const;
-    int getScore() const;
-    void setScore(int score);
-    void setHealth(int hp);
-    void collisionAndUpdate();
+    int setHealth (int hp);
 
 private:
     void death() { isDead = true;}
     int hp = 300;
     bool isDead = false;
     bool knifeThrown = false;
-    Game game;
     sf::Sprite hero;
-    sf::Texture playerTexture;
-    sf::Clock scoreClk;
-    sf::Clock collisionClk;
     int knives = 0;
     unsigned int score;
-    std::list<Observer*> observers;
     std::vector<std::unique_ptr<PowerUp>> powerups;
 };
 
