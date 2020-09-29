@@ -240,6 +240,7 @@ void Game::collision() {
                     blocks.erase(blocks.begin()+i);
                 } else if (controlPU.getElapsedTime().asSeconds() >= toll) {
                     isCollided = true;
+                    hero.gameOver();
                     collisionSound.play();
                     BlockCollision = true;
                     collisionClk.restart();
@@ -256,6 +257,7 @@ void Game::collision() {
                     firewalls.erase(firewalls.begin()+j);
                 }else if (controlPU.getElapsedTime().asSeconds() >= toll) {
                     isCollided = true;
+                    hero.gameOver();
                     collisionSound.play();
                     FirewallCollision = true;
                     collisionClk.restart();
@@ -272,6 +274,7 @@ void Game::collision() {
                     enemies.erase(enemies.begin()+e);
                 } else if (controlPU.getElapsedTime().asSeconds() >= toll) {
                     isCollided = true;
+                    hero.gameOver();
                     collisionSound.play();
                     EnemyCollision = true;
                     collisionClk.restart();
@@ -357,7 +360,7 @@ int Game::randomCreation() {
 Game::Game(): map("JoJoRun", sf::Vector2u(1600, 1000)), hero(), layer1(), layer2(), layer3(), layer4(), factory(),
             speed(sf::Vector2f(0.9,0.8)), oldSpeed(speed), blockX(100), isCreated(false), isCollided(false), BlockCollision(false), EnemyCollision(false),
             FirewallCollision(false), KnifeCollision(false), KnivesPowerupCollision(false), ShieldPowerupCollision(false), countCreation(1), creationRate(1.8f),
-            oldCreationRate(creationRate), objectClk(), controlPU(), collisionClk(), isShieldOn(false),
+            oldCreationRate(creationRate), objectClk(),shieldClk(), scoreClk(), controlPU(), collisionClk(), isShieldOn(false),
             n(1), score(0), txtCount(0),bestScore(0) {
 
     //setting dei layers del background
@@ -495,22 +498,33 @@ void Game::update() {
                 EnemyCollision = false;
             }
             if(ShieldPowerupCollision){
-                //manca roba che metterò
+                isShieldOn = true;
                 notify();
                 ShieldPowerupCollision = false;
             }
             if(KnifeCollision){
-                //manca roba che metterò
+                //se l'eroe colpisce un nemico col coltello lanciato, la sua vita aumenta leggermente
+                hero.setHealth(hero.getHealth() + 20);
                 notify();
                 KnifeCollision = false;
             }
             if(KnivesPowerupCollision){
-                //manca roba che metterò
+                hero.setKnives(hero.getKnives() + 4);
                 notify();
                 KnivesPowerupCollision = false;
             }
         }
         isCollided = false;
+    }
+
+    if(isShieldOn && shieldClk.getElapsedTime().asSeconds() >= 20.f) {
+        isShieldOn = false;
+    }
+
+    if (scoreClk.getElapsedTime().asSeconds() >= 1.f && !hero.getIsDead()) {
+        score ++;
+        scoreClk.restart();
+        notify();
     }
 }
 

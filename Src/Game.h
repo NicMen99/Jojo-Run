@@ -8,6 +8,7 @@
 #include <list>
 #include <string>
 #include <fstream>
+#include <random>
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
 
@@ -135,6 +136,8 @@ private:
     sf::Clock enemyClk;
     sf::Clock controlPU;
     sf::Clock collisionClk;
+    sf::Clock shieldClk;
+    sf::Clock scoreClk;
 
     sf::Vector2f speed;
     sf::Vector2f oldSpeed;

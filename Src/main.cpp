@@ -1,31 +1,21 @@
-#include <iostream>
+#include "Game.h"
+#include "ScoreHUD.h"
+
 #include <chrono>
-#include <SFML/Graphics.hpp>
+#include <thread>
+#include <time.h>
 
-
-/** Qui è ancora tutto da rivedere per bene a conti fatti, è diverso da quello che abbiamo visto
- *
- *
- *
- *
- *
- *
- *
- * */
 int main() {
+    Game game;
+    Score score = Score(&game);
 
-    sf::RenderWindow window(sf::VideoMode(1920, 1080), "JoJo Run");
+    int FPS = 60;
+    int MS_PER_FRAME = 16 /FPS;
 
-    while (window.isOpen()){
-        sf::Event event;
-        while (window.pollEvent(event)){
-            if (event.type == sf::Event::Closed){
-                window.close();
-            }
-        }
-        window.clear();
-        //Qui va la roba da disegnare a schermo
-        window.display();
+    while (!game.getMap()->isClosed()) {
+        double start = clock() / CLOCKS_PER_SEC;
+        game.update();
+        game.render();
+        std::this_thread::sleep_for(std::chrono::milliseconds((int) start + MS_PER_FRAME - (clock() / CLOCKS_PER_SEC)));
     }
-    return 0;
 }
