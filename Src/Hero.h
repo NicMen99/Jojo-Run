@@ -22,6 +22,7 @@ public:
     void setHeroPos(float x, float y) {hero.setPosition(x,y);}
     bool getIsDead() const {return isDead;}
     bool getKnifeThrown() const {return knifeThrown;}
+    void setKnifeThrown(bool a);
     void throwKnife();
     sf::Vector2f getHeroSize() const;
     sf::FloatRect getHeroBounds() const { return hero.getGlobalBounds(); }
@@ -30,7 +31,7 @@ public:
     void setKnives(int knives);
     void renderHero(sf::RenderWindow &map);
     int getHealth() const;
-    int setHealth (int hp);
+    void setHealth (int hp);
 
 private:
     void death() { isDead = true;}

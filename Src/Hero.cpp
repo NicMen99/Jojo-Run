@@ -47,8 +47,12 @@ int Hero::getHealth() const {
     return hp;
 }
 
-int Hero::setHealth(int hp) {
+void Hero::setHealth(int hp) {
     Hero::hp = hp;
+}
+
+void Hero::setKnifeThrown(bool a) {
+    this->knifeThrown = a;
 }
 
 

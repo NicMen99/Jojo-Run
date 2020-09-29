@@ -68,9 +68,10 @@ void Game::createObj() {
 }
 
 void Game::spawnKnife() {
-    if (hero.getKnifeThrown() == true){
+    if (hero.getKnifeThrown()){
         std::unique_ptr<PowerUp> knife = factory.createPowerUp(PowerUpType::ThrownKnife);
         knife->setPosition(sf::Vector2f(hero.getHeroPos().x, hero.getHeroPos().y));
+        hero.setKnifeThrown(false);
     }
 }
 
