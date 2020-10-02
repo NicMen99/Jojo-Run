@@ -4,12 +4,13 @@ set(GOOGLETEST_VERSION 1.10.1)
 
 add_subdirectory(googletest)
 
-add_executable(testrunner "" ../Src/Game.h ../Src/Game.cpp)
+add_executable(testrunner "" ../Src/Game.h ../Src/Game.cpp GameFixture.cpp MapFixture.cpp runner.cpp)
 
 target_sources(testrunner
         PUBLIC
         runner.cpp
-        BlockTest.cpp
+        MapFixture.cpp
+        GameFixture.cpp
         # add test files here
 )
 

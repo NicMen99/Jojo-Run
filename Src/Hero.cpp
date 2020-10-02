@@ -33,12 +33,6 @@ void Hero::setKnives(int knives) {
     Hero::knives = knives;
 }
 
-void Hero::throwKnife() {
-    if (this->knives > 0){
-        knifeThrown = true;
-    }
-}
-
 void Hero::renderHero(sf::RenderWindow &map) {
     map.draw(hero);
 }
@@ -51,9 +45,6 @@ void Hero::setHealth(int hp) {
     Hero::hp = hp;
 }
 
-void Hero::setKnifeThrown(bool a) {
-    this->knifeThrown = a;
-}
 
 
 

@@ -21,9 +21,6 @@ public:
     void setHeroTexture(const sf::Texture &heroTexture);
     void setHeroPos(float x, float y) {hero.setPosition(x,y);}
     bool getIsDead() const {return isDead;}
-    bool getKnifeThrown() const {return knifeThrown;}
-    void setKnifeThrown(bool a);
-    void throwKnife();
     sf::Vector2f getHeroSize() const;
     sf::FloatRect getHeroBounds() const { return hero.getGlobalBounds(); }
     sf::Vector2f getHeroPos() const { return hero.getPosition(); }
@@ -37,11 +34,8 @@ private:
     void death() { isDead = true;}
     int hp = 300;
     bool isDead = false;
-    bool knifeThrown = false;
     sf::Sprite hero;
     int knives = 0;
-    unsigned int score;
-    std::vector<std::unique_ptr<PowerUp>> powerups;
 };
 
 #endif //JOJO_RUN_HERO_H

@@ -30,15 +30,18 @@ public:
 
     const sf::Vector2f &getSpeed() const;
     int getMaxY() const;
-    int getScore();
-    int getHealth();
-    bool getIsCollided() const;
+    int getScore() const;
+    int getHealth() const;
     float getCreationRate() const;
     void setScore(unsigned int score);
     void setHealth(int hp);
+    int getBlocksSize() { return static_cast<int>(blocks.size()); };
+    int getEnemySize() { return static_cast<int>(enemies.size()); };
+    int getPowerUpSize() { return static_cast<int>(powerups.size()); };
+    int getKnivesSize() { return static_cast<int>(knives.size()); };
+    int getFireWallsSize() { return static_cast<int>(firewalls.size()); };
 
     void collision();
-    //TODO se lo metti privato hero non lo piò chiamare, bisogna trovare una soluzione o lasciarlo pubblico
     void notify() override;
     void unsubscribe(Observer *o) override;
     void subscribe(Observer *o) override;
@@ -52,7 +55,7 @@ private:
     void moveHero();
     void handleTxt();
     void moveEnemy();
-    void spawnKnife();
+    void throwKnife();
 
     std::ofstream file;
     std::ofstream bestScoreFileWrite;

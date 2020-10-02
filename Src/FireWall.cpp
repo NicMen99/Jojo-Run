@@ -16,7 +16,7 @@ float FireWall::getFWSpeedX() const {
     return fireWallSpeedX;
 }
 
-void FireWall::setIsMovingFW() {
+void FireWall::setIsMovingFW(bool isMovingFW) {
     isMovingFW = true;
 }
 

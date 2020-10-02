@@ -15,7 +15,7 @@ public:
 
     bool getIsMovingFW() const;
     float getFWSpeedX() const;
-    void setIsMovingFW();
+    void setIsMovingFW(bool isMovingFW);
     void setFireWallSpeedX(float fireWallSpeedX);
     void setDamageFW(int damageFW);
     int getDamageFW() const;

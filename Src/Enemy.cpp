@@ -5,12 +5,7 @@
 #include "Enemy.h"
 
 Enemy::Enemy() {
-    Hit = false;
     speed = 0;
-}
-
-bool Enemy::getHit() const {
-    return Hit;
 }
 
 float Enemy::getSpeed() const {
@@ -18,7 +13,7 @@ float Enemy::getSpeed() const {
 }
 
 void Enemy::setSpeed(float speed) {
-    speed = 0.2;
+    Enemy::speed = speed;
 }
 
 int Enemy::getDamage() const {
@@ -26,10 +21,10 @@ int Enemy::getDamage() const {
 }
 
 void Enemy::setDamage(int damage) {
-    damage = 90;
+    Enemy::damage = damage;
 }
 
-void Enemy::setIsMovingEnemy() {
+void Enemy::setIsMovingEnemy(bool isMovingEnemy) {
     isMovingEnemy = true;
 }
 

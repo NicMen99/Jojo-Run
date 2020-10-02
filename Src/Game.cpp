@@ -29,7 +29,7 @@ void Game::createObj() {
             countCreation++;
         }
         if (countCreation % 5 == 0 && randomCreation() == 0) {
-            std::unique_ptr<PowerUp> shield = factory.createPowerUp(PowerUpType::Knife);
+            std::unique_ptr<PowerUp> shield = factory.createPowerUp(PowerUpType::Shield);
             shield->setPosition(sf::Vector2f(2 * map.getMapSize().x, randomPosY()));
             powerups.emplace_back(move(shield));
             isCreated = true;
@@ -67,11 +67,18 @@ void Game::createObj() {
     }
 }
 
-void Game::spawnKnife() {
-    if (hero.getKnifeThrown()){
+void Game::throwKnife() {
+    if (hero.getKnives() > 0 && (sf::Keyboard::isKeyPressed(sf::Keyboard::K))) {
+        hero.setKnives(hero.getKnives() - 1);
         std::unique_ptr<PowerUp> knife = factory.createPowerUp(PowerUpType::ThrownKnife);
         knife->setPosition(sf::Vector2f(hero.getHeroPos().x, hero.getHeroPos().y));
-        hero.setKnifeThrown(false);
+        if (knife->getIsMovingPu()) {
+            if (knife->getPosition().y + knife->getGlobalBounds().height >= map.getMapSize().y - ground ||
+                knife->getPosition().y <= 0)
+                knife->setSpeedPux(+knife->getSpeedPux());
+            knife->move(+speed.x, knife->getSpeedPux());
+        } else
+            knife->move(+speed.x, 0);
     }
 }
 
@@ -180,6 +187,10 @@ void Game::deleteObject() {
         if (powerups[i]->getPosition().x + powerups[i]->getGlobalBounds().width < 0)
             powerups.erase(powerups.begin() + i);
     }
+    for (int i=0; i<knives.size(); i++) {
+        if (knives[i]->getPosition().x + knives[i]->getGlobalBounds().width < 0)
+            knives.erase(knives.begin() + i);
+    }
 }
 
 void Game::deleteEnemy() {
@@ -225,7 +236,7 @@ void Game::moveObject() {
                 k->setSpeedPux(+k->getSpeedPux());
             k->move(+speed.x, k->getSpeedPux());
         } else
-            k->move(-speed.x, 0);
+            k->move(+speed.x, 0);
     }
 }
 
@@ -307,6 +318,8 @@ void Game::collision() {
                         isCollided = true;
                         KnifeCollision = true;
                         powerups.erase(powerups.begin()+h);
+                        int e = enemies.size();
+                        enemies.erase(enemies.begin() + e);
                         collisionClk.restart();
                     }
                 }
@@ -554,10 +567,14 @@ void Game::render() {
             map.draw(*power);
         for (auto &enem : enemies)
             map.draw(*enem);
+        for (auto &movEnem : enemies)
+            map.draw(*movEnem);
         for (auto &fire: firewalls)
             map.draw(*fire);
         for (auto &movFire: firewalls)
             map.draw(*movFire);
+        for (auto &knife : knives)
+            map.draw(*knife);
         map.draw(scoreTxt);
         map.draw(numScore);
         map.draw(lifeTxt);
@@ -594,11 +611,11 @@ void Game::subscribe(Observer *o) {
     observers.push_back(o);
 }
 
-int Game::getScore() {
+int Game::getScore() const {
     return score;
 }
 
-int Game::getHealth() {
+int Game::getHealth() const {
     return hero.getHealth();
 }
 
@@ -611,11 +628,6 @@ void Game::setHealth(int hp) {
     Game::hero.setHealth(hp);
     notify();
 }
-
-bool Game::getIsCollided() const {
-    return isCollided;
-}
-
 
 
 
