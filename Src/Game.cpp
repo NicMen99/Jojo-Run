@@ -386,7 +386,7 @@ Game::Game(): map("JoJoRun", sf::Vector2u(1600, 1000)), hero(), layer1(), layer2
     layer2Texture.setRepeated(true);
     layer2.setTexture(layer2Texture);
     layer2.setTextureRect(sf::IntRect(0, 0, (500 * map.getMapSize().x), map.getMapSize().y + static_cast<int>(ground)));
-    layer3Texture.loadFromFile("Map/Foregroung.png");
+    layer3Texture.loadFromFile("Map/Foreground.png");
     layer3Texture.setRepeated(true);
     layer3.setTexture(layer3Texture);
     layer3.setTextureRect(sf::IntRect(0, 0, (500 * map.getMapSize().x), map.getMapSize().y + static_cast<int>(ground)));
@@ -407,7 +407,7 @@ Game::Game(): map("JoJoRun", sf::Vector2u(1600, 1000)), hero(), layer1(), layer2
     gameOver.setScale(0.8,0.8);
 
     //setting music
-    gameMusic.openFromFile("Music/soundtrack.wav");
+    gameMusic.openFromFile("Music/soundTrack.wav");
     gameMusic.setLoop(true);
     gameMusic.setVolume(10.f);
     gameMusic.play();

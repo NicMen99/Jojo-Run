@@ -16,16 +16,16 @@ std::unique_ptr<Block> Factory::createBlock(BlockType type) {
 }
 
 Factory::Factory() {
-    blockTexture.loadFromFile("Texture/blockTexture.png");
-    fireWallTexture.loadFromFile("Texture/fireWallTexture.png");
-    shieldPowerUpTexture.loadFromFile("Texture/shieldTexture.png");
-    knifeTexture.loadFromFile("Texture/fnifeTexture.png");
-    hamonEnemyTexture.loadFromFile("Texture/hamonEnemyTexture.png");
-    fireEnemyTexture.loadFromFile("Texture/fireEnemyTexture.png");
-    emeraldEnemyTexture.loadFromFile("Texture/emeraldEnemyTexture.png");
-    hamonBlockTexture.loadFromFile("Texture/hamonBlockTexture.png");
-    fireBlockTexture.loadFromFile("Texture/fireBlockTexture.png");
-    emeraldBlockTexture.loadFromFile("Texture/emeraldBlockTexture.png");
+    blockTexture.loadFromFile("Textures/blockTexture.png");
+    fireWallTexture.loadFromFile("Textures/fireWallTexture.png");
+    shieldPowerUpTexture.loadFromFile("Textures/shieldPowerUpTexture.png");
+    knifeTexture.loadFromFile("Textures/knifeTexture.png");
+    hamonEnemyTexture.loadFromFile("Textures/hamonEnemyTexture.png");
+    fireEnemyTexture.loadFromFile("Textures/fireEnemy.png");
+    emeraldEnemyTexture.loadFromFile("Textures/emeraldEnemyTexture.png");
+    hamonBlockTexture.loadFromFile("Textures/hamonBlockTexture.png");
+    fireBlockTexture.loadFromFile("Textures/fireBlockTexture.png");
+    emeraldBlockTexture.loadFromFile("Textures/emeraldBlockTexture.png");
 }
 
 std::unique_ptr<FireWall> Factory::createFireWall(FireWallType type) {
