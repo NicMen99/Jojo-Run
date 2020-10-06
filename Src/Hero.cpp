@@ -16,7 +16,7 @@ Hero::Hero() {
 
 void Hero::setHeroTexture(const sf::Texture &heroTexture){
     hero.setTexture(heroTexture);
-    hero.setScale(0.20, 0.20);
+    hero.setScale(0.9, 0.9);
 }
 
 sf::Vector2f Hero::getHeroSize() const {

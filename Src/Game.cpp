@@ -20,7 +20,7 @@ Game::~Game() {
 
 void Game::createObj() {
     if (objectClk.getElapsedTime().asSeconds() >= creationRate) {
-        if (countCreation % 5 == 0 && randomCreation() == 0) {
+        if (countCreation % 4 == 0 && randomCreation() == 0) {
             std::unique_ptr<PowerUp> knife = factory.createPowerUp(PowerUpType::Knife);
             knife->setPosition(sf::Vector2f(2 * map.getMapSize().x, randomPosY()));
             powerups.emplace_back(move(knife));
@@ -28,7 +28,7 @@ void Game::createObj() {
             objectClk.restart();
             countCreation++;
         }
-        if (countCreation % 5 == 0 && randomCreation() == 0) {
+        if (countCreation % 3 == 0 && randomCreation() == 0) {
             std::unique_ptr<PowerUp> shield = factory.createPowerUp(PowerUpType::Shield);
             shield->setPosition(sf::Vector2f(2 * map.getMapSize().x, randomPosY()));
             powerups.emplace_back(move(shield));
@@ -36,7 +36,7 @@ void Game::createObj() {
             objectClk.restart();
             countCreation++;
         }
-        if (countCreation % 2 == 0 && randomCreation() == 2 && !isCreated) {
+        if (countCreation % 1 == 0 && randomCreation() == 2 && !isCreated) {
             std::unique_ptr<Block> block = factory.createBlock(BlockType::MovingBlock);
             block->setPosition(sf::Vector2f(2 * map.getMapSize().x, randomPosY()));
             blocks.emplace_back(move(block));
@@ -72,19 +72,13 @@ void Game::throwKnife() {
         hero.setKnives(hero.getKnives() - 1);
         std::unique_ptr<PowerUp> knife = factory.createPowerUp(PowerUpType::ThrownKnife);
         knife->setPosition(sf::Vector2f(hero.getHeroPos().x, hero.getHeroPos().y));
-        if (knife->getIsMovingPu()) {
-            if (knife->getPosition().y + knife->getGlobalBounds().height >= map.getMapSize().y - ground ||
-                knife->getPosition().y <= 0)
-                knife->setSpeedPux(+knife->getSpeedPux());
-            knife->move(+speed.x, knife->getSpeedPux());
-        } else
-            knife->move(+speed.x, 0);
+        knives.emplace_back(move(knife));
     }
 }
 
 void Game::createEnemy() {
-    if (objectClk.getElapsedTime().asSeconds() >= creationRate) {
-        if (countCreation % 4 == 0 && randomCreation() == 0) {
+    if (enemyClk.getElapsedTime().asSeconds() >= creationRate) {
+        if (countCreation % 2 == 0 && randomCreation() == 0) {
             std::unique_ptr<Enemy> enemy = factory.createEnemy(EnemyType::HamonEnemy);
             enemy->setPosition(sf::Vector2f(2 * map.getMapSize().x, randomPosY()));
             hamonEnemySound.play();
@@ -93,7 +87,7 @@ void Game::createEnemy() {
             enemyClk.restart();
             countCreation++;
         }
-        if (countCreation % 5 == 0 && randomCreation() == 0) {
+        if (countCreation % 3 == 0 && randomCreation() == 0) {
             std::unique_ptr<Enemy> enemy = factory.createEnemy(EnemyType::EmeraldEnemy);
             enemy->setPosition(sf::Vector2f(2 * map.getMapSize().x, randomPosY()));
             emeraldEnemySound.play();
@@ -102,7 +96,7 @@ void Game::createEnemy() {
             enemyClk.restart();
             countCreation++;
         }
-        if (countCreation % 6 == 0 && randomCreation() == 0) {
+        if (countCreation % 4 == 0 && randomCreation() == 0) {
             std::unique_ptr<Enemy> enemy = factory.createEnemy(EnemyType::FireEnemy);
             enemy->setPosition(sf::Vector2f(2 * map.getMapSize().x, randomPosY()));
             fireEnemySound.play();
@@ -230,6 +224,7 @@ void Game::moveObject() {
             f->move(-speed.x, 0);
     }
     for (auto &k: knives) {
+        k->setPosition(hero.getHeroPos());
         if (k->getIsMovingPu()) {
             if (k->getPosition().y + k->getGlobalBounds().height >= map.getMapSize().y - ground ||
                 k->getPosition().y <= 0)
@@ -302,7 +297,8 @@ void Game::collision() {
                     powerups.erase(powerups.begin() + m);
                     collisionClk.restart();
                 }
-            }else if (powerups[m]->getGlobalBounds().intersects(hero.getHeroBounds()) && strcmp(typeid(powerups[m]).name(), "Knife") == 0){
+            }
+            else if (powerups[m]->getGlobalBounds().intersects(hero.getHeroBounds()) && strcmp(typeid(powerups[m]).name(), "Knife") == 0){
                 if (controlPU.getElapsedTime().asSeconds() >= toll){
                     KnivesPowerupCollision = true;
                     isCollided = true;
@@ -317,7 +313,7 @@ void Game::collision() {
                     if (controlPU.getElapsedTime().asSeconds() >= toll) {
                         isCollided = true;
                         KnifeCollision = true;
-                        powerups.erase(powerups.begin()+h);
+                        powerups.erase(powerups.begin() + h);
                         int e = enemies.size();
                         enemies.erase(enemies.begin() + e);
                         collisionClk.restart();
@@ -372,7 +368,7 @@ int Game::randomCreation() {
 }
 
 Game::Game(): map("JoJoRun", sf::Vector2u(1600, 1000)), hero(), layer1(), layer2(), layer3(), layer4(), factory(),
-            speed(sf::Vector2f(0.9,0.8)), oldSpeed(speed), blockX(100), isCreated(false), isCollided(false), BlockCollision(false), EnemyCollision(false),
+            speed(sf::Vector2f(1.1,1.1)), oldSpeed(speed), blockX(100), isCreated(false), isCollided(false), BlockCollision(false), EnemyCollision(false),
             FirewallCollision(false), KnifeCollision(false), KnivesPowerupCollision(false), ShieldPowerupCollision(false), countCreation(1), creationRate(1.8f),
             oldCreationRate(creationRate), objectClk(),shieldClk(), scoreClk(), controlPU(), collisionClk(), isShieldOn(false),
             n(1), score(0), txtCount(0),bestScore(0) {
@@ -390,7 +386,7 @@ Game::Game(): map("JoJoRun", sf::Vector2u(1600, 1000)), hero(), layer1(), layer2
     layer3Texture.setRepeated(true);
     layer3.setTexture(layer3Texture);
     layer3.setTextureRect(sf::IntRect(0, 0, (500 * map.getMapSize().x), map.getMapSize().y + static_cast<int>(ground)));
-    layer4Texture.loadFromFile("Map/middle.png");
+    layer4Texture.loadFromFile("Map/Middle.png");
     layer4Texture.setRepeated(true);
     layer4.setTexture(layer4Texture);
     layer4.setTextureRect(sf::IntRect(0, 0, (500 * map.getMapSize().x), map.getMapSize().y + static_cast<int>(ground)));
@@ -447,9 +443,9 @@ Game::Game(): map("JoJoRun", sf::Vector2u(1600, 1000)), hero(), layer1(), layer2
 void Game::update() {
     map.update();
     layer1.move(-speed.x, 0);
-    layer2.move(-speed.x*0.9, 0);
-    layer3.move(-speed.x*0.8, 0);
-    layer4.move(-speed.x*0.7, 0);
+    layer2.move(-speed.x*1.2, 0);
+    layer3.move(-speed.x*1.4, 0);
+    layer4.move(-speed.x*1.6, 0);
 
     if (hero.getIsDead() && txtCount == 0) {
         file.open("Score.txt", std::ios::out | std::ios::app);

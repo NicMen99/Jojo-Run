@@ -44,6 +44,7 @@ std::unique_ptr<Enemy> Factory::createEnemy(EnemyType type) {
         result->setSpeed(0.2);
         result->setDamage(90);
         result->setIsMovingEnemy(true);
+        result->setScale(1,1);
         result->setTexture(emeraldEnemyTexture);
         result->SpecialAction();
         return result;
@@ -53,6 +54,7 @@ std::unique_ptr<Enemy> Factory::createEnemy(EnemyType type) {
         result->setSpeed(0.2);
         result->setDamage(90);
         result->setIsMovingEnemy(true);
+        result->setScale(1,1);
         result->setTexture(hamonEnemyTexture);
         result->SpecialAction();
         return result;
@@ -63,6 +65,7 @@ std::unique_ptr<Enemy> Factory::createEnemy(EnemyType type) {
         result->setDamage(90);
         result->setIsMovingEnemy(true);
         result->setTexture(fireEnemyTexture);
+        result->setScale(1,1);
         result->SpecialAction();
         return result;
     }
@@ -74,12 +77,15 @@ std::unique_ptr<PowerUp> Factory::createPowerUp(PowerUpType type) {
     result->setSpeedPux(0.9);
     if (type == PowerUpType::Shield) {
         result->setTexture(shieldPowerUpTexture);
+        result->setScale(0.8,0.8);
         return result;
     } else if (type == PowerUpType::Knife) {
         result->setTexture(knifeTexture);
+        result->setScale(0.8,0.8);
         result->setRotation(45.f);
     } else if (type == PowerUpType::ThrownKnife) {
         result->setTexture(knifeTexture);
+        result->setScale(0.8,0.8);
     }
     return result;
 }
