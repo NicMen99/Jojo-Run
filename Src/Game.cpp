@@ -96,7 +96,7 @@ void Game::createEnemy() {
             enemyClk.restart();
             countCreation++;
         }
-        if (countCreation % 4 == 0 && randomCreation() == 0) {
+        if (countCreation % 3 == 0 && randomCreation() == 0) {
             std::unique_ptr<Enemy> enemy = factory.createEnemy(EnemyType::FireEnemy);
             enemy->setPosition(sf::Vector2f(2 * map.getMapSize().x, randomPosY()));
             fireEnemySound.play();
@@ -370,7 +370,7 @@ int Game::randomCreation() {
 Game::Game(): map("JoJoRun", sf::Vector2u(1600, 1000)), hero(), layer1(), layer2(), layer3(), layer4(), factory(),
             speed(sf::Vector2f(1.1,1.1)), oldSpeed(speed), blockX(100), isCreated(false), isCollided(false), BlockCollision(false), EnemyCollision(false),
             FirewallCollision(false), KnifeCollision(false), KnivesPowerupCollision(false), ShieldPowerupCollision(false), countCreation(1), creationRate(1.8f),
-            oldCreationRate(creationRate), objectClk(),shieldClk(), scoreClk(), controlPU(), collisionClk(), isShieldOn(false),
+            oldCreationRate(creationRate), objectClk(), shieldClk(), scoreClk(), controlPU(), collisionClk(),enemyClk(), isShieldOn(false),
             n(1), score(0), txtCount(0),bestScore(0) {
 
     //setting dei layers del background
