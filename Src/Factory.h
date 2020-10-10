@@ -19,7 +19,7 @@
 
 enum class BlockType {MovingBlock,StillBlock};
 enum class FireWallType {MovingWall,StillWall};
-enum class EnemyType {FireEnemy,HamonEnemy,EmeraldEnemy, StillEnemy};
+enum class EnemyType {FireEnemy, HamonEnemy, EmeraldEnemy /*, StillEnemy*/};
 enum class PowerUpType {Knife,Shield,ThrownKnife};
 
 class Factory {

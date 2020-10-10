@@ -12,6 +12,10 @@ target_sources(${TARGET}
         FireEnemy.cpp
         FireWall.h
         FireWall.cpp
+        GameConfig.h
+        GameConfig.cpp
+        Game.h
+        Game.cpp
         HamonEnemy.h
         HamonEnemy.cpp
         Hero.h

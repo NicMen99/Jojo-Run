@@ -2,6 +2,7 @@
 // Created by angiolo99 on 23/08/20.
 //
 
+#include "GameConfig.h"
 #include "Game.h"
 #include <cstring>
 #include <fstream>
@@ -108,6 +109,7 @@ void Game::createEnemy() {
             enemyClk.restart();
             countCreation++;
         }
+        /*
         if(!isCreated){
             std::unique_ptr<Enemy> enemy= factory.createEnemy(EnemyType::StillEnemy);
             enemy->setPosition(sf::Vector2f(2*map.getMapSize().x, randomPosY()));
@@ -116,6 +118,7 @@ void Game::createEnemy() {
             enemyClk.restart();
             countCreation++;
         }
+        */
         isCreated = false;
     }
 }
@@ -377,65 +380,65 @@ Game::Game(): map("JoJoRun", sf::Vector2u(1600, 1000)), hero(), layer1(), layer2
             n(1), score(0), txtCount(0),bestScore(0) {
 
     //setting dei layers del background
-    layer1Texture.loadFromFile("Map/Background1.png");
+    layer1Texture.loadFromFile(GC->getAssetPath("Background1"));
     layer1Texture.setRepeated(true);
     layer1.setTexture(layer1Texture);
     layer1.setTextureRect(sf::IntRect(0, 0, (500 * map.getMapSize().x), map.getMapSize().y + static_cast<int>(ground)));
-    layer2Texture.loadFromFile("Map/BG.png");
+    layer2Texture.loadFromFile(GC->getAssetPath("BG"));
     layer2Texture.setRepeated(true);
     layer2.setTexture(layer2Texture);
     layer2.setTextureRect(sf::IntRect(0, 0, (500 * map.getMapSize().x), map.getMapSize().y + static_cast<int>(ground)));
-    layer3Texture.loadFromFile("Map/Foreground.png");
+    layer3Texture.loadFromFile(GC->getAssetPath("Foreground"));
     layer3Texture.setRepeated(true);
     layer3.setTexture(layer3Texture);
     layer3.setTextureRect(sf::IntRect(0, 0, (500 * map.getMapSize().x), map.getMapSize().y + static_cast<int>(ground)));
-    layer4Texture.loadFromFile("Map/Middle.png");
+    layer4Texture.loadFromFile(GC->getAssetPath("Middle"));
     layer4Texture.setRepeated(true);
     layer4.setTexture(layer4Texture);
     layer4.setTextureRect(sf::IntRect(0, 0, (500 * map.getMapSize().x), map.getMapSize().y + static_cast<int>(ground)));
 
     //setting texture e sprite
-    heroTexture1.loadFromFile("Textures/playerTexture.png");
-    heroTexture2.loadFromFile("Textures/playerTextureUp.png");
+    heroTexture1.loadFromFile(GC->getAssetPath("playerTexture"));
+    heroTexture2.loadFromFile(GC->getAssetPath("playerTextureUp"));
     hero.setTexture(heroTexture1);
-    heroTextureS1.loadFromFile("Textures/shieldPowerUpTexture.png");
+    heroTextureS1.loadFromFile(GC->getAssetPath("shieldPowerUpTexture"));
 
-    gameOverTexture.loadFromFile("Textures/GameOverScreen.png");
+    gameOverTexture.loadFromFile(GC->getAssetPath("GameOverScreen"));
     gameOver.setTexture(gameOverTexture);
     gameOver.setPosition(225,100);
     gameOver.setScale(0.8,0.8);
 
     //setting music
-    gameMusic.openFromFile("Music/soundTrack.wav");
+    gameMusic.openFromFile(GC->getAssetPath("soundTrack"));
     gameMusic.setLoop(true);
     gameMusic.setVolume(10.f);
     gameMusic.play();
 
-    gameOverBuffer.loadFromFile("Music/gameOverSound.wav");
+    gameOverBuffer.loadFromFile(GC->getAssetPath("gameOverSound"));
     gameOverSound.setBuffer(gameOverBuffer);
     gameOverSound.setVolume(21.f);
 
-    collisionBuffer.loadFromFile("Music/collisionSound.wav");
+    collisionBuffer.loadFromFile(GC->getAssetPath("collisionSound"));
     collisionSound.setBuffer(collisionBuffer);
     collisionSound.setVolume(22.f);
 
-    powerUpBuffer.loadFromFile("Music/shieldSound.wav");
+    powerUpBuffer.loadFromFile(GC->getAssetPath("shieldSound"));
     powerUpSound.setBuffer(powerUpBuffer);
     powerUpSound.setVolume(20.f);
 
-    shieldOnBuffer.loadFromFile("Music/shieldOn.wav");
+    shieldOnBuffer.loadFromFile(GC->getAssetPath("shieldOn"));
     shieldOnSound.setBuffer(shieldOnBuffer);
     shieldOnSound.setVolume(20.f);
 
-    fireEnemyBuffer.loadFromFile("Music/fireEnemyShout.wav");
+    fireEnemyBuffer.loadFromFile(GC->getAssetPath("fireEnemyShout"));
     fireEnemySound.setBuffer(fireEnemyBuffer);
     fireEnemySound.setVolume(21.f);
 
-    emeraldEnemyBuffer.loadFromFile("Music/emeraldEnemyShout.wav");
+    emeraldEnemyBuffer.loadFromFile(GC->getAssetPath("emeraldEnemyShout"));
     emeraldEnemySound.setBuffer(emeraldEnemyBuffer);
     emeraldEnemySound.setVolume(21.f);
 
-    hamonEnemyBuffer.loadFromFile("Music/hamonEnemyShout.wav");
+    hamonEnemyBuffer.loadFromFile(GC->getAssetPath("hamonEnemyShout"));
     hamonEnemySound.setBuffer(hamonEnemyBuffer);
     hamonEnemySound.setVolume(21.f);
 

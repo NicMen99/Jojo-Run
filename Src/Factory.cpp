@@ -2,6 +2,7 @@
 // Created by angiolo99 on 23/01/20.
 //
 
+#include "GameConfig.h"
 #include "Factory.h"
 
 std::unique_ptr<Block> Factory::createBlock(BlockType type) {
@@ -16,16 +17,16 @@ std::unique_ptr<Block> Factory::createBlock(BlockType type) {
 }
 
 Factory::Factory() {
-    blockTexture.loadFromFile("Textures/blockTexture.png");
-    fireWallTexture.loadFromFile("Textures/fireWallTexture.png");
-    shieldPowerUpTexture.loadFromFile("Textures/shieldPowerUpTexture.png");
-    knifeTexture.loadFromFile("Textures/knifeTexture.png");
-    hamonEnemyTexture.loadFromFile("Textures/hamonEnemyTexture.png");
-    fireEnemyTexture.loadFromFile("Textures/fireEnemy.png");
-    emeraldEnemyTexture.loadFromFile("Textures/emeraldEnemyTexture.png");
-    hamonBlockTexture.loadFromFile("Textures/hamonBlockTexture.png");
-    fireBlockTexture.loadFromFile("Textures/fireBlockTexture.png");
-    emeraldBlockTexture.loadFromFile("Textures/emeraldBlockTexture.png");
+    blockTexture.loadFromFile(GC->getAssetPath("blockTexture"));
+    fireWallTexture.loadFromFile(GC->getAssetPath("fireWallTexture"));
+    shieldPowerUpTexture.loadFromFile(GC->getAssetPath("shieldPowerUpTexture"));
+    knifeTexture.loadFromFile(GC->getAssetPath("knifeTexture"));
+    hamonEnemyTexture.loadFromFile(GC->getAssetPath("hamonEnemyTexture"));
+    fireEnemyTexture.loadFromFile(GC->getAssetPath("fireEnemy"));
+    emeraldEnemyTexture.loadFromFile(GC->getAssetPath("emeraldEnemyTexture"));
+    hamonBlockTexture.loadFromFile(GC->getAssetPath("hamonBlockTexture"));
+    fireBlockTexture.loadFromFile(GC->getAssetPath("fireBlockTexture"));
+    emeraldBlockTexture.loadFromFile(GC->getAssetPath("emeraldBlockTexture"));
 }
 
 std::unique_ptr<FireWall> Factory::createFireWall(FireWallType type) {
@@ -69,6 +70,7 @@ std::unique_ptr<Enemy> Factory::createEnemy(EnemyType type) {
         result->SpecialAction();
         return result;
     }
+    return nullptr;
 }
 
 std::unique_ptr<PowerUp> Factory::createPowerUp(PowerUpType type) {

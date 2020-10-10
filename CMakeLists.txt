@@ -5,7 +5,7 @@ set(CMAKE_CXX_STANDARD 11)
 
 set(TARGET JoJoRun)
 
-add_executable(${TARGET} "" Src/Game.h Src/Game.cpp)
+add_executable(${TARGET} "")
 
 #
 # SFML2, OPENGL
@@ -45,3 +45,6 @@ message("SFML_DEPENDENCIES: " ${SFML_DEPENDENCIES})
 #
 add_subdirectory(Src)
 add_subdirectory(Test)
+
+
+file(COPY Assets DESTINATION ${CMAKE_BINARY_DIR})
