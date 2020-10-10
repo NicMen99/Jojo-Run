@@ -139,6 +139,7 @@ private:
     sf::Clock enemyClk;
     sf::Clock controlPU;
     sf::Clock collisionClk;
+    sf::Clock powerupClk;
     sf::Clock shieldClk;
     sf::Clock scoreClk;
 
