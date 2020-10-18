@@ -17,11 +17,13 @@ protected:
     FireEnemy en2;
     EmeraldEnemy en3;
     PowerUp power;
+    PowerUp knifeThrown;
 
     std::vector<std::unique_ptr<Block>> blocks;
     std::vector<std::unique_ptr<FireWall>> firewalls;
     std::vector<std::unique_ptr<Enemy>> enemies;
     std::vector<std::unique_ptr<PowerUp>> powerups;
+    std::vector<std::unique_ptr<PowerUp>> knives;
 
 };
 
@@ -75,6 +77,21 @@ TEST_F(GameTest, testDeletingFireEnemy) {
     if (en2.getPosition().x + en2.getGlobalBounds().width < 0) {
         enemies.erase(enemies.begin());
         ASSERT_TRUE(enemySize > game.getEnemySize());
+    }
+}
+
+TEST_F(GameTest, testDeletingPowerUp) {
+    int PUSize = game.getPowerUpSize();
+    int knifeThrownSize = game.getKnivesSize();
+    power.setPosition(-power.getGlobalBounds().width, power.getPosition().y);
+    knifeThrown.setPosition(-knifeThrown.getGlobalBounds().width, knifeThrown.getPosition().y);
+    if (power.getPosition().x + power.getGlobalBounds().width < 0) {
+        powerups.erase(powerups.begin());
+        ASSERT_TRUE(PUSize > game.getPowerUpSize());
+    }
+    if (knifeThrown.getPosition().x + knifeThrown.getGlobalBounds().width < 0) {
+        knives.erase(knives.begin());
+        ASSERT_TRUE(knifeThrownSize > game.getKnivesSize());
     }
 }
 
