@@ -29,6 +29,14 @@ public:
     void render();
 
     const sf::Vector2f &getSpeed() const;
+    bool getIsShieldOn() const;
+    bool getIsCollided() const;
+    bool getIsBlockCollision() const;
+    bool getIsEnemyCollision() const;
+    bool getIsFirewallCollision () const;
+    bool getIsShieldCollision() const;
+    bool getIsKnifeCollision() const;
+    bool getIsKnifeThrownCollision() const;
     int getMaxY() const;
     int getScore() const;
     int getHealth() const;
