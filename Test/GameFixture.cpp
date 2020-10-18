@@ -304,7 +304,7 @@ TEST_F(GameTest, testCollisionThrownKnife){
     if (knife->getGlobalBounds().intersects(enem1->getEnemyBounds())||knife->getGlobalBounds().intersects(enem2->getEnemyBounds())||knife->getGlobalBounds().intersects(enem3->getEnemyBounds())||knife->getGlobalBounds().intersects(enem4->getEnemyBounds())){
         ASSERT_TRUE(game.getIsCollided());
         ASSERT_TRUE(game.getIsKnifeThrownCollision());
-        ASSERT_EQ(numHP +2, game.getHealth());
+        ASSERT_EQ(numHP +20, game.getHealth());
     }
 }
 //domani finisci i test coglione patentato a strisce!!!!!!
