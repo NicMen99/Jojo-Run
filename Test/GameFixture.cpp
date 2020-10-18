@@ -281,7 +281,7 @@ TEST_F(GameTest, testCollisionThrownKnife){
     std::unique_ptr<Enemy> enem4 = factory.createEnemy(EnemyType::StillEnemy);
     enem4->setPosition(sf::Vector2f(2*game.getMap()->getMapSize().x,game.randomPosY()));
     enem4->move(-game.getSpeed().x, 0);
-    std::unique_ptr<PowerUp> knife = factory.createPowerUp(PowerUpType::Knife);
+    std::unique_ptr<PowerUp> knife = factory.createPowerUp(PowerUpType::ThrownKnife);
     knife->setPosition(sf::Vector2f(2*game.getMap()->getMapSize().x,game.randomPosY()));
     knife->move(+game.getSpeed().x, 0);
     if (knife->getGlobalBounds().intersects(enem1->getEnemyBounds())||knife->getGlobalBounds().intersects(enem2->getEnemyBounds())||knife->getGlobalBounds().intersects(enem3->getEnemyBounds())||knife->getGlobalBounds().intersects(enem4->getEnemyBounds())){
