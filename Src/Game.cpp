@@ -623,5 +623,37 @@ void Game::setHealth(int hp) {
     notify();
 }
 
+bool Game::getIsShieldOn() const {
+    return isShieldOn;
+}
+
+bool Game::getIsCollided() const{
+    return false;
+}
+
+bool Game::getIsBlockCollision() const{
+    return BlockCollision;
+}
+
+bool Game::getIsEnemyCollision() const{
+    return EnemyCollision;
+}
+
+bool Game::getIsFirewallCollision() const{
+    return FirewallCollision;
+}
+
+bool Game::getIsShieldCollision() const{
+    return ShieldPowerupCollision;
+}
+
+bool Game::getIsKnifeCollision() const{
+    return KnivesPowerupCollision;
+}
+
+bool Game::getIsKnifeThrownCollision() const{
+    return KnifeCollision;
+}
+
 
 
