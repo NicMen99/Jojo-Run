@@ -29,7 +29,7 @@ void Game::createObj() {
             powerupClk.restart();
             countCreation++;
         }
-        if (countCreation % 5 == 0 && randomCreation() == 0) {
+        if (countCreation % 7 == 0 && randomCreation() == 0) {
             std::unique_ptr<PowerUp> shield = factory.createPowerUp(PowerUpType::Shield);
             shield->setPosition(sf::Vector2f(2 * map.getMapSize().x, randomPosY()));
             powerups.emplace_back(move(shield));
@@ -361,7 +361,7 @@ void Game::moveEnemy() {
 }
 
 int Game::randomPosY() {
-    return (rand() % 3);
+    return (rand() % map.getMapSize().y);
 }
 
 int Game::randomCreation() {
@@ -370,7 +370,7 @@ int Game::randomCreation() {
 
 Game::Game(): map("JoJoRun", sf::Vector2u(1600, 1000)), hero(), layer1(), layer2(), layer3(), layer4(), factory(),
             speed(sf::Vector2f(1.1,1.1)), oldSpeed(speed), blockX(100), isCreated(false), isCollided(false), BlockCollision(false), EnemyCollision(false),
-            FirewallCollision(false), KnifeCollision(false), KnivesPowerupCollision(false), ShieldPowerupCollision(false), countCreation(1), creationRate(1.8f),
+            FirewallCollision(false), KnifeCollision(false), KnivesPowerupCollision(false), ShieldPowerupCollision(false), countCreation(1), creationRate(2.5f),
             oldCreationRate(creationRate), objectClk(), powerupClk(),shieldClk(), scoreClk(), controlPU(), collisionClk(),enemyClk(), isShieldOn(false),
             n(1), score(0), txtCount(0),bestScore(0) {
 
@@ -378,18 +378,22 @@ Game::Game(): map("JoJoRun", sf::Vector2u(1600, 1000)), hero(), layer1(), layer2
     layer1Texture.loadFromFile(GC->getAssetPath("Background1"));
     layer1Texture.setRepeated(true);
     layer1.setTexture(layer1Texture);
+    layer1.setScale(7.4, 7.4);
     layer1.setTextureRect(sf::IntRect(0, 0, (500 * map.getMapSize().x), map.getMapSize().y + static_cast<int>(ground)));
     layer2Texture.loadFromFile(GC->getAssetPath("BG"));
     layer2Texture.setRepeated(true);
     layer2.setTexture(layer2Texture);
+    layer2.setScale(7.4, 7.4);
     layer2.setTextureRect(sf::IntRect(0, 0, (500 * map.getMapSize().x), map.getMapSize().y + static_cast<int>(ground)));
     layer3Texture.loadFromFile(GC->getAssetPath("Foreground"));
     layer3Texture.setRepeated(true);
+    layer3.setScale(7.4, 7.4);
     layer3.setTexture(layer3Texture);
     layer3.setTextureRect(sf::IntRect(0, 0, (500 * map.getMapSize().x), map.getMapSize().y + static_cast<int>(ground)));
     layer4Texture.loadFromFile(GC->getAssetPath("Middle"));
     layer4Texture.setRepeated(true);
     layer4.setTexture(layer4Texture);
+    layer4.setScale(7.4, 7.4);
     layer4.setTextureRect(sf::IntRect(0, 0, (500 * map.getMapSize().x), map.getMapSize().y + static_cast<int>(ground)));
 
     //setting texture e sprite
@@ -549,10 +553,10 @@ int Game::getMaxY() const {
 
 void Game::render() {
     map.clear();
-    map.draw(layer4);
-    map.draw(layer3);
     map.draw(layer2);
     map.draw(layer1);
+    //map.draw(layer4);  //TODO capire perché non disegna il ponte
+    map.draw(layer3);
 
     if (!hero.getIsDead()) {
         hero.renderHero(*map.getRenderMap());

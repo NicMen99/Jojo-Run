@@ -22,7 +22,7 @@ void Hero::setHeroTexture(const sf::Texture &heroTexture){
 sf::Vector2f Hero::getHeroSize() const {
     float x = hero.getGlobalBounds().width;
     float y = hero.getGlobalBounds().height;
-    return sf::Vector2f();
+    return sf::Vector2f(x, y);
 }
 
 int Hero::getKnives() const {
