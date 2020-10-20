@@ -2,6 +2,7 @@
 // Created by Niccolo on 05/10/2020.
 //
 
+#include <iostream>
 #include "GameConfig.h"
 
 GameConfig * GameConfig::_instance = nullptr;
@@ -36,7 +37,7 @@ void GameConfig::init(const std::string & base_dir) {
             std::make_pair("Background1",           "Map/Background1.png"),
             std::make_pair("BG",                    "Map/BG.png"),
             std::make_pair("Foreground",            "Map/Foreground.png"),
-            std::make_pair("middle",                "Map/middle.png"),
+            std::make_pair("Middle",                "Map/Middle.png"),
 
             std::make_pair("soundTrack",            "Music/soundTrack.wav"),
             std::make_pair("gameOverSound",         "Music/gameOverSound.wav"),
@@ -45,13 +46,18 @@ void GameConfig::init(const std::string & base_dir) {
             std::make_pair("shieldOn",              "Music/shieldOn.wav"),
             std::make_pair("fireEnemyShout",        "Music/fireEnemyShout.wav"),
             std::make_pair("emeraldEnemyShout",     "Music/emeraldEnemyShout.wav"),
-            std::make_pair("hamonEnemyShout",       "Music/hamonEnemyShout.wav")
+            std::make_pair("hamonEnemyShout",       "Music/hamonEnemyShout.wav"),
+
+            std::make_pair("arcadeclassic",         "Font/ARCADECLASSIC.TTF")
     };
 }
 
 std::string GameConfig::getAssetPath(const std::string & asset) {
     auto it = asset_map.find(asset);
     std::string path = (it == asset_map.end()) ? "" : asset_base_dir + "/" + it->second;
+    if (path.empty()){
+        std::cout << asset << std::endl;
+    }
     return path;
 }
 

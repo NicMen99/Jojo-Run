@@ -38,10 +38,10 @@ public:
     bool getIsKnifeCollision() const;
     bool getIsKnifeThrownCollision() const;
     int getMaxY() const;
-    int getScore() const;
+    unsigned int getScore() const;
     int getHealth() const;
     float getCreationRate() const;
-    void setScore(unsigned int score);
+    void setScore(unsigned int s);
     void setHealth(int hp);
     int getBlocksSize() { return static_cast<int>(blocks.size()); };
     int getEnemySize() { return static_cast<int>(enemies.size()); };
@@ -94,7 +94,7 @@ private:
     unsigned int bestScore;
 
     float creationRate;
-    float oldCreationRate;
+    //float oldCreationRate; necessaria?
     float toll = 0.2;
 
     double jump = 2.3f;
@@ -127,11 +127,13 @@ private:
     sf::Sprite layer4;
 
     sf::Text scoreTxt;
+    sf::Text numScore;
     sf::Text lifeTxt;
+    sf::Text numLife;
+    sf::Text knivesTxt;
+    sf::Text numKnives;
     sf::Text bestScoreTxt;
     sf::Text scoreB;
-    sf::Text knivesTxt;
-    sf::Text numScore;
     sf::Text bestScoreB;
     sf::Text bestScoreNum;
 

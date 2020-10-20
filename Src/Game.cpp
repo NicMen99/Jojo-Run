@@ -125,28 +125,40 @@ void Game::createEnemy() {
 
 void Game::handleTxt() {
     scoreTxt.setFont(font);
-    scoreTxt.setString("Score: ");
+    scoreTxt.setString("Score");
     scoreTxt.setPosition(10, 3);
-    scoreTxt.setCharacterSize(25);
-    scoreTxt.setFillColor(sf::Color::Black);
-
-    lifeTxt.setFont(font);
-    lifeTxt.setString(std::to_string(hero.getHealth()));
-    lifeTxt.setPosition(1550, 11);
-    lifeTxt.setCharacterSize(40);
-    lifeTxt.setFillColor(sf::Color::Black);
-
-    knivesTxt.setFont(font);
-    knivesTxt.setString(std::to_string(hero.getKnives()));
-    knivesTxt.setPosition(1500, 11);
-    knivesTxt.setCharacterSize(40);
-    knivesTxt.setFillColor(sf::Color::Black);
+    scoreTxt.setCharacterSize(40);
+    scoreTxt.setFillColor(sf::Color::White);
 
     numScore.setFont(font);
     numScore.setString(std::to_string(score));
-    numScore.setPosition(100, 3);
-    numScore.setCharacterSize(25);
-    numScore.setFillColor(sf::Color::Black);
+    numScore.setPosition(135, 3);
+    numScore.setCharacterSize(40);
+    numScore.setFillColor(sf::Color::White);
+
+    lifeTxt.setFont(font);
+    lifeTxt.setString("HP");
+    lifeTxt.setPosition(1440, 3);
+    lifeTxt.setCharacterSize(40);
+    lifeTxt.setFillColor(sf::Color::White);
+
+    numLife.setFont(font);
+    numLife.setString(std::to_string(hero.getHealth()));
+    numLife.setPosition(1500, 3);
+    numLife.setCharacterSize(40);
+    numLife.setFillColor(sf::Color::White);
+
+    knivesTxt.setFont(font);
+    knivesTxt.setString("Knives");
+    knivesTxt.setPosition(1400, 38);
+    knivesTxt.setCharacterSize(35);
+    knivesTxt.setFillColor(sf::Color::White);
+
+    numKnives.setFont(font);
+    numKnives.setString(std::to_string(hero.getKnives()));
+    numKnives.setPosition(1535, 38);
+    numKnives.setCharacterSize(35);
+    numKnives.setFillColor(sf::Color::White);
 
     bestScoreTxt.setFont(font);
     bestScoreTxt.setString("High Score: ");
@@ -371,7 +383,7 @@ int Game::randomCreation() {
 Game::Game(): map("JoJoRun", sf::Vector2u(1600, 1000)), hero(), layer1(), layer2(), layer3(), layer4(), factory(),
             speed(sf::Vector2f(1.1,1.1)), oldSpeed(speed), blockX(100), isCreated(false), isCollided(false), BlockCollision(false), EnemyCollision(false),
             FirewallCollision(false), KnifeCollision(false), KnivesPowerupCollision(false), ShieldPowerupCollision(false), countCreation(1), creationRate(2.5f),
-            oldCreationRate(creationRate), objectClk(), powerupClk(),shieldClk(), scoreClk(), controlPU(), collisionClk(),enemyClk(), isShieldOn(false),
+            /*oldCreationRate(creationRate),*/ objectClk(), powerupClk(),shieldClk(), scoreClk(), controlPU(), collisionClk(),enemyClk(), isShieldOn(false),
             n(1), score(0), txtCount(0),bestScore(0) {
 
     //setting dei layers del background
@@ -440,6 +452,10 @@ Game::Game(): map("JoJoRun", sf::Vector2u(1600, 1000)), hero(), layer1(), layer2
     hamonEnemyBuffer.loadFromFile(GC->getAssetPath("hamonEnemyShout"));
     hamonEnemySound.setBuffer(hamonEnemyBuffer);
     hamonEnemySound.setVolume(21.f);
+
+    // Loading Font
+    font.loadFromFile(GC->getAssetPath("arcadeclassic"));
+
 
     srand((unsigned) time(nullptr));
     maxY = static_cast<int>(map.getMapSize().y - (top + blockX));
@@ -555,7 +571,7 @@ void Game::render() {
     map.clear();
     map.draw(layer2);
     map.draw(layer1);
-    //map.draw(layer4);  //TODO capire perché non disegna il ponte
+    map.draw(layer4);
     map.draw(layer3);
 
     if (!hero.getIsDead()) {
@@ -579,7 +595,9 @@ void Game::render() {
         map.draw(scoreTxt);
         map.draw(numScore);
         map.draw(lifeTxt);
+        map.draw(numLife);
         map.draw(knivesTxt);
+        map.draw(numKnives);
     }
     else {
         scoreTxt.setCharacterSize(80);
@@ -612,7 +630,7 @@ void Game::subscribe(Observer *o) {
     observers.push_back(o);
 }
 
-int Game::getScore() const {
+unsigned int Game::getScore() const {
     return score;
 }
 
@@ -620,8 +638,8 @@ int Game::getHealth() const {
     return hero.getHealth();
 }
 
-void Game::setScore(unsigned int score) {
-    Game::score = score;
+void Game::setScore(unsigned int s) {
+    Game::score = s;
     notify();
 }
 
@@ -635,7 +653,7 @@ bool Game::getIsShieldOn() const {
 }
 
 bool Game::getIsCollided() const{
-    return false;
+    return isCollided;
 }
 
 bool Game::getIsBlockCollision() const{
