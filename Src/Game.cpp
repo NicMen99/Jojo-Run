@@ -298,12 +298,13 @@ void Game::collision() {
                     hero.gameOver();
                     collisionSound.play();
                     EnemyCollision = true;
+                    enemies.erase(enemies.begin()+e);
                     collisionClk.restart();
                 }
             }
         }
         for (int m = 0; m < powerups.size(); m++) {
-            if (powerups[m]->getGlobalBounds().intersects(hero.getHeroBounds()) && strcmp(typeid(powerups[m]).name(), "Shield") == 0) {
+            if (powerups[m]->getGlobalBounds().intersects(hero.getHeroBounds()) && powerups[m]->getisShield()) {
                 if (controlPU.getElapsedTime().asSeconds() >= toll) {
                     ShieldPowerupCollision = true;
                     isCollided = true;
@@ -312,7 +313,7 @@ void Game::collision() {
                     collisionClk.restart();
                 }
             }
-            else if (powerups[m]->getGlobalBounds().intersects(hero.getHeroBounds()) && strcmp(typeid(powerups[m]).name(), "Knife") == 0){
+            else if (powerups[m]->getGlobalBounds().intersects(hero.getHeroBounds()) && powerups[m]->getisKnife()){
                 if (controlPU.getElapsedTime().asSeconds() >= toll){
                     KnivesPowerupCollision = true;
                     isCollided = true;
@@ -323,7 +324,7 @@ void Game::collision() {
         }
         for (int h = 0; h < powerups.size(); h++) {
             for (auto & enemy : enemies){
-                if (powerups[h]->getGlobalBounds().intersects(enemy->getGlobalBounds()) && (strcmp(typeid(powerups[h]).name(), "ThrownKnife") == 0)) {
+                if (powerups[h]->getGlobalBounds().intersects(enemy->getGlobalBounds()) && powerups[h]->getisThrowable()) {
                     if (controlPU.getElapsedTime().asSeconds() >= toll) {
                         isCollided = true;
                         KnifeCollision = true;

@@ -11,16 +11,7 @@ void Shield::setHp(int hp) {
     hp = 100;
 }
 
-bool Shield::getisShield() const {
-    return isShield;
-}
-
-void Shield::setIsShield(bool isShield) {
-    isShield = true;
-}
-
 Shield::Shield() {
-    isShield = false;
     hp = 0;
 }
 

@@ -14,15 +14,7 @@ void Knife::setAmmo(int ammo) {
 
 Knife::Knife() {
     ammo = 0;
-    isKnife = false;
 }
 
-bool Knife::getisKnife() const {
-    return isKnife;
-}
-
-void Knife::setisKnife(bool isknife) {
-    isKnife = isknife;
-}
 
 

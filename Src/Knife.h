@@ -15,12 +15,9 @@ public:
 
     int getAmmo() const;
     void setAmmo(int ammo);
-    bool getisKnife() const;
-    void setisKnife(bool isKnife);
 
 private:
     int ammo = 4;
-    bool isKnife;
 };
 
 #endif //JOJO_RUN_KNIFE_H

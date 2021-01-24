@@ -17,9 +17,20 @@ public:
     float getSpeedPux() const;
     void setSpeedPux(float speedPUX);
 
+    void setIsShield(bool isShield);
+    void setIsKnife(bool isKnife);
+    void setIsThrowable(bool isThrowable);
+
+    bool getisShield() const;
+    bool getisKnife() const;
+    bool getisThrowable() const;
+
 private:
     bool isMovingPU;
     float speedPUX = 0.9;
+    bool isShield;
+    bool isKnife;
+    bool isThrowable;
 };
 
 #endif //JOJO_RUN_POWERUP_H

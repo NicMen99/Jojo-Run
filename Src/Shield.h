@@ -14,12 +14,9 @@ public:
 
     int getHp() const;
     void setHp(int hp);
-    bool getisShield() const;
-    void setIsShield(bool isShield);
 
 private:
     int hp = 100;
-    bool isShield;
 
 };
 
