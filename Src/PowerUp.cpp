@@ -9,7 +9,7 @@ bool PowerUp::getIsMovingPu() const {
 }
 
 void PowerUp::setIsMovingPu(bool isMovingPu) {
-    isMovingPU = true;
+    isMovingPU = isMovingPu;
 }
 
 float PowerUp::getSpeedPux() const {

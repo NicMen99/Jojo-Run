@@ -15,8 +15,8 @@ public:
 
     int getAmmo() const;
     void setAmmo(int ammo);
-    bool getHisKnife() const;
-    void setHisKnife(bool isKnife);
+    bool getisKnife() const;
+    void setisKnife(bool isKnife);
 
 private:
     int ammo = 4;
