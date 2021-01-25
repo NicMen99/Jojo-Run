@@ -262,10 +262,10 @@ void Game::collision() {
                     controlPU.restart();
                     //blocks.erase(blocks.begin()+i);
                 } else if (controlPU.getElapsedTime().asSeconds() >= toll) {
+                    BlockCollision = true;
                     isCollided = true;
                     hero.gameOver();
                     collisionSound.play();
-                    BlockCollision = true;
                     collisionClk.restart();
                 }
             }
@@ -279,10 +279,10 @@ void Game::collision() {
                     controlPU.restart();
                     //firewalls.erase(firewalls.begin()+j);
                 }else if (controlPU.getElapsedTime().asSeconds() >= toll) {
+                    FirewallCollision = true;
                     isCollided = true;
                     hero.gameOver();
                     collisionSound.play();
-                    FirewallCollision = true;
                     collisionClk.restart();
                 }
             }
@@ -296,10 +296,10 @@ void Game::collision() {
                     controlPU.restart();
                     //enemies.erase(enemies.begin()+e);
                 } else if (controlPU.getElapsedTime().asSeconds() >= toll) {
+                    EnemyCollision = true;
                     isCollided = true;
                     hero.gameOver();
                     collisionSound.play();
-                    EnemyCollision = true;
                     collisionClk.restart();
                 }
             }
@@ -310,6 +310,7 @@ void Game::collision() {
                     ShieldPowerupCollision = true;
                     isCollided = true;
                     powerUpSound.play();
+                    //collidedpowerups.push_back(m); da usare poi nella eliminazione degli elementi
                     //powerups.erase(powerups.begin() + m);
                     collisionClk.restart();
                 }
@@ -327,8 +328,8 @@ void Game::collision() {
             for (auto & enemy : enemies){
                 if (powerups[h]->getGlobalBounds().intersects(enemy->getGlobalBounds()) && powerups[h]->getisThrowable()) {
                     if (controlPU.getElapsedTime().asSeconds() >= toll) {
-                        isCollided = true;
                         KnifeCollision = true;
+                        isCollided = true;
                         //powerups.erase(powerups.begin() + h);
                         //int e = enemies.size();
                         //enemies.erase(enemies.begin() + e);
@@ -513,8 +514,8 @@ void Game::update() {
     if (!hero.getIsDead()) {
         collision();
     }
-    if (isCollided ) {
-        if (collisionClk.getElapsedTime().asSeconds() >= 0.8f) {
+    if (isCollided) {
+        if (collisionClk.getElapsedTime().asSeconds() >= 0) {
             if(FirewallCollision && hero.getHealth() > 15){
                 hero.setHealth(hero.getHealth() - 15);
                 notify();

@@ -83,12 +83,12 @@ std::unique_ptr<PowerUp> Factory::createPowerUp(PowerUpType type) {
         result->setIsShield(true);
     } else if (type == PowerUpType::Knife) {
         result->setTexture(knifeTexture);
-        result->setScale(0.8,0.8);
+        result->setScale(1,1);
         result->setRotation(45.f);
         result->setIsKnife(true);
     } else if (type == PowerUpType::ThrownKnife) {
         result->setTexture(knifeTexture);
-        result->setScale(0.8,0.8);
+        result->setScale(1,1);
         result->setIsThrowable(true);
     }
     return result;

@@ -28,9 +28,9 @@ public:
 private:
     bool isMovingPU;
     float speedPUX = 0.9;
-    bool isShield;
-    bool isKnife;
-    bool isThrowable;
+    bool isShield = false;
+    bool isKnife = false;
+    bool isThrowable = false;
 };
 
 #endif //JOJO_RUN_POWERUP_H
