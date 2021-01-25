@@ -42,7 +42,7 @@ std::unique_ptr<FireWall> Factory::createFireWall(FireWallType type) {
 std::unique_ptr<Enemy> Factory::createEnemy(EnemyType type) {
     if (type == EnemyType::EmeraldEnemy){
         std::unique_ptr<Enemy> result = std::unique_ptr<Enemy> (new EmeraldEnemy);
-        result->setSpeed(0.2);
+        result->setSpeed(0.5);
         result->setDamage(90);
         result->setIsMovingEnemy(true);
         result->setScale(-1,1);
@@ -52,7 +52,7 @@ std::unique_ptr<Enemy> Factory::createEnemy(EnemyType type) {
     }
     else if (type == EnemyType::HamonEnemy){
         std::unique_ptr<Enemy> result = std::unique_ptr<Enemy> (new HamonEnemy);
-        result->setSpeed(0.2);
+        result->setSpeed(0.5);
         result->setDamage(90);
         result->setIsMovingEnemy(true);
         result->setScale(-1,1);
@@ -62,7 +62,7 @@ std::unique_ptr<Enemy> Factory::createEnemy(EnemyType type) {
     }
     else if (type == EnemyType::FireEnemy){
         std::unique_ptr<Enemy> result = std::unique_ptr<Enemy> (new FireEnemy);
-        result->setSpeed(0.2);
+        result->setSpeed(0.5);
         result->setDamage(90);
         result->setIsMovingEnemy(true);
         result->setTexture(fireEnemyTexture);

@@ -249,6 +249,8 @@ void Game::moveObject() {
     }
 }
 
+//TODO: check collsion array
+
 void Game::collision() {
     if (!isCollided) {
         for (int i = 0; i < blocks.size(); i++) {
@@ -258,7 +260,7 @@ void Game::collision() {
                     isShieldOn = false;
                     shieldOnSound.play();
                     controlPU.restart();
-                    blocks.erase(blocks.begin()+i);
+                    //blocks.erase(blocks.begin()+i);
                 } else if (controlPU.getElapsedTime().asSeconds() >= toll) {
                     isCollided = true;
                     hero.gameOver();
@@ -275,7 +277,7 @@ void Game::collision() {
                     isShieldOn = false;
                     shieldOnSound.play();
                     controlPU.restart();
-                    firewalls.erase(firewalls.begin()+j);
+                    //firewalls.erase(firewalls.begin()+j);
                 }else if (controlPU.getElapsedTime().asSeconds() >= toll) {
                     isCollided = true;
                     hero.gameOver();
@@ -292,13 +294,12 @@ void Game::collision() {
                     isShieldOn = false;
                     shieldOnSound.play();
                     controlPU.restart();
-                    enemies.erase(enemies.begin()+e);
+                    //enemies.erase(enemies.begin()+e);
                 } else if (controlPU.getElapsedTime().asSeconds() >= toll) {
                     isCollided = true;
                     hero.gameOver();
                     collisionSound.play();
                     EnemyCollision = true;
-                    enemies.erase(enemies.begin()+e);
                     collisionClk.restart();
                 }
             }
@@ -309,7 +310,7 @@ void Game::collision() {
                     ShieldPowerupCollision = true;
                     isCollided = true;
                     powerUpSound.play();
-                    powerups.erase(powerups.begin() + m);
+                    //powerups.erase(powerups.begin() + m);
                     collisionClk.restart();
                 }
             }
@@ -317,7 +318,7 @@ void Game::collision() {
                 if (controlPU.getElapsedTime().asSeconds() >= toll){
                     KnivesPowerupCollision = true;
                     isCollided = true;
-                    powerups.erase(powerups.begin() + m);
+                    //powerups.erase(powerups.begin() + m);
                     collisionClk.restart();
                 }
             }
@@ -328,9 +329,9 @@ void Game::collision() {
                     if (controlPU.getElapsedTime().asSeconds() >= toll) {
                         isCollided = true;
                         KnifeCollision = true;
-                        powerups.erase(powerups.begin() + h);
-                        int e = enemies.size();
-                        enemies.erase(enemies.begin() + e);
+                        //powerups.erase(powerups.begin() + h);
+                        //int e = enemies.size();
+                        //enemies.erase(enemies.begin() + e);
                         collisionClk.restart();
                     }
                 }

@@ -23,8 +23,8 @@ public:
     sf::FloatRect getEnemyBounds() const { return enemy.getGlobalBounds(); }
 
 private:
-    float speed = 0.2;
-    int damage = 90;
+    float speed;
+    int damage;
     bool isMovingEnemy;
 
     sf::Sprite enemy;
