@@ -23,7 +23,7 @@ void Game::createObj() {
     if (powerupClk.getElapsedTime().asSeconds() >= creationRate) {
         if (countCreation % 5 == 0 && randomCreation() == 0) {
             std::unique_ptr<PowerUp> knife = factory.createPowerUp(PowerUpType::Knife);
-            knife->setPosition(sf::Vector2f(2 * map.getMapSize().x, randomPosY()));
+            knife->setPosition(sf::Vector2f(map.getMapSize().x + 20, randomPosY()));
             powerups.emplace_back(move(knife));
             isCreated = true;
             powerupClk.restart();
@@ -31,7 +31,7 @@ void Game::createObj() {
         }
         if (countCreation % 7 == 0 && randomCreation() == 0) {
             std::unique_ptr<PowerUp> shield = factory.createPowerUp(PowerUpType::Shield);
-            shield->setPosition(sf::Vector2f(2 * map.getMapSize().x, randomPosY()));
+            shield->setPosition(sf::Vector2f(map.getMapSize().x + 20, randomPosY()));
             powerups.emplace_back(move(shield));
             isCreated = true;
             powerupClk.restart();
@@ -48,7 +48,7 @@ void Game::createObj() {
             objectClk.restart();
             countCreation++;
         }
-        if (countCreation % 2 == 0 && randomCreation() == 2 && !isCreated) {
+        if (countCreation % 5 == 0 && randomCreation() == 2 && !isCreated) {
             std::unique_ptr<FireWall> fireWall = factory.createFireWall(FireWallType::MovingWall);
             fireWall->setPosition(sf::Vector2f(2 * map.getMapSize().x, randomPosY()));
             firewalls.emplace_back(move(fireWall));
@@ -376,7 +376,7 @@ void Game::moveEnemy() {
 }
 
 int Game::randomPosY() {
-    return (rand() % map.getMapSize().y);
+    return ((rand() % int(map.getMapSize().y - this->top - this->ground - 85)) + this->top );
 }
 
 int Game::randomCreation() {

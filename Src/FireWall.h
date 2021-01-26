@@ -22,7 +22,7 @@ public:
 
 private:
     int damageFW = 15;
-    bool isMovingFW;
+    bool isMovingFW = false;
     float fireWallSpeedX = 0.8;
 };
 

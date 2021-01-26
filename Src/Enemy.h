@@ -23,9 +23,9 @@ public:
     sf::FloatRect getEnemyBounds() const { return enemy.getGlobalBounds(); }
 
 private:
-    float speed;
-    int damage;
-    bool isMovingEnemy;
+    float speed = 0;
+    int damage = 90;
+    bool isMovingEnemy = true; //necessario?
 
     sf::Sprite enemy;
 };

@@ -18,11 +18,11 @@ public:
     void setIsMovingBlock();
     void setBlockSpeedX(float blockSpeedX);
     void setDamageB(int damageB);
-    int getDamageB() const;
+    int getDamageB() const; //necessario?
 
 private:
-    int damageB = 70;
-    bool isMovingBlock;
+    int damageB = 50;
+    bool isMovingBlock = false;  //necessario?
     //bool collided = false;
     float blockSpeedX = 0.8;
 };
