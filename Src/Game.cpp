@@ -82,27 +82,27 @@ void Game::throwKnife() {
 
 void Game::createEnemy() {
     if (enemyClk.getElapsedTime().asSeconds() >= creationRate) {
-        if (countCreation % 4 == 0 && randomCreation() == 0) {
+        if (countCreation % 11 == 0 && randomCreation() == 1) {
             std::unique_ptr<Enemy> enemy = factory.createEnemy(EnemyType::HamonEnemy);
-            enemy->setPosition(sf::Vector2f(2 * map.getMapSize().x, randomPosY()));
+            enemy->setPosition(sf::Vector2f(150 + map.getMapSize().x, randomPosY()));
             hamonEnemySound.play();
             enemies.emplace_back(move(enemy));
             isCreated = true;
             enemyClk.restart();
             countCreation++;
         }
-        if (countCreation % 4 == 0 && randomCreation() == 0) {
+        if (countCreation % 13 == 0 && randomCreation() == 1) {
             std::unique_ptr<Enemy> enemy = factory.createEnemy(EnemyType::EmeraldEnemy);
-            enemy->setPosition(sf::Vector2f(2 * map.getMapSize().x, randomPosY()));
+            enemy->setPosition(sf::Vector2f(150 + map.getMapSize().x, randomPosY()));
             emeraldEnemySound.play();
             enemies.emplace_back(move(enemy));
             isCreated = true;
             enemyClk.restart();
             countCreation++;
         }
-        if (countCreation % 4 == 0 && randomCreation() == 0) {
+        if (countCreation % 17 == 0 && randomCreation() == 1) {
             std::unique_ptr<Enemy> enemy = factory.createEnemy(EnemyType::FireEnemy);
-            enemy->setPosition(sf::Vector2f(2 * map.getMapSize().x, randomPosY()));
+            enemy->setPosition(sf::Vector2f(150 + map.getMapSize().x, randomPosY()));
             fireEnemySound.play();
             enemies.emplace_back(move(enemy));
             isCreated = true;
