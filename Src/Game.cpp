@@ -42,7 +42,7 @@ void Game::createObj() {
     if (objectClk.getElapsedTime().asSeconds() >= creationRate) {
         if (countCreation % 2 == 0 && randomCreation() == 2 && !isCreated) {
             std::unique_ptr<Block> block = factory.createBlock(BlockType::MovingBlock);
-            block->setPosition(sf::Vector2f(2 * map.getMapSize().x, randomPosY()));
+            block->setPosition(sf::Vector2f(map.getMapSize().x + 50, randomPosY()));
             blocks.emplace_back(move(block));
             isCreated = true;
             objectClk.restart();
@@ -65,7 +65,7 @@ void Game::createObj() {
             firewalls.emplace_back(move(firewall));
             isCreated = true;
             objectClk.restart();
-            countCreation++;
+            countCreation++; //non spawna, inutile
         }
         isCreated = false;
     }
