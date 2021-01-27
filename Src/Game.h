@@ -145,11 +145,11 @@ private:
     std::vector<std::unique_ptr<PowerUp>> powerups;
     std::vector<std::unique_ptr<PowerUp>> knives;
 
-    std::vector<int> collidedblocks;
-    std::vector<int> collidedenemies;
+    int collidedblocks;
+    int collidedenemies;
     std::vector<int> collidedfirewalls;
-    std::vector<int> collidedpowerups;
-    std::vector<int> collidedknives;
+    int collidedpowerups;
+    int collidedknives;
 
     sf::Clock objectClk;
     sf::Clock enemyClk;

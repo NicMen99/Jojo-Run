@@ -29,7 +29,7 @@ void Game::createObj() {
             powerupClk.restart();
             countCreation++;
         }
-        if (countCreation % 7 == 0 && randomCreation() == 0) {
+        if (countCreation % 9 == 0 && randomCreation() == 0) {
             std::unique_ptr<PowerUp> shield = factory.createPowerUp(PowerUpType::Shield);
             shield->setPosition(sf::Vector2f(map.getMapSize().x + 20, randomPosY()));
             powerups.emplace_back(move(shield));
@@ -257,27 +257,24 @@ void Game::collision() {
             if (blocks[i]->getGlobalBounds().intersects(hero.getHeroBounds())) {
                 //Se ha lo scudo e interseca un blocco non muore
                 if (isShieldOn) {
-                    isShieldOn = false;
                     shieldOnSound.play();
                     controlPU.restart();
-                    //blocks.erase(blocks.begin()+i);
                 } else if (controlPU.getElapsedTime().asSeconds() >= toll) {
-                    BlockCollision = true;
-                    isCollided = true;
                     hero.gameOver();
                     collisionSound.play();
                     collisionClk.restart();
                 }
+                BlockCollision = true;
+                isCollided = true;
+                collidedblocks = i;
             }
         }
-        for (int j = 0; j < firewalls.size(); j++) {
+        for (int j = 0; j < firewalls.size(); j++) { //da rivedere
             if (firewalls[j]->getGlobalBounds().intersects(hero.getHeroBounds())) {
                 //Se ha lo scudo e interseca l'oggetto non muore
                 if (isShieldOn) {
-                    isShieldOn = false;
                     shieldOnSound.play();
                     controlPU.restart();
-                    //firewalls.erase(firewalls.begin()+j);
                 }else if (controlPU.getElapsedTime().asSeconds() >= toll) {
                     FirewallCollision = true;
                     isCollided = true;
@@ -291,17 +288,16 @@ void Game::collision() {
             if (enemies[e]->getGlobalBounds().intersects(hero.getHeroBounds())) {
                 //Se ha lo scudo e interseca il nemico non muore
                 if (isShieldOn) {
-                    isShieldOn = false;
                     shieldOnSound.play();
                     controlPU.restart();
-                    //enemies.erase(enemies.begin()+e);
                 } else if (controlPU.getElapsedTime().asSeconds() >= toll) {
-                    EnemyCollision = true;
-                    isCollided = true;
                     hero.gameOver();
                     collisionSound.play();
                     collisionClk.restart();
                 }
+                isCollided = true;
+                EnemyCollision = true;
+                collidedenemies = e;
             }
         }
         for (int m = 0; m < powerups.size(); m++) {
@@ -310,16 +306,16 @@ void Game::collision() {
                     ShieldPowerupCollision = true;
                     isCollided = true;
                     powerUpSound.play();
-                    //collidedpowerups.push_back(m); da usare poi nella eliminazione degli elementi
-                    //powerups.erase(powerups.begin() + m);
+                    collidedpowerups = m;
                     collisionClk.restart();
+                    shieldClk.restart();
                 }
             }
             else if (powerups[m]->getGlobalBounds().intersects(hero.getHeroBounds()) && powerups[m]->getisKnife()){
                 if (controlPU.getElapsedTime().asSeconds() >= toll){
                     KnivesPowerupCollision = true;
                     isCollided = true;
-                    //powerups.erase(powerups.begin() + m);
+                    collidedknives = m;
                     collisionClk.restart();
                 }
             }
@@ -522,18 +518,31 @@ void Game::update() {
                 FirewallCollision =false;
             }
             if(BlockCollision){
-                hero.setHealth(hero.getHealth() - 70);
-                notify();
+                if(isShieldOn){
+                    isShieldOn = false;
+                }
+                else{
+                    hero.setHealth(hero.getHealth() - 70);
+                    notify();
+                }
+                blocks.erase(blocks.begin() + collidedblocks);
                 BlockCollision = false;
             }
             if(EnemyCollision){
-                hero.setHealth(hero.getHealth() - 90);
-                notify();
+                if(isShieldOn){
+                    isShieldOn = false;
+                }
+                else {
+                    hero.setHealth(hero.getHealth() - 90);
+                    notify();
+                }
+                enemies.erase(enemies.begin() + collidedenemies);
                 EnemyCollision = false;
             }
             if(ShieldPowerupCollision){
                 isShieldOn = true;
                 hero.setTexture(heroTextureS1);
+                powerups.erase(powerups.begin()+collidedpowerups);
                 notify();
                 ShieldPowerupCollision = false;
             }
@@ -546,6 +555,7 @@ void Game::update() {
             if(KnivesPowerupCollision){
                 hero.setKnives(hero.getKnives() + 4);
                 notify();
+                powerups.erase(powerups.begin()+collidedknives);
                 KnivesPowerupCollision = false;
             }
         }
