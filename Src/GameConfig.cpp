@@ -31,7 +31,7 @@ void GameConfig::init(const std::string & base_dir) {
             std::make_pair("emeraldBlockTexture",   "Textures/emeraldBlockTexture.png"),
             std::make_pair("playerTexture",         "Textures/playerTexture.png"),
             std::make_pair("playerTextureUp",       "Textures/playerTextureUp.png"),
-            std::make_pair("shieldPowerUpTexture",  "Textures/shieldPowerUpTexture.png"),
+            std::make_pair("playerShieldTexture",  "Textures/playerShieldTexture.png"),
             std::make_pair("GameOverScreen",        "Textures/GameOverScreen.png"),
 
             std::make_pair("Background1",           "Map/Background1.png"),

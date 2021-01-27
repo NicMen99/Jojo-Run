@@ -415,7 +415,7 @@ Game::Game(): map("JoJoRun", sf::Vector2u(1600, 1000)), hero(), layer1(), layer2
     heroTexture1.loadFromFile(GC->getAssetPath("playerTexture"));
     heroTexture2.loadFromFile(GC->getAssetPath("playerTextureUp"));
     hero.setTexture(heroTexture1);
-    heroTextureS1.loadFromFile(GC->getAssetPath("shieldPowerUpTexture"));
+    heroTextureS1.loadFromFile(GC->getAssetPath("playerShieldTexture"));
 
     gameOverTexture.loadFromFile(GC->getAssetPath("GameOverScreen"));
     gameOver.setTexture(gameOverTexture);
@@ -516,23 +516,24 @@ void Game::update() {
     }
     if (isCollided) {
         if (collisionClk.getElapsedTime().asSeconds() >= 0) {
-            if(FirewallCollision && hero.getHealth() > 15){
+            if(FirewallCollision){ //non spawna?
                 hero.setHealth(hero.getHealth() - 15);
                 notify();
                 FirewallCollision =false;
             }
-            if(BlockCollision && hero.getHealth() > 70){
+            if(BlockCollision){
                 hero.setHealth(hero.getHealth() - 70);
                 notify();
                 BlockCollision = false;
             }
-            if(EnemyCollision && getHealth() > 90){
+            if(EnemyCollision){
                 hero.setHealth(hero.getHealth() - 90);
                 notify();
                 EnemyCollision = false;
             }
             if(ShieldPowerupCollision){
                 isShieldOn = true;
+                hero.setTexture(heroTextureS1);
                 notify();
                 ShieldPowerupCollision = false;
             }
@@ -551,8 +552,9 @@ void Game::update() {
         isCollided = false;
     }
 
-    if(isShieldOn && shieldClk.getElapsedTime().asSeconds() >= 20.f) {
+    if(isShieldOn && shieldClk.getElapsedTime().asSeconds() >= 30.f) {
         isShieldOn = false;
+        hero.setHeroTexture(heroTexture1);
     }
 
     if (scoreClk.getElapsedTime().asSeconds() >= 1.f && !hero.getIsDead()) {
