@@ -260,7 +260,6 @@ void Game::collision() {
                     shieldOnSound.play();
                     controlPU.restart();
                 } else if (controlPU.getElapsedTime().asSeconds() >= toll) {
-                    hero.gameOver();
                     collisionSound.play();
                     collisionClk.restart();
                 }
@@ -278,7 +277,6 @@ void Game::collision() {
                 }else if (controlPU.getElapsedTime().asSeconds() >= toll) {
                     FirewallCollision = true;
                     isCollided = true;
-                    hero.gameOver();
                     collisionSound.play();
                     collisionClk.restart();
                 }
@@ -291,7 +289,6 @@ void Game::collision() {
                     shieldOnSound.play();
                     controlPU.restart();
                 } else if (controlPU.getElapsedTime().asSeconds() >= toll) {
-                    hero.gameOver();
                     collisionSound.play();
                     collisionClk.restart();
                 }
@@ -527,6 +524,7 @@ void Game::update() {
                 }
                 blocks.erase(blocks.begin() + collidedblocks);
                 BlockCollision = false;
+                hero.gameOver();
             }
             if(EnemyCollision){
                 if(isShieldOn){
@@ -538,6 +536,7 @@ void Game::update() {
                 }
                 enemies.erase(enemies.begin() + collidedenemies);
                 EnemyCollision = false;
+                hero.gameOver();
             }
             if(ShieldPowerupCollision){
                 isShieldOn = true;

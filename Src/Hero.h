@@ -34,7 +34,7 @@ public:
     sf::FloatRect getHeroBounds() const { return hero.getGlobalBounds(); }
 
 private:
-    void death() { isDead = true;}
+    void death() {isDead = true;}
 
     int hp = 300;
     int knives = 0;
