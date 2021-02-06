@@ -239,7 +239,6 @@ void Game::moveObject() {
         }
     }
     for (auto &k: knives) {
-        k->setPosition(hero.getHeroPos());
         if (k->getIsMovingPu()) {
             if (k->getPosition().y + k->getGlobalBounds().height >= map.getMapSize().y - ground ||
                 k->getPosition().y <= 0)
@@ -249,7 +248,6 @@ void Game::moveObject() {
     }
 }
 
-//TODO: check collsion array
 
 void Game::collision() {
     if (!isCollided) {
@@ -317,15 +315,14 @@ void Game::collision() {
                 }
             }
         }
-        for (int h = 0; h < powerups.size(); h++) {
-            for (auto & enemy : enemies){
-                if (powerups[h]->getGlobalBounds().intersects(enemy->getGlobalBounds()) && powerups[h]->getisThrowable()) {
+        for (int h = 0; h < knives.size(); h++) {
+            for (int e = 0; e < enemies.size(); e++){
+                if (knives[h]->getGlobalBounds().intersects(enemies[e]->getGlobalBounds()) && knives[h]->getisThrowable()) {
                     if (controlPU.getElapsedTime().asSeconds() >= toll) {
                         KnifeCollision = true;
                         isCollided = true;
-                        //powerups.erase(powerups.begin() + h);
-                        //int e = enemies.size();
-                        //enemies.erase(enemies.begin() + e);
+                        collidedknives = h;
+                        collidedenemies = e;
                         collisionClk.restart();
                     }
                 }
@@ -496,6 +493,7 @@ void Game::update() {
     createEnemy();
     moveObject();
     moveHero();
+    throwKnife();
     moveEnemy();
     deleteObject();
     deleteEnemy();
@@ -549,6 +547,8 @@ void Game::update() {
                 //se l'eroe colpisce un nemico col coltello lanciato, la sua vita aumenta leggermente
                 hero.setHealth(hero.getHealth() + 20);
                 notify();
+                knives.erase(knives.begin() + collidedknives);
+                enemies.erase(enemies.begin() + collidedenemies);
                 KnifeCollision = false;
             }
             if(KnivesPowerupCollision){

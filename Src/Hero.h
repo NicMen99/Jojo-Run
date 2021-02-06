@@ -29,6 +29,12 @@ public:
     void setKnives(int knives);
     int getHealth() const;
     void setHealth (int hp);
+    int getMaxknives() const;
+    void setMaxknives(int maxknives);
+
+    int getMaxhp() const;
+
+    void setMaxhp(int maxhp);
 
     bool getIsDead() const {return isDead;}
     sf::FloatRect getHeroBounds() const { return hero.getGlobalBounds(); }
@@ -38,6 +44,8 @@ private:
 
     int hp = 300;
     int knives = 0;
+    int maxknives = 8;
+    int maxhp = 300;
     bool isDead = false;
     sf::Sprite hero;
 };

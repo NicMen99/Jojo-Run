@@ -31,6 +31,9 @@ int Hero::getKnives() const {
 
 void Hero::setKnives(int knives) {
     Hero::knives = knives;
+    if(Hero::knives >= getMaxknives()){
+        Hero::knives = getMaxknives();
+    }
 }
 
 void Hero::renderHero(sf::RenderWindow &map) {
@@ -43,6 +46,25 @@ int Hero::getHealth() const {
 
 void Hero::setHealth(int hp) {
     Hero::hp = hp;
+    if(Hero::hp >= getMaxhp()){
+        Hero::hp = getMaxhp();
+    }
+}
+
+int Hero::getMaxknives() const {
+    return maxknives;
+}
+
+void Hero::setMaxknives(int maxknives) {
+    Hero::maxknives = maxknives;
+}
+
+int Hero::getMaxhp() const {
+    return maxhp;
+}
+
+void Hero::setMaxhp(int maxhp) {
+    Hero::maxhp = maxhp;
 }
 
 
