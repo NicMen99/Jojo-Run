@@ -95,7 +95,7 @@ TEST_F(GameTest, testDeletingPowerUp) {
     }
 }
 
-TEST_F(GameTest, testCollisionStillBlock) {
+/*TEST_F(GameTest, testCollisionStillBlock) {
     int numHP = game.getHealth();
     std::unique_ptr<Block> block = factory.createBlock(BlockType::StillBlock);
     block->setPosition(sf::Vector2f(2*game.getMap()->getMapSize().x,game.randomPosY()));
@@ -120,7 +120,7 @@ TEST_F(GameTest, testCollisionStillBlock) {
             ASSERT_TRUE(hero.getIsDead());
         }
     }
-}
+}*/
 
 TEST_F(GameTest, testCollisionMovingBlock) {
     int numHP = game.getHealth();
@@ -149,7 +149,7 @@ TEST_F(GameTest, testCollisionMovingBlock) {
     }
 }
 
-TEST_F(GameTest, testCollisionStillFirewall) {
+/*TEST_F(GameTest, testCollisionStillFirewall) {
     int numHP = game.getHealth();
     std::unique_ptr<FireWall> wall = factory.createFireWall(FireWallType::StillWall);
     wall->setPosition(sf::Vector2f(2*game.getMap()->getMapSize().x,game.randomPosY()));
@@ -174,7 +174,7 @@ TEST_F(GameTest, testCollisionStillFirewall) {
             ASSERT_TRUE(hero.getIsDead());
         }
     }
-}
+}*/
 
 TEST_F(GameTest, testCollisionMovingFirewall) {
     int numHP = game.getHealth();
@@ -295,16 +295,15 @@ TEST_F(GameTest, testCollisionThrownKnife){
     std::unique_ptr<Enemy> enem3 = factory.createEnemy(EnemyType::FireEnemy);
     enem3->setPosition(sf::Vector2f(2*game.getMap()->getMapSize().x,game.randomPosY()));
     enem3->move(-game.getSpeed().x, 0);
-    std::unique_ptr<Enemy> enem4 = factory.createEnemy(EnemyType::StillEnemy);
+    /*std::unique_ptr<Enemy> enem4 = factory.createEnemy(EnemyType::StillEnemy);
     enem4->setPosition(sf::Vector2f(2*game.getMap()->getMapSize().x,game.randomPosY()));
-    enem4->move(-game.getSpeed().x, 0);
+    enem4->move(-game.getSpeed().x, 0);*/
     std::unique_ptr<PowerUp> knife = factory.createPowerUp(PowerUpType::ThrownKnife);
     knife->setPosition(sf::Vector2f(2*game.getMap()->getMapSize().x,game.randomPosY()));
     knife->move(+game.getSpeed().x, 0);
-    if (knife->getGlobalBounds().intersects(enem1->getEnemyBounds())||knife->getGlobalBounds().intersects(enem2->getEnemyBounds())||knife->getGlobalBounds().intersects(enem3->getEnemyBounds())||knife->getGlobalBounds().intersects(enem4->getEnemyBounds())){
+    if (knife->getGlobalBounds().intersects(enem1->getEnemyBounds())||knife->getGlobalBounds().intersects(enem2->getEnemyBounds())||knife->getGlobalBounds().intersects(enem3->getEnemyBounds())/*||knife->getGlobalBounds().intersects(enem4->getEnemyBounds())*/){
         ASSERT_TRUE(game.getIsCollided());
         ASSERT_TRUE(game.getIsKnifeThrownCollision());
         ASSERT_EQ(numHP +20, game.getHealth());
     }
 }
-//domani finisci i test coglione patentato a strisce!!!!!!

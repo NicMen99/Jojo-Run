@@ -48,22 +48,22 @@ void Game::createObj() {
             objectClk.restart();
             countCreation++;
         }
-        if (countCreation % 5 == 0 && randomCreation() == 2 && !isCreated) {
+        if (countCreation % 3 == 0 && randomCreation() == 2 && !isCreated) {
             std::unique_ptr<FireWall> fireWall = factory.createFireWall(FireWallType::MovingWall);
-            fireWall->setPosition(sf::Vector2f(2 * map.getMapSize().x, randomPosY()));
+            fireWall->setPosition(sf::Vector2f(map.getMapSize().x + 50, randomPosY()));
             firewalls.emplace_back(move(fireWall));
             isCreated = true;
             objectClk.restart();
             countCreation++;
         }
         if (!isCreated) {
-            std::unique_ptr<Block> block = factory.createBlock(BlockType::StillBlock);
-            block->setPosition(sf::Vector2f(2 * map.getMapSize().x, randomPosY()));
-            blocks.emplace_back(move(block));
-            std::unique_ptr<FireWall> firewall = factory.createFireWall(FireWallType::StillWall);
-            firewall->setPosition(sf::Vector2f(2 * map.getMapSize().x, randomPosY()));
-            firewalls.emplace_back(move(firewall));
-            isCreated = true;
+            //std::unique_ptr<Block> block = factory.createBlock(BlockType::StillBlock);
+            //block->setPosition(sf::Vector2f(2 * map.getMapSize().x, randomPosY()));
+            //blocks.emplace_back(move(block));
+            //std::unique_ptr<FireWall> firewall = factory.createFireWall(FireWallType::StillWall);
+            //firewall->setPosition(sf::Vector2f(2 * map.getMapSize().x, randomPosY()));
+            //firewalls.emplace_back(move(firewall));
+            //isCreated = true;
             objectClk.restart();
             countCreation++; //non spawna, inutile
         }
@@ -109,16 +109,6 @@ void Game::createEnemy() {
             enemyClk.restart();
             countCreation++;
         }
-        /*
-        if(!isCreated){
-            std::unique_ptr<Enemy> enemy= factory.createEnemy(EnemyType::StillEnemy);
-            enemy->setPosition(sf::Vector2f(2*map.getMapSize().x, randomPosY()));
-            enemies.emplace_back(move(enemy));
-            isCreated = true;
-            enemyClk.restart();
-            countCreation++;
-        }
-        */
         isCreated = false;
     }
 }
@@ -693,6 +683,3 @@ bool Game::getIsKnifeCollision() const{
 bool Game::getIsKnifeThrownCollision() const{
     return KnifeCollision;
 }
-
-
-

@@ -9,7 +9,7 @@ std::unique_ptr<Block> Factory::createBlock(BlockType type) {
     std::unique_ptr<Block> result = std::unique_ptr<Block>(new Block);
     if (type == BlockType::MovingBlock)
         result->setIsMovingBlock(); //necessario?
-    result->setScale(0.25, 0.25);
+    result->setScale(0.70, 0.70);
     result->setTexture(blockTexture);
     return result;
 }
@@ -31,7 +31,7 @@ std::unique_ptr<FireWall> Factory::createFireWall(FireWallType type) {
     std::unique_ptr<FireWall> result = std::unique_ptr<FireWall>(new FireWall);
     if (type == FireWallType::MovingWall)
         result->setIsMovingFW(true);
-    result->setScale(0.25, 0.25);
+    result->setScale(1, 1);
     result->setTexture(fireWallTexture);
     return result;
 }

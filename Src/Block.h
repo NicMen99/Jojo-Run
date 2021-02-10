@@ -23,7 +23,6 @@ public:
 private:
     int damageB = 50;
     bool isMovingBlock = false;  //necessario?
-    //bool collided = false;
     float blockSpeedX = 0.8;
 };
 

@@ -147,7 +147,7 @@ private:
 
     int collidedblocks;
     int collidedenemies;
-    std::vector<int> collidedfirewalls;
+    int collidedfirewalls;
     int collidedpowerups;
     int collidedknives;
 
