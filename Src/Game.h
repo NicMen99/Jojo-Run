@@ -15,11 +15,14 @@
 #include "Map.h"
 #include "Hero.h"
 #include "Factory.h"
+#include "GameStateMachine.h"
 
 class Game: public Subject {
 public:
     Game();
     ~Game();
+    void loop();
+
     Map *getMap() { return &map;}
 
     int randomPosY();
@@ -54,6 +57,9 @@ public:
     void unsubscribe(Observer *o) override;
     void subscribe(Observer *o) override;
 
+public:
+    void changeState(AbsGameState* nextState){}
+
 private:
     void createObj();
     void createEnemy();
@@ -64,6 +70,8 @@ private:
     void handleTxt();
     void moveEnemy();
     void throwKnife();
+
+    AbsGameState* m_gameMachine;
 
     std::ofstream file;
     std::ofstream bestScoreFileWrite;

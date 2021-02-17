@@ -6,6 +6,8 @@
 #define JOJO_RUN_MAP_H
 
 #include <SFML/Graphics.hpp>
+#include <SFML/Window.hpp>
+#include <SFML/Config.hpp>
 
 class Map {
 public:
@@ -22,6 +24,7 @@ public:
     bool isClosed() const { return closed; }
     const sf::Vector2u getMapSize() const;
 
+    sf::Event event;
 private:
     sf::RenderWindow map;
     sf::Vector2u mapSize;

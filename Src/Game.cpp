@@ -1,11 +1,10 @@
 //
 // Created by angiolo99 on 23/08/20.
 //
-
+#include <fstream>
+#include <memory>
 #include "GameConfig.h"
 #include "Game.h"
-#include <cstring>
-#include <fstream>
 
 float Game::getCreationRate() const {
     return creationRate;
@@ -363,13 +362,16 @@ int Game::randomCreation() {
     return (rand() % 3);
 }
 
-Game::Game(): map("JoJoRun", sf::Vector2u(1600, 1000)), hero(), layer1(), layer2(), layer3(), layer4(), factory(),
-            speed(sf::Vector2f(1.1,1.1)), oldSpeed(speed), blockX(100), isCreated(false), isCollided(false), BlockCollision(false), EnemyCollision(false),
-            FirewallCollision(false), KnifeCollision(false), KnivesPowerupCollision(false), ShieldPowerupCollision(false), countCreation(1), creationRate(2.5f),
-            /*oldCreationRate(creationRate),*/ objectClk(), powerupClk(),shieldClk(), scoreClk(), controlPU(), collisionClk(),enemyClk(), isShieldOn(false),
-            n(1), score(0), txtCount(0),bestScore(0) {
+Game::Game():
+    map("JoJoRun", sf::Vector2u(1600, 1000)), hero(), layer1(), layer2(), layer3(), layer4(), factory(),
+    speed(sf::Vector2f(1.1,1.1)), oldSpeed(speed), blockX(100), isCreated(false), isCollided(false), BlockCollision(false), EnemyCollision(false),
+    FirewallCollision(false), KnifeCollision(false), KnivesPowerupCollision(false), ShieldPowerupCollision(false), countCreation(1), creationRate(2.5f),
+    /*oldCreationRate(creationRate),*/ objectClk(), powerupClk(),shieldClk(), scoreClk(), controlPU(), collisionClk(),enemyClk(), isShieldOn(false),
+    n(1), score(0), txtCount(0),bestScore(0) {
 
     //setting dei layers del background
+    m_gameMachine = new GameStateMachine(this, State::Init);
+
     layer1Texture.loadFromFile(GC->getAssetPath("Background1"));
     layer1Texture.setRepeated(true);
     layer1.setTexture(layer1Texture);
@@ -682,4 +684,12 @@ bool Game::getIsKnifeCollision() const{
 
 bool Game::getIsKnifeThrownCollision() const{
     return KnifeCollision;
+}
+
+void Game::loop() {
+    m_gameMachine->exec();
+    m_gameMachine->update();
+    m_gameMachine->render();
+    update();
+    render();
 }

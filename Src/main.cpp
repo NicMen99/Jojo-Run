@@ -16,8 +16,7 @@ int main() {
 
     while (!game.getMap()->isClosed()) {
         double start = clock() / CLOCKS_PER_SEC;
-        game.update();
-        game.render();
+        game.loop();
         std::this_thread::sleep_for(std::chrono::milliseconds((int) start + MS_PER_FRAME - (clock() / CLOCKS_PER_SEC)));
     }
 }
