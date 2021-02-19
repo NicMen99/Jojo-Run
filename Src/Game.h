@@ -83,6 +83,11 @@ public:
 
     void setIsCollided(bool isCollided);
 
+
+    sf::Texture heroTexture1;
+    sf::Texture heroTexture2;
+    sf::Texture heroTextureS1;
+
     sf::Sound collisionSound;
     sf::Sound powerUpSound;
     sf::Sound shieldOnSound;
@@ -119,6 +124,9 @@ public:
     sf::Sprite layer2;
     sf::Sprite layer3;
     sf::Sprite layer4;
+
+    sf::Font font;
+
 
 private:
     ////////////////////
@@ -164,9 +172,7 @@ private:
     const float jumpLimit = 5.5;
     const float jumpPlus = 0.08;
 
-    sf::Texture heroTexture1;
-    sf::Texture heroTexture2;
-    sf::Texture heroTextureS1;
+
     sf::Texture gameOverTexture;
     sf::Texture layer1Texture;
     sf::Texture layer2Texture;
@@ -175,7 +181,6 @@ private:
 
     sf::Sprite gameOver;
 
-    sf::Font font;
 
     int collidedfirewalls;
 

@@ -12,7 +12,7 @@
 #include "GameConfig.h"
 GameOverState* GameOverState::m_instance = nullptr;
 sf::SoundBuffer gameOverBuffer;
-sf::Sound gameOverSound, gameMusic, collisionSound,shieldOnSound, powerUpSound,hamonEnemySound,emeraldEnemySound, fireEnemySound;
+sf::Sound gameOverSound;
 sf::Texture gameOverTexture;
 sf::Sprite gameOver;
 
@@ -39,14 +39,13 @@ void GameOverState::init() {
 
 void GameOverState::onEnter() {
     gameOverSound.play();
-    gameMusic.stop();
-    collisionSound.stop();
-    shieldOnSound.stop();
-    powerUpSound.stop();
-    hamonEnemySound.stop();
-    emeraldEnemySound.stop();
-    fireEnemySound.stop();
-    gameOverSound.play();
+    m_context->gameMusic.stop();
+    m_context->collisionSound.stop();
+    m_context->shieldOnSound.stop();
+    m_context->powerUpSound.stop();
+    m_context->hamonEnemySound.stop();
+    m_context->emeraldEnemySound.stop();
+    m_context->fireEnemySound.stop();
 }
 
 void GameOverState::onExit() {

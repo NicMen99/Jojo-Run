@@ -10,14 +10,12 @@
 #include "Hero.h"
 PlayState* PlayState::m_instance = nullptr;
 sf::Texture layer1Texture, layer2Texture, layer3Texture, layer4Texture;
-sf::Texture heroTexture1, heroTexture2, heroTextureS1;
 sf::SoundBuffer collisionBuffer;
 sf::SoundBuffer powerUpBuffer;
 sf::SoundBuffer shieldOnBuffer;
 sf::SoundBuffer fireEnemyBuffer;
 sf::SoundBuffer emeraldEnemyBuffer;
 sf::SoundBuffer hamonEnemyBuffer;
-sf::Font font;
 
 const float ground = 63.0f;
 
@@ -44,10 +42,10 @@ void PlayState::init() {
     m_context->layer4.setScale(7.4, 7.4);
     m_context->layer4.setTextureRect(sf::IntRect(0, 0, (500 * window_size.x), window_size.y + static_cast<int>(ground)));
 
-    heroTexture1.loadFromFile(GC->getAssetPath("playerTexture"));
-    heroTexture2.loadFromFile(GC->getAssetPath("playerTextureUp"));
-    m_context->hero.setTexture(heroTexture1);
-    heroTextureS1.loadFromFile(GC->getAssetPath("playerShieldTexture"));
+    m_context->heroTexture1.loadFromFile(GC->getAssetPath("playerTexture"));
+    m_context->heroTexture2.loadFromFile(GC->getAssetPath("playerTextureUp"));
+    m_context->hero.setHeroTexture(m_context->heroTexture1);
+    m_context->heroTextureS1.loadFromFile(GC->getAssetPath("playerShieldTexture"));
 
     collisionBuffer.loadFromFile(GC->getAssetPath("collisionSound"));
     m_context->collisionSound.setBuffer(collisionBuffer);
@@ -74,7 +72,7 @@ void PlayState::init() {
     m_context->hamonEnemySound.setVolume(21.f);
 
     // Loading Font
-    font.loadFromFile(GC->getAssetPath("arcadeclassic"));
+    m_context->font.loadFromFile(GC->getAssetPath("arcadeclassic"));
 
     m_context->gameMusic.openFromFile(GC->getAssetPath("soundTrack"));
     m_context->gameMusic.setLoop(true);
@@ -147,7 +145,7 @@ void PlayState::update() {
             }
             if(m_context->getIsShieldCollision()){
                 m_context->setIsShieldOn(true);
-                m_context->hero.setTexture(heroTextureS1);
+                m_context->hero.setTexture(m_context->heroTextureS1);
                 m_context->powerups.erase(m_context->powerups.begin()+m_context->collidedpowerups);
                 m_context->notify();
                 m_context->setShieldPowerupCollision(false);
@@ -172,7 +170,7 @@ void PlayState::update() {
 
     if(m_context->getIsShieldOn() && m_context->shieldClk.getElapsedTime().asSeconds() >= 15.f) {
         m_context->setIsShieldOn(false);
-        m_context->hero.setHeroTexture(heroTexture1);
+        m_context->hero.setHeroTexture(m_context->heroTexture1);
     }
 
     if (m_context->scoreClk.getElapsedTime().asSeconds() >= 1.f && !m_context->hero.getIsDead()) {

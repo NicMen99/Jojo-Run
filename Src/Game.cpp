@@ -17,7 +17,7 @@ Game::~Game() {
 
 void Game::init() {
     m_window.create(sf::VideoMode(1600, 1000), "JoJo Run");
-    m_window.setFramerateLimit(60);
+    m_window.setFramerateLimit(180);
 }
 
 void Game::loop() {
