@@ -9,10 +9,11 @@
 
 class GameOverState: public AbsGameState{
 public:
+    void init() override;
     void onEnter() override;
     void onExit() override;
     void update() override;
-    void render() override;
+    void render(sf::RenderWindow &window) override;
 
 public:
     static GameOverState* instance();

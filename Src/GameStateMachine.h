@@ -13,7 +13,7 @@ public:
     void exec() override;
 private:
     void update() override {getCurrentState()->update();}
-    void render() override {getCurrentState()->render();}
+    void render(sf::RenderWindow &window) override { getCurrentState()->render(window);}
 };
 
 

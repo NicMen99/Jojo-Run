@@ -11,7 +11,7 @@
 
 class Map {
 public:
-    Map();
+    Map(); //nei test
     Map(const std::string &Title, const sf::Vector2u &Size);
     ~Map() { map.close(); }
 

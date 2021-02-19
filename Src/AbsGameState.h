@@ -5,6 +5,7 @@
 #ifndef JOJO_RUN_ABSGAMESTATE_H
 #define JOJO_RUN_ABSGAMESTATE_H
 
+#include <SFML/Graphics.hpp>
 class Game;
 
 enum class State{
@@ -22,7 +23,7 @@ public:
     virtual void init();
     virtual void exec(){}
     virtual void update(){};
-    virtual void render(){};
+    virtual void render(sf::RenderWindow &window) {};
 
 protected:
     static void changeState(State nextState);

@@ -18,18 +18,23 @@
 #include "GameStateMachine.h"
 
 class Game: public Subject {
+    AbsGameState* m_gameMachine;
+    sf::RenderWindow m_window;
+    sf::Event m_event;
 public:
     Game();
     ~Game();
+    void init();
     void loop();
-
-    Map *getMap() { return &map;}
+    sf::Vector2u getWindowSize(){return m_window.getSize();}
+/////////////////
 
     int randomPosY();
     int randomCreation();
 
-    void update();
-    void render();
+
+    //void update();
+    //void render();
 
     const sf::Vector2f &getSpeed() const;
     bool getIsShieldOn() const;
@@ -52,33 +57,75 @@ public:
     int getKnivesSize() { return static_cast<int>(knives.size()); };
     int getFireWallsSize() { return static_cast<int>(firewalls.size()); };
 
+
     void collision();
     void notify() override;
     void unsubscribe(Observer *o) override;
     void subscribe(Observer *o) override;
 
-public:
-    void changeState(AbsGameState* nextState){}
-
-private:
     void createObj();
     void createEnemy();
     void moveObject();
+    void moveHero();
+    void throwKnife();
+    void moveEnemy();
     void deleteObject();
     void deleteEnemy();
-    void moveHero();
     void handleTxt();
-    void moveEnemy();
-    void throwKnife();
 
-    AbsGameState* m_gameMachine;
+    void setIsShieldOn(bool isShieldOn);
+    void setBlockCollision(bool blockCollision);
+    void setEnemyCollision(bool enemyCollision);
+    void setFirewallCollision(bool firewallCollision);
+    void setKnifeCollision(bool knifeCollision);
+    void setShieldPowerupCollision(bool shieldPowerupCollision);
+    void setKnivesPowerupCollision(bool knivesPowerupCollision);
 
+    void setIsCollided(bool isCollided);
+
+    sf::Sound collisionSound;
+    sf::Sound powerUpSound;
+    sf::Sound shieldOnSound;
+    sf::Sound hamonEnemySound;
+    sf::Sound emeraldEnemySound;
+    sf::Sound fireEnemySound;
+    sf::Music gameMusic;
+    int txtCount;
+    unsigned int score;
+    sf::Clock collisionClk;
+    std::vector<std::unique_ptr<Block>> blocks;
+    int collidedblocks;
+    std::vector<std::unique_ptr<Enemy>> enemies;
+    int collidedenemies;
+    std::vector<std::unique_ptr<PowerUp>> powerups;
+    int collidedpowerups;
+    std::vector<std::unique_ptr<PowerUp>> knives;
+    int collidedknives;
+    sf::Clock shieldClk;
+    sf::Clock scoreClk;
+    std::vector<std::unique_ptr<FireWall>> firewalls;
+    sf::Text scoreTxt;
+    sf::Text numScore;
+    sf::Text lifeTxt;
+    sf::Text numLife;
+    sf::Text knivesTxt;
+    sf::Text numKnives;
+    sf::Text scoreB;
+    sf::Text bestScoreTxt;
+    sf::Text bestScoreB;
+    sf::Text bestScoreNum;
+    Hero hero;
+    sf::Sprite layer1;
+    sf::Sprite layer2;
+    sf::Sprite layer3;
+    sf::Sprite layer4;
+
+private:
+    ////////////////////
     std::ofstream file;
     std::ofstream bestScoreFileWrite;
     std::ifstream bestScoreFileRead;
 
-    Map map;
-    Hero hero;
     Factory factory;
 
     bool isCreated;
@@ -96,9 +143,7 @@ private:
     int maxY;
     int countCreation;
     int n;
-    int txtCount;
 
-    unsigned int score;
     unsigned int bestScore;
 
     float creationRate;
@@ -129,56 +174,20 @@ private:
     sf::Texture layer4Texture;
 
     sf::Sprite gameOver;
-    sf::Sprite layer1;
-    sf::Sprite layer2;
-    sf::Sprite layer3;
-    sf::Sprite layer4;
-
-    sf::Text scoreTxt;
-    sf::Text numScore;
-    sf::Text lifeTxt;
-    sf::Text numLife;
-    sf::Text knivesTxt;
-    sf::Text numKnives;
-    sf::Text bestScoreTxt;
-    sf::Text scoreB;
-    sf::Text bestScoreB;
-    sf::Text bestScoreNum;
 
     sf::Font font;
 
-    std::vector<std::unique_ptr<Block>> blocks;
-    std::vector<std::unique_ptr<Enemy>> enemies;
-    std::vector<std::unique_ptr<FireWall>> firewalls;
-    std::vector<std::unique_ptr<PowerUp>> powerups;
-    std::vector<std::unique_ptr<PowerUp>> knives;
-
-    int collidedblocks;
-    int collidedenemies;
     int collidedfirewalls;
-    int collidedpowerups;
-    int collidedknives;
 
     sf::Clock objectClk;
     sf::Clock enemyClk;
     sf::Clock controlPU;
-    sf::Clock collisionClk;
     sf::Clock powerupClk;
-    sf::Clock shieldClk;
-    sf::Clock scoreClk;
 
     sf::Vector2f speed;
     sf::Vector2f oldSpeed;
 
-    sf::Music gameMusic;
-
     sf::Sound gameOverSound;
-    sf::Sound collisionSound;
-    sf::Sound powerUpSound;
-    sf::Sound shieldOnSound;
-    sf::Sound hamonEnemySound;
-    sf::Sound emeraldEnemySound;
-    sf::Sound fireEnemySound;
 
 
     sf::SoundBuffer gameOverBuffer;
@@ -188,6 +197,7 @@ private:
     sf::SoundBuffer fireEnemyBuffer;
     sf::SoundBuffer emeraldEnemyBuffer;
     sf::SoundBuffer hamonEnemyBuffer;
+    /////////////////
 
     std::list<Observer*> observers;
 };

@@ -6,9 +6,6 @@
 #include "GameConfig.h"
 #include "Game.h"
 
-float Game::getCreationRate() const {
-    return creationRate;
-}
 
 Game::~Game() {
     blocks.clear();
@@ -18,11 +15,35 @@ Game::~Game() {
     knives.clear();
 }
 
+void Game::init() {
+    m_window.create(sf::VideoMode(1600, 1000), "JoJo Run");
+    m_window.setFramerateLimit(60);
+}
+
+void Game::loop() {
+    while(m_window.isOpen()){
+        while (m_window.pollEvent(m_event)) {
+            if(m_event.type == sf::Event::Closed)
+                m_window.close();
+        }
+        m_gameMachine->exec();
+        m_gameMachine->update();
+        m_window.clear();
+        m_gameMachine->render(m_window);
+        m_window.display();
+    }
+}
+
+float Game::getCreationRate() const {
+    return creationRate;
+}
+
 void Game::createObj() {
+
     if (powerupClk.getElapsedTime().asSeconds() >= creationRate) {
         if (countCreation % 5 == 0 && randomCreation() == 0) {
             std::unique_ptr<PowerUp> knife = factory.createPowerUp(PowerUpType::Knife);
-            knife->setPosition(sf::Vector2f(map.getMapSize().x + 20, randomPosY()));
+            knife->setPosition(sf::Vector2f(m_window.getSize().x + 20, randomPosY()));
             powerups.emplace_back(move(knife));
             isCreated = true;
             powerupClk.restart();
@@ -30,7 +51,7 @@ void Game::createObj() {
         }
         if (countCreation % 9 == 0 && randomCreation() == 0) {
             std::unique_ptr<PowerUp> shield = factory.createPowerUp(PowerUpType::Shield);
-            shield->setPosition(sf::Vector2f(map.getMapSize().x + 20, randomPosY()));
+            shield->setPosition(sf::Vector2f(m_window.getSize().x + 20, randomPosY()));
             powerups.emplace_back(move(shield));
             isCreated = true;
             powerupClk.restart();
@@ -41,7 +62,7 @@ void Game::createObj() {
     if (objectClk.getElapsedTime().asSeconds() >= creationRate) {
         if (countCreation % 2 == 0 && randomCreation() == 2 && !isCreated) {
             std::unique_ptr<Block> block = factory.createBlock(BlockType::MovingBlock);
-            block->setPosition(sf::Vector2f(map.getMapSize().x + 50, randomPosY()));
+            block->setPosition(sf::Vector2f(m_window.getSize().x + 50, randomPosY()));
             blocks.emplace_back(move(block));
             isCreated = true;
             objectClk.restart();
@@ -49,7 +70,7 @@ void Game::createObj() {
         }
         if (countCreation % 3 == 0 && randomCreation() == 2 && !isCreated) {
             std::unique_ptr<FireWall> fireWall = factory.createFireWall(FireWallType::MovingWall);
-            fireWall->setPosition(sf::Vector2f(map.getMapSize().x + 50, randomPosY()));
+            fireWall->setPosition(sf::Vector2f(m_window.getSize().x + 50, randomPosY()));
             firewalls.emplace_back(move(fireWall));
             isCreated = true;
             objectClk.restart();
@@ -57,10 +78,10 @@ void Game::createObj() {
         }
         if (!isCreated) {
             //std::unique_ptr<Block> block = factory.createBlock(BlockType::StillBlock);
-            //block->setPosition(sf::Vector2f(2 * map.getMapSize().x, randomPosY()));
+            //block->setPosition(sf::Vector2f(2 * m_window.getSize().x, randomPosY()));
             //blocks.emplace_back(move(block));
             //std::unique_ptr<FireWall> firewall = factory.createFireWall(FireWallType::StillWall);
-            //firewall->setPosition(sf::Vector2f(2 * map.getMapSize().x, randomPosY()));
+            //firewall->setPosition(sf::Vector2f(2 * m_window.getSize().x, randomPosY()));
             //firewalls.emplace_back(move(firewall));
             //isCreated = true;
             objectClk.restart();
@@ -83,7 +104,7 @@ void Game::createEnemy() {
     if (enemyClk.getElapsedTime().asSeconds() >= creationRate) {
         if (countCreation % 11 == 0 && randomCreation() == 1) {
             std::unique_ptr<Enemy> enemy = factory.createEnemy(EnemyType::HamonEnemy);
-            enemy->setPosition(sf::Vector2f(150 + map.getMapSize().x, randomPosY()));
+            enemy->setPosition(sf::Vector2f(150 + m_window.getSize().x, randomPosY()));
             hamonEnemySound.play();
             enemies.emplace_back(move(enemy));
             isCreated = true;
@@ -92,7 +113,7 @@ void Game::createEnemy() {
         }
         if (countCreation % 13 == 0 && randomCreation() == 1) {
             std::unique_ptr<Enemy> enemy = factory.createEnemy(EnemyType::EmeraldEnemy);
-            enemy->setPosition(sf::Vector2f(150 + map.getMapSize().x, randomPosY()));
+            enemy->setPosition(sf::Vector2f(150 + m_window.getSize().x, randomPosY()));
             emeraldEnemySound.play();
             enemies.emplace_back(move(enemy));
             isCreated = true;
@@ -101,7 +122,7 @@ void Game::createEnemy() {
         }
         if (countCreation % 17 == 0 && randomCreation() == 1) {
             std::unique_ptr<Enemy> enemy = factory.createEnemy(EnemyType::FireEnemy);
-            enemy->setPosition(sf::Vector2f(150 + map.getMapSize().x, randomPosY()));
+            enemy->setPosition(sf::Vector2f(150 + m_window.getSize().x, randomPosY()));
             fireEnemySound.play();
             enemies.emplace_back(move(enemy));
             isCreated = true;
@@ -204,7 +225,7 @@ void Game::deleteEnemy() {
 void Game::moveObject() {
     for (auto &b : blocks) {
         if (b->getIsMovingBlock()) {
-            if (b->getPosition().y + b->getGlobalBounds().height >= map.getMapSize().y - ground ||
+            if (b->getPosition().y + b->getGlobalBounds().height >= m_window.getSize().y - ground ||
                 b->getPosition().y <= 0)
                 b->setBlockSpeedX(-b->getBlockSpeedX());
                 b->move(-b->getBlockSpeedX(), 0);
@@ -212,7 +233,7 @@ void Game::moveObject() {
     }
     for (auto &p : powerups) {
         if (p->getIsMovingPu()) {
-            if (p->getPosition().y + p->getGlobalBounds().height >= map.getMapSize().y - ground ||
+            if (p->getPosition().y + p->getGlobalBounds().height >= m_window.getSize().y - ground ||
                 p->getPosition().y <= 0)
                 p->setSpeedPux(-p->getSpeedPux());
                 p->move(-p->getSpeedPux(), 0);
@@ -221,7 +242,7 @@ void Game::moveObject() {
 
     for (auto &f : firewalls) {
         if (f->getIsMovingFW()) {
-            if (f->getPosition().y + f->getGlobalBounds().height >= map.getMapSize().y - ground ||
+            if (f->getPosition().y + f->getGlobalBounds().height >= m_window.getSize().y - ground ||
                 f->getPosition().y <= 0)
                 f->setFireWallSpeedX(-f->getFWSpeedX());
                 f->move(-f->getFWSpeedX(), 0);
@@ -229,7 +250,7 @@ void Game::moveObject() {
     }
     for (auto &k: knives) {
         if (k->getIsMovingPu()) {
-            if (k->getPosition().y + k->getGlobalBounds().height >= map.getMapSize().y - ground ||
+            if (k->getPosition().y + k->getGlobalBounds().height >= m_window.getSize().y - ground ||
                 k->getPosition().y <= 0)
                 k->setSpeedPux(+k->getSpeedPux());
                 k->move(+k->getSpeedPux(), 0);
@@ -337,8 +358,8 @@ void Game::moveHero() {
             hero.setHeroTexture(heroTexture1);
         heroTexture1.setSmooth(true);
     }
-    if (hero.getHeroPos().y + hero.getHeroSize().y >= map.getMapSize().y - ground)
-        hero.setHeroPos(hero.getHeroPos().x, map.getMapSize().y - (hero.getHeroSize().y + ground));
+    if (hero.getHeroPos().y + hero.getHeroSize().y >= m_window.getSize().y - ground)
+        hero.setHeroPos(hero.getHeroPos().x, m_window.getSize().y - (hero.getHeroSize().y + ground));
     if (hero.getHeroPos().y <= top )
         hero.setHeroPos(hero.getHeroPos().x, top);
 }
@@ -346,7 +367,7 @@ void Game::moveHero() {
 void Game::moveEnemy() {
     for (auto &e : enemies) {
         if (e->getIsMovingEnemy()) {
-            if (e->getPosition().y + e->getGlobalBounds().height >= map.getMapSize().y - ground ||
+            if (e->getPosition().y + e->getGlobalBounds().height >= m_window.getSize().y - ground ||
                 e->getPosition().y <= 0)
                 e->setSpeed(-e->getSpeed());
                 e->move(-e->getSpeed(), 0);
@@ -355,7 +376,7 @@ void Game::moveEnemy() {
 }
 
 int Game::randomPosY() {
-    return ((rand() % int(map.getMapSize().y - this->top - this->ground - 85)) + this->top );
+    return ((rand() % int(m_window.getSize().y - this->top - this->ground - 85)) + this->top );
 }
 
 int Game::randomCreation() {
@@ -363,7 +384,7 @@ int Game::randomCreation() {
 }
 
 Game::Game():
-    map("JoJoRun", sf::Vector2u(1600, 1000)), hero(), layer1(), layer2(), layer3(), layer4(), factory(),
+    hero(), layer1(), layer2(), layer3(), layer4(), factory(),
     speed(sf::Vector2f(1.1,1.1)), oldSpeed(speed), blockX(100), isCreated(false), isCollided(false), BlockCollision(false), EnemyCollision(false),
     FirewallCollision(false), KnifeCollision(false), KnivesPowerupCollision(false), ShieldPowerupCollision(false), countCreation(1), creationRate(2.5f),
     /*oldCreationRate(creationRate),*/ objectClk(), powerupClk(),shieldClk(), scoreClk(), controlPU(), collisionClk(),enemyClk(), isShieldOn(false),
@@ -372,48 +393,59 @@ Game::Game():
     //setting dei layers del background
     m_gameMachine = new GameStateMachine(this, State::Init);
 
+    /*
     layer1Texture.loadFromFile(GC->getAssetPath("Background1"));
     layer1Texture.setRepeated(true);
     layer1.setTexture(layer1Texture);
     layer1.setScale(7.4, 7.4);
-    layer1.setTextureRect(sf::IntRect(0, 0, (500 * map.getMapSize().x), map.getMapSize().y + static_cast<int>(ground)));
+    layer1.setTextureRect(sf::IntRect(0, 0, (500 * m_window.getSize().x), m_window.getSize().y + static_cast<int>(ground)));
     layer2Texture.loadFromFile(GC->getAssetPath("BG"));
     layer2Texture.setRepeated(true);
     layer2.setTexture(layer2Texture);
     layer2.setScale(7.4, 7.4);
-    layer2.setTextureRect(sf::IntRect(0, 0, (500 * map.getMapSize().x), map.getMapSize().y + static_cast<int>(ground)));
+    layer2.setTextureRect(sf::IntRect(0, 0, (500 * m_window.getSize().x), m_window.getSize().y + static_cast<int>(ground)));
     layer3Texture.loadFromFile(GC->getAssetPath("Foreground"));
     layer3Texture.setRepeated(true);
     layer3.setScale(7.4, 7.4);
     layer3.setTexture(layer3Texture);
-    layer3.setTextureRect(sf::IntRect(0, 0, (500 * map.getMapSize().x), map.getMapSize().y + static_cast<int>(ground)));
+    layer3.setTextureRect(sf::IntRect(0, 0, (500 * m_window.getSize().x), m_window.getSize().y + static_cast<int>(ground)));
     layer4Texture.loadFromFile(GC->getAssetPath("Middle"));
     layer4Texture.setRepeated(true);
     layer4.setTexture(layer4Texture);
     layer4.setScale(7.4, 7.4);
-    layer4.setTextureRect(sf::IntRect(0, 0, (500 * map.getMapSize().x), map.getMapSize().y + static_cast<int>(ground)));
+    layer4.setTextureRect(sf::IntRect(0, 0, (500 * m_window.getSize().x), m_window.getSize().y + static_cast<int>(ground)));
+    */
 
+    /*
     //setting texture e sprite
     heroTexture1.loadFromFile(GC->getAssetPath("playerTexture"));
     heroTexture2.loadFromFile(GC->getAssetPath("playerTextureUp"));
     hero.setTexture(heroTexture1);
     heroTextureS1.loadFromFile(GC->getAssetPath("playerShieldTexture"));
+    */
 
+    /*
     gameOverTexture.loadFromFile(GC->getAssetPath("GameOverScreen"));
     gameOver.setTexture(gameOverTexture);
     gameOver.setPosition(225,100);
     gameOver.setScale(0.8,0.8);
+     */
 
+    /*
     //setting music
     gameMusic.openFromFile(GC->getAssetPath("soundTrack"));
     gameMusic.setLoop(true);
     gameMusic.setVolume(10.f);
     gameMusic.play();
+     */
 
+    /*
     gameOverBuffer.loadFromFile(GC->getAssetPath("gameOverSound"));
     gameOverSound.setBuffer(gameOverBuffer);
     gameOverSound.setVolume(21.f);
+     */
 
+    /*
     collisionBuffer.loadFromFile(GC->getAssetPath("collisionSound"));
     collisionSound.setBuffer(collisionBuffer);
     collisionSound.setVolume(22.f);
@@ -440,26 +472,31 @@ Game::Game():
 
     // Loading Font
     font.loadFromFile(GC->getAssetPath("arcadeclassic"));
-
+    */
 
     srand((unsigned) time(nullptr));
-    maxY = static_cast<int>(map.getMapSize().y - (top + blockX));
+    maxY = static_cast<int>(m_window.getSize().y - (top + blockX));
 }
 
+/*
 void Game::update() {
     map.update();
     layer1.move(-speed.x, 0);
     layer2.move(-speed.x*1.2, 0);
     layer3.move(-speed.x*1.4, 0);
     layer4.move(-speed.x*1.6, 0);
+     */
 
+    /*
     if (hero.getIsDead() && txtCount == 0) {
         file.open("Score.txt", std::ios::out | std::ios::app);
         file << std::endl;
         file << "Score: " << score;
         file.close();
         txtCount++;
+        */
 
+        /*
         gameMusic.stop();
         collisionSound.stop();
         shieldOnSound.stop();
@@ -468,7 +505,9 @@ void Game::update() {
         emeraldEnemySound.stop();
         fireEnemySound.stop();
         gameOverSound.play();
+        */
 
+        /*
         bestScoreFileRead.open("BestScore.txt");
         bestScoreFileRead >> bestScore;
         bestScoreFileRead.close();
@@ -481,6 +520,9 @@ void Game::update() {
         bestScoreFileWrite << bestScore;
         bestScoreFileWrite.close();
     }
+    */
+
+    /*
     createObj();
     createEnemy();
     moveObject();
@@ -499,7 +541,7 @@ void Game::update() {
     }
     if (isCollided) {
         if (collisionClk.getElapsedTime().asSeconds() >= 0) {
-            if(FirewallCollision){ //non spawna?
+            if(FirewallCollision){
                 hero.setHealth(hero.getHealth() - 15);
                 notify();
                 FirewallCollision =false;
@@ -564,6 +606,7 @@ void Game::update() {
         notify();
     }
 }
+     */
 
 const sf::Vector2f &Game::getSpeed() const {
     return speed;
@@ -572,7 +615,7 @@ const sf::Vector2f &Game::getSpeed() const {
 int Game::getMaxY() const {
     return maxY;
 }
-
+/*
 void Game::render() {
     map.clear();
     map.draw(layer2);
@@ -614,7 +657,7 @@ void Game::render() {
 
         map.draw(scoreTxt);
         map.draw(numScore);
-        map.draw(gameOver);
+        //map.draw(gameOver);
         map.draw(scoreB);
         map.draw(bestScoreTxt);
         map.draw(bestScoreB);
@@ -622,6 +665,7 @@ void Game::render() {
     }
     map.display();
 }
+*/
 
 void Game::notify() {
     for (auto i = std::begin(observers); i != std::end(observers); i++)
@@ -686,10 +730,38 @@ bool Game::getIsKnifeThrownCollision() const{
     return KnifeCollision;
 }
 
-void Game::loop() {
-    m_gameMachine->exec();
-    m_gameMachine->update();
-    m_gameMachine->render();
-    update();
-    render();
+
+
+void Game::setBlockCollision(bool blockCollision) {
+    BlockCollision = blockCollision;
 }
+
+void Game::setEnemyCollision(bool enemyCollision) {
+    EnemyCollision = enemyCollision;
+}
+
+void Game::setFirewallCollision(bool firewallCollision) {
+    FirewallCollision = firewallCollision;
+}
+
+void Game::setKnifeCollision(bool knifeCollision) {
+    KnifeCollision = knifeCollision;
+}
+
+void Game::setShieldPowerupCollision(bool shieldPowerupCollision) {
+    ShieldPowerupCollision = shieldPowerupCollision;
+}
+
+void Game::setKnivesPowerupCollision(bool knivesPowerupCollision) {
+    KnivesPowerupCollision = knivesPowerupCollision;
+}
+
+void Game::setIsShieldOn(bool isShieldOn) {
+    Game::isShieldOn = isShieldOn;
+}
+
+void Game::setIsCollided(bool isCollided) {
+    Game::isCollided = isCollided;
+}
+
+
