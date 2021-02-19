@@ -32,10 +32,6 @@ public:
     int randomPosY();
     int randomCreation();
 
-
-    //void update();
-    //void render();
-
     const sf::Vector2f &getSpeed() const;
     bool getIsShieldOn() const;
     bool getIsCollided() const;
@@ -128,6 +124,7 @@ public:
     sf::Font font;
 
 
+    int collidedfirewalls;
 private:
     ////////////////////
     std::ofstream file;
@@ -181,8 +178,6 @@ private:
 
     sf::Sprite gameOver;
 
-
-    int collidedfirewalls;
 
     sf::Clock objectClk;
     sf::Clock enemyClk;

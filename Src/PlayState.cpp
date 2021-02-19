@@ -115,9 +115,16 @@ void PlayState::update() {
     if (m_context->getIsCollided()) {
         if (m_context->collisionClk.getElapsedTime().asSeconds() >= 0) {
             if(m_context->getIsFirewallCollision()){
-                m_context->hero.setHealth(m_context->hero.getHealth() - 15);
-                m_context->notify();
+                if(m_context->getIsShieldOn()){
+                    m_context->setIsShieldOn(false);
+                }
+                else{
+                    m_context->hero.setHealth(m_context->hero.getHealth() - 15);
+                    m_context->notify();
+                }
+                m_context->firewalls.erase(m_context->firewalls.begin() + m_context->collidedfirewalls);
                 m_context->setFirewallCollision(false);
+                m_context->hero.gameOver();
             }
             if(m_context->getIsBlockCollision()){
                 if(m_context->getIsShieldOn()){

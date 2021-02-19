@@ -263,7 +263,6 @@ void Game::collision() {
     if (!isCollided) {
         for (int i = 0; i < blocks.size(); i++) {
             if (blocks[i]->getGlobalBounds().intersects(hero.getHeroBounds())) {
-                //Se ha lo scudo e interseca un blocco non muore
                 if (isShieldOn) {
                     shieldOnSound.play();
                     controlPU.restart();
@@ -276,18 +275,18 @@ void Game::collision() {
                 collidedblocks = i;
             }
         }
-        for (int j = 0; j < firewalls.size(); j++) { //da rivedere
+        for (int j = 0; j < firewalls.size(); j++) {
             if (firewalls[j]->getGlobalBounds().intersects(hero.getHeroBounds())) {
-                //Se ha lo scudo e interseca l'oggetto non muore
                 if (isShieldOn) {
                     shieldOnSound.play();
                     controlPU.restart();
                 }else if (controlPU.getElapsedTime().asSeconds() >= toll) {
-                    FirewallCollision = true;
-                    isCollided = true;
                     collisionSound.play();
                     collisionClk.restart();
                 }
+                FirewallCollision = true;
+                isCollided = true;
+                collidedfirewalls = j;
             }
         }
         for (int e = 0; e < enemies.size(); e++) {
@@ -390,223 +389,11 @@ Game::Game():
     /*oldCreationRate(creationRate),*/ objectClk(), powerupClk(),shieldClk(), scoreClk(), controlPU(), collisionClk(),enemyClk(), isShieldOn(false),
     n(1), score(0), txtCount(0),bestScore(0) {
 
-    //setting dei layers del background
     m_gameMachine = new GameStateMachine(this, State::Init);
-
-    /*
-    layer1Texture.loadFromFile(GC->getAssetPath("Background1"));
-    layer1Texture.setRepeated(true);
-    layer1.setTexture(layer1Texture);
-    layer1.setScale(7.4, 7.4);
-    layer1.setTextureRect(sf::IntRect(0, 0, (500 * m_window.getSize().x), m_window.getSize().y + static_cast<int>(ground)));
-    layer2Texture.loadFromFile(GC->getAssetPath("BG"));
-    layer2Texture.setRepeated(true);
-    layer2.setTexture(layer2Texture);
-    layer2.setScale(7.4, 7.4);
-    layer2.setTextureRect(sf::IntRect(0, 0, (500 * m_window.getSize().x), m_window.getSize().y + static_cast<int>(ground)));
-    layer3Texture.loadFromFile(GC->getAssetPath("Foreground"));
-    layer3Texture.setRepeated(true);
-    layer3.setScale(7.4, 7.4);
-    layer3.setTexture(layer3Texture);
-    layer3.setTextureRect(sf::IntRect(0, 0, (500 * m_window.getSize().x), m_window.getSize().y + static_cast<int>(ground)));
-    layer4Texture.loadFromFile(GC->getAssetPath("Middle"));
-    layer4Texture.setRepeated(true);
-    layer4.setTexture(layer4Texture);
-    layer4.setScale(7.4, 7.4);
-    layer4.setTextureRect(sf::IntRect(0, 0, (500 * m_window.getSize().x), m_window.getSize().y + static_cast<int>(ground)));
-    */
-
-    /*
-    //setting texture e sprite
-    heroTexture1.loadFromFile(GC->getAssetPath("playerTexture"));
-    heroTexture2.loadFromFile(GC->getAssetPath("playerTextureUp"));
-    hero.setTexture(heroTexture1);
-    heroTextureS1.loadFromFile(GC->getAssetPath("playerShieldTexture"));
-    */
-
-    /*
-    gameOverTexture.loadFromFile(GC->getAssetPath("GameOverScreen"));
-    gameOver.setTexture(gameOverTexture);
-    gameOver.setPosition(225,100);
-    gameOver.setScale(0.8,0.8);
-     */
-
-    /*
-    //setting music
-    gameMusic.openFromFile(GC->getAssetPath("soundTrack"));
-    gameMusic.setLoop(true);
-    gameMusic.setVolume(10.f);
-    gameMusic.play();
-     */
-
-    /*
-    gameOverBuffer.loadFromFile(GC->getAssetPath("gameOverSound"));
-    gameOverSound.setBuffer(gameOverBuffer);
-    gameOverSound.setVolume(21.f);
-     */
-
-    /*
-    collisionBuffer.loadFromFile(GC->getAssetPath("collisionSound"));
-    collisionSound.setBuffer(collisionBuffer);
-    collisionSound.setVolume(22.f);
-
-    powerUpBuffer.loadFromFile(GC->getAssetPath("shieldSound"));
-    powerUpSound.setBuffer(powerUpBuffer);
-    powerUpSound.setVolume(20.f);
-
-    shieldOnBuffer.loadFromFile(GC->getAssetPath("shieldOn"));
-    shieldOnSound.setBuffer(shieldOnBuffer);
-    shieldOnSound.setVolume(20.f);
-
-    fireEnemyBuffer.loadFromFile(GC->getAssetPath("fireEnemyShout"));
-    fireEnemySound.setBuffer(fireEnemyBuffer);
-    fireEnemySound.setVolume(21.f);
-
-    emeraldEnemyBuffer.loadFromFile(GC->getAssetPath("emeraldEnemyShout"));
-    emeraldEnemySound.setBuffer(emeraldEnemyBuffer);
-    emeraldEnemySound.setVolume(21.f);
-
-    hamonEnemyBuffer.loadFromFile(GC->getAssetPath("hamonEnemyShout"));
-    hamonEnemySound.setBuffer(hamonEnemyBuffer);
-    hamonEnemySound.setVolume(21.f);
-
-    // Loading Font
-    font.loadFromFile(GC->getAssetPath("arcadeclassic"));
-    */
 
     srand((unsigned) time(nullptr));
     maxY = static_cast<int>(m_window.getSize().y - (top + blockX));
 }
-
-/*
-void Game::update() {
-    map.update();
-    layer1.move(-speed.x, 0);
-    layer2.move(-speed.x*1.2, 0);
-    layer3.move(-speed.x*1.4, 0);
-    layer4.move(-speed.x*1.6, 0);
-     */
-
-    /*
-    if (hero.getIsDead() && txtCount == 0) {
-        file.open("Score.txt", std::ios::out | std::ios::app);
-        file << std::endl;
-        file << "Score: " << score;
-        file.close();
-        txtCount++;
-        */
-
-        /*
-        gameMusic.stop();
-        collisionSound.stop();
-        shieldOnSound.stop();
-        powerUpSound.stop();
-        hamonEnemySound.stop();
-        emeraldEnemySound.stop();
-        fireEnemySound.stop();
-        gameOverSound.play();
-        */
-
-        /*
-        bestScoreFileRead.open("BestScore.txt");
-        bestScoreFileRead >> bestScore;
-        bestScoreFileRead.close();
-
-        bestScoreFileWrite.open("BestScore.txt");
-        if (score > bestScore) {
-            bestScore = score;
-        }
-        bestScoreFileWrite.clear();
-        bestScoreFileWrite << bestScore;
-        bestScoreFileWrite.close();
-    }
-    */
-
-    /*
-    createObj();
-    createEnemy();
-    moveObject();
-    moveHero();
-    throwKnife();
-    moveEnemy();
-    deleteObject();
-    deleteEnemy();
-    handleTxt();
-
-    setScore(score);
-    setHealth(hero.getHealth());
-
-    if (!hero.getIsDead()) {
-        collision();
-    }
-    if (isCollided) {
-        if (collisionClk.getElapsedTime().asSeconds() >= 0) {
-            if(FirewallCollision){
-                hero.setHealth(hero.getHealth() - 15);
-                notify();
-                FirewallCollision =false;
-            }
-            if(BlockCollision){
-                if(isShieldOn){
-                    isShieldOn = false;
-                }
-                else{
-                    hero.setHealth(hero.getHealth() - 70);
-                    notify();
-                }
-                blocks.erase(blocks.begin() + collidedblocks);
-                BlockCollision = false;
-                hero.gameOver();
-            }
-            if(EnemyCollision){
-                if(isShieldOn){
-                    isShieldOn = false;
-                }
-                else {
-                    hero.setHealth(hero.getHealth() - 90);
-                    notify();
-                }
-                enemies.erase(enemies.begin() + collidedenemies);
-                EnemyCollision = false;
-                hero.gameOver();
-            }
-            if(ShieldPowerupCollision){
-                isShieldOn = true;
-                hero.setTexture(heroTextureS1);
-                powerups.erase(powerups.begin()+collidedpowerups);
-                notify();
-                ShieldPowerupCollision = false;
-            }
-            if(KnifeCollision){
-                //se l'eroe colpisce un nemico col coltello lanciato, la sua vita aumenta leggermente
-                hero.setHealth(hero.getHealth() + 20);
-                notify();
-                knives.erase(knives.begin() + collidedknives);
-                enemies.erase(enemies.begin() + collidedenemies);
-                KnifeCollision = false;
-            }
-            if(KnivesPowerupCollision){
-                hero.setKnives(hero.getKnives() + 4);
-                notify();
-                powerups.erase(powerups.begin()+collidedknives);
-                KnivesPowerupCollision = false;
-            }
-        }
-        isCollided = false;
-    }
-
-    if(isShieldOn && shieldClk.getElapsedTime().asSeconds() >= 30.f) {
-        isShieldOn = false;
-        hero.setHeroTexture(heroTexture1);
-    }
-
-    if (scoreClk.getElapsedTime().asSeconds() >= 1.f && !hero.getIsDead()) {
-        score ++;
-        scoreClk.restart();
-        notify();
-    }
-}
-     */
 
 const sf::Vector2f &Game::getSpeed() const {
     return speed;
@@ -615,57 +402,6 @@ const sf::Vector2f &Game::getSpeed() const {
 int Game::getMaxY() const {
     return maxY;
 }
-/*
-void Game::render() {
-    map.clear();
-    map.draw(layer2);
-    map.draw(layer1);
-    map.draw(layer4);
-    map.draw(layer3);
-
-    if (!hero.getIsDead()) {
-        hero.renderHero(*map.getRenderMap());
-        for (auto &block : blocks)
-            map.draw(*block);
-        for (auto &movBlock : blocks)
-            map.draw(*movBlock);
-        for (auto &power : powerups)
-            map.draw(*power);
-        for (auto &enem : enemies)
-            map.draw(*enem);
-        for (auto &movEnem : enemies)
-            map.draw(*movEnem);
-        for (auto &fire: firewalls)
-            map.draw(*fire);
-        for (auto &movFire: firewalls)
-            map.draw(*movFire);
-        for (auto &knife : knives)
-            map.draw(*knife);
-        map.draw(scoreTxt);
-        map.draw(numScore);
-        map.draw(lifeTxt);
-        map.draw(numLife);
-        map.draw(knivesTxt);
-        map.draw(numKnives);
-    }
-    else {
-        scoreTxt.setCharacterSize(80);
-        numScore.setCharacterSize(80);
-        scoreTxt.setPosition(600, 400);
-        numScore.setPosition(900, 400);
-        scoreB.setPosition(500, 390);
-
-        map.draw(scoreTxt);
-        map.draw(numScore);
-        //map.draw(gameOver);
-        map.draw(scoreB);
-        map.draw(bestScoreTxt);
-        map.draw(bestScoreB);
-        map.draw(bestScoreNum);
-    }
-    map.display();
-}
-*/
 
 void Game::notify() {
     for (auto i = std::begin(observers); i != std::end(observers); i++)
