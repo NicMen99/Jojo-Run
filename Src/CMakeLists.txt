@@ -1,5 +1,7 @@
 target_sources(${TARGET}
         PRIVATE
+        AbsGameState.h
+        AbsGameState.cpp
         Block.h
         Block.cpp
         EmeraldEnemy.h
@@ -16,16 +18,24 @@ target_sources(${TARGET}
         GameConfig.cpp
         Game.h
         Game.cpp
+        GameStateMachine.h
+        GameStateMachine.cpp
+        GameOverState.h
+        GameOverState.cpp
         HamonEnemy.h
         HamonEnemy.cpp
         Hero.h
         Hero.cpp
+        InitState.h
+        InitState.cpp
         Knife.h
         Knife.cpp
         main.cpp
         Map.h
         Map.cpp
         Observer.h
+        PlayState.h
+        PlayState.cpp
         PowerUp.h
         PowerUp.cpp
         ScoreHUD.h

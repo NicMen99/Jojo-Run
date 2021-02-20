@@ -6,7 +6,6 @@
 
 Map::Map() {
     map.create({1600, 1000}, "JoJo Run");
-    closed= false;
     mapSize = sf::Vector2u (1600, 1000);
     mapTitle = "JoJo Run";
 }
