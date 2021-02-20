@@ -7,7 +7,7 @@
 #include "Background.h"
 
 void Background::init(const std::string &texture_name, bool repeated, const sf::Vector2f &scale) {
-    sf::Texture * texture = GameResourceManager::instance()->getTexture(texture_name);
+    sf::Texture * texture = RM->getTexture(texture_name);
     if(texture != nullptr) {
         texture->setRepeated(repeated);
         m_sprite.setTexture(*texture);

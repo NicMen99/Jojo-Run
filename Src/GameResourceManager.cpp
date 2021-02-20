@@ -15,7 +15,6 @@ GameResourceManager *GameResourceManager::instance() {
 }
 
 sf::Texture* GameResourceManager::getTexture(const std::string & texture) {
-
     auto it = m_texture_map.find(texture);
     if(it != m_texture_map.end()) {
         return &it->second;
@@ -27,6 +26,22 @@ sf::Texture* GameResourceManager::getTexture(const std::string & texture) {
     }
 
     sf::Texture& resource = m_texture_map[texture];
+    resource.loadFromFile(path);
+    return & resource;
+}
+
+sf::SoundBuffer *GameResourceManager::getSound(const std::string &sound) {
+    auto it = m_sound_map.find(sound);
+    if(it != m_sound_map.end()) {
+        return &it->second;
+    }
+
+    std::string path = GameConfig::instance()->getAssetPath(sound);
+    if(path.empty()) {
+        return nullptr;
+    }
+
+    sf::SoundBuffer& resource = m_sound_map[sound];
     resource.loadFromFile(path);
     return & resource;
 }

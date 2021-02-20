@@ -100,24 +100,24 @@ TEST_F(GameTest, testDeletingPowerUp) {
     std::unique_ptr<Block> block = factory.createBlock(BlockType::StillBlock);
     block->setPosition(sf::Vector2f(2*game.getMap()->getMapSize().x,game.randomPosY()));
     block->move(-game.getSpeed().x, 0);
-    hero.setHeroPos(game.getMap()->getMapSize().x, -game.randomPosY());
-    if (block->getGlobalBounds().intersects(hero.getHeroBounds())) {
+    m_hero.setHeroPos(game.getMap()->getMapSize().x, -game.randomPosY());
+    if (block->getGlobalBounds().intersects(m_hero.getHeroBounds())) {
         if (game.getIsShieldOn()) {
             ASSERT_FALSE(game.getIsCollided());
             ASSERT_FALSE(game.getIsBlockCollision());
             ASSERT_TRUE(game.getIsShieldOn());
-            ASSERT_FALSE(hero.getIsDead());
+            ASSERT_FALSE(m_hero.getIsDead());
         }
         else if (game.getHealth() > 0) {
             ASSERT_TRUE(game.getIsCollided());
             ASSERT_TRUE(game.getIsBlockCollision());
-            ASSERT_FALSE(hero.getIsDead());
+            ASSERT_FALSE(m_hero.getIsDead());
             ASSERT_EQ(numHP -70, game.getHealth());
         }
         else {
             ASSERT_TRUE(game.getIsCollided());
             ASSERT_TRUE(game.getIsBlockCollision());
-            ASSERT_TRUE(hero.getIsDead());
+            ASSERT_TRUE(m_hero.getIsDead());
         }
     }
 }*/
@@ -154,24 +154,24 @@ TEST_F(GameTest, testCollisionMovingBlock) {
     std::unique_ptr<FireWall> wall = factory.createFireWall(FireWallType::StillWall);
     wall->setPosition(sf::Vector2f(2*game.getMap()->getMapSize().x,game.randomPosY()));
     wall->move(-game.getSpeed().x, 0);
-    hero.setHeroPos(game.getMap()->getMapSize().x, -game.randomPosY());
-    if (wall->getGlobalBounds().intersects(hero.getHeroBounds())) {
+    m_hero.setHeroPos(game.getMap()->getMapSize().x, -game.randomPosY());
+    if (wall->getGlobalBounds().intersects(m_hero.getHeroBounds())) {
         if (game.getIsShieldOn()) {
             ASSERT_FALSE(game.getIsCollided());
             ASSERT_FALSE(game.getIsFirewallCollision());
             ASSERT_TRUE(game.getIsShieldOn());
-            ASSERT_FALSE(hero.getIsDead());
+            ASSERT_FALSE(m_hero.getIsDead());
         }
         else if (game.getHealth() > 0) {
             ASSERT_TRUE(game.getIsCollided());
             ASSERT_TRUE(game.getIsFirewallCollision());
-            ASSERT_FALSE(hero.getIsDead());
+            ASSERT_FALSE(m_hero.getIsDead());
             ASSERT_EQ(numHP -15, game.getHealth());
         }
         else {
             ASSERT_TRUE(game.getIsCollided());
             ASSERT_TRUE(game.getIsFirewallCollision());
-            ASSERT_TRUE(hero.getIsDead());
+            ASSERT_TRUE(m_hero.getIsDead());
         }
     }
 }*/

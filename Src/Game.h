@@ -13,6 +13,7 @@
 #include <SFML/Audio.hpp>
 
 #include "Map.h"
+#include "Background.h"
 #include "Hero.h"
 #include "Factory.h"
 #include "GameStateMachine.h"
@@ -21,14 +22,22 @@ class Game: public Subject {
     AbsGameState* m_gameMachine;
     sf::RenderWindow m_window;
     sf::Event m_event;
+
 public:
     Game();
     ~Game();
     void init();
     void loop();
-    sf::Vector2u getWindowSize(){return m_window.getSize();}
-/////////////////
 
+    sf::Vector2u getWindowSize(){return m_window.getSize();}
+
+    Background m_background1;
+    Background m_background2;
+    Background m_background3;
+    Background m_background4;
+    Hero m_hero;
+
+    /**/
     int randomPosY();
     int randomCreation();
 
@@ -80,13 +89,7 @@ public:
     void setIsCollided(bool isCollided);
 
 
-    sf::Texture heroTexture1;
-    sf::Texture heroTexture2;
-    sf::Texture heroTextureS1;
 
-    sf::Sound collisionSound;
-    sf::Sound powerUpSound;
-    sf::Sound shieldOnSound;
     sf::Sound hamonEnemySound;
     sf::Sound emeraldEnemySound;
     sf::Sound fireEnemySound;
@@ -115,11 +118,6 @@ public:
     sf::Text bestScoreTxt;
     sf::Text bestScoreB;
     sf::Text bestScoreNum;
-    Hero hero;
-    sf::Sprite layer1;
-    sf::Sprite layer2;
-    sf::Sprite layer3;
-    sf::Sprite layer4;
 
     sf::Font font;
 
@@ -169,16 +167,6 @@ private:
     const float jumpLimit = 5.5;
     const float jumpPlus = 0.08;
 
-
-    sf::Texture gameOverTexture;
-    sf::Texture layer1Texture;
-    sf::Texture layer2Texture;
-    sf::Texture layer3Texture;
-    sf::Texture layer4Texture;
-
-    sf::Sprite gameOver;
-
-
     sf::Clock objectClk;
     sf::Clock enemyClk;
     sf::Clock controlPU;
@@ -191,9 +179,6 @@ private:
 
 
     sf::SoundBuffer gameOverBuffer;
-    sf::SoundBuffer collisionBuffer;
-    sf::SoundBuffer powerUpBuffer;
-    sf::SoundBuffer shieldOnBuffer;
     sf::SoundBuffer fireEnemyBuffer;
     sf::SoundBuffer emeraldEnemyBuffer;
     sf::SoundBuffer hamonEnemyBuffer;

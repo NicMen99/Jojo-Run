@@ -20,6 +20,7 @@ public:
     static GameResourceManager * instance();
 
     sf::Texture* getTexture(const std::string & texture);
+    sf::SoundBuffer* getSound(const std::string & sound);
 
 private:
     std::map<std::string, sf::Texture> m_texture_map;
@@ -28,5 +29,6 @@ private:
 
 };
 
+#define RM GameResourceManager::instance()
 
 #endif //JOJO_RUN_GAMERESOURCEMANAGER_H

@@ -85,17 +85,17 @@ void Game::createObj() {
             //firewalls.emplace_back(move(firewall));
             //isCreated = true;
             objectClk.restart();
-            countCreation++; //non spawna, inutile
+            countCreation++;
         }
         isCreated = false;
     }
 }
 
 void Game::throwKnife() {
-    if (hero.getKnives() > 0 && (sf::Keyboard::isKeyPressed(sf::Keyboard::K))) {
-        hero.setKnives(hero.getKnives() - 1);
+    if (m_hero.getKnives() > 0 && (sf::Keyboard::isKeyPressed(sf::Keyboard::K))) {
+        m_hero.setKnives(m_hero.getKnives() - 1);
         std::unique_ptr<PowerUp> knife = factory.createPowerUp(PowerUpType::ThrownKnife);
-        knife->setPosition(sf::Vector2f(hero.getHeroPos().x, hero.getHeroPos().y));
+        knife->setPosition(sf::Vector2f(m_hero.getHeroPos().x, m_hero.getHeroPos().y));
         knives.emplace_back(move(knife));
     }
 }
@@ -153,7 +153,7 @@ void Game::handleTxt() {
     lifeTxt.setFillColor(sf::Color::White);
 
     numLife.setFont(font);
-    numLife.setString(std::to_string(hero.getHealth()));
+    numLife.setString(std::to_string(m_hero.getHealth()));
     numLife.setPosition(1500, 3);
     numLife.setCharacterSize(40);
     numLife.setFillColor(sf::Color::White);
@@ -165,7 +165,7 @@ void Game::handleTxt() {
     knivesTxt.setFillColor(sf::Color::White);
 
     numKnives.setFont(font);
-    numKnives.setString(std::to_string(hero.getKnives()));
+    numKnives.setString(std::to_string(m_hero.getKnives()));
     numKnives.setPosition(1535, 38);
     numKnives.setCharacterSize(35);
     numKnives.setFillColor(sf::Color::White);
@@ -262,12 +262,11 @@ void Game::moveObject() {
 void Game::collision() {
     if (!isCollided) {
         for (int i = 0; i < blocks.size(); i++) {
-            if (blocks[i]->getGlobalBounds().intersects(hero.getHeroBounds())) {
+            if (blocks[i]->getGlobalBounds().intersects(m_hero.getHeroBounds())) {
+                m_hero.collisionevent();
                 if (isShieldOn) {
-                    shieldOnSound.play();
                     controlPU.restart();
                 } else if (controlPU.getElapsedTime().asSeconds() >= toll) {
-                    collisionSound.play();
                     collisionClk.restart();
                 }
                 BlockCollision = true;
@@ -276,12 +275,11 @@ void Game::collision() {
             }
         }
         for (int j = 0; j < firewalls.size(); j++) {
-            if (firewalls[j]->getGlobalBounds().intersects(hero.getHeroBounds())) {
+            if (firewalls[j]->getGlobalBounds().intersects(m_hero.getHeroBounds())) {
+                m_hero.collisionevent();
                 if (isShieldOn) {
-                    shieldOnSound.play();
                     controlPU.restart();
                 }else if (controlPU.getElapsedTime().asSeconds() >= toll) {
-                    collisionSound.play();
                     collisionClk.restart();
                 }
                 FirewallCollision = true;
@@ -290,13 +288,12 @@ void Game::collision() {
             }
         }
         for (int e = 0; e < enemies.size(); e++) {
-            if (enemies[e]->getGlobalBounds().intersects(hero.getHeroBounds())) {
+            if (enemies[e]->getGlobalBounds().intersects(m_hero.getHeroBounds())) {
                 //Se ha lo scudo e interseca il nemico non muore
+                m_hero.collisionevent();
                 if (isShieldOn) {
-                    shieldOnSound.play();
                     controlPU.restart();
                 } else if (controlPU.getElapsedTime().asSeconds() >= toll) {
-                    collisionSound.play();
                     collisionClk.restart();
                 }
                 isCollided = true;
@@ -305,17 +302,16 @@ void Game::collision() {
             }
         }
         for (int m = 0; m < powerups.size(); m++) {
-            if (powerups[m]->getGlobalBounds().intersects(hero.getHeroBounds()) && powerups[m]->getisShield()) {
+            if (powerups[m]->getGlobalBounds().intersects(m_hero.getHeroBounds()) && powerups[m]->getisShield()) {
                 if (controlPU.getElapsedTime().asSeconds() >= toll) {
                     ShieldPowerupCollision = true;
                     isCollided = true;
-                    powerUpSound.play();
                     collidedpowerups = m;
                     collisionClk.restart();
                     shieldClk.restart();
                 }
             }
-            else if (powerups[m]->getGlobalBounds().intersects(hero.getHeroBounds()) && powerups[m]->getisKnife()){
+            else if (powerups[m]->getGlobalBounds().intersects(m_hero.getHeroBounds()) && powerups[m]->getisKnife()){
                 if (controlPU.getElapsedTime().asSeconds() >= toll){
                     KnivesPowerupCollision = true;
                     isCollided = true;
@@ -341,26 +337,24 @@ void Game::collision() {
 }
 
 void Game::moveHero() {
-    hero.setHeroPos(hero.getHeroPos().x, hero.getHeroPos().y + g);
+    m_hero.setHeroPos(m_hero.getHeroPos().x, m_hero.getHeroPos().y + g);
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
-        hero.setHeroPos(hero.getHeroPos().x, hero.getHeroPos().y - jump);
+        m_hero.setHeroPos(m_hero.getHeroPos().x, m_hero.getHeroPos().y - jump);
         if (isShieldOn)
-            hero.setHeroTexture(heroTextureS1);
+            m_hero.setShieldOn();
         else
-            hero.setHeroTexture(heroTexture2);
-        heroTexture2.setSmooth(true);
+            m_hero.setJumpOn();
     }
     else if (!sf::Keyboard::isKeyPressed(sf::Keyboard::Space)){
         if (isShieldOn)
-            hero.setHeroTexture(heroTextureS1);
+            m_hero.setShieldOn();
         else
-            hero.setHeroTexture(heroTexture1);
-        heroTexture1.setSmooth(true);
+            m_hero.setStanding();
     }
-    if (hero.getHeroPos().y + hero.getHeroSize().y >= m_window.getSize().y - ground)
-        hero.setHeroPos(hero.getHeroPos().x, m_window.getSize().y - (hero.getHeroSize().y + ground));
-    if (hero.getHeroPos().y <= top )
-        hero.setHeroPos(hero.getHeroPos().x, top);
+    if (m_hero.getHeroPos().y + m_hero.getHeroSize().y >= m_window.getSize().y - ground)
+        m_hero.setHeroPos(m_hero.getHeroPos().x, m_window.getSize().y - (m_hero.getHeroSize().y + ground));
+    if (m_hero.getHeroPos().y <= top )
+        m_hero.setHeroPos(m_hero.getHeroPos().x, top);
 }
 
 void Game::moveEnemy() {
@@ -383,7 +377,7 @@ int Game::randomCreation() {
 }
 
 Game::Game():
-    hero(), layer1(), layer2(), layer3(), layer4(), factory(),
+    factory(),
     speed(sf::Vector2f(1.1,1.1)), oldSpeed(speed), blockX(100), isCreated(false), isCollided(false), BlockCollision(false), EnemyCollision(false),
     FirewallCollision(false), KnifeCollision(false), KnivesPowerupCollision(false), ShieldPowerupCollision(false), countCreation(1), creationRate(2.5f),
     /*oldCreationRate(creationRate),*/ objectClk(), powerupClk(),shieldClk(), scoreClk(), controlPU(), collisionClk(),enemyClk(), isShieldOn(false),
@@ -421,7 +415,7 @@ unsigned int Game::getScore() const {
 }
 
 int Game::getHealth() const {
-    return hero.getHealth();
+    return m_hero.getHealth();
 }
 
 void Game::setScore(unsigned int s) {
@@ -430,7 +424,7 @@ void Game::setScore(unsigned int s) {
 }
 
 void Game::setHealth(int hp) {
-    Game::hero.setHealth(hp);
+    Game::m_hero.setHealth(hp);
     notify();
 }
 
