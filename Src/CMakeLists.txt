@@ -2,6 +2,8 @@ target_sources(${TARGET}
         PRIVATE
         AbsGameState.h
         AbsGameState.cpp
+        Background.h
+        Background.cpp
         Block.h
         Block.cpp
         EmeraldEnemy.h
@@ -14,10 +16,12 @@ target_sources(${TARGET}
         FireEnemy.cpp
         FireWall.h
         FireWall.cpp
-        GameConfig.h
-        GameConfig.cpp
         Game.h
         Game.cpp
+        GameConfig.h
+        GameConfig.cpp
+        GameResourceManager.h
+        GameResourceManager.cpp
         GameStateMachine.h
         GameStateMachine.cpp
         GameOverState.h

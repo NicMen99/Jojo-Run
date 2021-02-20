@@ -6,10 +6,15 @@
 #include "Game.h"
 
 /**/
+#include "Background.h"
 #include "GameConfig.h"
+#include "GameResourceManager.h"
 #include "Hero.h"
+
 PlayState* PlayState::m_instance = nullptr;
-sf::Texture layer1Texture, layer2Texture, layer3Texture, layer4Texture;
+
+Background background1, background2, background3, background4;
+
 sf::SoundBuffer collisionBuffer;
 sf::SoundBuffer powerUpBuffer;
 sf::SoundBuffer shieldOnBuffer;
@@ -19,28 +24,21 @@ sf::SoundBuffer hamonEnemyBuffer;
 
 const float ground = 63.0f;
 
+PlayState* PlayState::instance() {
+    if(nullptr == m_instance){
+        m_instance = new PlayState;
+        m_instance->init();
+    }
+    return m_instance;
+}
+
 void PlayState::init() {
     sf::Vector2u window_size = m_context->getWindowSize();
-    layer1Texture.loadFromFile(GC->getAssetPath("Background1"));
-    layer1Texture.setRepeated(true);
-    m_context->layer1.setTexture(layer1Texture);
-    m_context->layer1.setScale(7.4, 7.4);
-    m_context->layer1.setTextureRect(sf::IntRect(0, 0, (500 * window_size.x), window_size.y + static_cast<int>(ground)));
-    layer2Texture.loadFromFile(GC->getAssetPath("BG"));
-    layer2Texture.setRepeated(true);
-    m_context->layer2.setTexture(layer2Texture);
-    m_context->layer2.setScale(7.4, 7.4);
-    m_context->layer2.setTextureRect(sf::IntRect(0, 0, (500 * window_size.x), window_size.y + static_cast<int>(ground)));
-    layer3Texture.loadFromFile(GC->getAssetPath("Foreground"));
-    layer3Texture.setRepeated(true);
-    m_context->layer3.setScale(7.4, 7.4);
-    m_context->layer3.setTexture(layer3Texture);
-    m_context->layer3.setTextureRect(sf::IntRect(0, 0, (500 * window_size.x), window_size.y + static_cast<int>(ground)));
-    layer4Texture.loadFromFile(GC->getAssetPath("Middle"));
-    layer4Texture.setRepeated(true);
-    m_context->layer4.setTexture(layer4Texture);
-    m_context->layer4.setScale(7.4, 7.4);
-    m_context->layer4.setTextureRect(sf::IntRect(0, 0, (500 * window_size.x), window_size.y + static_cast<int>(ground)));
+
+    background1.init("Background1", true, {7.4, 7.4});
+    background2.init("BG", true, {7.4, 7.4});
+    background3.init("Foreground", true, {7.4, 7.4});
+    background4.init("Middle", true, {7.4, 7.4});
 
     m_context->heroTexture1.loadFromFile(GC->getAssetPath("playerTexture"));
     m_context->heroTexture2.loadFromFile(GC->getAssetPath("playerTextureUp"));
@@ -88,10 +86,11 @@ void PlayState::onExit() {
 }
 
 void PlayState::update() {
-    m_context->layer1.move(-m_context->getSpeed().x, 0);
-    m_context->layer2.move(-m_context->getSpeed().x*1.2, 0);
-    m_context->layer3.move(-m_context->getSpeed().x*1.4, 0);
-    m_context->layer4.move(-m_context->getSpeed().x*1.6, 0);
+    background1.update(sf::Vector2f(-m_context->getSpeed().x * 1.2, 0));
+    background2.update(sf::Vector2f(-m_context->getSpeed().x, 0));
+    background3.update(sf::Vector2f(-m_context->getSpeed().x*1.6, 0));
+    background4.update(sf::Vector2f(-m_context->getSpeed().x*1.4, 0));
+
     if (m_context->hero.getIsDead() && m_context->txtCount == 0){
         changeState(State::Over);
     }
@@ -188,10 +187,10 @@ void PlayState::update() {
 }
 
 void PlayState::render(sf::RenderWindow& window) {
-    window.draw(m_context->layer2);
-    window.draw(m_context->layer1);
-    window.draw(m_context->layer4);
-    window.draw(m_context->layer3);
+    background2.render(window);
+    background1.render(window);
+    background4.render(window);
+    background3.render(window);
 
     m_context->hero.renderHero(window);
     for (auto &block : m_context->blocks)
@@ -218,10 +217,3 @@ void PlayState::render(sf::RenderWindow& window) {
     window.draw(m_context->numKnives);
 }
 
-PlayState* PlayState::instance() {
-    if(nullptr == m_instance){
-        m_instance = new PlayState;
-        m_instance->init();
-    }
-    return m_instance;
-}
