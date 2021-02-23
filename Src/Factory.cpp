@@ -13,10 +13,7 @@ std::unique_ptr<Block> Factory::createBlock(BlockType type) {
 
 std::unique_ptr<FireWall> Factory::createFireWall(FireWallType type) {
     std::unique_ptr<FireWall> result = std::unique_ptr<FireWall>(new FireWall);
-    if (type == FireWallType::MovingWall)
-        result->setIsMovingFW(true);
-    result->setScale(1, 1);
-    result->setTexture(m_fireWallTexture);
+    result->init("fireWallTexture", sf::Vector2f {0.8, 0}, sf::Vector2f {1,1});
     return result;
 }
 

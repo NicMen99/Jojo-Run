@@ -17,7 +17,7 @@ Game::~Game() {
 
 void Game::init() {
     m_window.create(sf::VideoMode(1600, 1000), "JoJo Run");
-    m_window.setFramerateLimit(180);
+    m_window.setFramerateLimit(60);
 }
 
 void Game::loop() {
@@ -244,9 +244,12 @@ void Game::moveObject() {
 
     for (auto &f : firewalls) {
         if (f->getIsMovingFW()) {
+            /*
             if (f->getPosition().y + f->getGlobalBounds().height >= m_window.getSize().y - ground || f->getPosition().y <= 0)
                 f->setFireWallSpeedX(-f->getFWSpeedX());
                 f->move(-f->getFWSpeedX(), 0);
+            */
+            f->update();
         }
     }
     for (auto &k: knives) {

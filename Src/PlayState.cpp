@@ -185,10 +185,10 @@ void PlayState::render(sf::RenderWindow& window) {
         enemy->render(window);
 /*    for (auto &movEnem : m_context->enemies)
         window.draw(*movEnem); ? */
-    for (auto &fire: m_context->firewalls)
-        window.draw(*fire);
+/*    for (auto &fire: m_context->firewalls)
+        window.draw(*fire); */
     for (auto &movFire: m_context->firewalls)
-        window.draw(*movFire);
+        movFire->render(window);
     for (auto &knife : m_context->knives)
         knife->render(window);
     window.draw(m_context->scoreTxt);
