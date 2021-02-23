@@ -2,48 +2,66 @@
 // Created by angiolo99 on 10/02/20.
 //
 
+#include <string>
+#include "GameResourceManager.h"
 #include "PowerUp.h"
 
+void PowerUp::init(const std::string &texture_name, sf::Vector2f speed, sf::Vector2f scale, bool isShield, bool isKnife, bool isThrown) {
+    sf::Texture* texture = RM->getTexture(texture_name);
+    if(texture != nullptr){
+        m_sprite.setTexture(*texture);
+        m_sprite.setScale(scale);
+    }
+    m_speedPU = speed;
+    m_isShield = isShield;
+    m_isKnife = isKnife;
+    if (m_isKnife){
+        m_sprite.setRotation(45.f);
+    }
+    m_isThrowable = isThrown;
+}
+
+void PowerUp::render(sf::RenderWindow &window) {
+    window.draw(m_sprite);
+}
+
 bool PowerUp::getIsMovingPu() const {
-    return isMovingPU;
+    return m_speedPU != sf::Vector2f {0,0};
 }
 
-void PowerUp::setIsMovingPu(bool isMovingPu) {
-    isMovingPU = isMovingPu;
+sf::Vector2f PowerUp::getSpeedPu() const {
+    return m_speedPU;
 }
 
-float PowerUp::getSpeedPux() const {
-    return speedPUX;
-}
-
-void PowerUp::setSpeedPux(float speedPUX) {
-    speedPUX = speedPUX;
-}
-
-PowerUp::PowerUp() {
-    isMovingPU = false;
+void PowerUp::setSpeedPu(sf::Vector2f speedPU) {
+    m_speedPU = speedPU;
 }
 
 void PowerUp::setIsShield(bool isShield) {
-    PowerUp::isShield = isShield;
+    m_isShield = isShield;
 }
 
 void PowerUp::setIsKnife(bool isKnife) {
-    PowerUp::isKnife = isKnife;
+    m_isKnife = isKnife;
 }
 
 void PowerUp::setIsThrowable(bool isThrowable) {
-    PowerUp::isThrowable = isThrowable;
+    m_isThrowable = isThrowable;
 }
 
 bool PowerUp::getisShield() const {
-    return isShield;
+    return m_isShield;
 }
 
 bool PowerUp::getisKnife() const {
-    return isKnife;
+    return m_isKnife;
 }
 
 bool PowerUp::getisThrowable() const {
-    return isThrowable;
+    return m_isThrowable;
 }
+
+void PowerUp::setPosition(sf::Vector2f position) {
+    m_sprite.setPosition(position);
+}
+

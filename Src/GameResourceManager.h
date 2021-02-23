@@ -21,6 +21,7 @@ public:
 
     sf::Texture* getTexture(const std::string & texture);
     sf::SoundBuffer* getSound(const std::string & sound);
+    sf::Font* getFont(const std::string & font);
 
 private:
     std::map<std::string, sf::Texture> m_texture_map;

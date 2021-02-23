@@ -68,6 +68,7 @@ public:
     void unsubscribe(Observer *o) override;
     void subscribe(Observer *o) override;
 
+    //TODO spostare le funzioni nella classe di competenza
     void createObj();
     void createEnemy();
     void moveObject();
@@ -175,13 +176,6 @@ private:
     sf::Vector2f speed;
     sf::Vector2f oldSpeed;
 
-    sf::Sound gameOverSound;
-
-
-    sf::SoundBuffer gameOverBuffer;
-    sf::SoundBuffer fireEnemyBuffer;
-    sf::SoundBuffer emeraldEnemyBuffer;
-    sf::SoundBuffer hamonEnemyBuffer;
     /////////////////
 
     std::list<Observer*> observers;

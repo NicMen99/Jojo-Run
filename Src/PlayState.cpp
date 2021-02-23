@@ -175,22 +175,22 @@ void PlayState::render(sf::RenderWindow& window) {
     m_context->m_background3.render(window);
 
     m_context->m_hero.renderHero(window);
-    for (auto &block : m_context->blocks)
-        window.draw(*block);
-    for (auto &movBlock : m_context->blocks)
-        window.draw(*movBlock);
+    for (auto & block : m_context->blocks)
+        block->render(window);
+/*    for (auto &movBlock : m_context->blocks)
+        window.draw(*movBlock); ? */
     for (auto &power : m_context->powerups)
-        window.draw(*power);
-    for (auto &enem : m_context->enemies)
-        window.draw(*enem);
-    for (auto &movEnem : m_context->enemies)
-        window.draw(*movEnem);
+        power->render(window);
+    for (auto &enemy : m_context->enemies)
+        enemy->render(window);
+/*    for (auto &movEnem : m_context->enemies)
+        window.draw(*movEnem); ? */
     for (auto &fire: m_context->firewalls)
         window.draw(*fire);
     for (auto &movFire: m_context->firewalls)
         window.draw(*movFire);
     for (auto &knife : m_context->knives)
-        window.draw(*knife);
+        knife->render(window);
     window.draw(m_context->scoreTxt);
     window.draw(m_context->numScore);
     window.draw(m_context->lifeTxt);

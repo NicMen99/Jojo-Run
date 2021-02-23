@@ -44,7 +44,7 @@ void Game::createObj() {
         if (countCreation % 5 == 0 && randomCreation() == 0) {
             std::unique_ptr<PowerUp> knife = factory.createPowerUp(PowerUpType::Knife);
             knife->setPosition(sf::Vector2f(m_window.getSize().x + 20, randomPosY()));
-            powerups.emplace_back(move(knife));
+            powerups.emplace_back(std::move(knife));
             isCreated = true;
             powerupClk.restart();
             countCreation++;
@@ -52,7 +52,7 @@ void Game::createObj() {
         if (countCreation % 9 == 0 && randomCreation() == 0) {
             std::unique_ptr<PowerUp> shield = factory.createPowerUp(PowerUpType::Shield);
             shield->setPosition(sf::Vector2f(m_window.getSize().x + 20, randomPosY()));
-            powerups.emplace_back(move(shield));
+            powerups.emplace_back(std::move(shield));
             isCreated = true;
             powerupClk.restart();
             countCreation++;
@@ -63,7 +63,7 @@ void Game::createObj() {
         if (countCreation % 2 == 0 && randomCreation() == 2 && !isCreated) {
             std::unique_ptr<Block> block = factory.createBlock(BlockType::MovingBlock);
             block->setPosition(sf::Vector2f(m_window.getSize().x + 50, randomPosY()));
-            blocks.emplace_back(move(block));
+            blocks.emplace_back(std::move(block));
             isCreated = true;
             objectClk.restart();
             countCreation++;
@@ -71,7 +71,7 @@ void Game::createObj() {
         if (countCreation % 3 == 0 && randomCreation() == 2 && !isCreated) {
             std::unique_ptr<FireWall> fireWall = factory.createFireWall(FireWallType::MovingWall);
             fireWall->setPosition(sf::Vector2f(m_window.getSize().x + 50, randomPosY()));
-            firewalls.emplace_back(move(fireWall));
+            firewalls.emplace_back(std::move(fireWall));
             isCreated = true;
             objectClk.restart();
             countCreation++;
@@ -96,7 +96,7 @@ void Game::throwKnife() {
         m_hero.setKnives(m_hero.getKnives() - 1);
         std::unique_ptr<PowerUp> knife = factory.createPowerUp(PowerUpType::ThrownKnife);
         knife->setPosition(sf::Vector2f(m_hero.getHeroPos().x, m_hero.getHeroPos().y));
-        knives.emplace_back(move(knife));
+        knives.emplace_back(std::move(knife));
     }
 }
 
@@ -104,27 +104,27 @@ void Game::createEnemy() {
     if (enemyClk.getElapsedTime().asSeconds() >= creationRate) {
         if (countCreation % 11 == 0 && randomCreation() == 1) {
             std::unique_ptr<Enemy> enemy = factory.createEnemy(EnemyType::HamonEnemy);
-            enemy->setPosition(sf::Vector2f(150 + m_window.getSize().x, randomPosY()));
+            enemy->setEnemyPosition(sf::Vector2f(150 + m_window.getSize().x, randomPosY()));
             hamonEnemySound.play();
-            enemies.emplace_back(move(enemy));
+            enemies.emplace_back(std::move(enemy));
             isCreated = true;
             enemyClk.restart();
             countCreation++;
         }
         if (countCreation % 13 == 0 && randomCreation() == 1) {
             std::unique_ptr<Enemy> enemy = factory.createEnemy(EnemyType::EmeraldEnemy);
-            enemy->setPosition(sf::Vector2f(150 + m_window.getSize().x, randomPosY()));
+            enemy->setEnemyPosition(sf::Vector2f(150 + m_window.getSize().x, randomPosY()));
             emeraldEnemySound.play();
-            enemies.emplace_back(move(enemy));
+            enemies.emplace_back(std::move(enemy));
             isCreated = true;
             enemyClk.restart();
             countCreation++;
         }
         if (countCreation % 17 == 0 && randomCreation() == 1) {
             std::unique_ptr<Enemy> enemy = factory.createEnemy(EnemyType::FireEnemy);
-            enemy->setPosition(sf::Vector2f(150 + m_window.getSize().x, randomPosY()));
+            enemy->setEnemyPosition(sf::Vector2f(150 + m_window.getSize().x, randomPosY()));
             fireEnemySound.play();
-            enemies.emplace_back(move(enemy));
+            enemies.emplace_back(std::move(enemy));
             isCreated = true;
             enemyClk.restart();
             countCreation++;
@@ -217,7 +217,7 @@ void Game::deleteObject() {
 
 void Game::deleteEnemy() {
     for (int i=0; i<enemies.size(); i++) {
-        if (enemies[i]->getPosition().x + enemies[i]->getGlobalBounds().width < 0)
+        if (enemies[i]->getEnemyPosition().x + enemies[i]->getEnemyBounds().width < 0)
             enemies.erase(enemies.begin() + i);
     }
 }
@@ -225,35 +225,38 @@ void Game::deleteEnemy() {
 void Game::moveObject() {
     for (auto &b : blocks) {
         if (b->getIsMovingBlock()) {
-            if (b->getPosition().y + b->getGlobalBounds().height >= m_window.getSize().y - ground ||
-                b->getPosition().y <= 0)
-                b->setBlockSpeedX(-b->getBlockSpeedX());
-                b->move(-b->getBlockSpeedX(), 0);
+// Controllare y non sembra servire fino quando non si implementa il movimento vericale
+// Comunque con l'introduzione della mappa va cambiato
+//            if (b->getPosition().y + b->getGlobalBounds().height >= m_window.getSize().y - ground || b->getPosition().y <= 0)
+                b->update();
         }
     }
     for (auto &p : powerups) {
         if (p->getIsMovingPu()) {
-            if (p->getPosition().y + p->getGlobalBounds().height >= m_window.getSize().y - ground ||
-                p->getPosition().y <= 0)
+            /*
+            if (p->getPosition().y + p->getGlobalBounds().height >= m_window.getSize().y - ground || p->getPosition().y <= 0)
                 p->setSpeedPux(-p->getSpeedPux());
-                p->move(-p->getSpeedPux(), 0);
+                p->move({-p->getSpeedPux(), 0});
+            */
+            p->update();
         }
     }
 
     for (auto &f : firewalls) {
         if (f->getIsMovingFW()) {
-            if (f->getPosition().y + f->getGlobalBounds().height >= m_window.getSize().y - ground ||
-                f->getPosition().y <= 0)
+            if (f->getPosition().y + f->getGlobalBounds().height >= m_window.getSize().y - ground || f->getPosition().y <= 0)
                 f->setFireWallSpeedX(-f->getFWSpeedX());
                 f->move(-f->getFWSpeedX(), 0);
         }
     }
     for (auto &k: knives) {
         if (k->getIsMovingPu()) {
-            if (k->getPosition().y + k->getGlobalBounds().height >= m_window.getSize().y - ground ||
-                k->getPosition().y <= 0)
+            /*
+             if (k->getPosition().y + k->getGlobalBounds().height >= m_window.getSize().y - ground || k->getPosition().y <= 0)
                 k->setSpeedPux(+k->getSpeedPux());
                 k->move(+k->getSpeedPux(), 0);
+            */
+            k->update();
         }
     }
 }
@@ -288,8 +291,7 @@ void Game::collision() {
             }
         }
         for (int e = 0; e < enemies.size(); e++) {
-            if (enemies[e]->getGlobalBounds().intersects(m_hero.getHeroBounds())) {
-                //Se ha lo scudo e interseca il nemico non muore
+            if (enemies[e]->getEnemyBounds().intersects(m_hero.getHeroBounds())) {
                 m_hero.collisionevent();
                 if (isShieldOn) {
                     controlPU.restart();
@@ -322,7 +324,7 @@ void Game::collision() {
         }
         for (int h = 0; h < knives.size(); h++) {
             for (int e = 0; e < enemies.size(); e++){
-                if (knives[h]->getGlobalBounds().intersects(enemies[e]->getGlobalBounds()) && knives[h]->getisThrowable()) {
+                if (knives[h]->getGlobalBounds().intersects(enemies[e]->getEnemyBounds()) && knives[h]->getisThrowable()) {
                     if (controlPU.getElapsedTime().asSeconds() >= toll) {
                         KnifeCollision = true;
                         isCollided = true;
@@ -360,16 +362,20 @@ void Game::moveHero() {
 void Game::moveEnemy() {
     for (auto &e : enemies) {
         if (e->getIsMovingEnemy()) {
-            if (e->getPosition().y + e->getGlobalBounds().height >= m_window.getSize().y - ground ||
-                e->getPosition().y <= 0)
+            /*
+            if (e->getEnemyPosition().y + e->getEnemyBounds().height >= m_window.getSize().y - ground ||
+                e->getEnemyPosition().y <= 0)
                 e->setSpeed(-e->getSpeed());
                 e->move(-e->getSpeed(), 0);
+            */
+            e->update();
         }
     }
 }
 
 int Game::randomPosY() {
-    return ((rand() % int(m_window.getSize().y - this->top - this->ground - 85)) + this->top );
+    int res = ((std::rand() % int(m_window.getSize().y - this->top - this->ground - 85)) + this->top );
+    return res;
 }
 
 int Game::randomCreation() {
@@ -459,8 +465,6 @@ bool Game::getIsKnifeCollision() const{
 bool Game::getIsKnifeThrownCollision() const{
     return KnifeCollision;
 }
-
-
 
 void Game::setBlockCollision(bool blockCollision) {
     BlockCollision = blockCollision;

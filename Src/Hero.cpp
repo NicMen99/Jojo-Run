@@ -6,8 +6,7 @@
 #include "GameResourceManager.h"
 #include "Hero.h"
 
-void
-Hero::init(const std::string &texture_name, sf::Vector2f position, int hp, int knives, int max_kinves, int max_health) {
+void Hero::init(const std::string &texture_name, sf::Vector2f position, int hp, int knives, int max_kinves, int max_health) {
     sf::Texture* texture = RM->getTexture(texture_name);
     if(texture != nullptr){
         setHeroTexture(*texture);

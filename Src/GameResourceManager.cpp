@@ -30,7 +30,7 @@ sf::Texture* GameResourceManager::getTexture(const std::string & texture) {
     return & resource;
 }
 
-sf::SoundBuffer *GameResourceManager::getSound(const std::string &sound) {
+sf::SoundBuffer* GameResourceManager::getSound(const std::string &sound) {
     auto it = m_sound_map.find(sound);
     if(it != m_sound_map.end()) {
         return &it->second;
@@ -45,4 +45,21 @@ sf::SoundBuffer *GameResourceManager::getSound(const std::string &sound) {
     resource.loadFromFile(path);
     return & resource;
 }
+
+sf::Font *GameResourceManager::getFont(const std::string &font) {
+    auto it = m_font_map.find(font);
+    if(it != m_font_map.end()) {
+        return &it->second;
+    }
+
+    std::string path = GameConfig::instance()->getAssetPath(font);
+    if(path.empty()) {
+        return nullptr;
+    }
+
+    sf::Font& resource = m_font_map[font];
+    resource.loadFromFile(path);
+    return & resource;}
+
+
 

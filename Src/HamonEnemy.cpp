@@ -5,10 +5,8 @@
 #include "HamonEnemy.h"
 
 std::unique_ptr<Block> HamonEnemy::SpecialAction() {
-    std::unique_ptr<Block> result = std::unique_ptr<Block>(new Block);
-    result->setIsMovingBlock();
-    result->setScale(0.25, 0.25);
-    result->setDamageB(100);
-    result->setTexture(hamonBlockTexture);
-    return result;
+    std::unique_ptr<Block> block = std::unique_ptr<Block>(new Block);
+    block->init("hamonBlockTexture", {1, 0}, {0.25, 0.25} );
+    block->setDamageB(100);
+    return block;
 }

@@ -12,7 +12,7 @@
 #include <fstream>
 #include <SFML/Graphics.hpp>
 
-class Hero{
+class Hero final {
 public:
     Hero () = default;
     virtual ~Hero() = default;
@@ -42,6 +42,10 @@ public:
 
     bool getIsDead() const {return m_isDead;}
     sf::FloatRect getHeroBounds() const { return m_sprite.getGlobalBounds(); }
+    /*
+     * ThrowKnife()
+     * MoveHero()
+     * */
 
 private:
     void setHeroTexture(const sf::Texture &heroTexture);

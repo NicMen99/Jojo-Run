@@ -11,9 +11,6 @@
 class FireEnemy : public Enemy{
 public:
     std::unique_ptr<Block> SpecialAction() override;
-
-private:
-    sf::Texture fireBlockTexture;
 };
 
 #endif //JOJO_RUN_FIREENEMY_H
