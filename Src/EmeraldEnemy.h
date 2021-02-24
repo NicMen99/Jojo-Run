@@ -8,12 +8,9 @@
 #include "Enemy.h"
 #include <SFML/Graphics.hpp>
 
-class EmeraldEnemy : public Enemy{
+class EmeraldEnemy : public Enemy {
 public:
     std::unique_ptr<Block> SpecialAction() override;
-
-private:
-    sf::Texture emeraldBlockTexture;
 };
 
 #endif //JOJO_RUN_EMERALDENEMY_H

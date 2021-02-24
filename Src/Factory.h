@@ -17,15 +17,16 @@
 #include "HamonEnemy.h"
 #include <iostream>
 
-enum class BlockType {MovingBlock,StillBlock};
-enum class FireWallType {MovingWall,StillWall};
+enum class BlockType {MovingBlock/*,StillBlock*/};
+enum class FireWallType {MovingWall/*,StillWall*/};
 enum class EnemyType {FireEnemy, HamonEnemy, EmeraldEnemy /*, StillEnemy*/};
-enum class PowerUpType {Knife,Shield,ThrownKnife};
+enum class PowerUpType {Knife, Shield, ThrownKnife};
 
 class Factory {
 public:
-    Factory();
+    Factory() = default;
     virtual ~Factory() = default;
+
     virtual std::unique_ptr<Block> createBlock(BlockType type);
     virtual std::unique_ptr<FireWall> createFireWall(FireWallType type);
     virtual std::unique_ptr<Enemy> createEnemy(EnemyType type);
@@ -33,16 +34,16 @@ public:
 
 private:
 
-    sf::Texture blockTexture;
-    sf::Texture fireWallTexture;
-    sf::Texture shieldPowerUpTexture;
-    sf::Texture knifeTexture;
-    sf::Texture hamonEnemyTexture;
-    sf::Texture fireEnemyTexture;
-    sf::Texture emeraldEnemyTexture;
-    sf::Texture hamonBlockTexture;
-    sf::Texture fireBlockTexture;
-    sf::Texture emeraldBlockTexture;
+    sf::Texture m_blockTexture;
+    sf::Texture m_fireWallTexture;
+    sf::Texture m_shieldPowerUpTexture;
+    sf::Texture m_knifeTexture;
+    sf::Texture m_hamonEnemyTexture;
+    sf::Texture m_fireEnemyTexture;
+    sf::Texture m_emeraldEnemyTexture;
+    sf::Texture m_hamonBlockTexture;
+    sf::Texture m_fireBlockTexture;
+    sf::Texture m_emeraldBlockTexture;
 };
 
 #endif //JOJO_RUN_FACTORY_H

@@ -11,9 +11,6 @@
 class HamonEnemy : public Enemy{
 public:
     std::unique_ptr<Block> SpecialAction() override;
-
-private:
-    sf::Texture hamonBlockTexture;
 };
 
 #endif //JOJO_RUN_HAMONENEMY_H
