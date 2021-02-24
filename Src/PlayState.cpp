@@ -6,10 +6,7 @@
 #include "Game.h"
 
 /**/
-#include "Background.h"
 #include "GameConfig.h"
-#include "GameResourceManager.h"
-#include "Hero.h"
 
 PlayState* PlayState::m_instance = nullptr;
 
@@ -177,16 +174,10 @@ void PlayState::render(sf::RenderWindow& window) {
     m_context->m_hero.renderHero(window);
     for (auto & block : m_context->blocks)
         block->render(window);
-/*    for (auto &movBlock : m_context->blocks)
-        window.draw(*movBlock); ? */
     for (auto &power : m_context->powerups)
         power->render(window);
     for (auto &enemy : m_context->enemies)
         enemy->render(window);
-/*    for (auto &movEnem : m_context->enemies)
-        window.draw(*movEnem); ? */
-/*    for (auto &fire: m_context->firewalls)
-        window.draw(*fire); */
     for (auto &movFire: m_context->firewalls)
         movFire->render(window);
     for (auto &knife : m_context->knives)
