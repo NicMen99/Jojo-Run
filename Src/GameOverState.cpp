@@ -48,7 +48,7 @@ void GameOverState::onEnter() {
 void GameOverState::onExit() {
 }
 
-void GameOverState::update() {
+void GameOverState::update(int32_t delta_time) {
     file.open("Score.txt", std::ios::out | std::ios::app);
     file << std::endl;
     file << "Score: " << score;

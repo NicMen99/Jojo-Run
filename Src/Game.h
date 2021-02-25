@@ -22,6 +22,9 @@ class Game: public Subject {
     AbsGameState* m_gameMachine;
     sf::RenderWindow m_window;
     sf::Event m_event;
+    sf::Clock m_clock;
+    sf::Time m_accumulator = sf::Time::Zero;
+    sf::Time m_framerate = sf::seconds(1.f/60.f);
 
 public:
     Game();
@@ -71,7 +74,7 @@ public:
     //TODO spostare le funzioni nella classe di competenza
     void createObj();
     void createPlatform();
-    void movePlatform();
+    void movePlatform(int32_t delta_time);
     void deletePlatform();
     void createEnemy();
     void moveObject();

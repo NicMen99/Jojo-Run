@@ -12,7 +12,7 @@ public:
     void init() override;
     void onEnter() override;
     void onExit() override;
-    void update() override;
+    void update(int32_t delta_time) override;
     void render(sf::RenderWindow &window) override;
 
 public:

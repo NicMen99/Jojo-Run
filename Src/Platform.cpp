@@ -16,8 +16,9 @@ void Platform::init(const std::string& texture_name, sf::Vector2f position, sf::
     setMSpeed(speed);
 }
 
-void Platform::update() {
-    move();
+void Platform::update(int32_t delta_time) {
+    sf::Vector2f offset = {getMSpeed().x * delta_time, getMSpeed().y * delta_time};
+    move(offset);
 }
 
 void Platform::render(sf::RenderWindow& window) {

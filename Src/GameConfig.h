@@ -21,6 +21,7 @@ public:
     std::string getAssetPath(const std::string & name);
 
     const sf::Vector2u &getWindowSize() const {return m_window_size;}
+    const sf::Vector2f &getSceneSpeed() const {return m_scene_speed;}
     float getGroundYpos() const {return m_groundYpos;}
 
 private:
@@ -32,6 +33,7 @@ private:
 
 private:
     const sf::Vector2u m_window_size = {1600,1000};
+    const sf::Vector2f m_scene_speed = {0.25, 0};
     const float m_groundYpos = 63.0f;
 };
 

@@ -14,7 +14,7 @@ public:
     ~Platform() = default;
 
     void init(const std::string& texture_name, sf::Vector2f position, sf::Vector2f speed);
-    void update() override;
+    void update(int32_t delta_time) override;
     void render(sf::RenderWindow& window) override;
 
     int getMSpawnPoint() const;

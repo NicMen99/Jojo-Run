@@ -18,7 +18,7 @@ Game::~Game() {
 
 void Game::init() {
     m_window.create(sf::VideoMode(1600, 1000), "JoJo Run");
-    m_window.setFramerateLimit(60);
+    //m_window.setFramerateLimit(60);
 }
 
 void Game::loop() {
@@ -27,8 +27,15 @@ void Game::loop() {
             if(m_event.type == sf::Event::Closed)
                 m_window.close();
         }
-        m_gameMachine->exec();
-        m_gameMachine->update();
+        sf::Time elapsedTime = m_clock.restart();
+        m_accumulator += elapsedTime;
+
+        while (m_accumulator > m_framerate) {
+            m_accumulator -= m_framerate;
+            m_gameMachine->exec();
+            m_gameMachine->update(m_framerate.asMilliseconds());
+            sf::sleep(sf::milliseconds(10));
+        }
         m_window.clear();
         m_gameMachine->render(m_window);
         m_window.display();
@@ -507,9 +514,9 @@ void Game::createPlatform() {
     }
 }
 
-void Game::movePlatform() {
+void Game::movePlatform(int32_t delta_time) {
     for (auto &p : platforms){
-        p->update();
+        p->update(delta_time);
     }
 }
 

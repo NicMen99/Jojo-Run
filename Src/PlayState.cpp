@@ -64,7 +64,7 @@ void PlayState::onEnter() {
 void PlayState::onExit() {
 }
 
-void PlayState::update() {
+void PlayState::update(int32_t delta_time) {
     m_context->m_background1.update(sf::Vector2f(-m_context->getSpeed().x * 1.2, 0));
     m_context->m_background2.update(sf::Vector2f(-m_context->getSpeed().x, 0));
     m_context->m_background3.update(sf::Vector2f(-m_context->getSpeed().x*1.6, 0));
@@ -75,7 +75,7 @@ void PlayState::update() {
     }
 
     m_context->createPlatform();
-    m_context->movePlatform();
+    m_context->movePlatform(delta_time);
     m_context->deletePlatform();
     m_context->createObj();
     m_context->createEnemy();

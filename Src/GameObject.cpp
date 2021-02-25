@@ -2,10 +2,11 @@
 // Created by Niccolo on 25/02/2021.
 //
 
+#include "GameConfig.h"
 #include "GameObject.h"
 
 
-void GameObject::update() {
+void GameObject::update(int32_t delta_time) {
 
 }
 
@@ -86,10 +87,10 @@ const sf::Vector2f &GameObject::getMSpeed() const {
 }
 
 void GameObject::setMSpeed(const sf::Vector2f &mSpeed) {
-    m_speed = mSpeed;
+    m_speed = mSpeed-GC->getSceneSpeed();
 }
 
-void GameObject::move() {
-    m_position += m_speed;
+void GameObject::move(const sf::Vector2f &offset) {
+    m_position += offset;
 }
 

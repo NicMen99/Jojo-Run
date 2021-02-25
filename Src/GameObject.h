@@ -42,9 +42,9 @@ public:
     virtual sf::FloatRect getMBounds() const {return {0,0,0,0};}
 
 public:
-    virtual void update();
+    virtual void update(int32_t delta_time);
     virtual void render(sf::RenderWindow& window);
-    virtual void move();
+    virtual void move(const sf::Vector2f &offset);
 
 private:
     sf::Vector2f m_position;

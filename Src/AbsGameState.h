@@ -22,7 +22,7 @@ class AbsGameState {
 public:
     virtual void init();
     virtual void exec(){}
-    virtual void update(){};
+    virtual void update(int32_t delta_time) {};
     virtual void render(sf::RenderWindow &window) {};
 
 protected:
