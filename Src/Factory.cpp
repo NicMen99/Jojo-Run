@@ -50,3 +50,11 @@ std::unique_ptr<PowerUp> Factory::createPowerUp(PowerUpType type) {
     }
     return result;
 }
+
+std::unique_ptr<Platform> Factory::createPlatform(GroundType type) {
+    std::unique_ptr<Platform> result = std::unique_ptr<Platform>(new Platform);
+    if(type == GroundType::Large) {
+        result->init("Platform1", {1650,600}, sf::Vector2f {-15,0});
+    }
+    return result;
+}

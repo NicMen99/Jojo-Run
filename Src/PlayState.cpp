@@ -74,6 +74,9 @@ void PlayState::update() {
         changeState(State::Over);
     }
 
+    m_context->createPlatform();
+    m_context->movePlatform();
+    m_context->deletePlatform();
     m_context->createObj();
     m_context->createEnemy();
     m_context->moveObject();
@@ -172,6 +175,8 @@ void PlayState::render(sf::RenderWindow& window) {
     m_context->m_background3.render(window);
 
     m_context->m_hero.renderHero(window);
+    for (auto &platforms : m_context->platforms)
+        platforms->render(window);
     for (auto & block : m_context->blocks)
         block->render(window);
     for (auto &power : m_context->powerups)

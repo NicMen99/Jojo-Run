@@ -13,6 +13,7 @@ Game::~Game() {
     firewalls.clear();
     powerups.clear();
     knives.clear();
+    platforms.clear();
 }
 
 void Game::init() {
@@ -77,13 +78,6 @@ void Game::createObj() {
             countCreation++;
         }
         if (!isCreated) {
-            //std::unique_ptr<Block> block = factory.createBlock(BlockType::StillBlock);
-            //block->setPosition(sf::Vector2f(2 * m_window.getSize().x, randomPosY()));
-            //blocks.emplace_back(move(block));
-            //std::unique_ptr<FireWall> firewall = factory.createFireWall(FireWallType::StillWall);
-            //firewall->setPosition(sf::Vector2f(2 * m_window.getSize().x, randomPosY()));
-            //firewalls.emplace_back(move(firewall));
-            //isCreated = true;
             objectClk.restart();
             countCreation++;
         }
@@ -499,6 +493,31 @@ void Game::setIsShieldOn(bool isShieldOn) {
 
 void Game::setIsCollided(bool isCollided) {
     Game::isCollided = isCollided;
+}
+
+void Game::createPlatform() {
+    if (objectClk.getElapsedTime().asSeconds() >= creationRate) {
+        if (countCreation % 2 == 0 && randomCreation() == 2 && !isCreated) {
+            std::unique_ptr<Platform> platform = factory.createPlatform(GroundType::Large);
+            platforms.emplace_back(std::move(platform));
+            isCreated = true;
+            objectClk.restart();
+            countCreation++;
+        }
+    }
+}
+
+void Game::movePlatform() {
+    for (auto &p : platforms){
+        p->update();
+    }
+}
+
+void Game::deletePlatform() {
+    for (int i=0; i<platforms.size(); i++) {
+        if (platforms[i]->getMPosition().x + platforms[i]->getMBounds().width < 0)
+            platforms.erase(platforms.begin() + i);
+    }
 }
 
 

@@ -70,6 +70,9 @@ public:
 
     //TODO spostare le funzioni nella classe di competenza
     void createObj();
+    void createPlatform();
+    void movePlatform();
+    void deletePlatform();
     void createEnemy();
     void moveObject();
     void moveHero();
@@ -88,6 +91,7 @@ public:
     void setKnivesPowerupCollision(bool knivesPowerupCollision);
 
     void setIsCollided(bool isCollided);
+    std::vector<std::unique_ptr<Platform>> platforms;
 
 
 

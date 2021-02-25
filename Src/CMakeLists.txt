@@ -20,6 +20,8 @@ target_sources(${TARGET}
         Game.cpp
         GameConfig.h
         GameConfig.cpp
+        GameObject.h
+        GameObject.cpp
         GameResourceManager.h
         GameResourceManager.cpp
         GameStateMachine.h
@@ -38,6 +40,8 @@ target_sources(${TARGET}
         Map.h
         Map.cpp
         Observer.h
+        Platform.h
+        Platform.cpp
         PlayState.h
         PlayState.cpp
         PowerUp.h

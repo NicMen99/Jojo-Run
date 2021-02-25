@@ -4,6 +4,7 @@
 
 #include "Map.h"
 
+/*
 Map::Map() {
     map.create({1600, 1000}, "JoJo Run");
     mapSize = sf::Vector2u (1600, 1000);
@@ -44,3 +45,4 @@ void Map::display() {
 sf::RenderWindow *Map::getRenderMap(){
     return &map;
 }
+*/
