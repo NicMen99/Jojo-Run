@@ -25,12 +25,12 @@ PlayState* PlayState::instance() {
 }
 
 void PlayState::init() {
-    sf::Vector2u window_size = m_context->getWindowSize();
+    sf::Vector2u window_size = GC->getWindowSize();
 
-    m_context->m_background1.init("Background1", true, {7.4, 7.4});
-    m_context->m_background2.init("BG", true, {7.4, 7.4});
-    m_context->m_background3.init("Foreground", true, {7.4, 7.4});
-    m_context->m_background4.init("Middle", true, {7.4, 7.4});
+    m_context->m_background1.init("Background1", {0.15,0},true, {7.4, 7.4});
+    m_context->m_background2.init("BG", {0.2,0},true, {7.4, 7.4});
+    m_context->m_background3.init("Foreground", {0.05, 0}, true, {7.4, 7.4});
+    m_context->m_background4.init("Middle", {0.1, 0}, true, {7.4, 7.4});
 
     m_context->m_hero.init("playerTexture", sf::Vector2f{65, 100});
 
@@ -65,10 +65,10 @@ void PlayState::onExit() {
 }
 
 void PlayState::update(int32_t delta_time) {
-    m_context->m_background1.update(sf::Vector2f(-m_context->getSpeed().x * 1.2, 0));
-    m_context->m_background2.update(sf::Vector2f(-m_context->getSpeed().x, 0));
-    m_context->m_background3.update(sf::Vector2f(-m_context->getSpeed().x*1.6, 0));
-    m_context->m_background4.update(sf::Vector2f(-m_context->getSpeed().x*1.4, 0));
+    m_context->m_background1.update(delta_time);
+    m_context->m_background2.update(delta_time);
+    m_context->m_background3.update(delta_time);
+    m_context->m_background4.update(delta_time);
 
     if (m_context->m_hero.getIsDead() && m_context->txtCount == 0){
         changeState(State::Over);

@@ -7,11 +7,9 @@
 
 
 void GameObject::update(int32_t delta_time) {
-
 }
 
 void GameObject::render(sf::RenderWindow &window) {
-
 }
 
 const sf::Vector2f &GameObject::getMPosition() const {
