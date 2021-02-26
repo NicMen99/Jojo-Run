@@ -12,7 +12,7 @@ void PowerUp::init(const std::string &texture_name, sf::Vector2f speed, sf::Vect
         m_sprite.setTexture(*texture);
         m_sprite.setScale(scale);
     }
-    m_speedPU = speed;
+    setMSpeed(speed);
     m_isShield = isShield;
     m_isKnife = isKnife;
     if (m_isKnife){
@@ -21,20 +21,14 @@ void PowerUp::init(const std::string &texture_name, sf::Vector2f speed, sf::Vect
     m_isThrowable = isThrown;
 }
 
+void PowerUp::update(int32_t delta_time) {
+    sf::Vector2f offset = {getMSpeed().x * delta_time, getMSpeed().y * delta_time};
+    move(offset);
+}
+
 void PowerUp::render(sf::RenderWindow &window) {
+    m_sprite.setPosition(getMPosition());
     window.draw(m_sprite);
-}
-
-bool PowerUp::getIsMovingPu() const {
-    return m_speedPU != sf::Vector2f {0,0};
-}
-
-sf::Vector2f PowerUp::getSpeedPu() const {
-    return m_speedPU;
-}
-
-void PowerUp::setSpeedPu(sf::Vector2f speedPU) {
-    m_speedPU = speedPU;
 }
 
 void PowerUp::setIsShield(bool isShield) {

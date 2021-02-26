@@ -77,7 +77,7 @@ public:
     void movePlatform(int32_t delta_time);
     void deletePlatform();
     void createEnemy();
-    void moveObject();
+    //void moveObject();
     void moveHero();
     void throwKnife();
     void moveEnemy();
@@ -161,8 +161,8 @@ private:
     //float oldCreationRate; necessaria?
     float toll = 0.2;
 
-    double jump = 2.3f;
-    double g = 1;
+    double jump = 4.3f;
+    double g = 2;
 
     const float ground = 63.0f;
     const float top = 68.0f;

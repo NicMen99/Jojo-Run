@@ -11,32 +11,26 @@ void Block::init(const std::string &texture_name, sf::Vector2f speed, sf::Vector
         m_sprite.setTexture(*texture);
         m_sprite.setScale(scale);
     }
-    m_speed = speed;
+    setMSpeed(speed);
 }
 
+void Block::update(int32_t delta_time) {
+    sf::Vector2f offset = {getMSpeed().x * delta_time, getMSpeed().y * delta_time};
+    move(offset);
+}
 
 void Block::render(sf::RenderWindow & window) {
+    m_sprite.setPosition(getMPosition());
     window.draw(m_sprite);
 }
 
-bool Block::getIsMovingBlock() const {
-    return m_speed != sf::Vector2f {0, 0};
-}
-
-float Block::getBlockSpeedX() const {
-    return m_speed.x;
-}
 
 int Block::getDamageB() const {
-    return damageB;
+    return m_damageB;
 }
 
 void Block::setDamageB(int damageB) {
-    Block::damageB = damageB;
-}
-
-void Block::setBlockSpeedX(float blockSpeedX) {
-    m_speed = sf::Vector2f (blockSpeedX, 0);
+    m_damageB = damageB;
 }
 
 void Block::setPosition(sf::Vector2f position) {
@@ -50,4 +44,6 @@ sf::Vector2f Block::getPosition() const {
 sf::FloatRect Block::getGlobalBounds() const {
     return m_sprite.getGlobalBounds();
 }
+
+
 

@@ -5,15 +5,16 @@
 #ifndef JOJO_RUN_FIREWALL_H
 #define JOJO_RUN_FIREWALL_H
 
+#include "GameObject.h"
 #include <SFML/Graphics.hpp>
 
-class FireWall{
+class FireWall : public GameObject {
 
 public:
     FireWall () = default;
     ~FireWall() = default;
     void init(const std::string &texture_name, sf::Vector2f speed, sf::Vector2f scale);
-    void update(){m_sprite.move(-m_fireWallSpeedX);}
+    void update(int32_t delta_time) override;
     void render(sf::RenderWindow &window);
 
     bool getIsMovingFW() const;
@@ -29,7 +30,6 @@ public:
 
 private:
     int m_damageFW = 15;
-    sf::Vector2f m_fireWallSpeedX = {0.8,0};
     sf::Sprite m_sprite;
 };
 

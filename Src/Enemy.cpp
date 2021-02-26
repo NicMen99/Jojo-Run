@@ -11,19 +11,17 @@ void Enemy::init(const std::string &texture_name, sf::Vector2f speed, sf::Vector
         m_sprite.setTexture(*texture);
         m_sprite.setScale(scale);
     }
-    m_speed = speed;
+    setMSpeed(speed);
+}
+
+void Enemy::update(int32_t delta_time) {
+    sf::Vector2f offset = {getMSpeed().x * delta_time, getMSpeed().y * delta_time};
+    move(offset);
 }
 
 void Enemy::render(sf::RenderWindow & window) {
+    m_sprite.setPosition(getMPosition());
     window.draw(m_sprite);
-}
-
-sf::Vector2f Enemy::getSpeed() const {
-    return m_speed;
-}
-
-void Enemy::setSpeed(sf::Vector2f speed) {
-    m_speed = speed;
 }
 
 int Enemy::getDamage() const {
@@ -32,14 +30,6 @@ int Enemy::getDamage() const {
 
 void Enemy::setDamage(int damage) {
     m_damage = damage;
-}
-
-void Enemy::setIsMovingEnemy(bool ismovingEnemy) {
-     m_isMovingEnemy = ismovingEnemy;
-}
-
-bool Enemy::getIsMovingEnemy() const {
-    return m_isMovingEnemy;
 }
 
 void Enemy::setEnemyPosition(sf::Vector2f position) {

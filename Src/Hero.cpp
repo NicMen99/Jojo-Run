@@ -34,11 +34,11 @@ void Hero::init(const std::string &texture_name, sf::Vector2f position, int hp, 
     }
 }
 
-void Hero::update() {
+void Hero::update(int32_t delta_time) {
 
 }
 
-void Hero::renderHero(sf::RenderWindow &window) {
+void Hero::render(sf::RenderWindow &window) {
     window.draw(m_sprite);
 }
 

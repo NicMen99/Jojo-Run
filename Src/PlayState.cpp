@@ -79,10 +79,18 @@ void PlayState::update(int32_t delta_time) {
     m_context->deletePlatform();
     m_context->createObj();
     m_context->createEnemy();
-    m_context->moveObject();
+    for (auto & block : m_context->blocks)
+        block->update(delta_time);
+    for (auto &movFire: m_context->firewalls)
+        movFire->update(delta_time);
+    for (auto &power : m_context->powerups)
+        power->update(delta_time);
+    for (auto &knife : m_context->knives)
+        knife->update(delta_time);
+    for (auto &enemy : m_context->enemies)
+        enemy->update(delta_time);
     m_context->moveHero();
     m_context->throwKnife();
-    m_context->moveEnemy();
     m_context->deleteObject();
     m_context->deleteEnemy();
     m_context->handleTxt();
@@ -174,7 +182,7 @@ void PlayState::render(sf::RenderWindow& window) {
     m_context->m_background4.render(window);
     m_context->m_background3.render(window);
 
-    m_context->m_hero.renderHero(window);
+    m_context->m_hero.render(window);
     for (auto &platforms : m_context->platforms)
         platforms->render(window);
     for (auto & block : m_context->blocks)

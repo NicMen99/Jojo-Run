@@ -51,7 +51,7 @@ void Game::createObj() {
     if (powerupClk.getElapsedTime().asSeconds() >= creationRate) {
         if (countCreation % 5 == 0 && randomCreation() == 0) {
             std::unique_ptr<PowerUp> knife = factory.createPowerUp(PowerUpType::Knife);
-            knife->setPosition(sf::Vector2f(m_window.getSize().x + 20, randomPosY()));
+            knife->setMPosition(sf::Vector2f(m_window.getSize().x + 20, randomPosY()));
             powerups.emplace_back(std::move(knife));
             isCreated = true;
             powerupClk.restart();
@@ -59,7 +59,7 @@ void Game::createObj() {
         }
         if (countCreation % 9 == 0 && randomCreation() == 0) {
             std::unique_ptr<PowerUp> shield = factory.createPowerUp(PowerUpType::Shield);
-            shield->setPosition(sf::Vector2f(m_window.getSize().x + 20, randomPosY()));
+            shield->setMPosition(sf::Vector2f(m_window.getSize().x + 20, randomPosY()));
             powerups.emplace_back(std::move(shield));
             isCreated = true;
             powerupClk.restart();
@@ -70,7 +70,7 @@ void Game::createObj() {
     if (objectClk.getElapsedTime().asSeconds() >= creationRate) {
         if (countCreation % 2 == 0 && randomCreation() == 2 && !isCreated) {
             std::unique_ptr<Block> block = factory.createBlock(BlockType::MovingBlock);
-            block->setPosition(sf::Vector2f(m_window.getSize().x + 50, randomPosY()));
+            block->setMPosition(sf::Vector2f(m_window.getSize().x + 50, randomPosY()));
             blocks.emplace_back(std::move(block));
             isCreated = true;
             objectClk.restart();
@@ -78,7 +78,7 @@ void Game::createObj() {
         }
         if (countCreation % 3 == 0 && randomCreation() == 2 && !isCreated) {
             std::unique_ptr<FireWall> fireWall = factory.createFireWall(FireWallType::MovingWall);
-            fireWall->setPosition(sf::Vector2f(m_window.getSize().x + 50, randomPosY()));
+            fireWall->setMPosition(sf::Vector2f(m_window.getSize().x + 50, randomPosY()));
             firewalls.emplace_back(std::move(fireWall));
             isCreated = true;
             objectClk.restart();
@@ -96,7 +96,7 @@ void Game::throwKnife() {
     if (m_hero.getKnives() > 0 && (sf::Keyboard::isKeyPressed(sf::Keyboard::K))) {
         m_hero.setKnives(m_hero.getKnives() - 1);
         std::unique_ptr<PowerUp> knife = factory.createPowerUp(PowerUpType::ThrownKnife);
-        knife->setPosition(sf::Vector2f(m_hero.getHeroPos().x, m_hero.getHeroPos().y));
+        knife->setMPosition(sf::Vector2f(m_hero.getHeroPos().x, m_hero.getHeroPos().y));
         knives.emplace_back(std::move(knife));
     }
 }
@@ -105,7 +105,7 @@ void Game::createEnemy() {
     if (enemyClk.getElapsedTime().asSeconds() >= creationRate) {
         if (countCreation % 11 == 0 && randomCreation() == 1) {
             std::unique_ptr<Enemy> enemy = factory.createEnemy(EnemyType::HamonEnemy);
-            enemy->setEnemyPosition(sf::Vector2f(150 + m_window.getSize().x, randomPosY()));
+            enemy->setMPosition(sf::Vector2f(150 + m_window.getSize().x, randomPosY()));
             hamonEnemySound.play();
             enemies.emplace_back(std::move(enemy));
             isCreated = true;
@@ -114,7 +114,7 @@ void Game::createEnemy() {
         }
         if (countCreation % 13 == 0 && randomCreation() == 1) {
             std::unique_ptr<Enemy> enemy = factory.createEnemy(EnemyType::EmeraldEnemy);
-            enemy->setEnemyPosition(sf::Vector2f(150 + m_window.getSize().x, randomPosY()));
+            enemy->setMPosition(sf::Vector2f(150 + m_window.getSize().x, randomPosY()));
             emeraldEnemySound.play();
             enemies.emplace_back(std::move(enemy));
             isCreated = true;
@@ -123,7 +123,7 @@ void Game::createEnemy() {
         }
         if (countCreation % 17 == 0 && randomCreation() == 1) {
             std::unique_ptr<Enemy> enemy = factory.createEnemy(EnemyType::FireEnemy);
-            enemy->setEnemyPosition(sf::Vector2f(150 + m_window.getSize().x, randomPosY()));
+            enemy->setMPosition(sf::Vector2f(150 + m_window.getSize().x, randomPosY()));
             fireEnemySound.play();
             enemies.emplace_back(std::move(enemy));
             isCreated = true;
@@ -223,6 +223,7 @@ void Game::deleteEnemy() {
     }
 }
 
+/*
 void Game::moveObject() {
     for (auto &b : blocks) {
         if (b->getIsMovingBlock()) {
@@ -234,36 +235,38 @@ void Game::moveObject() {
     }
     for (auto &p : powerups) {
         if (p->getIsMovingPu()) {
-            /*
+
             if (p->getPosition().y + p->getGlobalBounds().height >= m_window.getSize().y - ground || p->getPosition().y <= 0)
                 p->setSpeedPux(-p->getSpeedPux());
                 p->move({-p->getSpeedPux(), 0});
-            */
+
             p->update();
         }
     }
 
+
     for (auto &f : firewalls) {
         if (f->getIsMovingFW()) {
-            /*
+
             if (f->getPosition().y + f->getGlobalBounds().height >= m_window.getSize().y - ground || f->getPosition().y <= 0)
                 f->setFireWallSpeedX(-f->getFWSpeedX());
                 f->move(-f->getFWSpeedX(), 0);
-            */
+
             f->update();
         }
     }
     for (auto &k: knives) {
         if (k->getIsMovingPu()) {
-            /*
+
              if (k->getPosition().y + k->getGlobalBounds().height >= m_window.getSize().y - ground || k->getPosition().y <= 0)
                 k->setSpeedPux(+k->getSpeedPux());
                 k->move(+k->getSpeedPux(), 0);
-            */
+
             k->update();
         }
     }
 }
+*/
 
 
 void Game::collision() {
@@ -363,22 +366,24 @@ void Game::moveHero() {
         m_hero.setHeroPos(m_hero.getHeroPos().x, top);
 }
 
+/*
 void Game::moveEnemy() {
     for (auto &e : enemies) {
         if (e->getIsMovingEnemy()) {
-            /*
+
             if (e->getEnemyPosition().y + e->getEnemyBounds().height >= m_window.getSize().y - ground ||
                 e->getEnemyPosition().y <= 0)
                 e->setSpeed(-e->getSpeed());
                 e->move(-e->getSpeed(), 0);
-            */
+
             e->update();
         }
     }
 }
+*/
 
 int Game::randomPosY() {
-    int res = ((std::rand() % int(m_window.getSize().y - this->top - this->ground - 85)) + this->top );
+    int res = ((std::rand() % int(getWindowSize().y - this->top - this->ground - 85)) + this->top );
     return res;
 }
 

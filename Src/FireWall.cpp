@@ -12,10 +12,16 @@ void FireWall::init(const std::string &texture_name, sf::Vector2f speed, sf::Vec
         m_sprite.setTexture(*texture);
         m_sprite.setScale(scale);
     }
-    m_fireWallSpeedX = speed;
+    setMSpeed(speed);
+}
+
+void FireWall::update(int32_t delta_time) {
+    sf::Vector2f offset = {getMSpeed().x * delta_time, getMSpeed().y * delta_time};
+    move(offset);
 }
 
 void FireWall::render(sf::RenderWindow &window) {
+    m_sprite.setPosition(getMPosition());
     window.draw(m_sprite);
 }
 
@@ -27,24 +33,12 @@ sf::Vector2f FireWall::getPosition() const {
     return m_sprite.getPosition();
 }
 
-bool FireWall::getIsMovingFW() const {
-    return m_fireWallSpeedX != sf::Vector2f {0,0};
-}
-
-sf::Vector2f FireWall::getFWSpeed() const {
-    return m_fireWallSpeedX;
-}
-
 int FireWall::getDamageFW() const {
     return m_damageFW;
 }
 
 void FireWall::setDamageFW(int damageFW) {
     m_damageFW = damageFW;
-}
-
-void FireWall::setFireWallSpeedX(sf::Vector2f fireWallSpeedX) {
-    m_fireWallSpeedX = fireWallSpeedX;
 }
 
 sf::FloatRect FireWall::getGlobalBounds() const {
