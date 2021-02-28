@@ -3,6 +3,7 @@
 //
 
 /*@TODO factory*/
+#include "Game.h"
 #include "GameConfig.h"
 #include "Background.h"
 #include "Platform.h"
@@ -98,7 +99,7 @@ void GameScene::destroyObjects(std::vector<std::unique_ptr<GameObject>> & items)
 }
 
 void GameScene::createBackgorund(){
-    float speedx = GC->getSceneSpeed().x;
+    float speedx = GC.getSceneSpeed().x;
     auto * bg = new Background("Sky");
     bg->init("BG", true, {7.4, 7.4}, {static_cast<float>(speedx*0.2),0});
     m_backgrounds.push_back(std::unique_ptr<GameObject>(bg));

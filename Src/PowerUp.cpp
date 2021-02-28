@@ -3,7 +3,7 @@
 //
 
 #include <string>
-#include "GameResourceManager.h"
+#include "Game.h"
 #include "PowerUp.h"
 
 PowerUp::PowerUp(GameObjectType mtype, const std::string &mName) :
@@ -14,7 +14,7 @@ PowerUp::PowerUp(GameObjectType mtype, const std::string &mName) :
 
 void PowerUp::init(const std::string &texture_name, sf::Vector2f scale, sf::Vector2f speed)
 {
-    sf::Texture* texture = RM->getTexture(texture_name);
+    sf::Texture* texture = RM.getTexture(texture_name);
     if(texture != nullptr){
         m_sprite.setTexture(*texture);
         m_sprite.setScale(scale);

@@ -5,10 +5,10 @@
 #ifndef JOJO_RUN_FIREWALL_H
 #define JOJO_RUN_FIREWALL_H
 
-#include "GameObject.h"
+#include "Obstacle.h"
 #include <SFML/Graphics.hpp>
 
-class FireWall : public GameObject {
+class FireWall final : public Obstacle {
 
 public:
     explicit FireWall (std::string id);

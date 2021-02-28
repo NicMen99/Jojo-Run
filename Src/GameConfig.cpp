@@ -5,16 +5,6 @@
 #include <iostream>
 #include "GameConfig.h"
 
-GameConfig * GameConfig::_instance = nullptr;
-
-
-GameConfig *GameConfig::instance() {
-    if (_instance == nullptr) {
-        _instance = new GameConfig();
-    }
-    return _instance;
-}
-
 void GameConfig::init(const std::string & base_dir) {
     //loadConfigFile("jojo.cfg");
     asset_base_dir = base_dir;

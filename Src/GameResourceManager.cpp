@@ -2,17 +2,9 @@
 // Created by Niccolo on 20/02/2021.
 //
 
+#include "Game.h"
 #include "GameConfig.h"
 #include "GameResourceManager.h"
-
-GameResourceManager * GameResourceManager::_instance = nullptr;
-
-GameResourceManager *GameResourceManager::instance() {
-    if (_instance == nullptr) {
-        _instance = new GameResourceManager();
-    }
-    return _instance;
-}
 
 sf::Texture* GameResourceManager::getTexture(const std::string & texture) {
     auto it = m_texture_map.find(texture);
@@ -20,7 +12,7 @@ sf::Texture* GameResourceManager::getTexture(const std::string & texture) {
         return &it->second;
     }
 
-    std::string path = GameConfig::instance()->getAssetPath(texture);
+    std::string path = GC.getAssetPath(texture);
     if(path.empty()) {
         return nullptr;
     }
@@ -36,7 +28,7 @@ sf::SoundBuffer* GameResourceManager::getSound(const std::string &sound) {
         return &it->second;
     }
 
-    std::string path = GameConfig::instance()->getAssetPath(sound);
+    std::string path = GC.getAssetPath(sound);
     if(path.empty()) {
         return nullptr;
     }
@@ -52,7 +44,7 @@ sf::Font *GameResourceManager::getFont(const std::string &font) {
         return &it->second;
     }
 
-    std::string path = GameConfig::instance()->getAssetPath(font);
+    std::string path = GC.getAssetPath(font);
     if(path.empty()) {
         return nullptr;
     }

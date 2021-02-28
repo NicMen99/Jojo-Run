@@ -11,11 +11,9 @@
 #include <map>
 
 class GameConfig {
+public:
     GameConfig()=default;
     virtual ~GameConfig()=default;
-    static GameConfig * _instance;
-public:
-    static GameConfig * instance();
 
     void init(const std::string & base_dir);
     std::string getAssetPath(const std::string & name);
@@ -36,7 +34,5 @@ private:
     const sf::Vector2f m_scene_speed = {200, 0};   // pixels x second
     const float m_groundYpos = 63.0f;
 };
-
-#define GC GameConfig::instance()
 
 #endif //JOJO_RUN_GAMECONFIG_H

@@ -6,15 +6,20 @@
 #include "GameConfig.h"
 #include "Game.h"
 
+
+Game* Game::m_instance = nullptr;
+
+Game* Game::instance() {
+    if(nullptr == m_instance){
+        m_instance = new Game;
+        m_instance->init();
+    }
+    return m_instance;
+}
+
 Game::Game():
-        factory(),
-        speed(sf::Vector2f(1.1,1.1)), oldSpeed(speed), blockX(100), isCreated(false), isCollided(false), BlockCollision(false), EnemyCollision(false),
-        FirewallCollision(false), KnifeCollision(false), KnivesPowerupCollision(false), ShieldPowerupCollision(false), countCreation(1), creationRate(2.5f),
-        /*oldCreationRate(creationRate),*/ powerupClk(),shieldClk(), scoreClk(), controlPU(), collisionClk(),enemyClk(), isShieldOn(false),
-        n(1), score(0), txtCount(0),bestScore(0) {
-
-    m_gameMachine = new GameStateMachine(this, State::Init);
-
+    m_gameMachine(new GameStateMachine(this, State::Init))
+{
     srand((unsigned) time(nullptr));
     maxY = static_cast<int>(m_window.getSize().y - (top + blockX));
 }
@@ -23,12 +28,14 @@ Game::~Game() {
     knives.clear();
 }
 
-void Game::init() {
-    m_window.create(sf::VideoMode(1600, 1000), "JoJo Run");
-    //m_window.setFramerateLimit(60);
+void Game::init()
+{
+    m_gameConfig.init("Assets");
 }
 
-void Game::loop() {
+void Game::loop()
+{
+    m_window.create(sf::VideoMode(1600, 1000), "JoJo Run");
     while(m_window.isOpen()){
         while (m_window.pollEvent(m_event)) {
             if(m_event.type == sf::Event::Closed)
@@ -59,12 +66,14 @@ float Game::getCreationRate() const {
 }
 
 void Game::throwKnife() {
+    /*
     if (m_hero.getKnives() > 0 && (sf::Keyboard::isKeyPressed(sf::Keyboard::K))) {
         m_hero.setKnives(m_hero.getKnives() - 1);
-        std::unique_ptr<PowerUp> knife = factory.createPowerUp(PowerUpType::ThrownKnife);
+        std::unique_ptr<PowerUp> knife = GF.createPowerUp(PowerUpType::ThrownKnife);
         knife->setPosition(sf::Vector2f(m_hero.getHeroPos().x, m_hero.getHeroPos().y));
         knives.emplace_back(std::move(knife));
     }
+     */
 }
 
 void Game::handleTxt() {

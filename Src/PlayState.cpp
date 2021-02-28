@@ -29,22 +29,22 @@ void PlayState::init() {
 
     m_context->m_hero.init("playerTexture", sf::Vector2f{65, 100});
 
-    fireEnemyBuffer.loadFromFile(GC->getAssetPath("fireEnemyShout"));
+    fireEnemyBuffer.loadFromFile(GC.getAssetPath("fireEnemyShout"));
     m_context->fireEnemySound.setBuffer(fireEnemyBuffer);
     m_context->fireEnemySound.setVolume(21.f);
 
-    emeraldEnemyBuffer.loadFromFile(GC->getAssetPath("emeraldEnemyShout"));
+    emeraldEnemyBuffer.loadFromFile(GC.getAssetPath("emeraldEnemyShout"));
     m_context->emeraldEnemySound.setBuffer(emeraldEnemyBuffer);
     m_context->emeraldEnemySound.setVolume(21.f);
 
-    hamonEnemyBuffer.loadFromFile(GC->getAssetPath("hamonEnemyShout"));
+    hamonEnemyBuffer.loadFromFile(GC.getAssetPath("hamonEnemyShout"));
     m_context->hamonEnemySound.setBuffer(hamonEnemyBuffer);
     m_context->hamonEnemySound.setVolume(21.f);
 
     // Loading Font
-    m_context->font.loadFromFile(GC->getAssetPath("arcadeclassic"));
+    m_context->font.loadFromFile(GC.getAssetPath("arcadeclassic"));
 
-    m_context->gameMusic.openFromFile(GC->getAssetPath("soundTrack"));
+    m_context->gameMusic.openFromFile(GC.getAssetPath("soundTrack"));
     m_context->gameMusic.setLoop(true);
     m_context->gameMusic.setVolume(10.f);
 

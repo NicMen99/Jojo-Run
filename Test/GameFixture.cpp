@@ -97,7 +97,7 @@ TEST_F(GameTest, testDeletingPowerUp) {
 
 /*TEST_F(GameTest, testCollisionStillBlock) {
     int numHP = game.getHealth();
-    std::unique_ptr<Block> block = factory.createBlock(BlockType::StillBlock);
+    std::unique_ptr<Block> block = factory.createBlock(ObstacleType::StillBlock);
     block->setPosition(sf::Vector2f(2*game.getMap()->getMapSize().x,game.randomPosY()));
     block->move(-game.getSpeed().x, 0);
     m_hero.setHeroPos(game.getMap()->getMapSize().x, -game.randomPosY());
@@ -124,7 +124,7 @@ TEST_F(GameTest, testDeletingPowerUp) {
 
 TEST_F(GameTest, testCollisionMovingBlock) {
     int numHP = game.getHealth();
-    std::unique_ptr<Block> block = factory.createBlock(BlockType::MovingBlock);
+    std::unique_ptr<Block> block = factory.createBlock(ObstacleType::MovingBlock);
     block->setPosition(sf::Vector2f(2*game.getMap()->getMapSize().x,game.randomPosY()));
     block->move(-game.getSpeed().x, 0);
     hero.setHeroPos(game.getMap()->getMapSize().x, -game.randomPosY());
