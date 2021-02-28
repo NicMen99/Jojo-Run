@@ -4,20 +4,12 @@
 #ifndef JOJO_RUN_SHIELD_H
 #define JOJO_RUN_SHIELD_H
 
-#include <SFML/Graphics.hpp>
 #include "PowerUp.h"
 
-class Shield : public PowerUp {
+class Shield final: public PowerUp {
 public:
-    Shield ();
-    ~Shield() = default;
-
-    int getHp() const;
-    void setHp(int hp);
-
-private:
-    int hp = 100;
-
+    Shield (std::string id);
+    ~Shield() override = default;
 };
 
 #endif //JOJO_RUN_SHIELD_H

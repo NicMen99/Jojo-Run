@@ -7,19 +7,20 @@
 
 #include "Subject.h"
 #include "PowerUp.h"
+#include "GameObject.h"
 #include <list>
 #include <string>
 #include <fstream>
 #include <SFML/Graphics.hpp>
 
-class Hero final {
+class Hero final : public GameObject {
 public:
-    Hero () = default;
-    virtual ~Hero() = default;
+    Hero ();
+    ~Hero() override = default;
 
     void init(const std::string &texture_name, sf::Vector2f position, int hp = 300, int knives = 0, int max_kinves = 8, int max_health = 300);
-    void update();
-    void renderHero(sf::RenderWindow &window);
+    void update(int32_t delta_time) override;
+    void render(sf::RenderWindow &window) override;
 
     bool gameOver();
     void collisionevent();

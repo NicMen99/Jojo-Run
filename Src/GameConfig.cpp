@@ -31,13 +31,14 @@ void GameConfig::init(const std::string & base_dir) {
             std::make_pair("emeraldBlockTexture",   "Textures/emeraldBlockTexture.png"),
             std::make_pair("playerTexture",         "Textures/playerTexture.png"),
             std::make_pair("playerTextureUp",       "Textures/playerTextureUp.png"),
-            std::make_pair("playerShieldTexture",  "Textures/playerShieldTexture.png"),
+            std::make_pair("playerShieldTexture",   "Textures/playerShieldTexture.png"),
             std::make_pair("GameOverScreen",        "Textures/GameOverScreen.png"),
 
             std::make_pair("Background1",           "Map/Background1.png"),
             std::make_pair("BG",                    "Map/BG.png"),
             std::make_pair("Foreground",            "Map/Foreground.png"),
             std::make_pair("Middle",                "Map/Middle.png"),
+            std::make_pair("Platform1",             "Map/Platform.png"),
 
             std::make_pair("soundTrack",            "Music/soundTrack.wav"),
             std::make_pair("gameOverSound",         "Music/gameOverSound.wav"),

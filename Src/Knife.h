@@ -6,18 +6,13 @@
 #define JOJO_RUN_KNIFE_H
 
 #include <SFML/Graphics.hpp>
-#include "PowerUp.h"
+#include "Bullet.h"
 
-class Knife :  public PowerUp {
+class Knife final:  public Bullet
+{
 public:
-    Knife ();
-    ~Knife() final = default;
-
-    int getAmmo() const;
-    void setAmmo(int ammo);
-
-private:
-    int ammo = 4;
+    explicit Knife (std::string id);
+    ~Knife()  override = default;
 };
 
 #endif //JOJO_RUN_KNIFE_H

@@ -5,12 +5,18 @@
 #ifndef JOJO_RUN_EMERALDENEMY_H
 #define JOJO_RUN_EMERALDENEMY_H
 
-#include "Enemy.h"
-#include <SFML/Graphics.hpp>
 
-class EmeraldEnemy : public Enemy {
+#include "Enemy.h"
+
+class EmeraldEnemy final : public Enemy
+{
 public:
-    std::unique_ptr<Block> SpecialAction() override;
+    explicit EmeraldEnemy(std::string id);
+    ~EmeraldEnemy() override = default;
+
+public:
+    std::unique_ptr<Bullet> SpecialAction() override;
 };
+
 
 #endif //JOJO_RUN_EMERALDENEMY_H

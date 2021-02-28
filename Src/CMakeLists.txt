@@ -6,6 +6,8 @@ target_sources(${TARGET}
         Background.cpp
         Block.h
         Block.cpp
+        Bullet.h
+        Bullet.cpp
         EmeraldEnemy.h
         EmeraldEnemy.cpp
         Enemy.h
@@ -20,10 +22,14 @@ target_sources(${TARGET}
         Game.cpp
         GameConfig.h
         GameConfig.cpp
+        GameObject.h
+        GameObject.cpp
         GameResourceManager.h
         GameResourceManager.cpp
         GameStateMachine.h
         GameStateMachine.cpp
+        GameScene.h
+        GameScene.cpp
         GameOverState.h
         GameOverState.cpp
         HamonEnemy.h
@@ -38,6 +44,8 @@ target_sources(${TARGET}
         Map.h
         Map.cpp
         Observer.h
+        Platform.h
+        Platform.cpp
         PlayState.h
         PlayState.cpp
         PowerUp.h
@@ -46,7 +54,9 @@ target_sources(${TARGET}
         ScoreHUD.cpp
         Shield.h
         Shield.cpp
-        Subject.h)
+        Subject.h
+        Weapon.h
+        Weapon.cpp)
 
 target_include_directories(${TARGET}
         PUBLIC

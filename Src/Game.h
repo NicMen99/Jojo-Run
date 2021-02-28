@@ -17,25 +17,26 @@
 #include "Hero.h"
 #include "Factory.h"
 #include "GameStateMachine.h"
+#include "GameScene.h"
 
 class Game: public Subject {
     AbsGameState* m_gameMachine;
     sf::RenderWindow m_window;
     sf::Event m_event;
+    sf::Clock m_clock;
+    sf::Time m_accumulator = sf::Time::Zero;
+    sf::Time m_framerate = sf::seconds(1.f/60.f);
 
 public:
     Game();
-    ~Game();
+    ~Game() override;
     void init();
     void loop();
 
     sf::Vector2u getWindowSize(){return m_window.getSize();}
 
-    Background m_background1;
-    Background m_background2;
-    Background m_background3;
-    Background m_background4;
     Hero m_hero;
+    GameScene m_scene;
 
     /**/
     int randomPosY();
@@ -56,11 +57,9 @@ public:
     float getCreationRate() const;
     void setScore(unsigned int s);
     void setHealth(int hp);
-    int getBlocksSize() { return static_cast<int>(blocks.size()); };
-    int getEnemySize() { return static_cast<int>(enemies.size()); };
-    int getPowerUpSize() { return static_cast<int>(powerups.size()); };
+    int getEnemySize() { return static_cast<int>(m_scene.m_enemies.size()); };
+    int getPowerUpSize() { return static_cast<int>(m_scene.m_powerups.size()); };
     int getKnivesSize() { return static_cast<int>(knives.size()); };
-    int getFireWallsSize() { return static_cast<int>(firewalls.size()); };
 
 
     void collision();
@@ -69,14 +68,8 @@ public:
     void subscribe(Observer *o) override;
 
     //TODO spostare le funzioni nella classe di competenza
-    void createObj();
-    void createEnemy();
-    void moveObject();
     void moveHero();
     void throwKnife();
-    void moveEnemy();
-    void deleteObject();
-    void deleteEnemy();
     void handleTxt();
 
     void setIsShieldOn(bool isShieldOn);
@@ -89,8 +82,6 @@ public:
 
     void setIsCollided(bool isCollided);
 
-
-
     sf::Sound hamonEnemySound;
     sf::Sound emeraldEnemySound;
     sf::Sound fireEnemySound;
@@ -98,17 +89,13 @@ public:
     int txtCount;
     unsigned int score;
     sf::Clock collisionClk;
-    std::vector<std::unique_ptr<Block>> blocks;
     int collidedblocks;
-    std::vector<std::unique_ptr<Enemy>> enemies;
     int collidedenemies;
-    std::vector<std::unique_ptr<PowerUp>> powerups;
     int collidedpowerups;
     std::vector<std::unique_ptr<PowerUp>> knives;
     int collidedknives;
     sf::Clock shieldClk;
     sf::Clock scoreClk;
-    std::vector<std::unique_ptr<FireWall>> firewalls;
     sf::Text scoreTxt;
     sf::Text numScore;
     sf::Text lifeTxt;
@@ -154,8 +141,8 @@ private:
     //float oldCreationRate; necessaria?
     float toll = 0.2;
 
-    double jump = 2.3f;
-    double g = 1;
+    double jump = 8.6f;
+    double g = 4;
 
     const float ground = 63.0f;
     const float top = 68.0f;
@@ -168,7 +155,6 @@ private:
     const float jumpLimit = 5.5;
     const float jumpPlus = 0.08;
 
-    sf::Clock objectClk;
     sf::Clock enemyClk;
     sf::Clock controlPU;
     sf::Clock powerupClk;

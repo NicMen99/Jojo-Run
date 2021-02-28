@@ -6,11 +6,15 @@
 #define JOJO_RUN_FIREENEMY_H
 
 #include "Enemy.h"
-#include <SFML/Graphics.hpp>
 
-class FireEnemy : public Enemy{
+class FireEnemy final : public Enemy
+{
 public:
-    std::unique_ptr<Block> SpecialAction() override;
+    explicit FireEnemy(const std::string& id);
+    ~FireEnemy() override = default;
+
+public:
+    std::unique_ptr<Bullet> SpecialAction() override;
 };
 
 #endif //JOJO_RUN_FIREENEMY_H

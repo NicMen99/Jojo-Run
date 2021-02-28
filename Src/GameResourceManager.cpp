@@ -26,7 +26,7 @@ sf::Texture* GameResourceManager::getTexture(const std::string & texture) {
     }
 
     sf::Texture& resource = m_texture_map[texture];
-    resource.loadFromFile(path);
+    bool result = resource.loadFromFile(path);
     return & resource;
 }
 

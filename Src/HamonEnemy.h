@@ -6,11 +6,15 @@
 #define JOJO_RUN_HAMONENEMY_H
 
 #include "Enemy.h"
-#include <SFML/Graphics.hpp>
 
-class HamonEnemy : public Enemy{
+class HamonEnemy final: public Enemy
+{
 public:
-    std::unique_ptr<Block> SpecialAction() override;
+    explicit HamonEnemy(std::string id);
+    ~HamonEnemy() override = default;
+
+public:
+    std::unique_ptr<Bullet> SpecialAction() override;
 };
 
 #endif //JOJO_RUN_HAMONENEMY_H
