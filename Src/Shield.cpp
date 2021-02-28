@@ -3,15 +3,7 @@
 //
 #include "Shield.h"
 
-int Shield::getHp() const {
-    return hp;
+Shield::Shield(std::string id) :
+    PowerUp(GameObjectType::Shield, id)
+{
 }
-
-void Shield::setHp(int hp) {
-    hp = 100;
-}
-
-Shield::Shield() {
-    hp = 0;
-}
-

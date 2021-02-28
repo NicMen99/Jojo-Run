@@ -6,6 +6,13 @@
 #include "GameResourceManager.h"
 #include "Hero.h"
 
+Hero::Hero() :
+    GameObject(GameObjectGroup::Hero, GameObjectType::Hero, "Hero", m_sprite)
+{
+
+}
+
+
 void Hero::init(const std::string &texture_name, sf::Vector2f position, int hp, int knives, int max_kinves, int max_health) {
     sf::Texture* texture = RM->getTexture(texture_name);
     if(texture != nullptr){
@@ -135,6 +142,7 @@ void Hero::collisionevent() {
         m_collisionSound.play();
     }
 }
+
 
 
 

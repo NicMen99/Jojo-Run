@@ -5,90 +5,35 @@
 #include "GameConfig.h"
 #include "GameObject.h"
 
+#include <iostream>
 
-void GameObject::update(int32_t delta_time) {
+GameObject::GameObject(GameObjectGroup mgroup, GameObjectType mtype, std::string mName, sf::Sprite &mSprite) :
+        m_group(mgroup), m_type(mtype), m_name(std::move(mName)), m_active_sprite(mSprite)
+{
+
 }
 
-void GameObject::render(sf::RenderWindow &window) {
+void GameObject::update(int32_t delta_time)
+{
+    sf::Vector2f speed = m_speed - GC->getSceneSpeed();
+    sf::Vector2f offset = {speed.x * delta_time / 1000, speed.y * delta_time / 1000};
+    move(offset);
 }
 
-const sf::Vector2f &GameObject::getMPosition() const {
-    return m_position;
+void GameObject::render(sf::RenderWindow & window)
+{
+//    std::cout << m_name << " x:" << m_position.x << " y:" << m_position.y << std::endl;
+    m_active_sprite.setPosition(m_position);
+    window.draw(m_active_sprite);
 }
 
-void GameObject::setMPosition(const sf::Vector2f &mPosition) {
-    m_position = mPosition;
-}
-
-/*
-const sf::Vector2f &GameObject::getMSize() const {
-    return m_size;
-}
-
-void GameObject::setMSize(const sf::Vector2f &mSize) {
-    m_size = mSize;
-}
-*/
-
-const std::string &GameObject::getMName() const {
-    return m_name;
-}
-
-void GameObject::setMName(const std::string &mName) {
-    m_name = mName;
-}
-
-bool GameObject::isMStarted() const {
-    return m_started;
-}
-
-void GameObject::setMStarted(bool mStarted) {
-    m_started = mStarted;
-}
-
-bool GameObject::isMEnable() const {
-    return m_enable;
-}
-
-void GameObject::setMEnable(bool mEnable) {
-    m_enable = mEnable;
-}
-
-bool GameObject::isMVisible() const {
-    return m_visible;
-}
-
-void GameObject::setMVisible(bool mVisible) {
-    m_visible = mVisible;
-}
-
-/*
-GameObject *GameObject::getMParent() const {
-    return m_parent;
-}
-
-void GameObject::setMParent(GameObject *mParent) {
-    m_parent = mParent;
-}
-
-const std::list<GameObject *> &GameObject::getMChildren() const {
-    return m_children;
-}
-
-void GameObject::setMChildren(const std::list<GameObject *> &mChildren) {
-    m_children = mChildren;
-}
-*/
-
-const sf::Vector2f &GameObject::getMSpeed() const {
-    return m_speed;
-}
-
-void GameObject::setMSpeed(const sf::Vector2f &mSpeed) {
-    m_speed = mSpeed-GC->getSceneSpeed();
-}
-
-void GameObject::move(const sf::Vector2f &offset) {
+void GameObject::move(const sf::Vector2f & offset) {
     m_position += offset;
+    if((getPosition().x + getBounds().width) < 0) {
+        m_destroyed = true;
+    }
 }
+
+
+
 

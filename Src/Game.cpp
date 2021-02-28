@@ -6,14 +6,21 @@
 #include "GameConfig.h"
 #include "Game.h"
 
+Game::Game():
+        factory(),
+        speed(sf::Vector2f(1.1,1.1)), oldSpeed(speed), blockX(100), isCreated(false), isCollided(false), BlockCollision(false), EnemyCollision(false),
+        FirewallCollision(false), KnifeCollision(false), KnivesPowerupCollision(false), ShieldPowerupCollision(false), countCreation(1), creationRate(2.5f),
+        /*oldCreationRate(creationRate),*/ powerupClk(),shieldClk(), scoreClk(), controlPU(), collisionClk(),enemyClk(), isShieldOn(false),
+        n(1), score(0), txtCount(0),bestScore(0) {
+
+    m_gameMachine = new GameStateMachine(this, State::Init);
+
+    srand((unsigned) time(nullptr));
+    maxY = static_cast<int>(m_window.getSize().y - (top + blockX));
+}
 
 Game::~Game() {
-    blocks.clear();
-    enemies.clear();
-    firewalls.clear();
-    powerups.clear();
     knives.clear();
-    platforms.clear();
 }
 
 void Game::init() {
@@ -27,7 +34,11 @@ void Game::loop() {
             if(m_event.type == sf::Event::Closed)
                 m_window.close();
         }
+
         sf::Time elapsedTime = m_clock.restart();
+#ifdef DEBUG
+        /* Hack elapsedtime for debugging */
+#endif
         m_accumulator += elapsedTime;
 
         while (m_accumulator > m_framerate) {
@@ -36,6 +47,7 @@ void Game::loop() {
             m_gameMachine->update(m_framerate.asMilliseconds());
             sf::sleep(sf::milliseconds(10));
         }
+
         m_window.clear();
         m_gameMachine->render(m_window);
         m_window.display();
@@ -46,91 +58,12 @@ float Game::getCreationRate() const {
     return creationRate;
 }
 
-void Game::createObj() {
-
-    if (powerupClk.getElapsedTime().asSeconds() >= creationRate) {
-        if (countCreation % 5 == 0 && randomCreation() == 0) {
-            std::unique_ptr<PowerUp> knife = factory.createPowerUp(PowerUpType::Knife);
-            knife->setMPosition(sf::Vector2f(m_window.getSize().x + 20, randomPosY()));
-            powerups.emplace_back(std::move(knife));
-            isCreated = true;
-            powerupClk.restart();
-            countCreation++;
-        }
-        if (countCreation % 9 == 0 && randomCreation() == 0) {
-            std::unique_ptr<PowerUp> shield = factory.createPowerUp(PowerUpType::Shield);
-            shield->setMPosition(sf::Vector2f(m_window.getSize().x + 20, randomPosY()));
-            powerups.emplace_back(std::move(shield));
-            isCreated = true;
-            powerupClk.restart();
-            countCreation++;
-        }
-        isCreated = false;
-    }
-    if (objectClk.getElapsedTime().asSeconds() >= creationRate) {
-        if (countCreation % 2 == 0 && randomCreation() == 2 && !isCreated) {
-            std::unique_ptr<Block> block = factory.createBlock(BlockType::MovingBlock);
-            block->setMPosition(sf::Vector2f(m_window.getSize().x + 50, randomPosY()));
-            blocks.emplace_back(std::move(block));
-            isCreated = true;
-            objectClk.restart();
-            countCreation++;
-        }
-        if (countCreation % 3 == 0 && randomCreation() == 2 && !isCreated) {
-            std::unique_ptr<FireWall> fireWall = factory.createFireWall(FireWallType::MovingWall);
-            fireWall->setMPosition(sf::Vector2f(m_window.getSize().x + 50, randomPosY()));
-            firewalls.emplace_back(std::move(fireWall));
-            isCreated = true;
-            objectClk.restart();
-            countCreation++;
-        }
-        if (!isCreated) {
-            objectClk.restart();
-            countCreation++;
-        }
-        isCreated = false;
-    }
-}
-
 void Game::throwKnife() {
     if (m_hero.getKnives() > 0 && (sf::Keyboard::isKeyPressed(sf::Keyboard::K))) {
         m_hero.setKnives(m_hero.getKnives() - 1);
         std::unique_ptr<PowerUp> knife = factory.createPowerUp(PowerUpType::ThrownKnife);
-        knife->setMPosition(sf::Vector2f(m_hero.getHeroPos().x, m_hero.getHeroPos().y));
+        knife->setPosition(sf::Vector2f(m_hero.getHeroPos().x, m_hero.getHeroPos().y));
         knives.emplace_back(std::move(knife));
-    }
-}
-
-void Game::createEnemy() {
-    if (enemyClk.getElapsedTime().asSeconds() >= creationRate) {
-        if (countCreation % 11 == 0 && randomCreation() == 1) {
-            std::unique_ptr<Enemy> enemy = factory.createEnemy(EnemyType::HamonEnemy);
-            enemy->setMPosition(sf::Vector2f(150 + m_window.getSize().x, randomPosY()));
-            hamonEnemySound.play();
-            enemies.emplace_back(std::move(enemy));
-            isCreated = true;
-            enemyClk.restart();
-            countCreation++;
-        }
-        if (countCreation % 13 == 0 && randomCreation() == 1) {
-            std::unique_ptr<Enemy> enemy = factory.createEnemy(EnemyType::EmeraldEnemy);
-            enemy->setMPosition(sf::Vector2f(150 + m_window.getSize().x, randomPosY()));
-            emeraldEnemySound.play();
-            enemies.emplace_back(std::move(enemy));
-            isCreated = true;
-            enemyClk.restart();
-            countCreation++;
-        }
-        if (countCreation % 17 == 0 && randomCreation() == 1) {
-            std::unique_ptr<Enemy> enemy = factory.createEnemy(EnemyType::FireEnemy);
-            enemy->setMPosition(sf::Vector2f(150 + m_window.getSize().x, randomPosY()));
-            fireEnemySound.play();
-            enemies.emplace_back(std::move(enemy));
-            isCreated = true;
-            enemyClk.restart();
-            countCreation++;
-        }
-        isCreated = false;
     }
 }
 
@@ -195,110 +128,26 @@ void Game::handleTxt() {
     bestScoreB.setFillColor(sf::Color::Black);
 }
 
-void Game::deleteObject() {
-    for (int i=0; i<blocks.size(); i++) {
-        if (blocks[i]->getPosition().x + blocks[i]->getGlobalBounds().width < 0)
-            blocks.erase(blocks.begin() + i);
-    }
-
-    for (int i=0; i<firewalls.size(); i++) {
-        if (firewalls[i]->getPosition().x + firewalls[i]->getGlobalBounds().width < 0)
-            firewalls.erase(firewalls.begin() + i);
-    }
-
-    for (int i=0; i<powerups.size(); i++) {
-        if (powerups[i]->getPosition().x + powerups[i]->getGlobalBounds().width < 0)
-            powerups.erase(powerups.begin() + i);
-    }
-    for (int i=0; i<knives.size(); i++) {
-        if (knives[i]->getPosition().x + knives[i]->getGlobalBounds().width < 0)
-            knives.erase(knives.begin() + i);
-    }
-}
-
-void Game::deleteEnemy() {
-    for (int i=0; i<enemies.size(); i++) {
-        if (enemies[i]->getEnemyPosition().x + enemies[i]->getEnemyBounds().width < 0)
-            enemies.erase(enemies.begin() + i);
-    }
-}
-
-/*
-void Game::moveObject() {
-    for (auto &b : blocks) {
-        if (b->getIsMovingBlock()) {
-// Controllare y non sembra servire fino quando non si implementa il movimento vericale
-// Comunque con l'introduzione della mappa va cambiato
-//            if (b->getPosition().y + b->getGlobalBounds().height >= m_window.getSize().y - ground || b->getPosition().y <= 0)
-                b->update();
-        }
-    }
-    for (auto &p : powerups) {
-        if (p->getIsMovingPu()) {
-
-            if (p->getPosition().y + p->getGlobalBounds().height >= m_window.getSize().y - ground || p->getPosition().y <= 0)
-                p->setSpeedPux(-p->getSpeedPux());
-                p->move({-p->getSpeedPux(), 0});
-
-            p->update();
-        }
-    }
-
-
-    for (auto &f : firewalls) {
-        if (f->getIsMovingFW()) {
-
-            if (f->getPosition().y + f->getGlobalBounds().height >= m_window.getSize().y - ground || f->getPosition().y <= 0)
-                f->setFireWallSpeedX(-f->getFWSpeedX());
-                f->move(-f->getFWSpeedX(), 0);
-
-            f->update();
-        }
-    }
-    for (auto &k: knives) {
-        if (k->getIsMovingPu()) {
-
-             if (k->getPosition().y + k->getGlobalBounds().height >= m_window.getSize().y - ground || k->getPosition().y <= 0)
-                k->setSpeedPux(+k->getSpeedPux());
-                k->move(+k->getSpeedPux(), 0);
-
-            k->update();
-        }
-    }
-}
-*/
-
-
 void Game::collision() {
     if (!isCollided) {
-        for (int i = 0; i < blocks.size(); i++) {
-            if (blocks[i]->getGlobalBounds().intersects(m_hero.getHeroBounds())) {
+        for (int i = 0; i < m_scene.m_blocks.size(); i++) {
+            if (m_scene.m_blocks[i]->getBounds().intersects(m_hero.getHeroBounds())) {
                 m_hero.collisionevent();
                 if (isShieldOn) {
                     controlPU.restart();
                 } else if (controlPU.getElapsedTime().asSeconds() >= toll) {
                     collisionClk.restart();
                 }
-                BlockCollision = true;
+                if(m_scene.m_blocks[i]->getType() == GameObjectType::Block)
+                    BlockCollision = true;
+                else
+                    FirewallCollision = true;
                 isCollided = true;
                 collidedblocks = i;
             }
         }
-        for (int j = 0; j < firewalls.size(); j++) {
-            if (firewalls[j]->getGlobalBounds().intersects(m_hero.getHeroBounds())) {
-                m_hero.collisionevent();
-                if (isShieldOn) {
-                    controlPU.restart();
-                }else if (controlPU.getElapsedTime().asSeconds() >= toll) {
-                    collisionClk.restart();
-                }
-                FirewallCollision = true;
-                isCollided = true;
-                collidedfirewalls = j;
-            }
-        }
-        for (int e = 0; e < enemies.size(); e++) {
-            if (enemies[e]->getEnemyBounds().intersects(m_hero.getHeroBounds())) {
+        for (int e = 0; e < m_scene.m_enemies.size(); e++) {
+            if (m_scene.m_enemies[e]->getBounds().intersects(m_hero.getHeroBounds())) {
                 m_hero.collisionevent();
                 if (isShieldOn) {
                     controlPU.restart();
@@ -310,8 +159,9 @@ void Game::collision() {
                 collidedenemies = e;
             }
         }
-        for (int m = 0; m < powerups.size(); m++) {
-            if (powerups[m]->getGlobalBounds().intersects(m_hero.getHeroBounds()) && powerups[m]->getisShield()) {
+        for (int m = 0; m < m_scene.m_powerups.size(); m++) {
+            if (m_scene.m_powerups[m]->getBounds().intersects(m_hero.getHeroBounds()) &&
+                    m_scene.m_powerups[m]->getType() == GameObjectType::Shield) {
                 if (controlPU.getElapsedTime().asSeconds() >= toll) {
                     ShieldPowerupCollision = true;
                     isCollided = true;
@@ -320,7 +170,8 @@ void Game::collision() {
                     shieldClk.restart();
                 }
             }
-            else if (powerups[m]->getGlobalBounds().intersects(m_hero.getHeroBounds()) && powerups[m]->getisKnife()){
+            else if (m_scene.m_powerups[m]->getBounds().intersects(m_hero.getHeroBounds()) &&
+                    m_scene.m_powerups[m]->getType() == GameObjectType::Knife){
                 if (controlPU.getElapsedTime().asSeconds() >= toll){
                     KnivesPowerupCollision = true;
                     isCollided = true;
@@ -330,8 +181,8 @@ void Game::collision() {
             }
         }
         for (int h = 0; h < knives.size(); h++) {
-            for (int e = 0; e < enemies.size(); e++){
-                if (knives[h]->getGlobalBounds().intersects(enemies[e]->getEnemyBounds()) && knives[h]->getisThrowable()) {
+            for (int e = 0; e < m_scene.m_enemies.size(); e++){
+                if (knives[h]->getBounds().intersects(m_scene.m_enemies[e]->getBounds())) {
                     if (controlPU.getElapsedTime().asSeconds() >= toll) {
                         KnifeCollision = true;
                         isCollided = true;
@@ -366,22 +217,6 @@ void Game::moveHero() {
         m_hero.setHeroPos(m_hero.getHeroPos().x, top);
 }
 
-/*
-void Game::moveEnemy() {
-    for (auto &e : enemies) {
-        if (e->getIsMovingEnemy()) {
-
-            if (e->getEnemyPosition().y + e->getEnemyBounds().height >= m_window.getSize().y - ground ||
-                e->getEnemyPosition().y <= 0)
-                e->setSpeed(-e->getSpeed());
-                e->move(-e->getSpeed(), 0);
-
-            e->update();
-        }
-    }
-}
-*/
-
 int Game::randomPosY() {
     int res = ((std::rand() % int(getWindowSize().y - this->top - this->ground - 85)) + this->top );
     return res;
@@ -389,19 +224,6 @@ int Game::randomPosY() {
 
 int Game::randomCreation() {
     return (rand() % 3);
-}
-
-Game::Game():
-    factory(),
-    speed(sf::Vector2f(1.1,1.1)), oldSpeed(speed), blockX(100), isCreated(false), isCollided(false), BlockCollision(false), EnemyCollision(false),
-    FirewallCollision(false), KnifeCollision(false), KnivesPowerupCollision(false), ShieldPowerupCollision(false), countCreation(1), creationRate(2.5f),
-    /*oldCreationRate(creationRate),*/ objectClk(), powerupClk(),shieldClk(), scoreClk(), controlPU(), collisionClk(),enemyClk(), isShieldOn(false),
-    n(1), score(0), txtCount(0),bestScore(0) {
-
-    m_gameMachine = new GameStateMachine(this, State::Init);
-
-    srand((unsigned) time(nullptr));
-    maxY = static_cast<int>(m_window.getSize().y - (top + blockX));
 }
 
 const sf::Vector2f &Game::getSpeed() const {
@@ -507,29 +329,6 @@ void Game::setIsCollided(bool isCollided) {
     Game::isCollided = isCollided;
 }
 
-void Game::createPlatform() {
-    if (objectClk.getElapsedTime().asSeconds() >= creationRate) {
-        if (countCreation % 2 == 0 && randomCreation() == 2 && !isCreated) {
-            std::unique_ptr<Platform> platform = factory.createPlatform(GroundType::Large);
-            platforms.emplace_back(std::move(platform));
-            isCreated = true;
-            objectClk.restart();
-            countCreation++;
-        }
-    }
-}
 
-void Game::movePlatform(int32_t delta_time) {
-    for (auto &p : platforms){
-        p->update(delta_time);
-    }
-}
-
-void Game::deletePlatform() {
-    for (int i=0; i<platforms.size(); i++) {
-        if (platforms[i]->getMPosition().x + platforms[i]->getMBounds().width < 0)
-            platforms.erase(platforms.begin() + i);
-    }
-}
 
 

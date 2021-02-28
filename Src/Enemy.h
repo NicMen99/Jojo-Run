@@ -5,28 +5,27 @@
 #ifndef JOJO_RUN_ENEMY_H
 #define JOJO_RUN_ENEMY_H
 
-#include "Block.h"
+
 #include <SFML/Graphics.hpp>
+#include "GameObject.h"
+
+class Bullet;
 
 class Enemy: public GameObject {
 
 public:
-    Enemy () = default;
-    virtual ~Enemy() = default;
-    void init(const std::string &texture_name, sf::Vector2f speed, sf::Vector2f scale);
-    void update(int32_t delta_time) override;
-    void render(sf::RenderWindow & window) override;
+    Enemy(GameObjectType mtype, const std::string & name);
+    ~Enemy() override = default;
+    void init(const std::string & texture_name, sf::Vector2f scale, sf::Vector2f speed, int damage);
 
-    virtual std::unique_ptr<Block> SpecialAction() = 0;
-    int getDamage() const;
-    void setDamage(int damage);
-    sf::Vector2f getEnemyPosition() const{return m_sprite.getPosition(); }
-    void setEnemyPosition(sf::Vector2f position);
-    sf::FloatRect getEnemyBounds() const { return m_sprite.getGlobalBounds(); }
+public:
+    virtual std::unique_ptr<Bullet> SpecialAction() = 0;
+    int getDamage() const { return m_damage; };
 
 private:
-    int m_damage = 90;
     sf::Sprite m_sprite;
+    int m_damage = 90;
 };
+
 
 #endif //JOJO_RUN_ENEMY_H

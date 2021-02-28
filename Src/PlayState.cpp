@@ -25,16 +25,9 @@ PlayState* PlayState::instance() {
 }
 
 void PlayState::init() {
-    sf::Vector2u window_size = GC->getWindowSize();
-
-    m_context->m_background1.init("Background1", {0.15,0},true, {7.4, 7.4});
-    m_context->m_background2.init("BG", {0.2,0},true, {7.4, 7.4});
-    m_context->m_background3.init("Foreground", {0.05, 0}, true, {7.4, 7.4});
-    m_context->m_background4.init("Middle", {0.1, 0}, true, {7.4, 7.4});
+    m_context->m_scene.init();
 
     m_context->m_hero.init("playerTexture", sf::Vector2f{65, 100});
-
-
 
     fireEnemyBuffer.loadFromFile(GC->getAssetPath("fireEnemyShout"));
     m_context->fireEnemySound.setBuffer(fireEnemyBuffer);
@@ -65,39 +58,22 @@ void PlayState::onExit() {
 }
 
 void PlayState::update(int32_t delta_time) {
-    m_context->m_background1.update(delta_time);
-    m_context->m_background2.update(delta_time);
-    m_context->m_background3.update(delta_time);
-    m_context->m_background4.update(delta_time);
+    m_context->m_scene.update(delta_time);
 
     if (m_context->m_hero.getIsDead() && m_context->txtCount == 0){
         changeState(State::Over);
     }
 
-    m_context->createPlatform();
-    m_context->movePlatform(delta_time);
-    m_context->deletePlatform();
-    m_context->createObj();
-    m_context->createEnemy();
-    for (auto & block : m_context->blocks)
-        block->update(delta_time);
-    for (auto &movFire: m_context->firewalls)
-        movFire->update(delta_time);
-    for (auto &power : m_context->powerups)
-        power->update(delta_time);
     for (auto &knife : m_context->knives)
         knife->update(delta_time);
-    for (auto &enemy : m_context->enemies)
-        enemy->update(delta_time);
     m_context->moveHero();
     m_context->throwKnife();
-    m_context->deleteObject();
-    m_context->deleteEnemy();
     m_context->handleTxt();
 
     m_context->setScore(m_context->score);
     m_context->setHealth(m_context->getHealth());
 
+    // Collision
     if (!m_context->m_hero.getIsDead()) {
         m_context->collision();
     }
@@ -108,10 +84,9 @@ void PlayState::update(int32_t delta_time) {
                     m_context->setIsShieldOn(false);
                 }
                 else{
-                    m_context->m_hero.setHealth(m_context->m_hero.getHealth() - 15);
+                    m_context->m_hero.setHealth(m_context->m_hero.getHealth() - 1);
                     m_context->notify();
                 }
-                m_context->firewalls.erase(m_context->firewalls.begin() + m_context->collidedfirewalls);
                 m_context->setFirewallCollision(false);
                 m_context->m_hero.gameOver();
             }
@@ -119,11 +94,11 @@ void PlayState::update(int32_t delta_time) {
                 if(m_context->getIsShieldOn()){
                     m_context->setIsShieldOn(false);
                 }
-                else{
+                else {
                     m_context->m_hero.setHealth(m_context->m_hero.getHealth() - 70);
                     m_context->notify();
                 }
-                m_context->blocks.erase(m_context->blocks.begin() + m_context->collidedblocks);
+                m_context->m_scene.m_blocks.erase(m_context->m_scene.m_blocks.begin() + m_context->collidedblocks);
                 m_context->setBlockCollision(false);
                 m_context->m_hero.gameOver();
             }
@@ -135,14 +110,14 @@ void PlayState::update(int32_t delta_time) {
                     m_context->m_hero.setHealth(m_context->m_hero.getHealth() - 90);
                     m_context->notify();
                 }
-                m_context->enemies.erase(m_context->enemies.begin() + m_context->collidedenemies);
+                m_context->m_scene.m_enemies.erase(m_context->m_scene.m_enemies.begin() + m_context->collidedenemies);
                 m_context->setEnemyCollision(false);
                 m_context->m_hero.gameOver();
             }
             if(m_context->getIsShieldCollision()){
                 m_context->setIsShieldOn(true);
                 m_context->m_hero.setShieldOn();
-                m_context->powerups.erase(m_context->powerups.begin()+m_context->collidedpowerups);
+                m_context->m_scene.m_powerups.erase(m_context->m_scene.m_powerups.begin()+m_context->collidedpowerups);
                 m_context->notify();
                 m_context->setShieldPowerupCollision(false);
             }
@@ -151,13 +126,13 @@ void PlayState::update(int32_t delta_time) {
                 m_context->m_hero.setHealth(m_context->m_hero.getHealth() + 20);
                 m_context->notify();
                 m_context->knives.erase(m_context->knives.begin() + m_context->collidedknives);
-                m_context->enemies.erase(m_context->enemies.begin() + m_context->collidedenemies);
+                m_context->m_scene.m_enemies.erase(m_context->m_scene.m_enemies.begin() + m_context->collidedenemies);
                 m_context->setKnifeCollision(false);
             }
             if(m_context->getIsKnifeCollision()){
                 m_context->m_hero.setKnives(m_context->m_hero.getKnives() + 4);
                 m_context->notify();
-                m_context->powerups.erase(m_context->powerups.begin()+m_context->collidedknives);
+                m_context->m_scene.m_powerups.erase(m_context->m_scene.m_powerups.begin()+m_context->collidedknives);
                 m_context->setKnivesPowerupCollision(false);
             }
         }
@@ -177,22 +152,9 @@ void PlayState::update(int32_t delta_time) {
 }
 
 void PlayState::render(sf::RenderWindow& window) {
-    m_context->m_background2.render(window);
-    m_context->m_background1.render(window);
-    m_context->m_background4.render(window);
-    m_context->m_background3.render(window);
+    m_context->m_scene.render(window);
 
     m_context->m_hero.render(window);
-    for (auto &platforms : m_context->platforms)
-        platforms->render(window);
-    for (auto & block : m_context->blocks)
-        block->render(window);
-    for (auto &power : m_context->powerups)
-        power->render(window);
-    for (auto &enemy : m_context->enemies)
-        enemy->render(window);
-    for (auto &movFire: m_context->firewalls)
-        movFire->render(window);
     for (auto &knife : m_context->knives)
         knife->render(window);
     window.draw(m_context->scoreTxt);

@@ -33,7 +33,7 @@ private:
 
 private:
     const sf::Vector2u m_window_size = {1600,1000};
-    const sf::Vector2f m_scene_speed = {0.25, 0};
+    const sf::Vector2f m_scene_speed = {200, 0};   // pixels x second
     const float m_groundYpos = 63.0f;
 };
 

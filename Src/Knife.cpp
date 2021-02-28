@@ -4,17 +4,12 @@
 
 #include "Knife.h"
 
-int Knife::getAmmo() const {
-    return ammo;
+Knife::Knife(std::string id) :
+    Bullet(GameObjectType::Knife, id)
+{
 }
 
-void Knife::setAmmo(int ammo) {
-    Knife::ammo = ammo;
-}
 
-Knife::Knife() {
-    ammo = 0;
-}
 
 
 

@@ -16,6 +16,7 @@
 #include "FireEnemy.h"
 #include "HamonEnemy.h"
 #include "Platform.h"
+#include "Weapon.h"
 #include <iostream>
 
 enum class BlockType {MovingBlock/*,StillBlock*/};
