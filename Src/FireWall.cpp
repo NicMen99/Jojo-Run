@@ -3,6 +3,7 @@
 //
 
 #include "Game.h"
+#include "GameResourceManager.h"
 #include "FireWall.h"
 
 FireWall::FireWall(std::string id) :

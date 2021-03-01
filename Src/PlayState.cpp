@@ -2,11 +2,11 @@
 // Created by Niccolo on 15/02/2021.
 //
 
-#include "PlayState.h"
 #include "Game.h"
-
-/**/
+#include "GameScene.h"
 #include "GameConfig.h"
+#include "PlayState.h"
+#include "Hero.h"
 
 PlayState* PlayState::m_instance = nullptr;
 
@@ -25,9 +25,9 @@ PlayState* PlayState::instance() {
 }
 
 void PlayState::init() {
-    m_context->m_scene.init();
+    GS.init();
 
-    m_context->m_hero.init("playerTexture", sf::Vector2f{65, 100});
+    HERO.init("playerTexture", sf::Vector2f{65, 100});
 
     fireEnemyBuffer.loadFromFile(GC.getAssetPath("fireEnemyShout"));
     m_context->fireEnemySound.setBuffer(fireEnemyBuffer);
@@ -58,9 +58,9 @@ void PlayState::onExit() {
 }
 
 void PlayState::update(int32_t delta_time) {
-    m_context->m_scene.update(delta_time);
+    GS.update(delta_time);
 
-    if (m_context->m_hero.getIsDead() && m_context->txtCount == 0){
+    if (HERO.getIsDead() && m_context->txtCount == 0){
         changeState(State::Over);
     }
 
@@ -74,7 +74,7 @@ void PlayState::update(int32_t delta_time) {
     m_context->setHealth(m_context->getHealth());
 
     // Collision
-    if (!m_context->m_hero.getIsDead()) {
+    if (!HERO.getIsDead()) {
         m_context->collision();
     }
     if (m_context->getIsCollided()) {
@@ -84,55 +84,55 @@ void PlayState::update(int32_t delta_time) {
                     m_context->setIsShieldOn(false);
                 }
                 else{
-                    m_context->m_hero.setHealth(m_context->m_hero.getHealth() - 1);
+                    HERO.setHealth(HERO.getHealth() - 1);
                     m_context->notify();
                 }
                 m_context->setFirewallCollision(false);
-                m_context->m_hero.gameOver();
+                HERO.gameOver();
             }
             if(m_context->getIsBlockCollision()){
                 if(m_context->getIsShieldOn()){
                     m_context->setIsShieldOn(false);
                 }
                 else {
-                    m_context->m_hero.setHealth(m_context->m_hero.getHealth() - 70);
+                    HERO.setHealth(HERO.getHealth() - 70);
                     m_context->notify();
                 }
-                m_context->m_scene.m_blocks.erase(m_context->m_scene.m_blocks.begin() + m_context->collidedblocks);
+                GS.m_blocks.erase(GS.m_blocks.begin() + m_context->collidedblocks);
                 m_context->setBlockCollision(false);
-                m_context->m_hero.gameOver();
+                HERO.gameOver();
             }
             if(m_context->getIsEnemyCollision()){
                 if(m_context->getIsShieldOn()){
                     m_context->setIsShieldOn(false);
                 }
                 else {
-                    m_context->m_hero.setHealth(m_context->m_hero.getHealth() - 90);
+                    HERO.setHealth(HERO.getHealth() - 90);
                     m_context->notify();
                 }
-                m_context->m_scene.m_enemies.erase(m_context->m_scene.m_enemies.begin() + m_context->collidedenemies);
+                GS.m_enemies.erase(GS.m_enemies.begin() + m_context->collidedenemies);
                 m_context->setEnemyCollision(false);
-                m_context->m_hero.gameOver();
+                HERO.gameOver();
             }
             if(m_context->getIsShieldCollision()){
                 m_context->setIsShieldOn(true);
-                m_context->m_hero.setShieldOn();
-                m_context->m_scene.m_powerups.erase(m_context->m_scene.m_powerups.begin()+m_context->collidedpowerups);
+                HERO.setShieldOn();
+                GS.m_powerups.erase(GS.m_powerups.begin()+m_context->collidedpowerups);
                 m_context->notify();
                 m_context->setShieldPowerupCollision(false);
             }
             if(m_context->getIsKnifeThrownCollision()){
                 //se l'eroe colpisce un nemico col coltello lanciato, la sua vita aumenta leggermente
-                m_context->m_hero.setHealth(m_context->m_hero.getHealth() + 20);
+                HERO.setHealth(HERO.getHealth() + 20);
                 m_context->notify();
                 m_context->knives.erase(m_context->knives.begin() + m_context->collidedknives);
-                m_context->m_scene.m_enemies.erase(m_context->m_scene.m_enemies.begin() + m_context->collidedenemies);
+                GS.m_enemies.erase(GS.m_enemies.begin() + m_context->collidedenemies);
                 m_context->setKnifeCollision(false);
             }
             if(m_context->getIsKnifeCollision()){
-                m_context->m_hero.setKnives(m_context->m_hero.getKnives() + 4);
+                HERO.setKnives(HERO.getKnives() + 4);
                 m_context->notify();
-                m_context->m_scene.m_powerups.erase(m_context->m_scene.m_powerups.begin()+m_context->collidedknives);
+                GS.m_powerups.erase(GS.m_powerups.begin()+m_context->collidedknives);
                 m_context->setKnivesPowerupCollision(false);
             }
         }
@@ -141,10 +141,10 @@ void PlayState::update(int32_t delta_time) {
 
     if(m_context->getIsShieldOn() && m_context->shieldClk.getElapsedTime().asSeconds() >= 15.f) {
         m_context->setIsShieldOn(false);
-        m_context->m_hero.setStanding();
+        HERO.setStanding();
     }
 
-    if (m_context->scoreClk.getElapsedTime().asSeconds() >= 1.f && !m_context->m_hero.getIsDead()) {
+    if (m_context->scoreClk.getElapsedTime().asSeconds() >= 1.f && !HERO.getIsDead()) {
         m_context->score ++;
         m_context->scoreClk.restart();
         m_context->notify();
@@ -152,9 +152,9 @@ void PlayState::update(int32_t delta_time) {
 }
 
 void PlayState::render(sf::RenderWindow& window) {
-    m_context->m_scene.render(window);
+    GS.render(window);
 
-    m_context->m_hero.render(window);
+    HERO.render(window);
     for (auto &knife : m_context->knives)
         knife->render(window);
     window.draw(m_context->scoreTxt);

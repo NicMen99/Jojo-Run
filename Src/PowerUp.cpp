@@ -2,8 +2,8 @@
 // Created by angiolo99 on 10/02/20.
 //
 
-#include <string>
 #include "Game.h"
+#include "GameResourceManager.h"
 #include "PowerUp.h"
 
 PowerUp::PowerUp(GameObjectType mtype, const std::string &mName) :

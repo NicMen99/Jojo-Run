@@ -12,19 +12,20 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
 
-#include "GameStateMachine.h"
-#include "GameConfig.h"
-#include "GameResourceManager.h"
-
-#include "Map.h"
-#include "Background.h"
 #include "Hero.h"
-#include "Factory.h"
-#include "GameScene.h"
+
+class AbsGameState;
+class GameResourceManager;
+class GameConfig;
+class Factory;
+class GameScene;
+class Hero;
 
 #define GC Game::instance()->configManager()
 #define RM Game::instance()->resourceManager()
 #define GF Game::instance()->factory()
+#define GS Game::instance()->gameScene()
+#define HERO Game::instance()->hero()
 
 class Game: public Subject
 {
@@ -38,10 +39,11 @@ public:
     void init();
     void loop();
 
-    GameConfig& configManager() { return m_gameConfig; }
-    GameResourceManager& resourceManager() { return m_resourceManager; }
-    Factory& factory() { return m_factory; }
-
+    GameConfig & configManager() { return m_gameConfig; }
+    GameResourceManager & resourceManager() { return m_resourceManager; }
+    Factory & factory() { return m_factory; }
+    GameScene & gameScene() { return m_scene; }
+    Hero & hero() { return m_hero; }
 private:
     sf::RenderWindow m_window;
     sf::Clock m_clock;
@@ -50,17 +52,17 @@ private:
 
 private:
     AbsGameState* m_gameMachine;
-    GameConfig m_gameConfig;
-    GameResourceManager m_resourceManager;
-    Factory m_factory;
+    GameConfig& m_gameConfig;
+    GameResourceManager& m_resourceManager;
+    Factory& m_factory;
+    GameScene& m_scene;
+    Hero& m_hero;
 
     sf::Event m_event{};
 
 public:
     sf::Vector2u getWindowSize(){return m_window.getSize();}
 
-    Hero m_hero;
-    GameScene m_scene;
 
     /**/
     int randomPosY();
@@ -81,9 +83,9 @@ public:
     float getCreationRate() const;
     void setScore(unsigned int s);
     void setHealth(int hp);
-    int getEnemySize() { return static_cast<int>(m_scene.m_enemies.size()); };
-    int getPowerUpSize() { return static_cast<int>(m_scene.m_powerups.size()); };
-    int getKnivesSize() { return static_cast<int>(knives.size()); };
+    int getEnemySize();
+    int getPowerUpSize();
+    int getKnivesSize();
 
 
     void collision();
@@ -110,7 +112,7 @@ public:
     sf::Sound emeraldEnemySound;
     sf::Sound fireEnemySound;
     sf::Music gameMusic;
-    int txtCount;
+    int txtCount = 0;
     unsigned int score=0;
     sf::Clock collisionClk;
     int collidedblocks{};

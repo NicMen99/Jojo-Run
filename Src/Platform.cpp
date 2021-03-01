@@ -3,6 +3,7 @@
 //
 
 #include "Game.h"
+#include "GameResourceManager.h"
 #include "Platform.h"
 
 Platform::Platform(std::string id) :

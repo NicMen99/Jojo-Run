@@ -3,6 +3,8 @@
 //
 
 #include "Game.h"
+#include "GameResourceManager.h"
+#include "GameConfig.h"
 #include "Hero.h"
 
 Hero::Hero() :

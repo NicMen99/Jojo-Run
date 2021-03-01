@@ -2,22 +2,12 @@
 // Created by Niccolo on 27/02/2021.
 //
 
-/*@TODO factory*/
 #include "Game.h"
+#include "GameResourceManager.h"
 #include "GameConfig.h"
-#include "Background.h"
-#include "Platform.h"
-#include "Block.h"
-#include "EmeraldEnemy.h"
-#include "HamonEnemy.h"
-#include "FireEnemy.h"
-#include "Knife.h"
-#include "Shield.h"
-#include "FireWall.h"
-#include "Weapon.h"
-
 #include "GameScene.h"
-
+#include "Factory.h"
+#include "Background.h"
 
 GameScene::~GameScene() {
     m_backgrounds.clear();
@@ -38,12 +28,14 @@ void GameScene::update(int32_t delta_time) {
     destroyObjects(m_enemies);
     destroyObjects(m_powerups);
     destroyObjects(m_bullets);
+
+    /*Map Generator */
     createPlatform();
     createBlocks();
     createEnemies();
-    createPowerups();
+    createPowerup();
 
-
+    /*Map Update*/
     for (auto & it : m_backgrounds) {
         it->update(delta_time);
     }
@@ -122,15 +114,14 @@ void GameScene::createPlatform() {
      */
      if(timer.getElapsedTime().asSeconds() > 2
      && m_platforms.size() < 4) {
-         auto * pl = new Platform("Platform");
-         pl->init("Platform1", sf::Vector2f {0,0});
+         auto pl = GF.createMap(PlatformType::Large);
          if(0==count%3)
              pl->setPosition({1650,315});
          else if(0==count%5)
              pl->setPosition({1650,615});
          else
              pl->setPosition({1650,915});
-         m_platforms.emplace_back(std::unique_ptr<GameObject>(pl));
+         m_platforms.emplace_back(std::move(pl));
          timer.restart();
          count++;
      }
@@ -145,18 +136,15 @@ void GameScene::createBlocks() {
     if(timer.getElapsedTime().asSeconds() > 4
     && m_blocks.size() < 3) {
         if(0==count%5) {
-            auto * fw = new FireWall("Firewall");
-            fw->init("fireWallTexture", {0.7,0.7}, sf::Vector2f {0,0});
+            auto fw = GF.createObstacle(ObstacleType::Firewall);
             fw->setPosition({1650, 333});
-            m_blocks.emplace_back(std::unique_ptr<GameObject>(fw));
-
+            m_blocks.emplace_back(std::move(fw));
         }
         else
         {
-            auto * bl = new Block("Block");
-            bl->init("blockTexture", {0.7,0.7}, sf::Vector2f {0,0});
+            auto bl = GF.createObstacle(ObstacleType::Block);
             bl->setPosition({1650, 555});
-            m_blocks.emplace_back(std::unique_ptr<GameObject>(bl));
+            m_blocks.emplace_back(std::move(bl));
         }
         count++;
         timer.restart();
@@ -174,30 +162,27 @@ void GameScene::createEnemies() {
     if(timer.getElapsedTime().asSeconds() > 3
        && m_enemies.size() < 3) {
         if(1==count%3) {
-            auto * en = new EmeraldEnemy("Emerald");
-            en->init("emeraldEnemyTexture", {-1, 1}, sf::Vector2f {0, 0}, 90);
+            auto en = GF.createEnemy(EnemyType::EmeraldEnemy);
             en->setPosition({1650, 200});
-            m_enemies.emplace_back(std::unique_ptr<GameObject>(en));
+            m_enemies.emplace_back(std::move(en));
         }
         else
         if(2==count%3) {
-            auto * en = new HamonEnemy("hamon");
-            en->init("hamonEnemyTexture", {-1, 1}, sf::Vector2f {0, 0}, 90);
+            auto en = GF.createEnemy(EnemyType::HamonEnemy);
             en->setPosition({1650, 400});
-            m_enemies.emplace_back(std::unique_ptr<GameObject>(en));
+            m_enemies.emplace_back(std::move(en));
         }
         else {
-            auto * en = new FireEnemy("Fire");
-            en->init("fireEnemy", {-1, 1}, sf::Vector2f {0, 0}, 90);
+            auto en = GF.createEnemy(EnemyType::FireEnemy);
             en->setPosition({1650, 600});
-            m_enemies.emplace_back(std::unique_ptr<GameObject>(en));
+            m_enemies.emplace_back(std::move(en));
         }
         count++;
         timer.restart();
     }
 }
 
-void GameScene::createPowerups() {
+void GameScene::createPowerup() {
     static sf::Clock timer;
     static int count = 1;
     /**
@@ -206,28 +191,19 @@ void GameScene::createPowerups() {
     if(timer.getElapsedTime().asSeconds() > 10
        && m_powerups.size() < 2) {
         if(1==count%3) {
-            auto * en = new Shield("Shield");
-            en->init("shieldPowerUpTexture", {0.2, 0.2}, sf::Vector2f {20, 0});
-            en->setPosition({1650, 222});
-            m_powerups.emplace_back(std::unique_ptr<GameObject>(en));
+            auto  pu = GF.createPowerUp(PowerUpType::Shield);
+            pu->setPosition({1650, 222});
+            m_powerups.emplace_back(std::move(pu));
         }
         else
         if(2==count%3) {
-            auto * en = new Weapon("Knife");
-            en->init("knifeTexture", {1, 1}, sf::Vector2f {0, 0});
-            en->setPosition({1650, 444});
-            m_powerups.emplace_back(std::unique_ptr<GameObject>(en));
+            auto pu = GF.createPowerUp(PowerUpType::Weapon);
+            pu->setPosition({1650, 444});
+            m_powerups.emplace_back(std::move(pu));
         }
         count++;
         timer.restart();
     }
 
-}
-
-void GameScene::createBullet(const sf::Vector2f & position) {
-    auto * en = new Knife("Knife");
-    en->init("knifeTexture", {50, 0}, sf::Vector2f {20, 0}, 100);
-    en->setPosition(position);
-    m_bullets.emplace_back(std::unique_ptr<GameObject>(en));
 }
 

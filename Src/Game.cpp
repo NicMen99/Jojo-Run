@@ -1,11 +1,15 @@
 //
 // Created by angiolo99 on 23/08/20.
 //
-#include <fstream>
-#include <memory>
+#include "GameStateMachine.h"
 #include "GameConfig.h"
+#include "GameResourceManager.h"
+#include "GameScene.h"
+#include "Factory.h"
+#include "Hero.h"
 #include "Game.h"
 
+#define DEBUG
 
 Game* Game::m_instance = nullptr;
 
@@ -18,7 +22,13 @@ Game* Game::instance() {
 }
 
 Game::Game():
-    m_gameMachine(new GameStateMachine(this, State::Init))
+    m_gameMachine(new GameStateMachine(this, State::Init)),
+    m_gameConfig(*new GameConfig()),
+    m_resourceManager(*new GameResourceManager()),
+    m_factory(*new Factory()),
+    m_scene(*new GameScene()),
+    m_hero(*new Hero())
+
 {
     srand((unsigned) time(nullptr));
     maxY = static_cast<int>(m_window.getSize().y - (top + blockX));
@@ -44,7 +54,8 @@ void Game::loop()
 
         sf::Time elapsedTime = m_clock.restart();
 #ifdef DEBUG
-        /* Hack elapsedtime for debugging */
+        if(elapsedTime > sf::milliseconds(100))
+            elapsedTime = sf::milliseconds(100);
 #endif
         m_accumulator += elapsedTime;
 
@@ -338,6 +349,15 @@ void Game::setIsCollided(bool isCollided) {
     Game::isCollided = isCollided;
 }
 
+int Game::getEnemySize() {
+    return static_cast<int>(m_scene.m_enemies.size());
+}
 
+int Game::getPowerUpSize() {
+    return static_cast<int>(m_scene.m_powerups.size());
+}
 
+int Game::getKnivesSize() {
+    return static_cast<int>(knives.size());
+}
 

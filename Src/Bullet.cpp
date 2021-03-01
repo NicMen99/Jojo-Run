@@ -3,6 +3,7 @@
 //
 
 #include "Game.h"
+#include "GameResourceManager.h"
 #include "Bullet.h"
 
 Bullet::Bullet(GameObjectType mtype, const std::string &name):

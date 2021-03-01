@@ -21,22 +21,21 @@ public:
 
 
 private:
-    void destroyObjects(std::vector<std::unique_ptr<GameObject>> & items);
+    static void destroyObjects(std::vector<std::unique_ptr<GameObject>> & items);
     void createBackgorund();
     void createPlatform();
     void createBlocks();
     void createEnemies();
-    void createPowerups();
-    void createBullet(const sf::Vector2f & position);
+    void createPowerup();
 
-public:  // fino a quando non è migrato il collision manager
+public:
+    // fino a quando non è migrato il collision manager
     std::vector<std::unique_ptr<GameObject>> m_backgrounds;
     std::vector<std::unique_ptr<GameObject>> m_platforms;
     std::vector<std::unique_ptr<GameObject>> m_blocks;
     std::vector<std::unique_ptr<GameObject>> m_enemies;
     std::vector<std::unique_ptr<GameObject>> m_powerups;
     std::vector<std::unique_ptr<GameObject>> m_bullets;
-
 };
 
 

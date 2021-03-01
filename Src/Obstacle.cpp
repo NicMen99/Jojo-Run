@@ -2,6 +2,8 @@
 // Created by Niccolo on 28/02/2021.
 //
 
+#include "Game.h"
+#include "GameResourceManager.h"
 #include "Obstacle.h"
 
 Obstacle::Obstacle(GameObjectType mtype, const std::string &name) :

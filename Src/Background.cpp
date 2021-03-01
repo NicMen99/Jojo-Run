@@ -4,6 +4,7 @@
 
 #include "Game.h"
 #include "GameResourceManager.h"
+#include "GameConfig.h"
 #include "Background.h"
 
 Background::Background(const std::string id) :
