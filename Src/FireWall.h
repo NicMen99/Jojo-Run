@@ -16,7 +16,6 @@ public:
     void init(const std::string &texture_name, sf::Vector2f scale, sf::Vector2f speed);
 
 private:
-    sf::Sprite m_sprite;
     int m_damage = 15;
 };
 

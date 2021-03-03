@@ -13,11 +13,7 @@ Block::Block(std::string id) :
 }
 
 void Block::init(const std::string &texture_name, sf::Vector2f scale, sf::Vector2f speed) {
-    sf::Texture* texture = RM.getTexture(texture_name);
-    if(texture != nullptr){
-        m_sprite.setTexture(*texture);
-        m_sprite.setScale(scale);
-    }
+    Obstacle::init(texture_name, scale, 70);
     m_speed = speed;
 }
 

@@ -19,7 +19,6 @@ public:
     void setDamageB(int damageB);
 
 private:
-    sf::Sprite m_sprite;
     int m_damageB = 70;
 };
 

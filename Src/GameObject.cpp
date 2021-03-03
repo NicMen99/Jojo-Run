@@ -24,12 +24,11 @@ void GameObject::update(int32_t delta_time)
 void GameObject::render(sf::RenderWindow & window)
 {
 //    std::cout << m_name << " x:" << m_position.x << " y:" << m_position.y << std::endl;
-    m_active_sprite.setPosition(m_position);
     window.draw(m_active_sprite);
 }
 
 void GameObject::move(const sf::Vector2f & offset) {
-    m_position += offset;
+    m_active_sprite.setPosition(m_active_sprite.getPosition() + offset);
     if((getPosition().x + getBounds().width) < 0) {
         m_destroyed = true;
     }

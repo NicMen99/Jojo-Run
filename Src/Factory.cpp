@@ -10,7 +10,7 @@
 #include "Shield.h"
 #include "Weapon.h"
 #include "Knife.h"
-#include "platform.h"
+#include "Platform.h"
 
 #include "Factory.h"
 
@@ -42,7 +42,7 @@ std::unique_ptr<GameObject> Factory::createEnemy(EnemyType type) {
         return std::unique_ptr<GameObject>(enemy);
     }
     else if (type == EnemyType::FireEnemy){
-        auto * enemy = new EmeraldEnemy("FireEnemy");
+        auto * enemy = new FireEnemy("FireEnemy");
         enemy->init("fireEnemy", {-1, 1}, {0, 0}, 90);
         //result->SpecialAction();
         return std::unique_ptr<GameObject>(enemy);

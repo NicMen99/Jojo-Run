@@ -17,21 +17,27 @@ public:
 
     void init(const std::string & base_dir);
     std::string getAssetPath(const std::string & name);
+    float getMBase() const;
+    float getMMiddle() const;
+    float getMTop() const;
 
     const sf::Vector2u &getWindowSize() const {return m_window_size;}
     const sf::Vector2f &getSceneSpeed() const {return m_scene_speed;}
     float getGroundYpos() const {return m_groundYpos;}
 
 private:
-
-private:
     // int loadConfigFile(std::string s);
     std::string asset_base_dir;
     std::map<std::string, std::string> asset_map;
 
+    float m_levelDelta_y = 200.f;
+    float m_base;
+    float m_middle;
+    float m_top;
+
 private:
     const sf::Vector2u m_window_size = {1600,1000};
-    const sf::Vector2f m_scene_speed = {200, 0};   // pixels x second
+    const sf::Vector2f m_scene_speed = {400, 0};   // pixels x second
     const float m_groundYpos = 63.0f;
 };
 

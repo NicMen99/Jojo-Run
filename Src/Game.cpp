@@ -167,6 +167,8 @@ void Game::collision() {
             }
         }
         for (int e = 0; e < m_scene.m_enemies.size(); e++) {
+            sf::FloatRect heroBounds = m_hero.getHeroBounds();
+            sf::FloatRect enemyBounds = m_scene.m_enemies[e]->getBounds();
             if (m_scene.m_enemies[e]->getBounds().intersects(m_hero.getHeroBounds())) {
                 m_hero.collisionevent();
                 if (isShieldOn) {
