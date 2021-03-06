@@ -150,15 +150,15 @@ void Game::handleTxt() {
 
 void Game::collision() {
     if (!isCollided) {
-        for (int i = 0; i < m_scene.m_blocks.size(); i++) {
-            if (m_scene.m_blocks[i]->getBounds().intersects(m_hero.getHeroBounds())) {
+        for (int i = 0; i < m_scene.m_obstacles.size(); i++) {
+            if (m_scene.m_obstacles[i]->getBounds().intersects(m_hero.getHeroBounds())) {
                 m_hero.collisionevent();
                 if (isShieldOn) {
                     controlPU.restart();
                 } else if (controlPU.getElapsedTime().asSeconds() >= toll) {
                     collisionClk.restart();
                 }
-                if(m_scene.m_blocks[i]->getType() == GameObjectType::Block)
+                if(m_scene.m_obstacles[i]->getType() == GameObjectType::Block)
                     BlockCollision = true;
                 else
                     FirewallCollision = true;

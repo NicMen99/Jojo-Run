@@ -98,7 +98,7 @@ void PlayState::update(int32_t delta_time) {
                     HERO.setHealth(HERO.getHealth() - 70);
                     m_context->notify();
                 }
-                GS.m_blocks.erase(GS.m_blocks.begin() + m_context->collidedblocks);
+                GS.m_obstacles.erase(GS.m_obstacles.begin() + m_context->collidedblocks);
                 m_context->setBlockCollision(false);
                 HERO.gameOver();
             }

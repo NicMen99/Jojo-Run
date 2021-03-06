@@ -30,7 +30,7 @@ private:
     std::string asset_base_dir;
     std::map<std::string, std::string> asset_map;
 
-    float m_levelDelta_y = 200.f;
+    float m_levelDelta_y = 300.f;
     float m_base;
     float m_middle;
     float m_top;

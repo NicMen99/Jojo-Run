@@ -16,7 +16,7 @@
 GameScene::~GameScene() {
     m_backgrounds.clear();
     m_platforms.clear();
-    m_blocks.clear();
+    m_obstacles.clear();
     m_enemies.clear();
     m_powerups.clear();
 }
@@ -29,17 +29,13 @@ void GameScene::init()
 
 void GameScene::update(int32_t delta_time) {
     destroyObjects(m_platforms);
-    destroyObjects(m_blocks);
+    destroyObjects(m_obstacles);
     destroyObjects(m_enemies);
     destroyObjects(m_powerups);
     destroyObjects(m_bullets);
 
     /*Map Generator */
-    //createPlatform();
     generateMap();
-    createBlocks();
-    createEnemies();
-    createPowerup();
 
     /*Map Update*/
     for (auto & it : m_backgrounds) {
@@ -48,7 +44,7 @@ void GameScene::update(int32_t delta_time) {
     for (auto & it : m_platforms) {
         it->update(delta_time);
     }
-    for (auto & it : m_blocks) {
+    for (auto & it : m_obstacles) {
         it->update(delta_time);
     }
     for (auto & it : m_enemies) {
@@ -70,7 +66,7 @@ void GameScene::render(sf::RenderWindow & window) {
     for (auto & it : m_platforms) {
         it->render(window);
     }
-    for (auto & it : m_blocks) {
+    for (auto & it : m_obstacles) {
         it->render(window);
     }
     for (auto & it : m_enemies) {
@@ -114,88 +110,32 @@ void GameScene::createBackgorund(){
 
 GameObject * GameScene::createPlatform(sf::Vector2f position) {
     auto pl = GF.createMap(PlatformType::Large);
-    pl->setPosition(sf::Vector2f(0, -pl->getBounds().height) + position);
+    pl->setPosition(position);
     m_platforms.emplace_back(std::move(pl));
     return m_platforms.back().get();
 }
 
 
-void GameScene::createBlocks() {
-    static sf::Clock timer;
-    /**
-     * Logica da pensare
-     */
-    std::uniform_int_distribution<int> dist(0,4);
-    if(timer.getElapsedTime().asSeconds() > 3 && m_blocks.size() < 3) {
-        if(0==dist(m_gen)) {
-            auto fw = GF.createObstacle(ObstacleType::Firewall);
-            fw->setPosition({1650, 333});
-            m_blocks.emplace_back(std::move(fw));
-        }
-        else
-        {
-            auto bl = GF.createObstacle(ObstacleType::Block);
-            bl->setPosition({1650, 555});
-            m_blocks.emplace_back(std::move(bl));
-        }
-        timer.restart();
+void GameScene::createObstacle(ObstacleType ot, sf::Vector2f position) {
+    auto bl = GF.createObstacle(ot);
+    if (ot == ObstacleType::Firewall){
+        bl->setPosition(sf::Vector2f(0, -bl->getBounds().height) + position);
+    } else {
+        bl->setPosition(sf::Vector2f(0, -2*bl->getBounds().height) + position);
     }
-
-
+    m_obstacles.emplace_back(std::move(bl));
 }
 
-void GameScene::createEnemies() {
-    static sf::Clock timer;
-    /**
-     * Logica da pensare
-     */
-    std::uniform_int_distribution<int> dist(0,2);
-
-    if(timer.getElapsedTime().asSeconds() > 5
-       && m_enemies.size() < 3) {
-        if(1==dist(m_gen)) {
-            auto en = GF.createEnemy(EnemyType::EmeraldEnemy);
-            en->setPosition({1650, 200});
-            m_enemies.emplace_back(std::move(en));
-        }
-        else
-        if(2==dist(m_gen)) {
-            auto en = GF.createEnemy(EnemyType::HamonEnemy);
-            en->setPosition({1650, 400});
-            m_enemies.emplace_back(std::move(en));
-        }
-        else {
-            auto en = GF.createEnemy(EnemyType::FireEnemy);
-            en->setPosition({1650, 600});
-            m_enemies.emplace_back(std::move(en));
-        }
-        timer.restart();
-    }
+void GameScene::createEnemy(EnemyType et, sf::Vector2f position) {
+    auto en = GF.createEnemy(et);
+    en->setPosition(sf::Vector2f(0, -en->getBounds().height) + position);
+    m_enemies.emplace_back(std::move(en));
 }
 
-void GameScene::createPowerup() {
-    static sf::Clock timer;
-    static int count = 1;
-    /**
-     * Logica da pensare
-     */
-    if(timer.getElapsedTime().asSeconds() > 10
-       && m_powerups.size() < 2) {
-        if(1==count%3) {
-            auto  pu = GF.createPowerUp(PowerUpType::Shield);
-            pu->setPosition({1650, 222});
-            m_powerups.emplace_back(std::move(pu));
-        }
-        else
-        if(2==count%3) {
-            auto pu = GF.createPowerUp(PowerUpType::Weapon);
-            pu->setPosition({1650, 444});
-            m_powerups.emplace_back(std::move(pu));
-        }
-        count++;
-        timer.restart();
-    }
-
+void GameScene::createPowerup(PowerUpType pt, sf::Vector2f position) {
+    auto pu = GF.createPowerUp(pt);
+    pu->setPosition(sf::Vector2f(0, -2*pu->getBounds().height) + position);
+    m_powerups.emplace_back(std::move(pu));
 }
 
 
@@ -212,49 +152,75 @@ void GameScene::generateMap() {
     float posx;
     float posy;
     float size;
+    static float space = 0;
 
     GameObject * last = nullptr;
 
     if(m_platforms.empty()){
+        /*
+         * Prima piattaforma
+         */
         posx = 0;
+        posy = GC.getMBase();
         size = GC.getWindowSize().x;
-        m_lastSpawned = PlatformPosition::Bottom;
+        std::vector<float> hchoice = {100, 200, 300, 400};
+        space = hchoice[rand(hchoice.size())];
     }
     else
     {
+        /*
+         * Piattaforme successive
+         */
         last = m_platforms.back().get();
-
-        std::vector<float> hchoice = {100, 200, 300, 400};
-        if(GC.getWindowSize().x - (last->getPosition().x + last->getBounds().width) < hchoice[rand(hchoice.size())])
+        if(GC.getWindowSize().x - (last->getPosition().x + last->getBounds().width) < space)
             return;
 
-        std::vector<PlatformPosition> vchoice;
-
-        if(m_lastSpawned == PlatformPosition::Bottom) {
-            vchoice = {PlatformPosition::Bottom, PlatformPosition::Middle};
-        } else if (m_lastSpawned == PlatformPosition::Top) {
-            vchoice = {PlatformPosition::Top, PlatformPosition::Middle};
+        std::vector<float> vchoice;
+        if(last->getPosition().y == GC.getMBase()) {
+            vchoice = {GC.getMBase(), GC.getMMiddle()};
+        } else if (last->getPosition().y == GC.getMTop()) {
+            vchoice = {GC.getMTop(), GC.getMMiddle()};
         }
         else {
-            vchoice = {PlatformPosition::Bottom, PlatformPosition::Middle, PlatformPosition::Top};
+            vchoice = {GC.getMTop(), GC.getMMiddle(), GC.getMBase()};
         }
-        m_lastSpawned = vchoice[rand(vchoice.size())];
+        posy = vchoice[rand(vchoice.size())];
         posx = GC.getWindowSize().x;
-
         size = (float)(1 + rand(2)) * last->getBounds().width;
+        std::vector<float> hchoice = {100, 200, 300, 400};
+        space = hchoice[rand(hchoice.size())];
     }
 
-    if(m_lastSpawned == PlatformPosition::Bottom)
-        posy = GC.getMBase();
-    else if(m_lastSpawned == PlatformPosition::Middle)
-        posy = GC.getMMiddle();
-    else
-        posy = GC.getMTop();
-
+    /*
+     * Genera piattaforme
+     */
     float sizex = 0;
     while (sizex < size) {
         GameObject * prev = createPlatform({sizex+posx, posy});
         sizex += prev->getBounds().width;
+    }
+
+
+    /*
+     * Genera nemici
+     */
+    if(m_enemies.empty()) {
+        std::vector<EnemyType> echoice = {EnemyType::FireEnemy, EnemyType::HamonEnemy, EnemyType::EmeraldEnemy};
+        createEnemy(echoice[rand(echoice.size())], sf::Vector2f(posx+size*3/4, posy));
+    }
+    /*
+     * Genera ostacoli
+     */
+    else if(m_obstacles.empty()) {
+        std::vector<ObstacleType> ochoice = {ObstacleType::Firewall, ObstacleType::Block};
+        createObstacle(ochoice[rand(ochoice.size())], sf::Vector2f(posx + size/2, posy));
+    }
+    /*
+     * Genera PowerUps
+     */
+    else if (m_powerups.empty()) {
+        std::vector<PowerUpType> pchoice = {PowerUpType::Weapon, PowerUpType::Shield};
+        createPowerup(pchoice[rand(pchoice.size())], sf::Vector2f(posx + size/2, posy));
     }
 }
 
