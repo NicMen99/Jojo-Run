@@ -2,6 +2,7 @@
 // Created by angiolo99 on 29/01/20.
 //
 
+#include "Game.h"
 #include "GameResourceManager.h"
 #include "Enemy.h"
 
@@ -13,7 +14,7 @@ Enemy::Enemy(GameObjectType mtype, const std::string & name) :
 
 void Enemy::init(const std::string &texture_name, sf::Vector2f scale, sf::Vector2f speed, int damage)
 {
-    sf::Texture* texture = RM->getTexture(texture_name);
+    sf::Texture* texture = RM.getTexture(texture_name);
     if(texture != nullptr){
         m_sprite.setTexture(*texture);
         m_sprite.setScale(scale);

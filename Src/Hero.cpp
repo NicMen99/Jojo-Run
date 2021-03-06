@@ -2,8 +2,9 @@
 // Created by angiolo99 on 23/01/20.
 //
 
-#include "GameConfig.h"
+#include "Game.h"
 #include "GameResourceManager.h"
+#include "GameConfig.h"
 #include "Hero.h"
 
 Hero::Hero() :
@@ -14,7 +15,7 @@ Hero::Hero() :
 
 
 void Hero::init(const std::string &texture_name, sf::Vector2f position, int hp, int knives, int max_kinves, int max_health) {
-    sf::Texture* texture = RM->getTexture(texture_name);
+    sf::Texture* texture = RM.getTexture(texture_name);
     if(texture != nullptr){
         setHeroTexture(*texture);
     }
@@ -24,17 +25,17 @@ void Hero::init(const std::string &texture_name, sf::Vector2f position, int hp, 
     m_maxhp = max_health;
     m_maxknives = max_kinves;
 
-    sf::SoundBuffer* soundBuffer = RM->getSound("collisionSound");
+    sf::SoundBuffer* soundBuffer = RM.getSound("collisionSound");
     if(soundBuffer != nullptr) {
         m_collisionSound.setBuffer(*soundBuffer);
         m_collisionSound.setVolume(22.f);
     }
-    soundBuffer = RM->getSound("shieldSound");
+    soundBuffer = RM.getSound("shieldSound");
     if(soundBuffer != nullptr) {
         m_powerUpSound.setBuffer(*soundBuffer);
         m_powerUpSound.setVolume(22.f);
     }
-    soundBuffer = RM->getSound("shieldOn");
+    soundBuffer = RM.getSound("shieldOn");
     if(soundBuffer != nullptr) {
         m_shieldOnSound.setBuffer(*soundBuffer);
         m_shieldOnSound.setVolume(22.f);
@@ -107,7 +108,7 @@ void Hero::setMaxhp(int maxhp) {
 
 void Hero::setShieldOn() {
     if(!m_shield) {
-        sf::Texture* texture = RM->getTexture("playerShieldTexture");
+        sf::Texture* texture = RM.getTexture("playerShieldTexture");
         if(texture != nullptr){
             texture->setSmooth(true);
             setHeroTexture(*texture);
@@ -118,7 +119,7 @@ void Hero::setShieldOn() {
 }
 
 void Hero::setJumpOn() {
-    sf::Texture* texture = RM->getTexture("playerTextureUp");
+    sf::Texture* texture = RM.getTexture("playerTextureUp");
     if(texture != nullptr){
         texture->setSmooth(true);
         setHeroTexture(*texture);
@@ -127,7 +128,7 @@ void Hero::setJumpOn() {
 }
 
 void Hero::setStanding() {
-    sf::Texture* texture = RM->getTexture("playerTexture");
+    sf::Texture* texture = RM.getTexture("playerTexture");
     if(texture != nullptr){
         texture->setSmooth(true);
         setHeroTexture(*texture);

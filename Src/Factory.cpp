@@ -2,65 +2,81 @@
 // Created by angiolo99 on 23/01/20.
 //
 
-#include "GameConfig.h"
+#include "Block.h"
+#include "FireWall.h"
+#include "EmeraldEnemy.h"
+#include "FireEnemy.h"
+#include "HamonEnemy.h"
+#include "Shield.h"
+#include "Weapon.h"
+#include "Knife.h"
+#include "Platform.h"
+
 #include "Factory.h"
 
-std::unique_ptr<Block> Factory::createBlock(BlockType type) {
-    std::unique_ptr<Block> block = std::unique_ptr<Block>(new Block(""));
-    block->init("blockTexture", {0.70, 0.70}, {0, 0} );
-    return block;
+std::unique_ptr<GameObject> Factory::createObstacle(ObstacleType type) {
+    if(type == ObstacleType::Block) {
+        auto * obstacle = new Block("Block");
+        obstacle->init("blockTexture", {0.70, 0.70}, {0, 0});
+        return std::unique_ptr<GameObject>(obstacle);
+    }
+    else if (type == ObstacleType::Firewall) {
+        auto * obstacle = new FireWall("FireWall");
+        obstacle->init("fireWallTexture", {1, 1}, {0,0});
+        return std::unique_ptr<GameObject>(obstacle);
+    }
+    return nullptr;
 }
 
-std::unique_ptr<FireWall> Factory::createFireWall(FireWallType type) {
-    std::unique_ptr<FireWall> result = std::unique_ptr<FireWall>(new FireWall(""));
-    result->init("fireWallTexture", {1, 1}, {0,0});
-    return result;
-}
-
-std::unique_ptr<Enemy> Factory::createEnemy(EnemyType type) {
+std::unique_ptr<GameObject> Factory::createEnemy(EnemyType type) {
     if (type == EnemyType::EmeraldEnemy){
-        std::unique_ptr<Enemy> result = std::unique_ptr<Enemy> (new EmeraldEnemy(""));
-        result->init("emeraldEnemyTexture", {-1, 1}, {0, 0}, 90);
+        auto * enemy = new EmeraldEnemy("EmeraldEnemy");
+        enemy->init("emeraldEnemyTexture", {-1, 1}, {0, 0}, 90);
         //result->SpecialAction();
-        return result;
+        return std::unique_ptr<GameObject>(enemy);
     }
     else if (type == EnemyType::HamonEnemy){
-        std::unique_ptr<Enemy> result = std::unique_ptr<Enemy> (new HamonEnemy(""));
-        result->init("hamonEnemyTexture", {-1, 1}, {0, 0}, 90);
+        auto * enemy =new HamonEnemy("HamonEnemy");
+        enemy->init("hamonEnemyTexture", {-1, 1}, {0, 0}, 90);
         //result->SpecialAction();
-        return result;
+        return std::unique_ptr<GameObject>(enemy);
     }
     else if (type == EnemyType::FireEnemy){
-        std::unique_ptr<Enemy> result = std::unique_ptr<Enemy> (new FireEnemy(""));
-        result->init("fireEnemy", {-1, 1}, {0, 0}, 90);
+        auto * enemy = new FireEnemy("FireEnemy");
+        enemy->init("fireEnemy", {-1, 1}, {0, 0}, 90);
         //result->SpecialAction();
-        return result;
+        return std::unique_ptr<GameObject>(enemy);
     }
     return nullptr;
 }
 
-std::unique_ptr<PowerUp> Factory::createPowerUp(PowerUpType type) {
+std::unique_ptr<GameObject> Factory::createPowerUp(PowerUpType type) {
     if (type == PowerUpType::Shield) {
-        std::unique_ptr<PowerUp> result = std::unique_ptr<PowerUp>(new Shield(""));
-        result->init("shieldPowerUpTexture",{0.2, 0.2}, {-0.1, 0});
-        return result;
-    } else if (type == PowerUpType::Knife) {
-        std::unique_ptr<PowerUp> result = std::unique_ptr<PowerUp>(new Weapon(""));
-        result->init("knifeTexture",{1, 1}, {-0.1, 0});
-        return result;
-    } else if (type == PowerUpType::ThrownKnife) {
-        std::unique_ptr<PowerUp> result = std::unique_ptr<PowerUp>(new Weapon(""));
-        result->init("knifeTexture",{1, 1}, {-0.1, 0});
-        return result;
+        auto * powerUp = new Shield("Shield");
+        powerUp->init("shieldPowerUpTexture",{0.2, 0.2}, {-0.1, 0});
+        return std::unique_ptr<GameObject>(powerUp);
+    } else if (type == PowerUpType::Weapon) {
+        auto * powerUp = new Weapon("Weapon");
+        powerUp->init("knifeTexture",{1, 1}, {-0.1, 0});
+        return std::unique_ptr<GameObject>(powerUp);
     }
     return nullptr;
 }
 
-std::unique_ptr<Platform> Factory::createPlatform(GroundType type) {
-    std::unique_ptr<Platform> result = std::unique_ptr<Platform>(new Platform(""));
-    if(type == GroundType::Large) {
-        result->init("Platform1", sf::Vector2f {0,0});
-        result->setPosition({1650,600});
+std::unique_ptr<GameObject> Factory::createBullet(BulletType type) {
+    if (type == BulletType::Knife) {
+        auto * knife = new Knife("Knife");
+        knife -> init("knifeTexture", {1,1}, {0.1, 0}, 100);
+        return std::unique_ptr<GameObject>(knife);
     }
-    return result;
+    return nullptr;
+}
+
+std::unique_ptr<GameObject> Factory::createMap(PlatformType type) {
+    if (type == PlatformType::Large) {
+        auto * platform = new Platform("Platform");
+        platform->init("Platform1", sf::Vector2f {-0.1,0});
+        return std::unique_ptr<GameObject>(platform);
+    }
+    return nullptr;
 }

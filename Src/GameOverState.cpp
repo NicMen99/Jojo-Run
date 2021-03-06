@@ -28,11 +28,11 @@ int txtCount;
 
 void GameOverState::init() {
     sf::Vector2u window_size = m_context->getWindowSize();
-    gameOverBuffer.loadFromFile(GC->getAssetPath("gameOverSound"));
+    gameOverBuffer.loadFromFile(GC.getAssetPath("gameOverSound"));
     gameOverSound.setBuffer(gameOverBuffer);
     gameOverSound.setVolume(21.f);
 
-    gameOverTexture.loadFromFile(GC->getAssetPath("GameOverScreen"));
+    gameOverTexture.loadFromFile(GC.getAssetPath("GameOverScreen"));
     gameOver.setTextureRect(sf::IntRect(0,0,(window_size.x), window_size.y+static_cast<int>(ground)));
     gameOver.setTexture(gameOverTexture);
 }

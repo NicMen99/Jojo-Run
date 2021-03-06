@@ -1,20 +1,35 @@
 //
 // Created by angiolo99 on 23/08/20.
 //
-#include <fstream>
-#include <memory>
+#include "GameStateMachine.h"
 #include "GameConfig.h"
+#include "GameResourceManager.h"
+#include "GameScene.h"
+#include "Factory.h"
+#include "Hero.h"
 #include "Game.h"
 
+#define DEBUG
+
+Game* Game::m_instance = nullptr;
+
+Game* Game::instance() {
+    if(nullptr == m_instance){
+        m_instance = new Game;
+        m_instance->init();
+    }
+    return m_instance;
+}
+
 Game::Game():
-        factory(),
-        speed(sf::Vector2f(1.1,1.1)), oldSpeed(speed), blockX(100), isCreated(false), isCollided(false), BlockCollision(false), EnemyCollision(false),
-        FirewallCollision(false), KnifeCollision(false), KnivesPowerupCollision(false), ShieldPowerupCollision(false), countCreation(1), creationRate(2.5f),
-        /*oldCreationRate(creationRate),*/ powerupClk(),shieldClk(), scoreClk(), controlPU(), collisionClk(),enemyClk(), isShieldOn(false),
-        n(1), score(0), txtCount(0),bestScore(0) {
+    m_gameMachine(new GameStateMachine(this, State::Init)),
+    m_gameConfig(*new GameConfig()),
+    m_resourceManager(*new GameResourceManager()),
+    m_factory(*new Factory()),
+    m_scene(*new GameScene()),
+    m_hero(*new Hero())
 
-    m_gameMachine = new GameStateMachine(this, State::Init);
-
+{
     srand((unsigned) time(nullptr));
     maxY = static_cast<int>(m_window.getSize().y - (top + blockX));
 }
@@ -23,12 +38,14 @@ Game::~Game() {
     knives.clear();
 }
 
-void Game::init() {
-    m_window.create(sf::VideoMode(1600, 1000), "JoJo Run");
-    //m_window.setFramerateLimit(60);
+void Game::init()
+{
+    m_gameConfig.init("Assets");
 }
 
-void Game::loop() {
+void Game::loop()
+{
+    m_window.create(sf::VideoMode(1600, 1000), "JoJo Run");
     while(m_window.isOpen()){
         while (m_window.pollEvent(m_event)) {
             if(m_event.type == sf::Event::Closed)
@@ -37,7 +54,8 @@ void Game::loop() {
 
         sf::Time elapsedTime = m_clock.restart();
 #ifdef DEBUG
-        /* Hack elapsedtime for debugging */
+        if(elapsedTime > sf::milliseconds(100))
+            elapsedTime = sf::milliseconds(100);
 #endif
         m_accumulator += elapsedTime;
 
@@ -59,12 +77,14 @@ float Game::getCreationRate() const {
 }
 
 void Game::throwKnife() {
+    /*
     if (m_hero.getKnives() > 0 && (sf::Keyboard::isKeyPressed(sf::Keyboard::K))) {
         m_hero.setKnives(m_hero.getKnives() - 1);
-        std::unique_ptr<PowerUp> knife = factory.createPowerUp(PowerUpType::ThrownKnife);
+        std::unique_ptr<PowerUp> knife = GF.createPowerUp(PowerUpType::ThrownKnife);
         knife->setPosition(sf::Vector2f(m_hero.getHeroPos().x, m_hero.getHeroPos().y));
         knives.emplace_back(std::move(knife));
     }
+     */
 }
 
 void Game::handleTxt() {
@@ -130,15 +150,15 @@ void Game::handleTxt() {
 
 void Game::collision() {
     if (!isCollided) {
-        for (int i = 0; i < m_scene.m_blocks.size(); i++) {
-            if (m_scene.m_blocks[i]->getBounds().intersects(m_hero.getHeroBounds())) {
+        for (int i = 0; i < m_scene.m_obstacles.size(); i++) {
+            if (m_scene.m_obstacles[i]->getBounds().intersects(m_hero.getHeroBounds())) {
                 m_hero.collisionevent();
                 if (isShieldOn) {
                     controlPU.restart();
                 } else if (controlPU.getElapsedTime().asSeconds() >= toll) {
                     collisionClk.restart();
                 }
-                if(m_scene.m_blocks[i]->getType() == GameObjectType::Block)
+                if(m_scene.m_obstacles[i]->getType() == GameObjectType::Block)
                     BlockCollision = true;
                 else
                     FirewallCollision = true;
@@ -147,6 +167,8 @@ void Game::collision() {
             }
         }
         for (int e = 0; e < m_scene.m_enemies.size(); e++) {
+            sf::FloatRect heroBounds = m_hero.getHeroBounds();
+            sf::FloatRect enemyBounds = m_scene.m_enemies[e]->getBounds();
             if (m_scene.m_enemies[e]->getBounds().intersects(m_hero.getHeroBounds())) {
                 m_hero.collisionevent();
                 if (isShieldOn) {
@@ -329,6 +351,15 @@ void Game::setIsCollided(bool isCollided) {
     Game::isCollided = isCollided;
 }
 
+int Game::getEnemySize() {
+    return static_cast<int>(m_scene.m_enemies.size());
+}
 
+int Game::getPowerUpSize() {
+    return static_cast<int>(m_scene.m_powerups.size());
+}
 
+int Game::getKnivesSize() {
+    return static_cast<int>(knives.size());
+}
 

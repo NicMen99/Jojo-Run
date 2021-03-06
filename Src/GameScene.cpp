@@ -2,54 +2,49 @@
 // Created by Niccolo on 27/02/2021.
 //
 
-/*@TODO factory*/
-#include "GameConfig.h"
-#include "Background.h"
-#include "Platform.h"
-#include "Block.h"
-#include "EmeraldEnemy.h"
-#include "HamonEnemy.h"
-#include "FireEnemy.h"
-#include "Knife.h"
-#include "Shield.h"
-#include "FireWall.h"
-#include "Weapon.h"
+#include <vector>
 
+#include "Game.h"
+#include "GameResourceManager.h"
+#include "GameConfig.h"
 #include "GameScene.h"
+#include "Factory.h"
+#include "Background.h"
+
 
 
 GameScene::~GameScene() {
     m_backgrounds.clear();
     m_platforms.clear();
-    m_blocks.clear();
+    m_obstacles.clear();
     m_enemies.clear();
     m_powerups.clear();
 }
 
 void GameScene::init()
 {
+    m_gen.seed(m_rd());
     createBackgorund();
 }
 
 void GameScene::update(int32_t delta_time) {
     destroyObjects(m_platforms);
-    destroyObjects(m_blocks);
+    destroyObjects(m_obstacles);
     destroyObjects(m_enemies);
     destroyObjects(m_powerups);
     destroyObjects(m_bullets);
-    createPlatform();
-    createBlocks();
-    createEnemies();
-    createPowerups();
 
+    /*Map Generator */
+    generateMap();
 
+    /*Map Update*/
     for (auto & it : m_backgrounds) {
         it->update(delta_time);
     }
     for (auto & it : m_platforms) {
         it->update(delta_time);
     }
-    for (auto & it : m_blocks) {
+    for (auto & it : m_obstacles) {
         it->update(delta_time);
     }
     for (auto & it : m_enemies) {
@@ -71,7 +66,7 @@ void GameScene::render(sf::RenderWindow & window) {
     for (auto & it : m_platforms) {
         it->render(window);
     }
-    for (auto & it : m_blocks) {
+    for (auto & it : m_obstacles) {
         it->render(window);
     }
     for (auto & it : m_enemies) {
@@ -98,7 +93,7 @@ void GameScene::destroyObjects(std::vector<std::unique_ptr<GameObject>> & items)
 }
 
 void GameScene::createBackgorund(){
-    float speedx = GC->getSceneSpeed().x;
+    float speedx = GC.getSceneSpeed().x;
     auto * bg = new Background("Sky");
     bg->init("BG", true, {7.4, 7.4}, {static_cast<float>(speedx*0.2),0});
     m_backgrounds.push_back(std::unique_ptr<GameObject>(bg));
@@ -113,120 +108,119 @@ void GameScene::createBackgorund(){
     m_backgrounds.push_back(std::unique_ptr<GameObject>(bg));
 }
 
-void GameScene::createPlatform() {
-    static sf::Clock timer;
-    static int count = 1;
-    /**
-     * Logica da pensare
-     */
-     if(timer.getElapsedTime().asSeconds() > 2
-     && m_platforms.size() < 4) {
-         auto * pl = new Platform("Platform");
-         pl->init("Platform1", sf::Vector2f {0,0});
-         if(0==count%3)
-             pl->setPosition({1650,315});
-         else if(0==count%5)
-             pl->setPosition({1650,615});
-         else
-             pl->setPosition({1650,915});
-         m_platforms.emplace_back(std::unique_ptr<GameObject>(pl));
-         timer.restart();
-         count++;
-     }
+GameObject * GameScene::createPlatform(sf::Vector2f position) {
+    auto pl = GF.createMap(PlatformType::Large);
+    pl->setPosition(position);
+    m_platforms.emplace_back(std::move(pl));
+    return m_platforms.back().get();
 }
 
-void GameScene::createBlocks() {
-    static sf::Clock timer;
-    static int count = 0;
-    /**
-     * Logica da pensare
-     */
-    if(timer.getElapsedTime().asSeconds() > 4
-    && m_blocks.size() < 3) {
-        if(0==count%5) {
-            auto * fw = new FireWall("Firewall");
-            fw->init("fireWallTexture", {0.7,0.7}, sf::Vector2f {0,0});
-            fw->setPosition({1650, 333});
-            m_blocks.emplace_back(std::unique_ptr<GameObject>(fw));
 
-        }
-        else
-        {
-            auto * bl = new Block("Block");
-            bl->init("blockTexture", {0.7,0.7}, sf::Vector2f {0,0});
-            bl->setPosition({1650, 555});
-            m_blocks.emplace_back(std::unique_ptr<GameObject>(bl));
-        }
-        count++;
-        timer.restart();
+void GameScene::createObstacle(ObstacleType ot, sf::Vector2f position) {
+    auto bl = GF.createObstacle(ot);
+    if (ot == ObstacleType::Firewall){
+        bl->setPosition(sf::Vector2f(0, -bl->getBounds().height) + position);
+    } else {
+        bl->setPosition(sf::Vector2f(0, -2*bl->getBounds().height) + position);
     }
-
-
+    m_obstacles.emplace_back(std::move(bl));
 }
 
-void GameScene::createEnemies() {
-    static sf::Clock timer;
-    static int count = 1;
-    /**
-     * Logica da pensare
+void GameScene::createEnemy(EnemyType et, sf::Vector2f position) {
+    auto en = GF.createEnemy(et);
+    en->setPosition(sf::Vector2f(0, -en->getBounds().height) + position);
+    m_enemies.emplace_back(std::move(en));
+}
+
+void GameScene::createPowerup(PowerUpType pt, sf::Vector2f position) {
+    auto pu = GF.createPowerUp(pt);
+    pu->setPosition(sf::Vector2f(0, -2*pu->getBounds().height) + position);
+    m_powerups.emplace_back(std::move(pu));
+}
+
+
+void GameScene::generateMap() {
+
+    /*
+     * Ci sono tre livelli ad altezza fissa da mettere nel game config ok
+     * I nemici sono sempre appoggiati su una piattaforma
+     * I blocchi sono o poggiati sulla piattaforma o ad altezza di hero+x dalla piattaforma (mai sovrapposti con una piattaforma)
+     * I powerup sono ad altezza x dalla piattaforma o tra due piattaforme (mai sovrapposti con una piattaforma)
+     * si parte con una piattaforma origine 0,0 e lunga tutto lo schermo
+     * ogni piattaforma dista 0 <= x <= 250 dalla precedente e salta di -1 / 0 / +1 livelli ok
      */
-    if(timer.getElapsedTime().asSeconds() > 3
-       && m_enemies.size() < 3) {
-        if(1==count%3) {
-            auto * en = new EmeraldEnemy("Emerald");
-            en->init("emeraldEnemyTexture", {-1, 1}, sf::Vector2f {0, 0}, 90);
-            en->setPosition({1650, 200});
-            m_enemies.emplace_back(std::unique_ptr<GameObject>(en));
-        }
-        else
-        if(2==count%3) {
-            auto * en = new HamonEnemy("hamon");
-            en->init("hamonEnemyTexture", {-1, 1}, sf::Vector2f {0, 0}, 90);
-            en->setPosition({1650, 400});
-            m_enemies.emplace_back(std::unique_ptr<GameObject>(en));
+    float posx;
+    float posy;
+    float size;
+    static float space = 0;
+
+    GameObject * last = nullptr;
+
+    if(m_platforms.empty()){
+        /*
+         * Prima piattaforma
+         */
+        posx = 0;
+        posy = GC.getMBase();
+        size = GC.getWindowSize().x;
+        std::vector<float> hchoice = {100, 200, 300, 400};
+        space = hchoice[rand(hchoice.size())];
+    }
+    else
+    {
+        /*
+         * Piattaforme successive
+         */
+        last = m_platforms.back().get();
+        if(GC.getWindowSize().x - (last->getPosition().x + last->getBounds().width) < space)
+            return;
+
+        std::vector<float> vchoice;
+        if(last->getPosition().y == GC.getMBase()) {
+            vchoice = {GC.getMBase(), GC.getMMiddle()};
+        } else if (last->getPosition().y == GC.getMTop()) {
+            vchoice = {GC.getMTop(), GC.getMMiddle()};
         }
         else {
-            auto * en = new FireEnemy("Fire");
-            en->init("fireEnemy", {-1, 1}, sf::Vector2f {0, 0}, 90);
-            en->setPosition({1650, 600});
-            m_enemies.emplace_back(std::unique_ptr<GameObject>(en));
+            vchoice = {GC.getMTop(), GC.getMMiddle(), GC.getMBase()};
         }
-        count++;
-        timer.restart();
+        posy = vchoice[rand(vchoice.size())];
+        posx = GC.getWindowSize().x;
+        size = (float)(1 + rand(2)) * last->getBounds().width;
+        std::vector<float> hchoice = {100, 200, 300, 400};
+        space = hchoice[rand(hchoice.size())];
     }
-}
 
-void GameScene::createPowerups() {
-    static sf::Clock timer;
-    static int count = 1;
-    /**
-     * Logica da pensare
+    /*
+     * Genera piattaforme
      */
-    if(timer.getElapsedTime().asSeconds() > 10
-       && m_powerups.size() < 2) {
-        if(1==count%3) {
-            auto * en = new Shield("Shield");
-            en->init("shieldPowerUpTexture", {0.2, 0.2}, sf::Vector2f {20, 0});
-            en->setPosition({1650, 222});
-            m_powerups.emplace_back(std::unique_ptr<GameObject>(en));
-        }
-        else
-        if(2==count%3) {
-            auto * en = new Weapon("Knife");
-            en->init("knifeTexture", {1, 1}, sf::Vector2f {0, 0});
-            en->setPosition({1650, 444});
-            m_powerups.emplace_back(std::unique_ptr<GameObject>(en));
-        }
-        count++;
-        timer.restart();
+    float sizex = 0;
+    while (sizex < size) {
+        GameObject * prev = createPlatform({sizex+posx, posy});
+        sizex += prev->getBounds().width;
     }
 
-}
 
-void GameScene::createBullet(const sf::Vector2f & position) {
-    auto * en = new Knife("Knife");
-    en->init("knifeTexture", {50, 0}, sf::Vector2f {20, 0}, 100);
-    en->setPosition(position);
-    m_bullets.emplace_back(std::unique_ptr<GameObject>(en));
+    /*
+     * Genera nemici
+     */
+    if(m_enemies.empty()) {
+        std::vector<EnemyType> echoice = {EnemyType::FireEnemy, EnemyType::HamonEnemy, EnemyType::EmeraldEnemy};
+        createEnemy(echoice[rand(echoice.size())], sf::Vector2f(posx+size*3/4, posy));
+    }
+    /*
+     * Genera ostacoli
+     */
+    else if(m_obstacles.empty()) {
+        std::vector<ObstacleType> ochoice = {ObstacleType::Firewall, ObstacleType::Block};
+        createObstacle(ochoice[rand(ochoice.size())], sf::Vector2f(posx + size/2, posy));
+    }
+    /*
+     * Genera PowerUps
+     */
+    else if (m_powerups.empty()) {
+        std::vector<PowerUpType> pchoice = {PowerUpType::Weapon, PowerUpType::Shield};
+        createPowerup(pchoice[rand(pchoice.size())], sf::Vector2f(posx + size/2, posy));
+    }
 }
 

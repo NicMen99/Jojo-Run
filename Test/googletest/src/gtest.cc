@@ -6213,7 +6213,7 @@ static bool HasGoogleTestFlagPrefix(const char* str) {
 // sequences can be used in the string to control the text color:
 //
 //   @@    prints a single '@' character.
-//   @R    changes the color to red.
+//   @rand    changes the color to red.
 //   @G    changes the color to green.
 //   @Y    changes the color to yellow.
 //   @D    changes to the default terminal text color.

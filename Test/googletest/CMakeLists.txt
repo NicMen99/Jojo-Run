@@ -5,7 +5,7 @@
 # CMake build script for Google Test.
 #
 # To run the tests for Google Test itself on Linux, use 'make test' or
-# ctest.  You can select which tests to run using 'ctest -R regex'.
+# ctest.  You can select which tests to run using 'ctest -rand regex'.
 # For more options, run 'ctest --help'.
 
 # When other libraries are using a shared version of runtime libraries,

@@ -5,10 +5,10 @@
 #ifndef JOJO_RUN_BLOCK_H
 #define JOJO_RUN_BLOCK_H
 
-#include "GameObject.h"
+#include "Obstacle.h"
 #include <SFML/Graphics.hpp>
 
-class Block final: public GameObject {
+class Block final: public Obstacle {
 
 public:
     explicit Block(std::string id);
@@ -19,7 +19,6 @@ public:
     void setDamageB(int damageB);
 
 private:
-    sf::Sprite m_sprite;
     int m_damageB = 70;
 };
 

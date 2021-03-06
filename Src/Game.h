@@ -12,31 +12,57 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
 
-#include "Map.h"
-#include "Background.h"
 #include "Hero.h"
-#include "Factory.h"
-#include "GameStateMachine.h"
-#include "GameScene.h"
 
-class Game: public Subject {
-    AbsGameState* m_gameMachine;
+class AbsGameState;
+class GameResourceManager;
+class GameConfig;
+class Factory;
+class GameScene;
+class Hero;
+
+#define GC Game::instance()->configManager()
+#define RM Game::instance()->resourceManager()
+#define GF Game::instance()->factory()
+#define GS Game::instance()->gameScene()
+#define HERO Game::instance()->hero()
+
+class Game: public Subject
+{
+    static Game* m_instance;
+    Game();
+public:
+    static Game* instance();
+    ~Game() override;
+
+public:
+    void init();
+    void loop();
+
+    GameConfig & configManager() { return m_gameConfig; }
+    GameResourceManager & resourceManager() { return m_resourceManager; }
+    Factory & factory() { return m_factory; }
+    GameScene & gameScene() { return m_scene; }
+    Hero & hero() { return m_hero; }
+private:
     sf::RenderWindow m_window;
-    sf::Event m_event;
     sf::Clock m_clock;
     sf::Time m_accumulator = sf::Time::Zero;
     sf::Time m_framerate = sf::seconds(1.f/60.f);
 
-public:
-    Game();
-    ~Game() override;
-    void init();
-    void loop();
+private:
+    AbsGameState* m_gameMachine;
+    GameConfig& m_gameConfig;
+    GameResourceManager& m_resourceManager;
+    Factory& m_factory;
+    GameScene& m_scene;
+    Hero& m_hero;
 
+    sf::Event m_event{};
+
+public:
     sf::Vector2u getWindowSize(){return m_window.getSize();}
 
-    Hero m_hero;
-    GameScene m_scene;
 
     /**/
     int randomPosY();
@@ -57,9 +83,9 @@ public:
     float getCreationRate() const;
     void setScore(unsigned int s);
     void setHealth(int hp);
-    int getEnemySize() { return static_cast<int>(m_scene.m_enemies.size()); };
-    int getPowerUpSize() { return static_cast<int>(m_scene.m_powerups.size()); };
-    int getKnivesSize() { return static_cast<int>(knives.size()); };
+    int getEnemySize();
+    int getPowerUpSize();
+    int getKnivesSize();
 
 
     void collision();
@@ -86,14 +112,14 @@ public:
     sf::Sound emeraldEnemySound;
     sf::Sound fireEnemySound;
     sf::Music gameMusic;
-    int txtCount;
-    unsigned int score;
+    int txtCount = 0;
+    unsigned int score=0;
     sf::Clock collisionClk;
-    int collidedblocks;
-    int collidedenemies;
-    int collidedpowerups;
+    int collidedblocks{};
+    int collidedenemies{};
+    int collidedpowerups{};
     std::vector<std::unique_ptr<PowerUp>> knives;
-    int collidedknives;
+    int collidedknives{};
     sf::Clock shieldClk;
     sf::Clock scoreClk;
     sf::Text scoreTxt;
@@ -110,32 +136,30 @@ public:
     sf::Font font;
 
 
-    int collidedfirewalls;
+    int collidedfirewalls{};
 private:
     ////////////////////
     std::ofstream file;
     std::ofstream bestScoreFileWrite;
     std::ifstream bestScoreFileRead;
 
-    Factory factory;
-
-    bool isCreated;
-    bool isPUCreated;
-    bool isShieldOn;
-    bool isCollided;
-    bool BlockCollision;
-    bool EnemyCollision;
-    bool FirewallCollision;
-    bool KnifeCollision;
-    bool ShieldPowerupCollision;
-    bool KnivesPowerupCollision;
+    bool isCreated=false;
+    bool isPUCreated{};
+    bool isShieldOn=false;
+    bool isCollided=false;
+    bool BlockCollision=false;
+    bool EnemyCollision=false;
+    bool FirewallCollision=false;
+    bool KnifeCollision=false;
+    bool ShieldPowerupCollision=false;
+    bool KnivesPowerupCollision=false;
 
     int blockX;
     int maxY;
     int countCreation;
     int n;
 
-    unsigned int bestScore;
+    unsigned int bestScore=0;
 
     float creationRate;
     //float oldCreationRate; necessaria?

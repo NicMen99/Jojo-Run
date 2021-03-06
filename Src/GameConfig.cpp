@@ -5,16 +5,6 @@
 #include <iostream>
 #include "GameConfig.h"
 
-GameConfig * GameConfig::_instance = nullptr;
-
-
-GameConfig *GameConfig::instance() {
-    if (_instance == nullptr) {
-        _instance = new GameConfig();
-    }
-    return _instance;
-}
-
 void GameConfig::init(const std::string & base_dir) {
     //loadConfigFile("jojo.cfg");
     asset_base_dir = base_dir;
@@ -51,6 +41,9 @@ void GameConfig::init(const std::string & base_dir) {
 
             std::make_pair("arcadeclassic",         "Font/ARCADECLASSIC.TTF")
     };
+    m_base = m_window_size.y-100.f;
+    m_middle = m_base - m_levelDelta_y;
+    m_top = m_middle - m_levelDelta_y;
 }
 
 std::string GameConfig::getAssetPath(const std::string & asset) {
@@ -60,5 +53,17 @@ std::string GameConfig::getAssetPath(const std::string & asset) {
         std::cout << asset << std::endl;
     }
     return path;
+}
+
+float GameConfig::getMBase() const {
+    return m_base;
+}
+
+float GameConfig::getMMiddle() const {
+    return m_middle;
+}
+
+float GameConfig::getMTop() const {
+    return m_top;
 }
 

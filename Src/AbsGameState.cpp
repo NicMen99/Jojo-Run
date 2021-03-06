@@ -2,8 +2,8 @@
 // Created by Niccolo on 15/02/2021.
 //
 
-#include "AbsGameState.h"
 #include "Game.h"
+#include "AbsGameState.h"
 #include "InitState.h"
 #include "PlayState.h"
 #include "GameOverState.h"

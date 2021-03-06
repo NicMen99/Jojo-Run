@@ -43,6 +43,8 @@ target_sources(${TARGET}
         main.cpp
         Map.h
         Map.cpp
+        Obstacle.h
+        Obstacle.cpp
         Observer.h
         Platform.h
         Platform.cpp
