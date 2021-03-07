@@ -17,6 +17,7 @@
 class AbsGameState;
 class GameResourceManager;
 class GameConfig;
+class InputManager;
 class Factory;
 class GameScene;
 class Hero;
@@ -25,6 +26,7 @@ class Hero;
 #define RM Game::instance()->resourceManager()
 #define GF Game::instance()->factory()
 #define GS Game::instance()->gameScene()
+#define IM Game::instance()->inputManager()
 #define HERO Game::instance()->hero()
 
 class Game: public Subject
@@ -42,6 +44,7 @@ public:
     GameConfig & configManager() { return m_gameConfig; }
     GameResourceManager & resourceManager() { return m_resourceManager; }
     Factory & factory() { return m_factory; }
+    InputManager & inputManager() { return m_inputManager; }
     GameScene & gameScene() { return m_scene; }
     Hero & hero() { return m_hero; }
 private:
@@ -54,6 +57,7 @@ private:
     AbsGameState* m_gameMachine;
     GameConfig& m_gameConfig;
     GameResourceManager& m_resourceManager;
+    InputManager& m_inputManager;
     Factory& m_factory;
     GameScene& m_scene;
     Hero& m_hero;

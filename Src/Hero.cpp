@@ -5,6 +5,7 @@
 #include "Game.h"
 #include "GameResourceManager.h"
 #include "GameConfig.h"
+#include "InputManager.h"
 #include "Hero.h"
 
 Hero::Hero() :
@@ -13,13 +14,24 @@ Hero::Hero() :
 
 }
 
+void Hero::init()
+{
+    HERO.init("playerTexture");
+    HERO.setPosition(sf::Vector2f(65.f,0.f));
+}
 
-void Hero::init(const std::string &texture_name, sf::Vector2f position, int hp, int knives, int max_kinves, int max_health) {
+void Hero::update(int32_t delta_time) {
+    processInput(delta_time);
+    updatephysics(delta_time);
+}
+
+void Hero::init(const std::string &texture_name, int hp, int knives, int max_kinves, int max_health) {
     sf::Texture* texture = RM.getTexture(texture_name);
     if(texture != nullptr){
-        setHeroTexture(*texture);
+        setTexture(*texture);
     }
-    m_sprite.setPosition(position);
+    m_speed = GC.getSceneSpeed();
+
     m_hp = hp;
     m_knives = knives;
     m_maxhp = max_health;
@@ -42,13 +54,44 @@ void Hero::init(const std::string &texture_name, sf::Vector2f position, int hp, 
     }
 }
 
-void Hero::update(int32_t delta_time) {
-
+void Hero::setTexture(const sf::Texture &heroTexture){
+    m_sprite.setTexture(heroTexture);
+    m_sprite.setScale(0.9, 0.9);
 }
 
-void Hero::render(sf::RenderWindow &window) {
-    window.draw(m_sprite);
+void Hero::processInput(int32_t delta_time) {
+    if(m_grounded) {
+        if(IM.isKeyJustPressed(sf::Keyboard::Space))
+            jumpAction(delta_time);
+    }
 }
+
+void Hero::updatephysics(int32_t delta_time) {
+    if(!m_grounded) {
+        m_speed += sf::Vector2f(0, GC.gravity() * delta_time);
+    }
+    GameObject::update(delta_time);
+    /*
+     * Normalizza la posizione @TODO levare costante
+     */
+    sf::Vector2f pos = getPosition();
+    if(pos.y > (GC.getWindowSize().y - 100.f)) {
+        pos.y = GC.getWindowSize().y - 100.f;
+        setPosition(pos);
+        m_speed.y = 0;
+        m_grounded = true;
+    }
+}
+
+void Hero::jumpAction(int32_t delta_time) {
+    /*
+     * @TODO cambiare costanti
+     */
+    m_speed -= sf::Vector2f(0, 1100.f);
+    m_grounded = false;
+}
+
+
 
 bool Hero::gameOver() {
     if (m_hp <= 0)
@@ -56,10 +99,6 @@ bool Hero::gameOver() {
     return m_isDead;
 }
 
-void Hero::setHeroTexture(const sf::Texture &heroTexture){
-    m_sprite.setTexture(heroTexture);
-    m_sprite.setScale(0.9, 0.9);
-}
 
 sf::Vector2f Hero::getHeroSize() const {
     float x = m_sprite.getGlobalBounds().width;
@@ -111,7 +150,7 @@ void Hero::setShieldOn() {
         sf::Texture* texture = RM.getTexture("playerShieldTexture");
         if(texture != nullptr){
             texture->setSmooth(true);
-            setHeroTexture(*texture);
+            setTexture(*texture);
         }
         m_powerUpSound.play();
         m_shield = true;
@@ -122,7 +161,7 @@ void Hero::setJumpOn() {
     sf::Texture* texture = RM.getTexture("playerTextureUp");
     if(texture != nullptr){
         texture->setSmooth(true);
-        setHeroTexture(*texture);
+        setTexture(*texture);
     }
     m_shield = false;
 }
@@ -131,7 +170,7 @@ void Hero::setStanding() {
     sf::Texture* texture = RM.getTexture("playerTexture");
     if(texture != nullptr){
         texture->setSmooth(true);
-        setHeroTexture(*texture);
+        setTexture(*texture);
     }
     m_shield = false;
 }
@@ -143,6 +182,8 @@ void Hero::collisionevent() {
         m_collisionSound.play();
     }
 }
+
+
 
 
 

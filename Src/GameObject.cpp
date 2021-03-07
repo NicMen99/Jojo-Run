@@ -23,7 +23,6 @@ void GameObject::update(int32_t delta_time)
 
 void GameObject::render(sf::RenderWindow & window)
 {
-//    std::cout << m_name << " x:" << m_position.x << " y:" << m_position.y << std::endl;
     window.draw(m_active_sprite);
 }
 

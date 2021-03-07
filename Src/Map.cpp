@@ -18,7 +18,7 @@ Map::Map(const std::string &Title, const sf::Vector2u &Size) {
     mapTitle = Title;
 }
 
-void Map::update() {
+void Map::event() {
     sf::Event event;
     while (map.pollEvent(event)) {
         if (event.type == sf::Event::Closed)

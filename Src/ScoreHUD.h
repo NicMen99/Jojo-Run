@@ -15,7 +15,7 @@ public:
     Score (Game* game);
     virtual ~Score() {detach();}
 
-    void update() override;
+    void event() override;
     void attach() override;
     void detach() override;
 

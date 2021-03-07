@@ -4,6 +4,7 @@
 
 #include "Game.h"
 #include "GameScene.h"
+#include "inputManager.h"
 #include "GameConfig.h"
 #include "PlayState.h"
 #include "Hero.h"
@@ -26,8 +27,8 @@ PlayState* PlayState::instance() {
 
 void PlayState::init() {
     GS.init();
-
-    HERO.init("playerTexture", sf::Vector2f{65, 100});
+    IM.init();
+    HERO.init();
 
     fireEnemyBuffer.loadFromFile(GC.getAssetPath("fireEnemyShout"));
     m_context->fireEnemySound.setBuffer(fireEnemyBuffer);
@@ -59,6 +60,7 @@ void PlayState::onExit() {
 
 void PlayState::update(int32_t delta_time) {
     GS.update(delta_time);
+    HERO.update(delta_time);
 
     if (HERO.getIsDead() && m_context->txtCount == 0){
         changeState(State::Over);
@@ -66,8 +68,6 @@ void PlayState::update(int32_t delta_time) {
 
     for (auto &knife : m_context->knives)
         knife->update(delta_time);
-    m_context->moveHero();
-    m_context->throwKnife();
     m_context->handleTxt();
 
     m_context->setScore(m_context->score);
@@ -153,7 +153,6 @@ void PlayState::update(int32_t delta_time) {
 
 void PlayState::render(sf::RenderWindow& window) {
     GS.render(window);
-
     HERO.render(window);
     for (auto &knife : m_context->knives)
         knife->render(window);
