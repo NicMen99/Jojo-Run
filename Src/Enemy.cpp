@@ -26,7 +26,12 @@ void Enemy::init(const std::string &texture_name, sf::Vector2f scale, sf::Vector
 
 void Enemy::update(int32_t delta_time) {
     GameObject::update(delta_time);
-    if(m_state == State::Dead)
+    if(m_state == State::Dying) {
+        setEnabled(false);
+        if(m_dyingTimer.getElapsedTime() > sf::milliseconds(500))
+            m_state = State::Dead;
+    }
+    else if(m_state == State::Dead)
         setDestroyed();
 }
 
@@ -34,7 +39,7 @@ void Enemy::collision(GameObject *collider) {
     if(m_state == State::Alive) {
         if(collider->getType() == GameObjectType::Hero) {
             m_state = State::Dying;
-            setEnabled(false);
+            m_dyingTimer.restart();
         }
     }
 }

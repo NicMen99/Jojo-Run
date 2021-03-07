@@ -116,7 +116,7 @@ void Hero::collision(GameObject * collider)
     {
         sf::Rect<float> collider_rect = collider->getBounds();
         sf::Rect<float> hero_rect = getBounds();
-        sf::Rect<float> intesrect /* = clacolare il rettangolo di intersezione */;
+        sf::Rect<float> intesrect  /* = clacolare il rettangolo di intersezione */;
         /*if(intersrect.width > intersrect.heght)*/
         if(m_speed.y >= 0) {
             m_state = State::Grounded;
@@ -131,13 +131,15 @@ void Hero::collision(GameObject * collider)
     }
 
     /*
-     * Collisione con una piattaforma
+     * Collisione con un nemico
      */
     else if(collider->getGroup() == GameObjectGroup::Enemy)
     {
         auto * enemy = dynamic_cast<Enemy *>(collider);
         int damage = enemy->getDamage();
         m_health -= damage;
+        if (m_health <= 0)
+            m_state = State::Dead;
     }
 }
 
@@ -149,8 +151,6 @@ void Hero::speedCap() {
 }
 
 bool Hero::gameOver() {
-    if (m_health <= 0)
-        m_state = State::Dead;
     return m_state == State::Dead;
 }
 
