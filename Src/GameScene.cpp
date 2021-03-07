@@ -11,7 +11,7 @@
 #include "Factory.h"
 #include "Background.h"
 #include "Hero.h"
-
+#include "ScoreHUD.h"
 
 
 GameScene::~GameScene() {
@@ -27,6 +27,7 @@ void GameScene::init()
     m_gen.seed(m_rd());
     createBackgorund();
     createHero();
+    createScoreHUD();
 }
 
 void GameScene::update(int32_t delta_time) {
@@ -59,6 +60,7 @@ void GameScene::update(int32_t delta_time) {
         it->update(delta_time);
     }
     m_hero->update(delta_time);
+    m_scorehud->update();
 
     /*
      * Collisions
@@ -86,6 +88,7 @@ void GameScene::render(sf::RenderWindow & window) {
         it->render(window);
     }
     m_hero->render(window);
+    m_scorehud->render(window);
 }
 
 void GameScene::destroyObjects(std::vector<std::unique_ptr<GameObject>> & items) {
@@ -145,13 +148,19 @@ void GameScene::createPowerup(PowerUpType pt, sf::Vector2f position) {
     m_powerups.emplace_back(std::move(pu));
 }
 
-
 void GameScene::createHero() {
     auto * hero = new Hero();
     hero->init();
 
     m_hero = std::unique_ptr<GameObject>(hero);
 }
+
+void GameScene::createScoreHUD() {
+    auto * hud = new ScoreHUD();
+    hud->init();
+    m_scorehud = std::unique_ptr<ScoreHUD>(hud);
+}
+
 
 bool GameScene::levelend() const {
     return dynamic_cast<Hero*>(m_hero.get())->gameOver();
@@ -284,4 +293,5 @@ void GameScene::manageCollision() {
     }
 
 }
+
 

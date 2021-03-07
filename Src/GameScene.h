@@ -8,8 +8,9 @@
 #include <random>
 #include <SFML/Graphics.hpp>
 
-class GameObject;
-class Hero;
+
+#include "GameObject.h"
+#include "ScoreHUD.h"
 
 enum class EnemyType;
 enum class ObstacleType;
@@ -37,6 +38,7 @@ private:
     void createEnemy(EnemyType et, sf::Vector2f position);
     void createPowerup(PowerUpType pt, sf::Vector2f position);
     void createHero();
+    void createScoreHUD();
 
     void generateMap();
     void manageCollision();
@@ -46,8 +48,7 @@ private:
     std::random_device m_rd;  //Will be used to obtain a seed for the random number engine
     std::mt19937 m_gen; //Standard mersenne_twister_engine seeded with rd()
 
-public:
-    // fino a quando non è migrato il collision manager
+private:
     std::vector<std::unique_ptr<GameObject>> m_backgrounds;
     std::vector<std::unique_ptr<GameObject>> m_platforms;
     std::vector<std::unique_ptr<GameObject>> m_obstacles;
@@ -55,7 +56,7 @@ public:
     std::vector<std::unique_ptr<GameObject>> m_powerups;
     std::vector<std::unique_ptr<GameObject>> m_bullets;
     std::unique_ptr<GameObject> m_hero;
+    std::unique_ptr<ScoreHUD> m_scorehud;
 };
-
 
 #endif //JOJO_RUN_GAMESCENE_H

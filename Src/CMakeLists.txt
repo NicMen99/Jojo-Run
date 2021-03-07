@@ -26,14 +26,16 @@ target_sources(${TARGET}
         GameConfig.cpp
         GameObject.h
         GameObject.cpp
-        GameResourceManager.h
-        GameResourceManager.cpp
-        GameStateMachine.h
-        GameStateMachine.cpp
-        GameScene.h
-        GameScene.cpp
         GameOverState.h
         GameOverState.cpp
+        GameResourceManager.h
+        GameResourceManager.cpp
+        GameScene.h
+        GameScene.cpp
+        GameStateMachine.h
+        GameStateMachine.cpp
+        GameStats.h
+        GameStats.cpp
         HamonEnemy.h
         HamonEnemy.cpp
         Hero.h
@@ -43,8 +45,6 @@ target_sources(${TARGET}
         Knife.h
         Knife.cpp
         main.cpp
-        Map.h
-        Map.cpp
         Obstacle.h
         Obstacle.cpp
         Observer.h
