@@ -15,7 +15,7 @@ class Enemy: public GameObject {
 
 public:
     Enemy(GameObjectType mtype, const std::string & name);
-    ~Enemy() override = default;
+    ~Enemy() = default;
     void init(const std::string & texture_name, sf::Vector2f scale, sf::Vector2f speed, int damage);
 
 public:

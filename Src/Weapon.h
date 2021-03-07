@@ -10,7 +10,7 @@
 class Weapon final : public PowerUp {
 public:
     explicit Weapon (std::string id);
-    ~Weapon()  override = default;
+    ~Weapon() = default;
 };
 
 

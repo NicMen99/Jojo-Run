@@ -12,6 +12,8 @@ target_sources(${TARGET}
         EmeraldEnemy.cpp
         Enemy.h
         Enemy.cpp
+        InputManager.h
+        InputManager.cpp
         Factory.h
         Factory.cpp
         FireEnemy.h

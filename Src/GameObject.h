@@ -5,11 +5,10 @@
 #ifndef JOJO_RUN_GAMEOBJECT_H
 #define JOJO_RUN_GAMEOBJECT_H
 
-#include <iostream>
-
 #include <string>
 #include <list>
 #include <SFML/Graphics.hpp>
+#include "Observer.h"
 
 enum class GameObjectGroup {
     Scene,
@@ -40,13 +39,14 @@ enum class GameObjectStatus {
 class GameObject {
 public:
     GameObject(GameObjectGroup mgroup, GameObjectType mtype, std::string mName, sf::Sprite &mSprite);
-    virtual ~GameObject() = default;
+    ~GameObject() = default;
 
 public:
     virtual void update(int32_t delta_time);
     virtual void render(sf::RenderWindow & window);
 protected:
     virtual void move(const sf::Vector2f & offset);
+    virtual void applyImpulse(const sf::Vector2f & acceleration, int32_t delta_time);
 
     //Getter & setter
 public:

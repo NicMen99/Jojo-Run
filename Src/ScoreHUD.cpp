@@ -4,7 +4,7 @@
 
 #include "ScoreHUD.h"
 
-void Score::update() {
+void Score::event() {
     score = game->getScore();
     health = game->getHealth();
 }

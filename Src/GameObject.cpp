@@ -23,15 +23,20 @@ void GameObject::update(int32_t delta_time)
 
 void GameObject::render(sf::RenderWindow & window)
 {
-//    std::cout << m_name << " x:" << m_position.x << " y:" << m_position.y << std::endl;
     window.draw(m_active_sprite);
 }
 
-void GameObject::move(const sf::Vector2f & offset) {
+void GameObject::move(const sf::Vector2f & offset)
+{
     m_active_sprite.setPosition(m_active_sprite.getPosition() + offset);
     if((getPosition().x + getBounds().width) < 0) {
         m_destroyed = true;
     }
+}
+
+void GameObject::applyImpulse(const sf::Vector2f & acceleration, int32_t delta_time)
+{
+    m_speed += {acceleration.x * delta_time / 1000, acceleration.y * delta_time / 1000};
 }
 
 

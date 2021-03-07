@@ -65,8 +65,7 @@ public:
 
 
     /**/
-    int randomPosY();
-    int randomCreation();
+
 
     const sf::Vector2f &getSpeed() const;
     bool getIsShieldOn() const;
@@ -80,7 +79,6 @@ public:
     int getMaxY() const;
     unsigned int getScore() const;
     int getHealth() const;
-    float getCreationRate() const;
     void setScore(unsigned int s);
     void setHealth(int hp);
     int getEnemySize();
@@ -94,8 +92,6 @@ public:
     void subscribe(Observer *o) override;
 
     //TODO spostare le funzioni nella classe di competenza
-    void moveHero();
-    void throwKnife();
     void handleTxt();
 
     void setIsShieldOn(bool isShieldOn);

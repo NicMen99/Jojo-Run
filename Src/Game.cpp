@@ -5,6 +5,7 @@
 #include "GameConfig.h"
 #include "GameResourceManager.h"
 #include "GameScene.h"
+#include "InputManager.h"
 #include "Factory.h"
 #include "Hero.h"
 #include "Game.h"
@@ -45,7 +46,7 @@ void Game::init()
 
 void Game::loop()
 {
-    m_window.create(sf::VideoMode(1600, 1000), "JoJo Run");
+    m_window.create(sf::VideoMode(GC.getWindowSize().x, GC.getWindowSize().y), "JoJo Run");
     while(m_window.isOpen()){
         while (m_window.pollEvent(m_event)) {
             if(m_event.type == sf::Event::Closed)
@@ -70,21 +71,6 @@ void Game::loop()
         m_gameMachine->render(m_window);
         m_window.display();
     }
-}
-
-float Game::getCreationRate() const {
-    return creationRate;
-}
-
-void Game::throwKnife() {
-    /*
-    if (m_hero.getKnives() > 0 && (sf::Keyboard::isKeyPressed(sf::Keyboard::K))) {
-        m_hero.setKnives(m_hero.getKnives() - 1);
-        std::unique_ptr<PowerUp> knife = GF.createPowerUp(PowerUpType::ThrownKnife);
-        knife->setPosition(sf::Vector2f(m_hero.getHeroPos().x, m_hero.getHeroPos().y));
-        knives.emplace_back(std::move(knife));
-    }
-     */
 }
 
 void Game::handleTxt() {
@@ -218,36 +204,6 @@ void Game::collision() {
     }
 }
 
-void Game::moveHero() {
-    m_hero.setHeroPos(m_hero.getHeroPos().x, m_hero.getHeroPos().y + g);
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
-        m_hero.setHeroPos(m_hero.getHeroPos().x, m_hero.getHeroPos().y - jump);
-        if (isShieldOn)
-            m_hero.setShieldOn();
-        else
-            m_hero.setJumpOn();
-    }
-    else if (!sf::Keyboard::isKeyPressed(sf::Keyboard::Space)){
-        if (isShieldOn)
-            m_hero.setShieldOn();
-        else
-            m_hero.setStanding();
-    }
-    if (m_hero.getHeroPos().y + m_hero.getHeroSize().y >= m_window.getSize().y - ground)
-        m_hero.setHeroPos(m_hero.getHeroPos().x, m_window.getSize().y - (m_hero.getHeroSize().y + ground));
-    if (m_hero.getHeroPos().y <= top )
-        m_hero.setHeroPos(m_hero.getHeroPos().x, top);
-}
-
-int Game::randomPosY() {
-    int res = ((std::rand() % int(getWindowSize().y - this->top - this->ground - 85)) + this->top );
-    return res;
-}
-
-int Game::randomCreation() {
-    return (rand() % 3);
-}
-
 const sf::Vector2f &Game::getSpeed() const {
     return speed;
 }
@@ -258,7 +214,7 @@ int Game::getMaxY() const {
 
 void Game::notify() {
     for (auto i = std::begin(observers); i != std::end(observers); i++)
-        (*i)->update();
+        (*i)->event();
 }
 
 void Game::unsubscribe(Observer *o) {

@@ -14,7 +14,7 @@ class Background final: public GameObject
 {
 public:
     explicit Background(std::string id);
-    ~Background() override = default;
+    ~Background() = default;
     void init(const std::string & texture_name, bool repeated, sf::Vector2f scale, sf::Vector2f speed);
 
 private:

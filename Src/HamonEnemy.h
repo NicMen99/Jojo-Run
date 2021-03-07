@@ -11,7 +11,7 @@ class HamonEnemy final: public Enemy
 {
 public:
     explicit HamonEnemy(std::string id);
-    ~HamonEnemy() override = default;
+    ~HamonEnemy() = default;
 
 public:
     std::unique_ptr<Bullet> SpecialAction() override;

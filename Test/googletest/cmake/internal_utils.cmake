@@ -19,7 +19,7 @@ endif (POLICY CMP0054)
 # Tweaks CMake's default compiler/linker settings to suit Google Test's needs.
 #
 # This must be a macro(), as inside a function string() can only
-# update variables in the function scope.
+# event variables in the function scope.
 macro(fix_default_compiler_settings_)
   if (MSVC)
     # For MSVC, CMake sets certain flags to defaults we want to override.

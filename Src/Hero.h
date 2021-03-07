@@ -5,23 +5,45 @@
 #ifndef JOJO_RUN_HERO_H
 #define JOJO_RUN_HERO_H
 
-#include "Subject.h"
-#include "PowerUp.h"
-#include "GameObject.h"
 #include <list>
 #include <string>
 #include <fstream>
 #include <SFML/Graphics.hpp>
 
+#include "Subject.h"
+#include "PowerUp.h"
+#include "GameObject.h"
+#include "InputManager.h"
+
 class Hero final : public GameObject {
+
+    enum class State {Grounded, Jumping, Falling};
+
 public:
     Hero ();
-    ~Hero() override = default;
+    ~Hero() = default;
 
-    void init(const std::string &texture_name, sf::Vector2f position, int hp = 300, int knives = 0, int max_kinves = 8, int max_health = 300);
+    void init();
+    void init(const std::string &texture_name, int hp = 300, int knives = 0, int max_kinves = 8, int max_health = 300);
     void update(int32_t delta_time) override;
-    void render(sf::RenderWindow &window) override;
 
+private:
+    void setTexture(const sf::Texture &heroTexture);
+    void updatephysics(int32_t delta_time);
+
+private:
+    sf::Sprite m_sprite;
+    State m_state = State::Falling;
+    InputManager m_inputManager;
+
+private:
+    float m_jumpForce = 2.5;
+    sf::Clock m_jumpTimer;
+
+
+
+    /* @TODO:  refactor*/
+public:
     bool gameOver();
     void collisionevent();
 
@@ -49,9 +71,6 @@ public:
      * */
 
 private:
-    void setHeroTexture(const sf::Texture &heroTexture);
-
-private:
     void death() { m_isDead = true;}
 
     int m_hp = 300;
@@ -59,13 +78,11 @@ private:
     int m_maxknives = 8;
     int m_maxhp = 300;
     bool m_isDead = false;
-    sf::Sprite m_sprite;
 
     bool m_shield = false;
     sf::Sound m_collisionSound;
     sf::Sound m_powerUpSound;
     sf::Sound m_shieldOnSound;
-
 };
 
 #endif //JOJO_RUN_HERO_H

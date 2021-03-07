@@ -12,7 +12,7 @@ class Obstacle : public GameObject
 {
 public:
     Obstacle(GameObjectType mtype, const std::string & name);
-    ~Obstacle() override = default;
+    ~Obstacle() = default;
     void init(const std::string &texture_name, sf::Vector2f scale, int damage);
 
 public:
