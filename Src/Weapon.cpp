@@ -9,3 +9,7 @@ Weapon::Weapon(std::string id) :
 {
 
 }
+
+void Weapon::collision(GameObject *collider) {
+    setDestroyed();
+}

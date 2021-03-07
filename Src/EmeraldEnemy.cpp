@@ -5,7 +5,7 @@
 #include "Knife.h"
 #include "EmeraldEnemy.h"
 
-EmeraldEnemy::EmeraldEnemy(std::string id) :
+EmeraldEnemy::EmeraldEnemy(const std::string& id) :
     Enemy(GameObjectType::EmeraldEnemy, id)
 {
 
@@ -16,3 +16,4 @@ std::unique_ptr<Bullet> EmeraldEnemy::SpecialAction() {
     bullet->init("emeraldBlockTexture", {1, 0}, {0.25, 0.25}, 100);
     return bullet;
 }
+

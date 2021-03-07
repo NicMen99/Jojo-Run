@@ -44,6 +44,8 @@ public:
 public:
     virtual void update(int32_t delta_time);
     virtual void render(sf::RenderWindow & window);
+    virtual void collision(GameObject * collider) {}
+
 protected:
     virtual void move(const sf::Vector2f & offset);
     virtual void applyImpulse(const sf::Vector2f & acceleration, int32_t delta_time);
@@ -53,26 +55,21 @@ public:
     GameObjectGroup getGroup() { return m_group; }
     GameObjectType getType() { return m_type; }
     const std::string & getName() const { return m_name; };
-    const sf::Vector2f & getSpeed() const { return m_speed; };
+
+public:
     const sf::Vector2f & getPosition() const { return m_active_sprite.getPosition(); };
     virtual sf::FloatRect getBounds() const { return m_active_sprite.getGlobalBounds(); }
     bool isStarted() const { return m_started; };
-    bool isEnable() const { return m_enabled; };
+    bool isEnabled() const { return m_enabled; };
     bool isVisible() const { return m_visible; };
     bool isDestroyed() const { return m_destroyed; };
 
+public:
     void setStarted(bool mStarted) { m_started = mStarted; };
-    void setEnable(bool mEnabled) { m_enabled = mEnabled; };
+    void setEnabled(bool mEnabled) { m_enabled = mEnabled; };
     void setVisible(bool mVisible) { m_visible = mVisible; };
-    void setDestroyed(bool mInvalid) { m_destroyed = mInvalid; };
+    void setDestroyed() { m_destroyed = true; };
     void setPosition(sf::Vector2f position) { m_active_sprite.setPosition(position);}
-
-    /*
-    GameObject *getMParent() const;
-    void setMParent(GameObject *mParent);
-    const std::list<GameObject *> &getMChildren() const;
-    void setMChildren(const std::list<GameObject *> &mChildren);
-    */
 
 protected:
     GameObjectGroup m_group;
@@ -81,13 +78,9 @@ protected:
     sf::Sprite & m_active_sprite;
     sf::Vector2f m_speed = {0, 0};
     bool m_started = false;
-    bool m_enabled = false;
-    bool m_visible = false;
+    bool m_enabled = true;
+    bool m_visible = true;
     bool m_destroyed = false;
-    /*
-    GameObject* m_parent;
-    std::list<GameObject*> m_children;
-    */
 };
 
 

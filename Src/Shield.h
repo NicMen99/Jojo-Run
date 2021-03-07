@@ -8,8 +8,10 @@
 
 class Shield final: public PowerUp {
 public:
-    Shield (std::string id);
+    explicit Shield (std::string id);
     ~Shield() = default;
+
+    void collision(GameObject * collider) override;
 };
 
 #endif //JOJO_RUN_SHIELD_H

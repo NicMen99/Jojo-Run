@@ -15,11 +15,7 @@ public:
     ~Block() = default;
     void init(const std::string &texture_name, sf::Vector2f scale, sf::Vector2f speed);
 
-public:
-    void setDamageB(int damageB);
-
-private:
-    int m_damageB = 70;
+    void collision(GameObject *collider) override;
 };
 
 #endif //JOJO_RUN_BLOCK_H

@@ -12,20 +12,19 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
 
-#include "Hero.h"
+#include "Subject.h"
 
 class AbsGameState;
 class GameResourceManager;
 class GameConfig;
 class Factory;
 class GameScene;
-class Hero;
+class Observer;
 
 #define GC Game::instance()->configManager()
 #define RM Game::instance()->resourceManager()
 #define GF Game::instance()->factory()
 #define GS Game::instance()->gameScene()
-#define HERO Game::instance()->hero()
 
 class Game: public Subject
 {
@@ -43,9 +42,9 @@ public:
     GameResourceManager & resourceManager() { return m_resourceManager; }
     Factory & factory() { return m_factory; }
     GameScene & gameScene() { return m_scene; }
-    Hero & hero() { return m_hero; }
 private:
     sf::RenderWindow m_window;
+    sf::Event m_event;
     sf::Clock m_clock;
     sf::Time m_accumulator = sf::Time::Zero;
     sf::Time m_framerate = sf::seconds(1.f/60.f);
@@ -56,9 +55,7 @@ private:
     GameResourceManager& m_resourceManager;
     Factory& m_factory;
     GameScene& m_scene;
-    Hero& m_hero;
 
-    sf::Event m_event{};
 
 public:
     sf::Vector2u getWindowSize(){return m_window.getSize();}
@@ -67,7 +64,6 @@ public:
     /**/
 
 
-    const sf::Vector2f &getSpeed() const;
     bool getIsShieldOn() const;
     bool getIsCollided() const;
     bool getIsBlockCollision() const;
@@ -81,12 +77,9 @@ public:
     int getHealth() const;
     void setScore(unsigned int s);
     void setHealth(int hp);
-    int getEnemySize();
-    int getPowerUpSize();
-    int getKnivesSize();
 
 
-    void collision();
+    // void collision();
     void notify() override;
     void unsubscribe(Observer *o) override;
     void subscribe(Observer *o) override;
@@ -94,30 +87,11 @@ public:
     //TODO spostare le funzioni nella classe di competenza
     void handleTxt();
 
-    void setIsShieldOn(bool isShieldOn);
-    void setBlockCollision(bool blockCollision);
-    void setEnemyCollision(bool enemyCollision);
-    void setFirewallCollision(bool firewallCollision);
-    void setKnifeCollision(bool knifeCollision);
-    void setShieldPowerupCollision(bool shieldPowerupCollision);
-    void setKnivesPowerupCollision(bool knivesPowerupCollision);
-
-    void setIsCollided(bool isCollided);
-
     sf::Sound hamonEnemySound;
     sf::Sound emeraldEnemySound;
     sf::Sound fireEnemySound;
     sf::Music gameMusic;
-    int txtCount = 0;
     unsigned int score=0;
-    sf::Clock collisionClk;
-    int collidedblocks{};
-    int collidedenemies{};
-    int collidedpowerups{};
-    std::vector<std::unique_ptr<PowerUp>> knives;
-    int collidedknives{};
-    sf::Clock shieldClk;
-    sf::Clock scoreClk;
     sf::Text scoreTxt;
     sf::Text numScore;
     sf::Text lifeTxt;
@@ -130,57 +104,17 @@ public:
     sf::Text bestScoreNum;
 
     sf::Font font;
-
-
-    int collidedfirewalls{};
 private:
     ////////////////////
     std::ofstream file;
     std::ofstream bestScoreFileWrite;
     std::ifstream bestScoreFileRead;
 
-    bool isCreated=false;
-    bool isPUCreated{};
-    bool isShieldOn=false;
-    bool isCollided=false;
-    bool BlockCollision=false;
-    bool EnemyCollision=false;
-    bool FirewallCollision=false;
-    bool KnifeCollision=false;
-    bool ShieldPowerupCollision=false;
-    bool KnivesPowerupCollision=false;
 
-    int blockX;
     int maxY;
-    int countCreation;
     int n;
 
     unsigned int bestScore=0;
-
-    float creationRate;
-    //float oldCreationRate; necessaria?
-    float toll = 0.2;
-
-    double jump = 8.6f;
-    double g = 4;
-
-    const float ground = 63.0f;
-    const float top = 68.0f;
-    const float speedLimit = 9.f;
-    const float creationLimit = 0.4;
-    const float creationPlus = 0.035;
-    const float speedPlus = 0.08;
-    const float gPlus = 0.03;
-    const float gLimit = 3.5;
-    const float jumpLimit = 5.5;
-    const float jumpPlus = 0.08;
-
-    sf::Clock enemyClk;
-    sf::Clock controlPU;
-    sf::Clock powerupClk;
-
-    sf::Vector2f speed;
-    sf::Vector2f oldSpeed;
 
     /////////////////
 

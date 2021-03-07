@@ -13,9 +13,6 @@ FireWall::FireWall(std::string id) :
 }
 
 void FireWall::init(const std::string &texture_name, sf::Vector2f scale, sf::Vector2f speed) {
-    Obstacle::init(texture_name, scale, 15);
+    Obstacle::init(texture_name, scale, 1);
     m_speed = speed;
 }
-
-
-

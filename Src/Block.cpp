@@ -17,10 +17,9 @@ void Block::init(const std::string &texture_name, sf::Vector2f scale, sf::Vector
     m_speed = speed;
 }
 
-void Block::setDamageB(int damageB) {
-    m_damageB = damageB;
+void Block::collision(GameObject *collider) {
+    if(collider->getType() == GameObjectType::Hero) {
+        setDestroyed();
+    }
 }
-
-
-
 
