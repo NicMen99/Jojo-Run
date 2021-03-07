@@ -12,7 +12,7 @@ class Knife final:  public Bullet
 {
 public:
     explicit Knife (std::string id);
-    ~Knife()  override = default;
+    ~Knife() = default;
 };
 
 #endif //JOJO_RUN_KNIFE_H

@@ -9,7 +9,7 @@
 class Shield final: public PowerUp {
 public:
     Shield (std::string id);
-    ~Shield() override = default;
+    ~Shield() = default;
 };
 
 #endif //JOJO_RUN_SHIELD_H

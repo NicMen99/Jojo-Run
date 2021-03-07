@@ -21,10 +21,10 @@ public:
     float getMMiddle() const;
     float getMTop() const;
 
-    const sf::Vector2u &getWindowSize() const {return m_window_size;}
-    const sf::Vector2f &getSceneSpeed() const {return m_scene_speed;}
+    const sf::Vector2u & getWindowSize() const {return m_window_size;}
+    const sf::Vector2f & getSceneSpeed() const {return m_scene_speed;}
+    const sf::Vector2f & getGravity() const { return m_gravity; }
     float getGroundYpos() const {return m_groundYpos;}
-    float gravity() const {return m_gravity;}
 
 private:
     // int loadConfigFile(std::string s);
@@ -38,8 +38,8 @@ private:
 
 private:
     const sf::Vector2u m_window_size = {1600,1000};
-    const sf::Vector2f m_scene_speed = {400, 0};   // pixels x second
-    const float m_gravity = 1.5f;
+    const sf::Vector2f m_scene_speed = {400.f, 0.f};    // pixels x secondo
+    const sf::Vector2f m_gravity = {0.f, 500.f};        // delta pixels x secondo
     const float m_groundYpos = 63.0f;
 };
 

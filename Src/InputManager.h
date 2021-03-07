@@ -14,7 +14,6 @@ public:
     bool isKeyPressed(const sf::Keyboard::Key& key);
     bool isKeyJustPressed(const sf::Keyboard::Key& key);
     bool isKeyJustReleased(const sf::Keyboard::Key& key);
-private:
     void registerKey(const sf::Keyboard::Key& key);
     void unregisterKey(const sf::Keyboard::Key& key);
 private:

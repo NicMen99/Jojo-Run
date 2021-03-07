@@ -26,7 +26,6 @@ Game::Game():
     m_gameMachine(new GameStateMachine(this, State::Init)),
     m_gameConfig(*new GameConfig()),
     m_resourceManager(*new GameResourceManager()),
-    m_inputManager(*new InputManager()),
     m_factory(*new Factory()),
     m_scene(*new GameScene()),
     m_hero(*new Hero())
@@ -47,7 +46,7 @@ void Game::init()
 
 void Game::loop()
 {
-    m_window.create(sf::VideoMode(1600, 1000), "JoJo Run");
+    m_window.create(sf::VideoMode(GC.getWindowSize().x, GC.getWindowSize().y), "JoJo Run");
     while(m_window.isOpen()){
         while (m_window.pollEvent(m_event)) {
             if(m_event.type == sf::Event::Closed)
@@ -65,7 +64,6 @@ void Game::loop()
             m_accumulator -= m_framerate;
             m_gameMachine->exec();
             m_gameMachine->update(m_framerate.asMilliseconds());
-            m_inputManager.update();
             sf::sleep(sf::milliseconds(10));
         }
 

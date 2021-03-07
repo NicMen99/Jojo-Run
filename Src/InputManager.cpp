@@ -8,8 +8,6 @@
 void InputManager::init() {
     m_current_status.clear();
     m_previous_status.clear();
-    registerKey(sf::Keyboard::Key::Space);
-    registerKey(sf::Keyboard::Key::K);
 }
 
 void InputManager::update() {

@@ -11,7 +11,7 @@
 class Platform : public GameObject {
 public:
     explicit Platform(std::string id);
-    ~Platform() override = default;
+    ~Platform() = default;
     void init(const std::string& texture_name, sf::Vector2f speed);
 
 private:

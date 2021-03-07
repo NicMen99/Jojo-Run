@@ -11,7 +11,7 @@
 class PowerUp : public GameObject {
 public:
     explicit PowerUp(GameObjectType mtype, const std::string & name);
-    ~PowerUp() override = default;
+    ~PowerUp() = default;
     void init(const std::string &texture_name, sf::Vector2f scale, sf::Vector2f speed);
 
 protected:

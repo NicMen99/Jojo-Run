@@ -16,12 +16,16 @@ Hero::Hero() :
 
 void Hero::init()
 {
+    m_inputManager.init();
+    m_inputManager.registerKey(sf::Keyboard::Key::Space);
+    m_inputManager.registerKey(sf::Keyboard::Key::K);
+
     HERO.init("playerTexture");
     HERO.setPosition(sf::Vector2f(65.f,0.f));
 }
 
 void Hero::update(int32_t delta_time) {
-    processInput(delta_time);
+    m_inputManager.update();
     updatephysics(delta_time);
 }
 
@@ -59,17 +63,33 @@ void Hero::setTexture(const sf::Texture &heroTexture){
     m_sprite.setScale(0.9, 0.9);
 }
 
-void Hero::processInput(int32_t delta_time) {
-    if(m_grounded) {
-        if(IM.isKeyJustPressed(sf::Keyboard::Space))
-            jumpAction(delta_time);
-    }
-}
-
 void Hero::updatephysics(int32_t delta_time) {
-    if(!m_grounded) {
-        m_speed += sf::Vector2f(0, GC.gravity() * delta_time);
+
+    switch(m_state)
+    {
+        case State::Grounded:
+            if(m_inputManager.isKeyJustPressed(sf::Keyboard::Space)) {
+                sf::Vector2f accel = {m_jumpForce * 2 * GC.getGravity().x, -m_jumpForce * 2 * GC.getGravity().y};
+                applyImpulse(accel, delta_time);
+                m_jumpTimer.restart();
+                m_state = State::Jumping;
+            }
+            break;
+        case State::Jumping:
+            if(m_inputManager.isKeyPressed(sf::Keyboard::Space) &&
+               m_jumpTimer.getElapsedTime() < sf::milliseconds(500)) {
+                    sf::Vector2f accel = {m_jumpForce * GC.getGravity().x, -m_jumpForce * GC.getGravity().y};
+                    applyImpulse(accel, delta_time);
+            }
+            else {
+                m_state = State:: Falling;
+            }
+            break;
+        case State::Falling:
+            applyImpulse(GC.getGravity(), delta_time);
+            break;
     }
+
     GameObject::update(delta_time);
     /*
      * Normalizza la posizione @TODO levare costante
@@ -79,18 +99,9 @@ void Hero::updatephysics(int32_t delta_time) {
         pos.y = GC.getWindowSize().y - 100.f;
         setPosition(pos);
         m_speed.y = 0;
-        m_grounded = true;
+        m_state = State::Grounded;
     }
 }
-
-void Hero::jumpAction(int32_t delta_time) {
-    /*
-     * @TODO cambiare costanti
-     */
-    m_speed -= sf::Vector2f(0, 1100.f);
-    m_grounded = false;
-}
-
 
 
 bool Hero::gameOver() {

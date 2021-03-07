@@ -5,18 +5,23 @@
 #ifndef JOJO_RUN_HERO_H
 #define JOJO_RUN_HERO_H
 
-#include "Subject.h"
-#include "PowerUp.h"
-#include "GameObject.h"
 #include <list>
 #include <string>
 #include <fstream>
 #include <SFML/Graphics.hpp>
 
+#include "Subject.h"
+#include "PowerUp.h"
+#include "GameObject.h"
+#include "InputManager.h"
+
 class Hero final : public GameObject {
+
+    enum class State {Grounded, Jumping, Falling};
+
 public:
     Hero ();
-    ~Hero() override = default;
+    ~Hero() = default;
 
     void init();
     void init(const std::string &texture_name, int hp = 300, int knives = 0, int max_kinves = 8, int max_health = 300);
@@ -24,15 +29,20 @@ public:
 
 private:
     void setTexture(const sf::Texture &heroTexture);
-    void processInput(int32_t delta_time);
     void updatephysics(int32_t delta_time);
-
-    void jumpAction(int32_t delta_time);
 
 private:
     sf::Sprite m_sprite;
-    bool m_grounded=false;
+    State m_state = State::Falling;
+    InputManager m_inputManager;
 
+private:
+    float m_jumpForce = 2.5;
+    sf::Clock m_jumpTimer;
+
+
+
+    /* @TODO:  refactor*/
 public:
     bool gameOver();
     void collisionevent();

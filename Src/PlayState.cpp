@@ -4,7 +4,6 @@
 
 #include "Game.h"
 #include "GameScene.h"
-#include "inputManager.h"
 #include "GameConfig.h"
 #include "PlayState.h"
 #include "Hero.h"
@@ -27,7 +26,6 @@ PlayState* PlayState::instance() {
 
 void PlayState::init() {
     GS.init();
-    IM.init();
     HERO.init();
 
     fireEnemyBuffer.loadFromFile(GC.getAssetPath("fireEnemyShout"));

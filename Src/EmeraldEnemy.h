@@ -12,7 +12,7 @@ class EmeraldEnemy final : public Enemy
 {
 public:
     explicit EmeraldEnemy(std::string id);
-    ~EmeraldEnemy() override = default;
+    ~EmeraldEnemy() = default;
 
 public:
     std::unique_ptr<Bullet> SpecialAction() override;

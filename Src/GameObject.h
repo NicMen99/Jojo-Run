@@ -36,20 +36,17 @@ enum class GameObjectStatus {
     Destroyed
 };
 
-class GameObject : public Observer {
+class GameObject {
 public:
     GameObject(GameObjectGroup mgroup, GameObjectType mtype, std::string mName, sf::Sprite &mSprite);
-    ~GameObject() override = default;
+    ~GameObject() = default;
 
 public:
     virtual void update(int32_t delta_time);
     virtual void render(sf::RenderWindow & window);
 protected:
     virtual void move(const sf::Vector2f & offset);
-
-    void event() override {};
-    void attach() override {};
-    void detach() override {};
+    virtual void applyImpulse(const sf::Vector2f & acceleration, int32_t delta_time);
 
     //Getter & setter
 public:

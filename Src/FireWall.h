@@ -12,7 +12,7 @@ class FireWall final : public Obstacle {
 
 public:
     explicit FireWall (std::string id);
-    ~FireWall() override = default;
+    ~FireWall() = default;
     void init(const std::string &texture_name, sf::Vector2f scale, sf::Vector2f speed);
 
 private:
