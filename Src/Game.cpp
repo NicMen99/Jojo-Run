@@ -6,9 +6,7 @@
 #include "GameResourceManager.h"
 #include "GameScene.h"
 #include "GameStats.h"
-#include "InputManager.h"
 #include "Factory.h"
-#include "Hero.h"
 #include "Game.h"
 
 #define DEBUG

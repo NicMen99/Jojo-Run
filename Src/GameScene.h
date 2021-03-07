@@ -57,6 +57,9 @@ private:
     std::vector<std::unique_ptr<GameObject>> m_bullets;
     std::unique_ptr<GameObject> m_hero;
     std::unique_ptr<ScoreHUD> m_scorehud;
+
+private:
+    unsigned long m_loops = 0;
 };
 
 #endif //JOJO_RUN_GAMESCENE_H

@@ -16,7 +16,6 @@ public:
     ~ScoreHUD() override {detach();}
 
     void init();
-    void update();
     void render(sf::RenderWindow & window);
 
 private:
@@ -33,7 +32,7 @@ private:
     sf::Font font;
 
 private:
-    void event() override;
+    void update() override;
     void attach() override;
     void detach() override;
 };

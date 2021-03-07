@@ -8,6 +8,7 @@
 #include "GameResourceManager.h"
 #include "GameConfig.h"
 #include "GameScene.h"
+#include "GameStats.h"
 #include "Factory.h"
 #include "Background.h"
 #include "Hero.h"
@@ -31,16 +32,24 @@ void GameScene::init()
 }
 
 void GameScene::update(int32_t delta_time) {
+
+    if(m_loops++ % 60 == 0)
+        STATS.addScore(1);
+
     destroyObjects(m_platforms);
     destroyObjects(m_obstacles);
     destroyObjects(m_enemies);
     destroyObjects(m_powerups);
     destroyObjects(m_bullets);
 
-    /*Map Generator */
+    /*
+     * Map Generator
+     */
     generateMap();
 
-    /*Map Update*/
+    /*
+     * Map Update
+     * */
     for (auto & it : m_backgrounds) {
         it->update(delta_time);
     }
@@ -60,12 +69,13 @@ void GameScene::update(int32_t delta_time) {
         it->update(delta_time);
     }
     m_hero->update(delta_time);
-    m_scorehud->update();
 
     /*
      * Collisions
      */
     manageCollision();
+
+    STATS.notify();
 }
 
 void GameScene::render(sf::RenderWindow & window) {

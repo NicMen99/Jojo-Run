@@ -14,6 +14,10 @@
 class GameStats : public Subject {
 
 public:
+    // @TODO mettere un dizionarion
+    unsigned int get() { return m_score; }
+
+public:
     void addScore(unsigned int delta) { m_score += delta; }
 
 private:

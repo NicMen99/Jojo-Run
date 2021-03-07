@@ -8,6 +8,8 @@
 #include "ScoreHUD.h"
 
 void ScoreHUD::init() {
+    attach();
+
     font.loadFromFile(GC.getAssetPath("arcadeclassic"));
 
     scoreTxt.setFont(font);
@@ -16,13 +18,12 @@ void ScoreHUD::init() {
     scoreTxt.setCharacterSize(40);
     scoreTxt.setFillColor(sf::Color::White);
 
-    /*
     numScore.setFont(font);
     numScore.setString(std::to_string(0));
     numScore.setPosition(135, 3);
     numScore.setCharacterSize(40);
     numScore.setFillColor(sf::Color::White);
-
+    /*
     lifeTxt.setFont(font);
     lifeTxt.setString("HP");
     lifeTxt.setPosition(1440, 3);
@@ -78,14 +79,10 @@ void ScoreHUD::init() {
     */
 }
 
-void ScoreHUD::update() {
-
-}
-
 void ScoreHUD::render(sf::RenderWindow &window) {
     window.draw(scoreTxt);
-    /*
     window.draw(numScore);
+    /*
     window.draw(scoreB);
     window.draw(bestScoreTxt);
     window.draw(bestScoreB);
@@ -93,7 +90,13 @@ void ScoreHUD::render(sf::RenderWindow &window) {
      */
 }
 
-void ScoreHUD::event() {
+void ScoreHUD::update() {
+
+    numScore.setFont(font);
+    numScore.setString(std::to_string(STATS.get()));
+    numScore.setPosition(135, 3);
+    numScore.setCharacterSize(40);
+    numScore.setFillColor(sf::Color::White);
 }
 
 void ScoreHUD::attach() {

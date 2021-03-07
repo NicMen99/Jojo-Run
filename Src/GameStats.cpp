@@ -7,7 +7,7 @@
 
 void GameStats::notify() {
     for (auto it = std::begin(observers); it != std::end(observers); it++)
-        (*it)->event();
+        (*it)->update();
 }
 
 void GameStats::unsubscribe(Observer *o) {
