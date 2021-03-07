@@ -6,7 +6,6 @@
 #include "GameScene.h"
 #include "GameConfig.h"
 #include "PlayState.h"
-#include "Hero.h"
 
 PlayState* PlayState::m_instance = nullptr;
 
@@ -26,7 +25,6 @@ PlayState* PlayState::instance() {
 
 void PlayState::init() {
     GS.init();
-    HERO.init();
 
     fireEnemyBuffer.loadFromFile(GC.getAssetPath("fireEnemyShout"));
     m_context->fireEnemySound.setBuffer(fireEnemyBuffer);
@@ -57,21 +55,19 @@ void PlayState::onExit() {
 }
 
 void PlayState::update(int32_t delta_time) {
-    GS.update(delta_time);
-    HERO.update(delta_time);
-
-    if (HERO.getIsDead() && m_context->txtCount == 0){
+    if(GS.levelend()) {
         changeState(State::Over);
     }
 
-    for (auto &knife : m_context->knives)
-        knife->update(delta_time);
+    GS.update(delta_time);
+
     m_context->handleTxt();
 
     m_context->setScore(m_context->score);
     m_context->setHealth(m_context->getHealth());
 
     // Collision
+    /*
     if (!HERO.getIsDead()) {
         m_context->collision();
     }
@@ -147,13 +143,11 @@ void PlayState::update(int32_t delta_time) {
         m_context->scoreClk.restart();
         m_context->notify();
     }
+    */
 }
 
 void PlayState::render(sf::RenderWindow& window) {
     GS.render(window);
-    HERO.render(window);
-    for (auto &knife : m_context->knives)
-        knife->render(window);
     window.draw(m_context->scoreTxt);
     window.draw(m_context->numScore);
     window.draw(m_context->lifeTxt);

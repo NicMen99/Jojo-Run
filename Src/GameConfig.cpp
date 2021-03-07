@@ -41,9 +41,6 @@ void GameConfig::init(const std::string & base_dir) {
 
             std::make_pair("arcadeclassic",         "Font/ARCADECLASSIC.TTF")
     };
-    m_base = m_window_size.y-100.f;
-    m_middle = m_base - m_levelDelta_y;
-    m_top = m_middle - m_levelDelta_y;
 }
 
 std::string GameConfig::getAssetPath(const std::string & asset) {

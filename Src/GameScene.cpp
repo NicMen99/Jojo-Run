@@ -10,6 +10,7 @@
 #include "GameScene.h"
 #include "Factory.h"
 #include "Background.h"
+#include "Hero.h"
 
 
 
@@ -25,6 +26,7 @@ void GameScene::init()
 {
     m_gen.seed(m_rd());
     createBackgorund();
+    createHero();
 }
 
 void GameScene::update(int32_t delta_time) {
@@ -56,7 +58,12 @@ void GameScene::update(int32_t delta_time) {
     for (auto & it : m_bullets) {
         it->update(delta_time);
     }
+    m_hero->update(delta_time);
 
+    /*
+     * Collisions
+     */
+    manageCollision();
 }
 
 void GameScene::render(sf::RenderWindow & window) {
@@ -78,7 +85,7 @@ void GameScene::render(sf::RenderWindow & window) {
     for (auto & it : m_bullets) {
         it->render(window);
     }
-
+    m_hero->render(window);
 }
 
 void GameScene::destroyObjects(std::vector<std::unique_ptr<GameObject>> & items) {
@@ -136,6 +143,18 @@ void GameScene::createPowerup(PowerUpType pt, sf::Vector2f position) {
     auto pu = GF.createPowerUp(pt);
     pu->setPosition(sf::Vector2f(0, -2*pu->getBounds().height) + position);
     m_powerups.emplace_back(std::move(pu));
+}
+
+
+void GameScene::createHero() {
+    auto * hero = new Hero();
+    hero->init();
+
+    m_hero = std::unique_ptr<GameObject>(hero);
+}
+
+bool GameScene::levelend() const {
+    return dynamic_cast<Hero*>(m_hero.get())->gameOver();
 }
 
 
@@ -222,5 +241,29 @@ void GameScene::generateMap() {
         std::vector<PowerUpType> pchoice = {PowerUpType::Weapon, PowerUpType::Shield};
         createPowerup(pchoice[rand(pchoice.size())], sf::Vector2f(posx + size/2, posy));
     }
+}
+
+void GameScene::manageCollision() {
+
+    if(m_hero->isEnabled()) {
+        /*
+         * Collisione Eroe Piattaforma
+         */
+        for (auto & platform : m_platforms) {
+            if (platform->isEnabled() && platform->getBounds().intersects(m_hero->getBounds())) {
+                m_hero->collision(platform.get());
+            }
+        }
+        /*
+         * Collisione Eroe Nemici
+         */
+        for (auto & enemy : m_enemies) {
+            if (enemy->isEnabled() && enemy->getBounds().intersects(m_hero->getBounds())) {
+                m_hero->collision(enemy.get());
+                enemy->collision(m_hero.get());
+            }
+        }
+    }
+
 }
 

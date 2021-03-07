@@ -31,16 +31,16 @@ private:
     std::string asset_base_dir;
     std::map<std::string, std::string> asset_map;
 
-    float m_levelDelta_y = 300.f;
-    float m_base;
-    float m_middle;
-    float m_top;
-
 private:
     const sf::Vector2u m_window_size = {1600,1000};
     const sf::Vector2f m_scene_speed = {400.f, 0.f};    // pixels x secondo
-    const sf::Vector2f m_gravity = {0.f, 500.f};        // delta pixels x secondo
-    const float m_groundYpos = 63.0f;
+    const sf::Vector2f m_gravity     = {0.f, 1000.f};        // delta pixels x secondo
+    const float m_groundYpos         = 63.0f;
+
+    float m_levelDelta_y             = 300.f;
+    float m_base                     = m_window_size.y-100.f;
+    float m_middle                   = m_base - m_levelDelta_y;
+    float m_top                      = m_middle - m_levelDelta_y;
 };
 
 #endif //JOJO_RUN_GAMECONFIG_H

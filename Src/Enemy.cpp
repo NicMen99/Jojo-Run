@@ -24,3 +24,17 @@ void Enemy::init(const std::string &texture_name, sf::Vector2f scale, sf::Vector
     m_damage = damage;
 }
 
+void Enemy::update(int32_t delta_time) {
+    GameObject::update(delta_time);
+    if(m_state == State::Dead)
+        setDestroyed();
+}
+
+void Enemy::collision(GameObject *collider) {
+    if(m_state == State::Alive) {
+        if(collider->getType() == GameObjectType::Hero) {
+            m_state = State::Dying;
+            setEnabled(false);
+        }
+    }
+}

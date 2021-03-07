@@ -12,11 +12,15 @@
 class Bullet;
 
 class Enemy: public GameObject {
+    enum State {Alive, Dying, Dead};
 
 public:
     Enemy(GameObjectType mtype, const std::string & name);
     ~Enemy() = default;
     void init(const std::string & texture_name, sf::Vector2f scale, sf::Vector2f speed, int damage);
+
+    void update(int32_t delta_time) override;
+    void collision(GameObject *collider) override;
 
 public:
     virtual std::unique_ptr<Bullet> SpecialAction() = 0;
@@ -24,6 +28,7 @@ public:
 
 private:
     sf::Sprite m_sprite;
+    State m_state = State::Alive;
     int m_damage = 90;
 };
 

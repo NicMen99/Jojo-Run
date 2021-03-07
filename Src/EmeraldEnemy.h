@@ -10,8 +10,8 @@
 
 class EmeraldEnemy final : public Enemy
 {
-public:
-    explicit EmeraldEnemy(std::string id);
+ public:
+    explicit EmeraldEnemy(const std::string& id);
     ~EmeraldEnemy() = default;
 
 public:
