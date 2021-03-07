@@ -7,3 +7,7 @@ Shield::Shield(std::string id) :
     PowerUp(GameObjectType::Shield, id)
 {
 }
+
+void Shield::collision(GameObject *collider) {
+    setDestroyed();
+}

@@ -6,8 +6,11 @@
 #include "GameResourceManager.h"
 #include "GameConfig.h"
 #include "InputManager.h"
-#include "Hero.h"
 #include "Enemy.h"
+#include "Obstacle.h"
+#include "Weapon.h"
+#include "Shield.h"
+#include "Hero.h"
 
 Hero::Hero() :
     GameObject(GameObjectGroup::Hero, GameObjectType::Hero, "Hero", m_sprite)
@@ -136,11 +139,42 @@ void Hero::collision(GameObject * collider)
     else if(collider->getGroup() == GameObjectGroup::Enemy)
     {
         auto * enemy = dynamic_cast<Enemy *>(collider);
-        int damage = enemy->getDamage();
+        if(!m_shield) {
+            int damage = enemy->getDamage();
+            m_health -= damage;
+            if (m_health <= 0)
+                m_state = State::Dead;
+        }
+        m_shield = false;
+    }
+
+    /*
+     * Collisione con un ostacolo
+     */
+    else if(collider->getGroup() == GameObjectGroup::Map)
+    {
+        auto * obstacle = dynamic_cast<Obstacle *>(collider);
+        int damage = obstacle->getDamage();
         m_health -= damage;
         if (m_health <= 0)
             m_state = State::Dead;
     }
+
+    /*
+     * Collisione con un powerup
+     */
+    else if(collider->getGroup() == GameObjectGroup::Powerup)
+    {
+        if(collider->getType() == GameObjectType::Weapon) {
+            auto * weapon = dynamic_cast<Weapon *>(collider);
+            m_knives += weapon->collect();
+            m_knives = (m_knives>m_maxknives) ? m_maxknives : m_knives;
+        }
+        else if(collider->getType() == GameObjectType::Shield) {
+            m_shield = true;
+        }
+    }
+
 }
 
 void Hero::speedCap() {
@@ -154,26 +188,4 @@ bool Hero::gameOver() {
     return m_state == State::Dead;
 }
 
-
-/**/
-
-
-int Hero::getKnives() const {
-    return m_knives;
-}
-
-void Hero::setHealth(int hp) {
-    Hero::m_health = hp;
-    if(Hero::m_health >= getMaxhp()){
-        Hero::m_health = getMaxhp();
-    }
-}
-
-int Hero::getHealth() const {
-    return m_health;
-}
-
-int Hero::getMaxhp() const {
-    return m_maxhp;
-}
 

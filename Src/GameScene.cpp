@@ -263,6 +263,24 @@ void GameScene::manageCollision() {
                 enemy->collision(m_hero.get());
             }
         }
+        /*
+         * Collisione Eroe Ostacoli
+         */
+        for (auto & obstacle : m_obstacles) {
+            if (obstacle->isEnabled() && obstacle->getBounds().intersects(m_hero->getBounds())) {
+                m_hero->collision(obstacle.get());
+                obstacle->collision(m_hero.get());
+            }
+        }
+        /*
+         * Collisione Eroe PowerUp
+         */
+        for (auto & powerup : m_powerups) {
+            if (powerup->isEnabled() && powerup->getBounds().intersects(m_hero->getBounds())) {
+                m_hero->collision(powerup.get());
+                powerup->collision(m_hero.get());
+            }
+        }
     }
 
 }

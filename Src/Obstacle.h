@@ -16,7 +16,7 @@ public:
     void init(const std::string &texture_name, sf::Vector2f scale, int damage);
 
 public:
-    void setDamage(int damageB);
+    int getDamage() const { return m_damage; };
 
 private:
     sf::Sprite m_sprite;

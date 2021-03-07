@@ -110,14 +110,6 @@ private:
     std::ofstream bestScoreFileWrite;
     std::ifstream bestScoreFileRead;
 
-    bool isShieldOn=false;
-    bool isCollided=false;
-    bool BlockCollision=false;
-    bool EnemyCollision=false;
-    bool FirewallCollision=false;
-    bool KnifeCollision=false;
-    bool ShieldPowerupCollision=false;
-    bool KnivesPowerupCollision=false;
 
     int maxY;
     int n;

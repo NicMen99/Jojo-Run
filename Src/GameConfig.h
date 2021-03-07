@@ -34,7 +34,7 @@ private:
 private:
     const sf::Vector2u m_window_size = {1600,1000};
     const sf::Vector2f m_scene_speed = {400.f, 0.f};    // pixels x secondo
-    const sf::Vector2f m_gravity     = {0.f, 1000.f};        // delta pixels x secondo
+    const sf::Vector2f m_gravity     = {0.f, 1500.f};        // delta pixels x secondo
     const float m_groundYpos         = 63.0f;
 
     float m_levelDelta_y             = 300.f;

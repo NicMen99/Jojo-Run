@@ -21,6 +21,4 @@ void Obstacle::init(const std::string &texture_name, sf::Vector2f scale, int dam
     m_damage = damage;
 }
 
-void Obstacle::setDamage(int damage) {
-    m_damage = damage;
-}
+
