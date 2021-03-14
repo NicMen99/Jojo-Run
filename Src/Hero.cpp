@@ -183,6 +183,16 @@ void Hero::collision(GameObject * collider)
             m_shield = true;
         }
     }
+    /*
+     * Collisione con proiettile nemico
+     */
+    else if (collider->getGroup() == GameObjectGroup::Bullet)
+    {
+        if(collider->getType() != GameObjectType::Knife){
+            auto * bullet =dynamic_cast<Bullet *>(collider);
+            update_health(-bullet->getDamage());
+        }
+    }
 
 }
 

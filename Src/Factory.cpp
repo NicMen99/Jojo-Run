@@ -5,7 +5,9 @@
 #include "Block.h"
 #include "FireWall.h"
 #include "EmeraldEnemy.h"
+#include "Emerald.h"
 #include "FireEnemy.h"
+#include "Fire.h"
 #include "HamonEnemy.h"
 #include "Shield.h"
 #include "Weapon.h"
@@ -65,6 +67,14 @@ std::unique_ptr<GameObject> Factory::createBullet(GameObjectType type) {
         auto * knife = new Knife("Knife");
         knife -> init("knifeTexture", {1,1}, {0.1, 0}, 100);
         return std::unique_ptr<GameObject>(knife);
+    } else if (type == GameObjectType::EmeraldBullet) {
+        auto * emerald = new Emerald("Emerald");
+        emerald -> init("emeraldBlockTexture", {1,1}, {0.1, 0}, 150);
+        return std::unique_ptr<GameObject>(emerald);
+    } else if (type == GameObjectType::FireBullet) {
+        auto * fire = new Fire("Fire");
+        fire -> init("fireBlockTexture", {1,1}, {0.1, 0}, 50);
+        return std::unique_ptr<GameObject>(fire);
     }
     return nullptr;
 }

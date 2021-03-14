@@ -24,7 +24,6 @@ public:
     void collision(GameObject *collider) override;
 
 public:
-    virtual std::unique_ptr<Bullet> SpecialAction() = 0;
     int getDamage() const { return m_damage; };
 
 protected:

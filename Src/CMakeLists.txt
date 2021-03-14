@@ -12,10 +12,14 @@ target_sources(${TARGET}
         EmeraldEnemy.cpp
         Enemy.h
         Enemy.cpp
+        Emerald.h
+        Emerald.cpp
         InputManager.h
         InputManager.cpp
         Factory.h
         Factory.cpp
+        Fire.h
+        Fire.cpp
         FireEnemy.h
         FireEnemy.cpp
         FireWall.h

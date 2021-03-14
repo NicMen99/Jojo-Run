@@ -311,6 +311,15 @@ void GameScene::manageCollision() {
             }
         }
         /*
+         * Collisione Eroe Bullet
+         */
+        for (auto & bullet : m_bullets) {
+            if (bullet->isEnabled() && bullet->getBounds().intersects(m_hero->getBounds())) {
+                m_hero->collision(bullet.get());
+                bullet->collision(m_hero.get());
+            }
+        }
+        /*
          * Collisione Nemici Coltello
          */
         for (auto & bullet : m_bullets) {
