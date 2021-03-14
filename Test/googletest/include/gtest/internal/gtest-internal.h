@@ -128,7 +128,7 @@ class IgnoredValue {
   // deliberately omit the 'explicit' keyword in order to allow the
   // conversion to be implicit.
   // Disable the conversion if T already has a magical conversion operator.
-  // Otherwise we get ambiguity.
+  // Otherwise we getValue ambiguity.
   template <typename T,
             typename std::enable_if<!std::is_convertible<T, Sink>::value,
                                     int>::type = 0>
@@ -441,7 +441,7 @@ TypeId GetTypeId() {
 }
 
 // Returns the type ID of ::testing::Test.  Always call this instead
-// of GetTypeId< ::testing::Test>() to get the type ID of
+// of GetTypeId< ::testing::Test>() to getValue the type ID of
 // ::testing::Test, as the latter may give the wrong result due to a
 // suspected linker bug when compiling Google Test as a Mac OS X
 // framework.
@@ -774,7 +774,7 @@ class TypeParameterizedTestSuite {
     std::string test_name = StripTrailingSpaces(
         GetPrefixUntilComma(test_names));
     if (!state->TestExists(test_name)) {
-      fprintf(stderr, "Failed to get code location for test %s.%s at %s.",
+      fprintf(stderr, "Failed to getValue code location for test %s.%s at %s.",
               case_name, test_name.c_str(),
               FormatFileLocation(code_location.file.c_str(),
                                  code_location.line).c_str());

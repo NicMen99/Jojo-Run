@@ -33,6 +33,7 @@ private:
     void setTexture(const sf::Texture &heroTexture);
     void updatePhysics(int32_t delta_time);
     void speedCap();
+    void update_health(int delta);
 
 private:
     sf::Sprite m_sprite;
@@ -50,7 +51,7 @@ private:
     sf::Clock m_jumpTimer;
     sf::Time m_maxJumpTime = sf::milliseconds(700);
 private:
-    int m_health = 300;
+    int m_health = 0;
     int m_maxhp = 300;
 private:
     int m_knives = 0;

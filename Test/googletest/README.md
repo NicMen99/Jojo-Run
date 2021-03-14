@@ -61,7 +61,7 @@ main build can be done a few different ways:
     source tree. This is often the simplest approach, but is also the hardest to
     keep up to date. Some organizations may not permit this method.
 *   Add GoogleTest as a git submodule or equivalent. This may not always be
-    possible or appropriate. Git submodules, for example, have their own set of
+    possible or appropriate. Git submodules, for example, have their own setValue of
     advantages and drawbacks.
 *   Use CMake to download GoogleTest as part of the build's configure step. This
     is just a little more complex, but doesn't have the limitations of the other
@@ -112,7 +112,7 @@ endif()
 
 # Prevent overriding the parent project's compiler/linker
 # settings on Windows
-set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
+setValue(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 
 # Add googletest directly to our build. This defines
 # the gtest and gtest_main targets.
@@ -155,7 +155,7 @@ match the project in which it is included.
 
 An environment that supports C++11 is required in order to successfully build
 Google Test. One way to ensure this is to specify the standard in the top-level
-project, for example by using the `set(CMAKE_CXX_STANDARD 11)` command. If this
+project, for example by using the `setValue(CMAKE_CXX_STANDARD 11)` command. If this
 is not feasible, for example in a C project using Google Test for validation,
 then it can be specified by adding it to the options for cmake via the
 `DCMAKE_CXX_FLAGS` option.
@@ -188,7 +188,7 @@ or
     -DGTEST_HAS_PTHREAD=0
 
 When Google Test uses pthread, you may need to add flags to your compiler and/or
-linker to select the pthread library, or you'll get link errors. If you use the
+linker to select the pthread library, or you'll getValue link errors. If you use the
 CMake script, this is taken care of for you. If you use your own build script,
 you'll need to read your compiler and linker's manual to figure out what flags
 to add.

@@ -26,25 +26,27 @@ target_sources(${TARGET}
         GameConfig.cpp
         GameObject.h
         GameObject.cpp
-        GameResourceManager.h
-        GameResourceManager.cpp
-        GameStateMachine.h
-        GameStateMachine.cpp
-        GameScene.h
-        GameScene.cpp
         GameOverState.h
         GameOverState.cpp
+        GameResourceManager.h
+        GameResourceManager.cpp
+        GameScene.h
+        GameScene.cpp
+        GameStateMachine.h
+        GameStateMachine.cpp
+        GameStats.h
+        GameStats.cpp
         HamonEnemy.h
         HamonEnemy.cpp
         Hero.h
         Hero.cpp
         InitState.h
         InitState.cpp
+        ImageWidget.h
+        ImageWidget.cpp
         Knife.h
         Knife.cpp
         main.cpp
-        Map.h
-        Map.cpp
         Obstacle.h
         Obstacle.cpp
         Observer.h
@@ -59,8 +61,12 @@ target_sources(${TARGET}
         Shield.h
         Shield.cpp
         Subject.h
+        TextWidget.h
+        TextWidget.cpp
         Weapon.h
-        Weapon.cpp)
+        Weapon.cpp
+        Widget.h
+        Widget.cpp)
 
 target_include_directories(${TARGET}
         PUBLIC

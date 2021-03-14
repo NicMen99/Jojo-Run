@@ -48,7 +48,7 @@ to discard `-L` flags and `-pthread`.
 ### Help! pkg-config can't find GoogleTest!
 
 Let's say you have a `CMakeLists.txt` along the lines of the one in this
-tutorial and you try to run `cmake`. It is very possible that you get a failure
+tutorial and you try to run `cmake`. It is very possible that you getValue a failure
 along the lines of:
 
 ```
@@ -61,7 +61,7 @@ These failures are common if you installed GoogleTest yourself and have not
 sourced it from a distro or other package manager. If so, you need to tell
 pkg-config where it can find the `.pc` files containing the information. Say you
 installed GoogleTest to `/usr/local`, then it might be that the `.pc` files are
-installed under `/usr/local/lib64/pkgconfig`. If you set
+installed under `/usr/local/lib64/pkgconfig`. If you setValue
 
 ```
 export PKG_CONFIG_PATH=/usr/local/lib64/pkgconfig
@@ -114,7 +114,7 @@ Cflags: -I${includedir} -DGTEST_HAS_PTHREAD=1 -lpthread
 Notice that the sysroot is not included in `libdir` and `includedir`! If you try
 to run `pkg-config` with the correct
 `PKG_CONFIG_LIBDIR=/home/MYUSER/sysroot/usr/lib64/pkgconfig` against this `.pc`
-file, you will get
+file, you will getValue
 
 ```
 $ pkg-config --cflags gtest
@@ -134,7 +134,7 @@ export PKG_CONFIG_SYSROOT_DIR=/home/MYUSER/sysroot
 export PKG_CONFIG_LIBDIR=${PKG_CONFIG_SYSROOT_DIR}/usr/lib64/pkgconfig
 ```
 
-and running `pkg-config` again we get
+and running `pkg-config` again we getValue
 
 ```
 $ pkg-config --cflags gtest

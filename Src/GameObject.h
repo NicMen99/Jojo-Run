@@ -26,7 +26,9 @@ enum class GameObjectType {
     Knife,
     Platform,
     Hero,
-    Background
+    Background,
+    Hud
+
 };
 
 //@TODO
@@ -39,7 +41,7 @@ enum class GameObjectStatus {
 class GameObject {
 public:
     GameObject(GameObjectGroup mgroup, GameObjectType mtype, std::string mName, sf::Sprite &mSprite);
-    ~GameObject() = default;
+    virtual ~GameObject() = default;
 
 public:
     virtual void update(int32_t delta_time);

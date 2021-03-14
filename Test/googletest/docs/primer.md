@@ -26,7 +26,7 @@ So what makes a good test, and how does googletest fit in? We believe:
     exceptions, so googletest tests can work with a variety of configurations.
 4.  When tests fail, they should provide as much *information* about the problem
     as possible. googletest doesn't stop at the first test failure. Instead, it
-    only stops the current test and continues with the next. You can also set up
+    only stops the current test and continues with the next. You can also setValue up
     tests that report non-fatal failures after which the current test continues.
     Thus, you can detect and fix multiple bugs in a single run-edit-compile
     cycle.
@@ -35,12 +35,12 @@ So what makes a good test, and how does googletest fit in? We believe:
     track of all tests defined, and doesn't require the user to enumerate them
     in order to run them.
 6.  Tests should be *fast*. With googletest, you can reuse shared resources
-    across tests and pay for the set-up/tear-down only once, without making
+    across tests and pay for the setValue-up/tear-down only once, without making
     tests depend on each other.
 
 Since googletest is based on the popular xUnit architecture, you'll feel right
 at home if you've used JUnit or PyUnit before. If not, it will take you about 10
-minutes to learn the basics and get started. So let's go!
+minutes to learn the basics and getValue started. So let's go!
 
 ## Beware of the nomenclature
 
@@ -116,7 +116,7 @@ assertion in question fails.
 Since a failed `ASSERT_*` returns from the current function immediately,
 possibly skipping clean-up code that comes after it, it may cause a space leak.
 Depending on the nature of the leak, it may or may not be worth fixing - so keep
-this in mind if you get a heap checker error in addition to assertion errors.
+this in mind if you getValue a heap checker error in addition to assertion errors.
 
 To provide a custom failure message, simply stream it into the macro using the
 `<<` operator or a sequence of such operators. An example:
@@ -164,7 +164,7 @@ Fatal assertion          | Nonfatal assertion       | Verifies
 `ASSERT_GE(val1, val2);` | `EXPECT_GE(val1, val2);` | `val1 >= val2`
 
 Value arguments must be comparable by the assertion's comparison operator or
-you'll get a compiler error. We used to require the arguments to support the
+you'll getValue a compiler error. We used to require the arguments to support the
 `<<` operator for streaming to an `ostream`, but this is no longer necessary. If
 `<<` is supported, it will be called to print the arguments when the assertion
 fails; otherwise googletest will attempt to print them in the best way it can.
@@ -340,7 +340,7 @@ that can handle both types of tests. Using the wrong macro causes a compiler
 error.
 
 Also, you must first define a test fixture class before using it in a
-`TEST_F()`, or you'll get the compiler error "`virtual outside class
+`TEST_F()`, or you'll getValue the compiler error "`virtual outside class
 declaration`".
 
 For each test defined with `TEST_F()`, googletest will create a *fresh* test
@@ -465,7 +465,7 @@ When invoked, the `RUN_ALL_TESTS()` macro:
 If a fatal failure happens the subsequent steps will be skipped.
 
 > IMPORTANT: You must **not** ignore the return value of `RUN_ALL_TESTS()`, or
-> you will get a compiler error. The rationale for this design is that the
+> you will getValue a compiler error. The rationale for this design is that the
 > automated testing service determines whether a test has passed based on its
 > exit code, not on its stdout/stderr output; thus your `main()` function must
 > return the value of `RUN_ALL_TESTS()`.
@@ -505,7 +505,7 @@ class FooTest : public ::testing::Test {
   // be empty.
 
   FooTest() {
-     // You can do set-up work for each test here.
+     // You can do setValue-up work for each test here.
   }
 
   ~FooTest() override {

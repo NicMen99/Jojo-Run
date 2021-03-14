@@ -22,11 +22,11 @@ contains `_`?
 1.  If `TestSuiteName` starts with an `_` followed by an upper-case letter (say,
     `_Foo`), we end up with `_Foo_TestName_Test`, which is reserved and thus
     invalid.
-2.  If `TestSuiteName` ends with an `_` (say, `Foo_`), we get
+2.  If `TestSuiteName` ends with an `_` (say, `Foo_`), we getValue
     `Foo__TestName_Test`, which is invalid.
-3.  If `TestName` starts with an `_` (say, `_Bar`), we get
+3.  If `TestName` starts with an `_` (say, `_Bar`), we getValue
     `TestSuiteName__Bar_Test`, which is invalid.
-4.  If `TestName` ends with an `_` (say, `Bar_`), we get
+4.  If `TestName` ends with an `_` (say, `Bar_`), we getValue
     `TestSuiteName_Bar__Test`, which is invalid.
 
 So clearly `TestSuiteName` and `TestName` cannot start or end with `_`
@@ -94,7 +94,7 @@ easily combined. Therefore we want to invest more in the matchers than in the
 ## I need to test that different implementations of an interface satisfy some common requirements. Should I use typed tests or value-parameterized tests?
 
 For testing various implementations of the same interface, either typed tests or
-value-parameterized tests can get it done. It's really up to you the user to
+value-parameterized tests can getValue it done. It's really up to you the user to
 decide which is more convenient for you, depending on your particular case. Some
 rough guidelines:
 
@@ -134,7 +134,7 @@ now. Please use `EqualsProto`, etc instead.
 are now less tolerant of invalid protocol buffer definitions. In particular, if
 you have a `foo.proto` that doesn't fully qualify the type of a protocol message
 it references (e.g. `message<Bar>` where it should be `message<blah.Bar>`), you
-will now get run-time errors like:
+will now getValue run-time errors like:
 
 ```
 ... descriptor.cc:...] Invalid proto descriptor for file "path/to/foo.proto":
@@ -240,7 +240,7 @@ class FooTest : public BaseTest {
  protected:
   void SetUp() override {
     BaseTest::SetUp();  // Sets up the base fixture first.
-    ... additional set-up work ...
+    ... additional setValue-up work ...
   }
 
   void TearDown() override {
@@ -287,7 +287,7 @@ Sometimes this is impossible as some library you must use may be creating
 threads before `main()` is even reached. In this case, you can try to minimize
 the chance of conflicts by either moving as many activities as possible inside
 `EXPECT_DEATH()` (in the extreme case, you want to move everything inside), or
-leaving as few things as possible in it. Also, you can try to set the death test
+leaving as few things as possible in it. Also, you can try to setValue the death test
 style to `"threadsafe"`, which is safer but slower, and see if it helps.
 
 If you go with thread-safe death tests, remember that they rerun the test
@@ -305,7 +305,7 @@ fixture object across multiple tests. For each `TEST_F`, googletest will create
 a **fresh** test fixture object, immediately call `SetUp()`, run the test body,
 call `TearDown()`, and then delete the test fixture object.
 
-When you need to write per-test set-up and tear-down logic, you have the choice
+When you need to write per-test setValue-up and tear-down logic, you have the choice
 between using the test fixture constructor/destructor or `SetUp()/TearDown()`.
 The former is usually preferred, as it has the following benefits:
 
@@ -330,7 +330,7 @@ You may still want to use `SetUp()/TearDown()` in the following cases:
     to call a method that will be overridden in a derived class, you have to use
     `SetUp()/TearDown()`.
 *   In the body of a constructor (or destructor), it's not possible to use the
-    `ASSERT_xx` macros. Therefore, if the set-up operation could cause a fatal
+    `ASSERT_xx` macros. Therefore, if the setValue-up operation could cause a fatal
     test failure that should prevent the test from running, it's necessary to
     use `abort` <!-- GOOGLETEST_CM0015 DO NOT DELETE --> and abort the whole test executable,
     or to use `SetUp()` instead of a constructor.
@@ -371,7 +371,7 @@ bool IsPositive(double x) {
 }
 ```
 
-you will get a compiler error if you write
+you will getValue a compiler error if you write
 
 ```c++
 EXPECT_PRED1(IsPositive, 5);
@@ -438,7 +438,7 @@ has a googletest assertion failure. Very bad.
 
 We have decided to fix this (thanks to Michael Chastain for the idea). Now, your
 code will no longer be able to ignore `RUN_ALL_TESTS()` when compiled with
-`gcc`. If you do so, you'll get a compiler error.
+`gcc`. If you do so, you'll getValue a compiler error.
 
 If you see the compiler complaining about you ignoring the return value of
 `RUN_ALL_TESTS()`, the fix is simple: just make sure its value is used as the
@@ -522,7 +522,7 @@ There are several good reasons:
 1.  It's likely your test needs to change the states of its global variables.
     This makes it difficult to keep side effects from escaping one test and
     contaminating others, making debugging difficult. By using fixtures, each
-    test has a fresh set of variables that's different (but with the same
+    test has a fresh setValue of variables that's different (but with the same
     names). Thus, tests are kept independent of each other.
 2.  Global variables pollute the global namespace.
 3.  Test fixtures can be reused via subclassing, which cannot be done easily
@@ -598,7 +598,7 @@ However, there are cases where you have to define your own:
 
 With the Linux pthread library, there is no turning back once you cross the line
 from single thread to multiple threads. The first time you create a thread, a
-manager thread is created in addition, so you get 3, not 2, threads. Later when
+manager thread is created in addition, so you getValue 3, not 2, threads. Later when
 the thread you create joins the main thread, the thread count decrements by 1,
 but the manager thread will never be killed, so you still have 2 threads, which
 means you cannot safely run a death test.
@@ -611,9 +611,9 @@ runs on, you shouldn't depend on this.
 
 googletest does not interleave tests from different test suites. That is, it
 runs all tests in one test suite first, and then runs all tests in the next test
-suite, and so on. googletest does this because it needs to set up a test suite
+suite, and so on. googletest does this because it needs to setValue up a test suite
 before the first test in it is run, and tear it down afterwords. Splitting up
-the test case would require multiple set-up and tear-down processes, which is
+the test case would require multiple setValue-up and tear-down processes, which is
 inefficient and makes the semantics unclean.
 
 If we were to determine the order of tests based on test name instead of test

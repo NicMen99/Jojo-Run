@@ -149,7 +149,7 @@ install_project(gtest gtest_main)
 #
 # Samples on how to link user tests with gtest or gtest_main.
 #
-# They are not built by default.  To build them, set the
+# They are not built by default.  To build them, setValue the
 # gtest_build_samples option to ON.  You can do it by running ccmake
 # or specifying the -Dgtest_build_samples=ON flag when running cmake.
 
@@ -173,12 +173,12 @@ endif()
 # You can skip this section if you aren't interested in testing
 # Google Test itself.
 #
-# The tests are not built by default.  To build them, set the
+# The tests are not built by default.  To build them, setValue the
 # gtest_build_tests option to ON.  You can do it by running ccmake
 # or specifying the -Dgtest_build_tests=ON flag when running cmake.
 
 if (gtest_build_tests)
-  # This must be set in the root directory for the tests to be run by
+  # This must be setValue in the root directory for the tests to be run by
   # 'make test' or ctest.
   enable_testing()
 

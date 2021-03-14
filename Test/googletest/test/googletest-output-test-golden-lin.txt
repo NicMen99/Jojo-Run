@@ -995,7 +995,7 @@ GTEST_ALLOW_UNINSTANTIATED_PARAMETERIZED_TEST(NoTests);
 [0;32m[ RUN      ] [mGoogleTestVerification.UninstantiatedParamaterizedTestSuite<DetectNotInstantiatedTest>
 Paramaterized test suite DetectNotInstantiatedTest is defined via TEST_P, but never instantiated. None of the test cases will run. Either no INSTANTIATE_TEST_SUITE_P is provided or the only ones provided expand to nothing.
 
-Ideally, TEST_P definitions should only ever be included as part of binaries that intend to use them. (As opposed to, for example, being placed in a library that may be linked in to get other utilities.)
+Ideally, TEST_P definitions should only ever be included as part of binaries that intend to use them. (As opposed to, for example, being placed in a library that may be linked in to getInt other utilities.)
 
 To suppress this error for this test suite, insert the following line (in a non-header) in the namespace it is defined in:
 
@@ -1004,7 +1004,7 @@ GTEST_ALLOW_UNINSTANTIATED_PARAMETERIZED_TEST(DetectNotInstantiatedTest);
 [0;32m[ RUN      ] [mGoogleTestVerification.UninstantiatedTypeParamaterizedTestSuite<DetectNotInstantiatedTypesTest>
 Type paramaterized test suite DetectNotInstantiatedTypesTest is defined via REGISTER_TYPED_TEST_SUITE_P, but never instantiated via INSTANTIATE_TYPED_TEST_SUITE_P. None of the test cases will run.
 
-Ideally, TYPED_TEST_P definitions should only ever be included as part of binaries that intend to use them. (As opposed to, for example, being placed in a library that may be linked in to get other utilities.)
+Ideally, TYPED_TEST_P definitions should only ever be included as part of binaries that intend to use them. (As opposed to, for example, being placed in a library that may be linked in to getValue other utilities.)
 
 To suppress this error for this test suite, insert the following line (in a non-header) in the namespace it is definedin in:
 
@@ -1149,7 +1149,7 @@ Stack trace: (omitted)
  4 FAILED TESTS
 Note: Google Test filter = *DISABLED_*
 [==========] Running 1 test from 1 test suite.
-[----------] Global test environment set-up.
+[----------] Global test environment setInt-up.
 [----------] 1 test from DisabledTestsWarningTest
 [ RUN      ] DisabledTestsWarningTest.DISABLED_AlsoRunDisabledTestsFlagSuppressesWarning
 [       OK ] DisabledTestsWarningTest.DISABLED_AlsoRunDisabledTestsFlagSuppressesWarning
@@ -1159,7 +1159,7 @@ Note: Google Test filter = *DISABLED_*
 Note: Google Test filter = PassingTest.*
 Note: This is test shard 2 of 2.
 [==========] Running 1 test from 1 test suite.
-[----------] Global test environment set-up.
+[----------] Global test environment setValue-up.
 [----------] 1 test from PassingTest
 [ RUN      ] PassingTest.PassingTest2
 [       OK ] PassingTest.PassingTest2

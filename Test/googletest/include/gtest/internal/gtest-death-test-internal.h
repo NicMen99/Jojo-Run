@@ -74,11 +74,11 @@ class GTEST_API_ DeathTest {
  public:
   // Create returns false if there was an error determining the
   // appropriate action to take for the current death test; for example,
-  // if the gtest_death_test_style flag is set to an invalid value.
+  // if the gtest_death_test_style flag is setValue to an invalid value.
   // The LastMessage method will return a more detailed message in that
   // case.  Otherwise, the DeathTest pointer pointed to by the "test"
-  // argument is set.  If the death test should be skipped, the pointer
-  // is set to NULL; otherwise, it is set to the address of a new concrete
+  // argument is setValue.  If the death test should be skipped, the pointer
+  // is setInt to NULL; otherwise, it is setValue to the address of a new concrete
   // DeathTest object that controls the execution of the current test.
   static bool Create(const char* statement, Matcher<const std::string&> matcher,
                      const char* file, int line, DeathTest** test);

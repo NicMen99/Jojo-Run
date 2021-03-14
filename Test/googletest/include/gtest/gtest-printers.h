@@ -207,7 +207,7 @@ Sentinel* operator<<(::std::basic_ostream<Char, CharTraits>& os, const T& x);
 //
 // Note that this operator<< takes a generic std::basic_ostream<Char,
 // CharTraits> type instead of the more restricted std::ostream.  If
-// we define it to take an std::ostream instead, we'll get an
+// we define it to take an std::ostream instead, we'll getValue an
 // "ambiguous overloads" compiler error when trying to print a type
 // Foo that supports streaming to std::basic_ostream<Char,
 // CharTraits>, as the compiler cannot tell whether

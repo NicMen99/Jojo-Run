@@ -5,6 +5,7 @@
 #include "Game.h"
 #include "GameResourceManager.h"
 #include "GameConfig.h"
+#include "GameStats.h"
 #include "InputManager.h"
 #include "Enemy.h"
 #include "Obstacle.h"
@@ -28,6 +29,10 @@ void Hero::init()
 }
 
 void Hero::update(int32_t delta_time) {
+    if(!isStarted()) {
+        update_health(0);
+        setStarted(true);
+    }
     m_inputManager.update();
     updatePhysics(delta_time);
     GameObject::update(delta_time);
@@ -40,7 +45,7 @@ void Hero::init(const std::string &texture_name, int hp, int knives, int max_kin
     }
     m_speed = GC.getSceneSpeed();
 
-    m_health = hp;
+    update_health(hp);
     m_knives = knives;
     m_maxhp = max_health;
     m_maxknives = max_kinves;
@@ -141,7 +146,7 @@ void Hero::collision(GameObject * collider)
         auto * enemy = dynamic_cast<Enemy *>(collider);
         if(!m_shield) {
             int damage = enemy->getDamage();
-            m_health -= damage;
+            update_health(-damage);
             if (m_health <= 0)
                 m_state = State::Dead;
         }
@@ -155,7 +160,7 @@ void Hero::collision(GameObject * collider)
     {
         auto * obstacle = dynamic_cast<Obstacle *>(collider);
         int damage = obstacle->getDamage();
-        m_health -= damage;
+        update_health(-damage);
         if (m_health <= 0)
             m_state = State::Dead;
     }
@@ -186,6 +191,11 @@ void Hero::speedCap() {
 
 bool Hero::gameOver() {
     return m_state == State::Dead;
+}
+
+void Hero::update_health(int delta) {
+    m_health += delta;
+    STATS.setInt("HEALTH", m_health);
 }
 
 

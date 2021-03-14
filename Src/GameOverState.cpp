@@ -27,7 +27,7 @@ int txtCount;
 
 
 void GameOverState::init() {
-    sf::Vector2u window_size = m_context->getWindowSize();
+    sf::Vector2u window_size = GC.getWindowSize();
     gameOverBuffer.loadFromFile(GC.getAssetPath("gameOverSound"));
     gameOverSound.setBuffer(gameOverBuffer);
     gameOverSound.setVolume(21.f);
@@ -39,10 +39,7 @@ void GameOverState::init() {
 
 void GameOverState::onEnter() {
     gameOverSound.play();
-    m_context->gameMusic.stop();
-    m_context->hamonEnemySound.stop();
-    m_context->emeraldEnemySound.stop();
-    m_context->fireEnemySound.stop();
+//    m_context->gameMusic.stop();
 }
 
 void GameOverState::onExit() {
@@ -71,19 +68,6 @@ void GameOverState::update(int32_t delta_time) {
 
 void GameOverState::render(sf::RenderWindow &window) {
     window.draw(gameOver);
-
-    m_context->scoreTxt.setCharacterSize(80);
-    m_context->numScore.setCharacterSize(80);
-    m_context->scoreTxt.setPosition(600, 400);
-    m_context->numScore.setPosition(900, 400);
-    m_context->scoreB.setPosition(500, 390);
-
-    window.draw(m_context->scoreTxt);
-    window.draw(m_context->numScore);
-    window.draw(m_context->scoreB);
-    window.draw(m_context->bestScoreTxt);
-    window.draw(m_context->bestScoreB);
-    window.draw(m_context->bestScoreNum);
 }
 
 GameOverState* GameOverState::instance() {

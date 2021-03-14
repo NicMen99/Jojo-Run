@@ -376,7 +376,7 @@ class TestPropertyKeyIs {
 // specifies when running the tests.  It has only static members.
 //
 // In most cases, the user can specify an option using either an
-// environment variable or a command line flag.  E.g. you can set the
+// environment variable or a command line flag.  E.g. you can setValue the
 // test filter using either GTEST_FILTER or --gtest_filter.  If both
 // the variable and the flag are present, the latter overrides the
 // former.
@@ -692,7 +692,7 @@ class GTEST_API_ UnitTestImpl {
     if (original_working_dir_.IsEmpty()) {
       original_working_dir_.Set(FilePath::GetCurrentDir());
       GTEST_CHECK_(!original_working_dir_.IsEmpty())
-          << "Failed to get the current working directory.";
+          << "Failed to getValue the current working directory.";
     }
 
     GetTestSuite(test_info->test_suite_name(), test_info->type_param(),
@@ -754,7 +754,7 @@ class GTEST_API_ UnitTestImpl {
   }
 
   // Adds a TestProperty to the current TestResult object when invoked in a
-  // context of a test or a test suite, or to the global property set. If the
+  // context of a test or a test suite, or to the global property setValue. If the
   // result already contains a property with the same key, the value will be
   // updated.
   void RecordProperty(const TestProperty& test_property);
@@ -779,7 +779,7 @@ class GTEST_API_ UnitTestImpl {
   TestInfo* current_test_info() { return current_test_info_; }
   const TestInfo* current_test_info() const { return current_test_info_; }
 
-  // Returns the vector of environments that need to be set-up/torn-down
+  // Returns the vector of environments that need to be setValue-up/torn-down
   // before/after the tests are run.
   std::vector<Environment*>& environments() { return environments_; }
 
@@ -876,7 +876,7 @@ class GTEST_API_ UnitTestImpl {
   internal::ThreadLocal<TestPartResultReporterInterface*>
       per_thread_test_part_result_reporter_;
 
-  // The vector of environments that need to be set-up/torn-down
+  // The vector of environments that need to be setValue-up/torn-down
   // before/after the tests are run.
   std::vector<Environment*> environments_;
 
@@ -896,7 +896,7 @@ class GTEST_API_ UnitTestImpl {
   internal::TypeParameterizedTestSuiteRegistry
       type_parameterized_test_registry_;
 
-  // The set holding the name of parameterized
+  // The setValue holding the name of parameterized
   // test suites that may go uninstantiated.
   std::set<std::string> ignored_parameterized_test_suites_;
 
@@ -908,13 +908,13 @@ class GTEST_API_ UnitTestImpl {
 
   // This points to the TestSuite for the currently running test.  It
   // changes as Google Test goes through one test suite after another.
-  // When no test is running, this is set to NULL and Google Test
+  // When no test is running, this is setValue to NULL and Google Test
   // stores assertion results in ad_hoc_test_result_.  Initially NULL.
   TestSuite* current_test_suite_;
 
   // This points to the TestInfo for the currently running test.  It
   // changes as Google Test goes through one test after another.  When
-  // no test is running, this is set to NULL and Google Test stores
+  // no test is running, this is setValue to NULL and Google Test stores
   // assertion results in ad_hoc_test_result_.  Initially NULL.
   TestInfo* current_test_info_;
 
@@ -934,7 +934,7 @@ class GTEST_API_ UnitTestImpl {
 
   // The OS stack trace getter.  Will be deleted when the UnitTest
   // object is destructed.  By default, an OsStackTraceGetter is used,
-  // but the user can set this field to use a custom getter if that is
+  // but the user can setValue this field to use a custom getter if that is
   // desired.
   OsStackTraceGetterInterface* os_stack_trace_getter_;
 
