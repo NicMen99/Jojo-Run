@@ -22,3 +22,4 @@ void Bullet::init(const std::string &texture_name, sf::Vector2f scale, sf::Vecto
     m_damage = damage;
 }
 
+

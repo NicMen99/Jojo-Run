@@ -12,7 +12,7 @@ class Block final: public Obstacle {
 
 public:
     explicit Block(std::string id);
-    ~Block() = default;
+    ~Block() override = default;
     void init(const std::string &texture_name, sf::Vector2f scale, sf::Vector2f speed);
 
     void collision(GameObject *collider) override;

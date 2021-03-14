@@ -25,6 +25,7 @@ public:
 public:
     void update(int32_t delta_time);
     void render(sf::RenderWindow & window);
+    void addItem(std::unique_ptr<GameObject> & newObject);
 
     bool levelend() const;
 
@@ -55,6 +56,7 @@ private:
     std::vector<std::unique_ptr<GameObject>> m_enemies;
     std::vector<std::unique_ptr<GameObject>> m_powerups;
     std::vector<std::unique_ptr<GameObject>> m_bullets;
+    std::vector<std::unique_ptr<GameObject>> m_spawned_objects;
     std::unique_ptr<GameObject> m_hero;
     std::unique_ptr<ScoreHUD> m_scorehud;
 

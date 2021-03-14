@@ -13,6 +13,10 @@ class Knife final:  public Bullet
 public:
     explicit Knife (std::string id);
     ~Knife() = default;
+
+private:
+    void update(int32_t delta_time) override;
+    void collision(GameObject* collider) override;
 };
 
 #endif //JOJO_RUN_KNIFE_H

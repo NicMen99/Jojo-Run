@@ -10,7 +10,7 @@
 class Bullet: public GameObject {
 public:
     Bullet(GameObjectType mtype, const std::string & name);
-    ~Bullet() = default;
+    ~Bullet() override = default;
     void init(const std::string &texture_name, sf::Vector2f scale, sf::Vector2f speed, int damage);
 
 private:

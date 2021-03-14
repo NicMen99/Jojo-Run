@@ -3,6 +3,7 @@
 //
 
 #include <vector>
+#include <iostream>
 
 #include "Game.h"
 #include "GameResourceManager.h"
@@ -42,10 +43,21 @@ void GameScene::update(int32_t delta_time) {
     destroyObjects(m_powerups);
     destroyObjects(m_bullets);
 
+
     /*
      * Map Generator
      */
     generateMap();
+
+    /*
+     * Add spawened objects
+     */
+    for(auto & it : m_spawned_objects) {
+        if (it->getGroup() == GameObjectGroup::Bullet) {
+            m_bullets.emplace_back(std::move(it));
+        }
+    }
+    m_spawned_objects.clear();
 
     /*
      * Map Update
@@ -102,6 +114,7 @@ void GameScene::render(sf::RenderWindow & window) {
 void GameScene::destroyObjects(std::vector<std::unique_ptr<GameObject>> & items) {
     for (auto it = items.begin(); it != items.end();) {
         if ((*it)->isDestroyed()) {
+            // std::cout << it->get()->getName() << std::endl;
             it = items.erase(it);
         }
         else {
@@ -298,8 +311,24 @@ void GameScene::manageCollision() {
                 powerup->collision(m_hero.get());
             }
         }
+        /*
+         * Collisione Nemici Coltello
+         */
+        for (auto & bullet : m_bullets) {
+            for(auto & enemy : m_enemies) {
+                if (bullet->isEnabled() && bullet->getBounds().intersects(enemy->getBounds())) {
+                    enemy->collision(bullet.get());
+                    bullet->collision(enemy.get());
+
+                }
+            }
+        }
     }
 
+}
+
+void GameScene::addItem(std::unique_ptr<GameObject> & newObject) {
+    m_spawned_objects.emplace_back(std::move(newObject));
 }
 
 
