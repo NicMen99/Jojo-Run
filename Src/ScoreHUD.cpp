@@ -41,7 +41,7 @@ void ScoreHUD::init() {
     auto score_label = new TextWidget("label");
     score_label->init(theme);
     score_label->setPosition(sf::Vector2f{score_icon->getSize().x, 0});
-    score_label->setString("SCORE ");
+    score_label->setString("SCORE  ");
     score_icon->add(score_label);
 
     auto score_value = new TextWidget("value");
@@ -52,12 +52,12 @@ void ScoreHUD::init() {
     score_label->add(score_value);
 
     m_hero_status = new Widget("hero_stat");
-    m_hero_status->setPosition({1500,30});
+    m_hero_status->setPosition({1450,30});
 
     auto healthPoints_label = new TextWidget("HealthPoints_label");
     healthPoints_label->init(theme);
     healthPoints_label->setPosition({0,0});
-    healthPoints_label->setString("HP");
+    healthPoints_label->setString("HP  ");
     m_hero_status->add(healthPoints_label);
 
     auto healthPoints_value = new TextWidget("HealthPoints_value");
