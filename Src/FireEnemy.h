@@ -11,10 +11,14 @@ class FireEnemy final : public Enemy
 {
 public:
     explicit FireEnemy(const std::string& id);
-    ~FireEnemy() = default;
+    ~FireEnemy() override = default;
 
-public:
-    std::unique_ptr<Bullet> SpecialAction() override;
+private:
+    void update(int32_t delta_time) override;
+    sf::Time m_shootTime;
+    sf::Clock m_shootTimer;
+    int m_shoot_left = 1;
+
 };
 
 #endif //JOJO_RUN_FIREENEMY_H

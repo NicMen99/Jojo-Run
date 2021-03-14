@@ -3,6 +3,7 @@
 //
 
 #include <vector>
+#include <iostream>
 
 #include "Game.h"
 #include "GameResourceManager.h"
@@ -25,7 +26,6 @@ GameScene::~GameScene() {
 
 void GameScene::init()
 {
-    m_gen.seed(m_rd());
     createBackgorund();
     createHero();
     createScoreHUD();
@@ -42,10 +42,21 @@ void GameScene::update(int32_t delta_time) {
     destroyObjects(m_powerups);
     destroyObjects(m_bullets);
 
+
     /*
      * Map Generator
      */
     generateMap();
+
+    /*
+     * Add spawened objects
+     */
+    for(auto & it : m_spawned_objects) {
+        if (it->getGroup() == GameObjectGroup::Bullet) {
+            m_bullets.emplace_back(std::move(it));
+        }
+    }
+    m_spawned_objects.clear();
 
     /*
      * Map Update
@@ -102,6 +113,7 @@ void GameScene::render(sf::RenderWindow & window) {
 void GameScene::destroyObjects(std::vector<std::unique_ptr<GameObject>> & items) {
     for (auto it = items.begin(); it != items.end();) {
         if ((*it)->isDestroyed()) {
+            // std::cout << it->get()->getName() << std::endl;
             it = items.erase(it);
         }
         else {
@@ -134,9 +146,9 @@ GameObject * GameScene::createPlatform(sf::Vector2f position) {
 }
 
 
-void GameScene::createObstacle(ObstacleType ot, sf::Vector2f position) {
+void GameScene::createObstacle(GameObjectType ot, sf::Vector2f position) {
     auto bl = GF.createObstacle(ot);
-    if (ot == ObstacleType::Firewall){
+    if (ot == GameObjectType::Wall){
         bl->setPosition(sf::Vector2f(0, -bl->getBounds().height) + position);
     } else {
         bl->setPosition(sf::Vector2f(0, -2*bl->getBounds().height) + position);
@@ -144,13 +156,13 @@ void GameScene::createObstacle(ObstacleType ot, sf::Vector2f position) {
     m_obstacles.emplace_back(std::move(bl));
 }
 
-void GameScene::createEnemy(EnemyType et, sf::Vector2f position) {
+void GameScene::createEnemy(GameObjectType et, sf::Vector2f position) {
     auto en = GF.createEnemy(et);
     en->setPosition(sf::Vector2f(0, -en->getBounds().height) + position);
     m_enemies.emplace_back(std::move(en));
 }
 
-void GameScene::createPowerup(PowerUpType pt, sf::Vector2f position) {
+void GameScene::createPowerup(GameObjectType pt, sf::Vector2f position) {
     auto pu = GF.createPowerUp(pt);
     pu->setPosition(sf::Vector2f(0, -2*pu->getBounds().height) + position);
     m_powerups.emplace_back(std::move(pu));
@@ -200,7 +212,7 @@ void GameScene::generateMap() {
         posy = GC.getMBase();
         size = GC.getWindowSize().x;
         std::vector<float> hchoice = {100, 200, 300, 400};
-        space = hchoice[rand(hchoice.size())];
+        space = hchoice[RAND(hchoice.size())];
     }
     else
     {
@@ -220,11 +232,11 @@ void GameScene::generateMap() {
         else {
             vchoice = {GC.getMTop(), GC.getMMiddle(), GC.getMBase()};
         }
-        posy = vchoice[rand(vchoice.size())];
+        posy = vchoice[RAND(vchoice.size())];
         posx = GC.getWindowSize().x;
-        size = (float)(1 + rand(2)) * last->getBounds().width;
+        size = (float)(1 + RAND(2)) * last->getBounds().width;
         std::vector<float> hchoice = {100, 200, 300, 400};
-        space = hchoice[rand(hchoice.size())];
+        space = hchoice[RAND(hchoice.size())];
     }
 
     /*
@@ -241,22 +253,22 @@ void GameScene::generateMap() {
      * Genera nemici
      */
     if(m_enemies.empty()) {
-        std::vector<EnemyType> echoice = {EnemyType::FireEnemy, EnemyType::HamonEnemy, EnemyType::EmeraldEnemy};
-        createEnemy(echoice[rand(echoice.size())], sf::Vector2f(posx+size*3/4, posy));
+        std::vector<GameObjectType> echoice = {GameObjectType::FireEnemy, GameObjectType::HamonEnemy, GameObjectType::EmeraldEnemy};
+        createEnemy(echoice[RAND(echoice.size())], sf::Vector2f(posx+size*3/4, posy));
     }
     /*
      * Genera ostacoli
      */
     else if(m_obstacles.empty()) {
-        std::vector<ObstacleType> ochoice = {ObstacleType::Firewall, ObstacleType::Block};
-        createObstacle(ochoice[rand(ochoice.size())], sf::Vector2f(posx + size/2, posy));
+        std::vector<GameObjectType> ochoice = {GameObjectType::Wall, GameObjectType::Block};
+        createObstacle(ochoice[RAND(ochoice.size())], sf::Vector2f(posx + size/2, posy));
     }
     /*
      * Genera PowerUps
      */
     else if (m_powerups.empty()) {
-        std::vector<PowerUpType> pchoice = {PowerUpType::Weapon, PowerUpType::Shield};
-        createPowerup(pchoice[rand(pchoice.size())], sf::Vector2f(posx + size/2, posy));
+        std::vector<GameObjectType> pchoice = {GameObjectType::Weapon, GameObjectType::Shield};
+        createPowerup(pchoice[RAND(pchoice.size())], sf::Vector2f(posx + size/2, posy));
     }
 }
 
@@ -298,8 +310,33 @@ void GameScene::manageCollision() {
                 powerup->collision(m_hero.get());
             }
         }
+        /*
+         * Collisione Eroe Bullet
+         */
+        for (auto & bullet : m_bullets) {
+            if (bullet->isEnabled() && bullet->getBounds().intersects(m_hero->getBounds())) {
+                m_hero->collision(bullet.get());
+                bullet->collision(m_hero.get());
+            }
+        }
+        /*
+         * Collisione Nemici Coltello
+         */
+        for (auto & bullet : m_bullets) {
+            for(auto & enemy : m_enemies) {
+                if (bullet->isEnabled() && bullet->getBounds().intersects(enemy->getBounds())) {
+                    enemy->collision(bullet.get());
+                    bullet->collision(enemy.get());
+
+                }
+            }
+        }
     }
 
+}
+
+void GameScene::addItem(std::unique_ptr<GameObject> & newObject) {
+    m_spawned_objects.emplace_back(std::move(newObject));
 }
 
 

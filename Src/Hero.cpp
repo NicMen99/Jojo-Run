@@ -2,15 +2,18 @@
 // Created by angiolo99 on 23/01/20.
 //
 
+#include "GameObject.h"
+#include "Factory.h"
 #include "Game.h"
 #include "GameResourceManager.h"
 #include "GameConfig.h"
+#include "GameScene.h"
 #include "GameStats.h"
 #include "InputManager.h"
 #include "Enemy.h"
 #include "Obstacle.h"
+#include "Knife.h"
 #include "Weapon.h"
-#include "Shield.h"
 #include "Hero.h"
 
 Hero::Hero() :
@@ -28,16 +31,6 @@ void Hero::init()
     setPosition(sf::Vector2f(200.f,GC.getMBase()));
 }
 
-void Hero::update(int32_t delta_time) {
-    if(!isStarted()) {
-        update_health(0);
-        setStarted(true);
-    }
-    m_inputManager.update();
-    updatePhysics(delta_time);
-    GameObject::update(delta_time);
-}
-
 void Hero::init(const std::string &texture_name, int hp, int knives, int max_kinves, int max_health) {
     sf::Texture* texture = RM.getTexture(texture_name);
     if(texture != nullptr){
@@ -46,7 +39,7 @@ void Hero::init(const std::string &texture_name, int hp, int knives, int max_kin
     m_speed = GC.getSceneSpeed();
 
     update_health(hp);
-    m_knives = knives;
+    updateKnives(knives);
     m_maxhp = max_health;
     m_maxknives = max_kinves;
 
@@ -65,6 +58,18 @@ void Hero::init(const std::string &texture_name, int hp, int knives, int max_kin
         m_shieldOnSound.setBuffer(*soundBuffer);
         m_shieldOnSound.setVolume(22.f);
     }
+}
+
+void Hero::update(int32_t delta_time) {
+    if(!isStarted()) {
+        update_health(0);
+        updateKnives(0);
+    }
+    m_inputManager.update();
+    updatePhysics(delta_time);
+    manageAttack();
+    GameObject::update(delta_time);
+    setStarted(true);
 }
 
 void Hero::setTexture(const sf::Texture &heroTexture){
@@ -172,11 +177,20 @@ void Hero::collision(GameObject * collider)
     {
         if(collider->getType() == GameObjectType::Weapon) {
             auto * weapon = dynamic_cast<Weapon *>(collider);
-            m_knives += weapon->collect();
-            m_knives = (m_knives>m_maxknives) ? m_maxknives : m_knives;
+            updateKnives(weapon->collect());
         }
         else if(collider->getType() == GameObjectType::Shield) {
             m_shield = true;
+        }
+    }
+    /*
+     * Collisione con proiettile nemico
+     */
+    else if (collider->getGroup() == GameObjectGroup::Bullet)
+    {
+        if(collider->getType() != GameObjectType::Knife){
+            auto * bullet =dynamic_cast<Bullet *>(collider);
+            update_health(-bullet->getDamage());
         }
     }
 
@@ -197,5 +211,33 @@ void Hero::update_health(int delta) {
     m_health += delta;
     STATS.setInt("HEALTH", m_health);
 }
+
+void Hero::updateKnives(int delta) {
+    m_knives += delta;
+    m_knives = (m_knives>m_maxknives) ? m_maxknives : m_knives;
+    STATS.setInt("KNIVES", m_knives);
+}
+
+void Hero::manageAttack() {
+    if (m_knives <= 0){
+        return;
+    }
+    switch(m_state){
+        case State::Grounded:
+        case State::Jumping:
+        case State::Falling:
+            if(m_inputManager.isKeyJustPressed(sf::Keyboard::K)){
+                auto kf = GF.createBullet(GameObjectType::Knife);
+                kf->setPosition({getPosition()});
+                kf->setSpeed(sf::Vector2f {m_speed.x + 1000.f, 0.f});
+                GS.addItem(kf);
+                updateKnives(-1);
+            }
+            break;
+        case State::Dead:
+            break;
+    }
+}
+
 
 

@@ -41,5 +41,9 @@ void Enemy::collision(GameObject *collider) {
             m_state = State::Dying;
             m_dyingTimer.restart();
         }
+        if (collider->getType() == GameObjectType::Knife) {
+            m_state = State::Dying;
+            m_dyingTimer.restart();
+        }
     }
 }

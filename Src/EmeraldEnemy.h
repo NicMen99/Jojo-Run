@@ -12,10 +12,15 @@ class EmeraldEnemy final : public Enemy
 {
  public:
     explicit EmeraldEnemy(const std::string& id);
-    ~EmeraldEnemy() = default;
+    ~EmeraldEnemy() override = default;
 
-public:
-    std::unique_ptr<Bullet> SpecialAction() override;
+
+private:
+    void update(int32_t delta_time) override;
+    sf::Time m_shootTime;
+    sf::Clock m_shootTimer;
+    int m_shoot_left = 1;
+
 };
 
 

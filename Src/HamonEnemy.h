@@ -11,10 +11,8 @@ class HamonEnemy final: public Enemy
 {
 public:
     explicit HamonEnemy(std::string id);
-    ~HamonEnemy() = default;
+    ~HamonEnemy() override = default;
 
-public:
-    std::unique_ptr<Bullet> SpecialAction() override;
 };
 
 #endif //JOJO_RUN_HAMONENEMY_H

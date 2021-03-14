@@ -24,6 +24,7 @@ class GameStats;
 #define GF Game::instance()->factory()
 #define GS Game::instance()->gameScene()
 #define STATS Game::instance()->gameStats()
+#define RAND Game::instance()->rand
 
 class Game
 {
@@ -42,6 +43,8 @@ public:
     Factory & factory() { return m_factory; }
     GameScene & gameScene() { return m_scene; }
     GameStats & gameStats() { return m_stats; }
+    int rand(int max) { std::uniform_int_distribution<int> d(0, max - 1); return d(m_gen);}
+
 private:
     sf::RenderWindow m_window;
     sf::Event m_event;
@@ -57,16 +60,8 @@ private:
     GameScene& m_scene;
     GameStats& m_stats;
 
-    /**/
-private:
-
-    ////////////////////
-    std::ofstream file;
-    int n;
-
-    /////////////////
-
-
+    std::random_device m_rd;  //Will be used to obtain a seed for the random number engine
+    std::mt19937 m_gen; //Standard mersenne_twister_engine seeded with rd()
 };
 
 #endif //JOJO_RUN_GAME_H

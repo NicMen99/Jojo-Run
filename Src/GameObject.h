@@ -23,7 +23,7 @@ enum class GameObjectType {
     Block, Wall,
     FireEnemy, HamonEnemy, EmeraldEnemy,
     Weapon, Shield,
-    Knife,
+    Knife, FireBullet, EmeraldBullet,
     Platform,
     Hero,
     Background,
@@ -72,6 +72,7 @@ public:
     void setVisible(bool mVisible) { m_visible = mVisible; };
     void setDestroyed() { m_destroyed = true; };
     void setPosition(sf::Vector2f position) { m_active_sprite.setPosition(position);}
+    void setSpeed(sf::Vector2f speed) { m_speed = speed; }
 
 protected:
     GameObjectGroup m_group;

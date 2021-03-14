@@ -21,7 +21,7 @@ class Hero final : public GameObject {
 
 public:
     Hero ();
-    ~Hero() = default;
+    ~Hero() override = default;
 
     void init();
     void init(const std::string &texture_name, int hp = 300, int knives = 0, int max_kinves = 8, int max_health = 300);
@@ -34,6 +34,7 @@ private:
     void updatePhysics(int32_t delta_time);
     void speedCap();
     void update_health(int delta);
+    void manageAttack();
 
 private:
     sf::Sprite m_sprite;
@@ -63,6 +64,7 @@ private:
 public:
     bool gameOver();
 
+    void updateKnives(int delta);
 };
 
 #endif //JOJO_RUN_HERO_H
