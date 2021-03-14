@@ -34,7 +34,7 @@ void PlayState::init() {
     m_context->hamonEnemySound.setVolume(21.f);
 
     // Loading Font
-    m_context->font.loadFromFile(GC.getAssetPath("arcadeclassic"));
+    m_context->m_font.loadFromFile(GC.getAssetPath("arcadeclassic"));
 
     m_context->gameMusic.openFromFile(GC.getAssetPath("soundTrack"));
     m_context->gameMusic.setLoop(true);

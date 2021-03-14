@@ -5,22 +5,28 @@
 #ifndef JOJO_RUN_SCOREHUD_H
 #define JOJO_RUN_SCOREHUD_H
 
-#include <fstream>
-#include <iostream>
+#include <string>
+#include <map>
+#include <list>
 #include <SFML/Graphics.hpp>
 #include "Observer.h"
 
-class ScoreHUD: public Observer {
+class Widget;
+
+class ScoreHUD: public GameObject, Observer {
 public:
-    ScoreHUD () = default;
-    ~ScoreHUD() override {detach();}
+    ScoreHUD ();
+    ~ScoreHUD() override;
 
     void init();
-    void render(sf::RenderWindow & window);
+    void update(int32_t delta_time) override {}
+    void render(sf::RenderWindow & window) override;
 
 private:
-    sf::Text scoreTxt;
-    sf::Text numScore;
+    sf::Sprite m_sprite;
+
+    Widget * m_score;
+
     sf::Text lifeTxt;
     sf::Text numLife;
     sf::Text knivesTxt;
@@ -29,12 +35,16 @@ private:
     sf::Text bestScoreTxt;
     sf::Text bestScoreB;
     sf::Text bestScoreNum;
-    sf::Font font;
 
+    /*
+     * Observer
+     */
 private:
-    void update() override;
+    void event() override;
     void attach() override;
     void detach() override;
+
 };
+
 
 #endif //JOJO_RUN_SCOREHUD_H

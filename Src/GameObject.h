@@ -26,7 +26,9 @@ enum class GameObjectType {
     Knife,
     Platform,
     Hero,
-    Background
+    Background,
+    Hud
+
 };
 
 //@TODO

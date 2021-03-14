@@ -59,8 +59,12 @@ target_sources(${TARGET}
         Shield.h
         Shield.cpp
         Subject.h
+        TextWidget.h
+        TextWidget.cpp
         Weapon.h
-        Weapon.cpp)
+        Weapon.cpp
+        Widget.h
+        Widget.cpp)
 
 target_include_directories(${TARGET}
         PUBLIC
