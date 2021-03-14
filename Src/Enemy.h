@@ -6,6 +6,7 @@
 #define JOJO_RUN_ENEMY_H
 
 
+#include <random>
 #include <SFML/Graphics.hpp>
 #include "GameObject.h"
 
@@ -26,11 +27,12 @@ public:
     virtual std::unique_ptr<Bullet> SpecialAction() = 0;
     int getDamage() const { return m_damage; };
 
-private:
+protected:
     sf::Sprite m_sprite;
     State m_state = State::Alive;
     int m_damage = 90;
     sf::Clock m_dyingTimer;
+
 };
 
 

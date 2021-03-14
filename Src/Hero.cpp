@@ -64,12 +64,12 @@ void Hero::update(int32_t delta_time) {
     if(!isStarted()) {
         update_health(0);
         updateKnives(0);
-        setStarted(true);
     }
     m_inputManager.update();
     updatePhysics(delta_time);
     manageAttack();
     GameObject::update(delta_time);
+    setStarted(true);
 }
 
 void Hero::setTexture(const sf::Texture &heroTexture){
@@ -217,7 +217,7 @@ void Hero::manageAttack() {
         case State::Jumping:
         case State::Falling:
             if(m_inputManager.isKeyJustPressed(sf::Keyboard::K)){
-                auto kf = GF.createBullet(BulletType::Knife);
+                auto kf = GF.createBullet(GameObjectType::Knife);
                 kf->setPosition({getPosition()});
                 kf->setSpeed(sf::Vector2f {m_speed.x + 1000.f, 0.f});
                 GS.addItem(kf);

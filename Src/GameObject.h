@@ -23,7 +23,7 @@ enum class GameObjectType {
     Block, Wall,
     FireEnemy, HamonEnemy, EmeraldEnemy,
     Weapon, Shield,
-    Knife,
+    Knife, FireBullet, EmeraldBullet,
     Platform,
     Hero,
     Background,
