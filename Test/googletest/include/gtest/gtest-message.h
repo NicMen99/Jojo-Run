@@ -140,7 +140,7 @@ class GTEST_API_ Message {
   //
   // The reason for this overload is that streaming a NULL pointer to
   // ostream is undefined behavior.  Depending on the compiler, you
-  // may get "0", "(nil)", "(null)", or an access violation.  To
+  // may getValue "0", "(nil)", "(null)", or an access violation.  To
   // ensure consistent result across compilers, we always treat NULL
   // as "(null)".
   template <typename T>

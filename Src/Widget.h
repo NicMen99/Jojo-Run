@@ -7,33 +7,41 @@
 
 #include <string>
 #include <list>
+#include "Observer.h"
+
 #include "SFML/Graphics.hpp"
 
-class Widget {
-/*
-protected:
-    struct Theme {
-        const char * font_name;
-        unsigned int font_size;
-        sf::Color font_color;
-    };
-*/
+
+struct WidgetTheme {
+    std::string font_name;
+    unsigned int font_size;
+    sf::Color font_color;
+};
+
+
+class Widget : public Observer {
 public:
     explicit Widget(std::string  name);
-    virtual ~Widget();
+    ~Widget() override;
 
     void update(int32_t delta_time);
-    void render(sf::RenderWindow & window);
+    void render(sf::RenderWindow & window, const sf::Vector2f & parent_position = {0,0});
+
     Widget* add(Widget* widget);
     Widget* findObjectByName(const std::string & name);
-    void setPosition(const sf::Vector2f & position) { m_position = position; }
-    sf::Vector2f getPosition() { return m_position; }
+    void setPosition(const sf::Vector2f & position);
 
 protected:
     virtual void _update(int32_t delta_time) {}
-    virtual void _render(sf::RenderWindow & window, const sf::Vector2f & position) {}
+    virtual void _render(sf::RenderWindow & window, const sf::Vector2f & parent_position) {}
     void setParent(Widget *);
     Widget * getParent() const;
+    sf::Vector2f getPosition() { return m_position; }
+
+private:
+    void event(const std::string & value) override {}
+    void attach(const std::string & value) override {};
+    void detach(const std::string & value) override {};
 
 private:
     std::string m_name;

@@ -9,9 +9,9 @@ class Observer {
 public:
     virtual ~Observer() = default;
 
-    virtual void event() = 0;
-    virtual void attach() = 0;
-    virtual void detach() = 0;
+    virtual void event(const std::string & value) = 0;
+    virtual void attach(const std::string & key) = 0;
+    virtual void detach(const std::string & key) = 0;
 };
 
 #endif //JOJO_RUN_OBSERVER_H

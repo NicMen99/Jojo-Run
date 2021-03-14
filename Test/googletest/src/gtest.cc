@@ -250,7 +250,7 @@ GTEST_DEFINE_string_(
     "Whether to use colors in the output.  Valid values: yes, no, "
     "and auto.  'auto' means to use colors if the output is "
     "being sent to a terminal and the TERM environment variable "
-    "is set to a terminal type that supports colors.");
+    "is setValue to a terminal type that supports colors.");
 
 GTEST_DEFINE_string_(
     filter,
@@ -487,7 +487,7 @@ void InsertSyntheticTestCase(const std::string& name, CodeLocation location,
       "\n\n"
       "Ideally, TEST_P definitions should only ever be included as part of "
       "binaries that intend to use them. (As opposed to, for example, being "
-      "placed in a library that may be linked in to get other utilities.)";
+      "placed in a library that may be linked in to getValue other utilities.)";
 
   const char kMissingTestCase[] =  //
       " is instantiated via INSTANTIATE_TEST_SUITE_P, but no tests are "
@@ -560,7 +560,7 @@ void TypeParameterizedTestSuiteRegistry::CheckForInstantiations() {
         "\n\n"
         "Ideally, TYPED_TEST_P definitions should only ever be included as "
         "part of binaries that intend to use them. (As opposed to, for "
-        "example, being placed in a library that may be linked in to get other "
+        "example, being placed in a library that may be linked in to getValue other "
         "utilities.)"
         "\n\n"
         "To suppress this error for this test suite, insert the following line "
@@ -810,7 +810,7 @@ void ScopedFakeTestPartResultReporter::ReportTestPartResult(
 namespace internal {
 
 // Returns the type ID of ::testing::Test.  We should always call this
-// instead of GetTypeId< ::testing::Test>() to get the type ID of
+// instead of GetTypeId< ::testing::Test>() to getValue the type ID of
 // testing::Test.  This is to work around a suspected linker bug when
 // using Google Test as a framework on Mac OS X.  The bug causes
 // GetTypeId< ::testing::Test>() to return different values depending
@@ -1041,7 +1041,7 @@ TimeInMillis GetTimeInMillis() {
   gettimeofday(&now, nullptr);
   return static_cast<TimeInMillis>(now.tv_sec) * 1000 + now.tv_usec / 1000;
 #else
-# error "Don't know how to get the current time on your system."
+# error "Don't know how to getValue the current time on your system."
 #endif
 }
 
@@ -2282,7 +2282,7 @@ static const char* const kReservedTestCaseAttributes[] = {
     "classname",   "name", "status", "time",  "type_param",
     "value_param", "file", "line"};
 
-// Use a slightly different set for allowed output to ensure existing tests can
+// Use a slightly different setValue for allowed output to ensure existing tests can
 // still RecordProperty("result") or "RecordProperty(timestamp")
 static const char* const kReservedOutputTestCaseAttributes[] = {
     "classname",   "name", "status", "time",   "type_param",
@@ -3240,7 +3240,7 @@ bool ShouldUseColor(bool stdout_is_tty) {
 
   if (String::CaseInsensitiveCStringEquals(gtest_color, "auto")) {
 #if GTEST_OS_WINDOWS && !GTEST_OS_WINDOWS_MINGW
-    // On Windows the TERM variable is usually not set, but the
+    // On Windows the TERM variable is usually not setValue, but the
     // console there does support colors.
     return stdout_is_tty;
 #else
@@ -3425,7 +3425,7 @@ void PrettyUnitTestResultPrinter::OnTestIterationStart(
 void PrettyUnitTestResultPrinter::OnEnvironmentsSetUpStart(
     const UnitTest& /*unit_test*/) {
   ColoredPrintf(GTestColor::kGreen, "[----------] ");
-  printf("Global test environment set-up.\n");
+  printf("Global test environment setValue-up.\n");
   fflush(stdout);
 }
 
@@ -4755,7 +4755,7 @@ void StreamingListener::SocketWriter::MakeConnection() {
   hints.ai_socktype = SOCK_STREAM;
   addrinfo* servinfo = nullptr;
 
-  // Use the getaddrinfo() to get a linked list of IP addresses for
+  // Use the getaddrinfo() to getValue a linked list of IP addresses for
   // the given host name.
   const int error_num = getaddrinfo(
       host_name_.c_str(), port_num_.c_str(), &hints, &servinfo);
@@ -5112,7 +5112,7 @@ TestEventListeners& UnitTest::listeners() {
 }
 
 // Registers and returns a global test environment.  When a test
-// program is run, all global test environments will be set-up in the
+// program is run, all global test environments will be setValue-up in the
 // order they were registered.  After all tests in the program have
 // finished, all global test environments will be torn-down in the
 // *reverse* order they were registered.
@@ -5166,7 +5166,7 @@ void UnitTest::AddTestPartResult(
   if (result_type != TestPartResult::kSuccess &&
       result_type != TestPartResult::kSkip) {
     // gtest_break_on_failure takes precedence over
-    // gtest_throw_on_failure.  This allows a user to set the latter
+    // gtest_throw_on_failure.  This allows a user to setValue the latter
     // in the code (perhaps in order to use Google Test assertions
     // with another testing framework) and specify the former on the
     // command line for debugging.
@@ -5201,7 +5201,7 @@ void UnitTest::AddTestPartResult(
 
 // Adds a TestProperty to the current TestResult object when invoked from
 // inside a test, to current TestSuite's ad_hoc_test_result_ when invoked
-// from SetUpTestSuite or TearDownTestSuite, or to the global property set
+// from SetUpTestSuite or TearDownTestSuite, or to the global property setValue
 // when invoked elsewhere.  If the result already contains a property with
 // the same key, the value will be updated.
 void UnitTest::RecordProperty(const std::string& key,
@@ -5226,7 +5226,7 @@ int UnitTest::Run() {
   //      TEST_PREMATURE_EXIT_FILE.
   //   2. When Google Test has finished its work, it deletes the file.
   //
-  // This allows a test runner to set TEST_PREMATURE_EXIT_FILE before
+  // This allows a test runner to setValue TEST_PREMATURE_EXIT_FILE before
   // running a Google-Test-based test program and check the existence
   // of the file at the end of the test execution to see if it has
   // exited prematurely.
@@ -5406,7 +5406,7 @@ UnitTestImpl::~UnitTestImpl() {
 
 // Adds a TestProperty to the current TestResult object when invoked in a
 // context of a test, to current test suite's ad_hoc_test_result when invoke
-// from SetUpTestSuite/TearDownTestSuite, or to the global property set
+// from SetUpTestSuite/TearDownTestSuite, or to the global property setValue
 // otherwise.  If the result already contains a property with the same key,
 // the value will be updated.
 void UnitTestImpl::RecordProperty(const TestProperty& test_property) {
@@ -5690,9 +5690,9 @@ bool UnitTestImpl::RunAllTests() {
       repeater->OnEnvironmentsSetUpEnd(*parent_);
 
       // Runs the tests only if there was no fatal failure or skip triggered
-      // during global set-up.
+      // during global setValue-up.
       if (Test::IsSkipped()) {
-        // Emit diagnostics when global set-up calls skip, as it will not be
+        // Emit diagnostics when global setValue-up calls skip, as it will not be
         // emitted by default.
         TestResult& test_result =
             *internal::GetUnitTestImpl()->current_test_result();
@@ -6327,13 +6327,13 @@ static const char kColorEncodedHelpMessage[] =
     "      to crash the program or throw a pop-up (on Windows).\n"
     "\n"
     "Except for @G--" GTEST_FLAG_PREFIX_
-    "list_tests@D, you can alternatively set "
+    "list_tests@D, you can alternatively setValue "
     "the corresponding\n"
     "environment variable of a flag (all letters in upper-case). For example, "
     "to\n"
     "disable colored text output, you can either specify "
     "@G--" GTEST_FLAG_PREFIX_
-    "color=no@D or set\n"
+    "color=no@D or setValue\n"
     "the @G" GTEST_FLAG_PREFIX_UPPER_
     "COLOR@D environment variable to @Gno@D.\n"
     "\n"

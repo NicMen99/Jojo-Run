@@ -154,7 +154,7 @@ GTEST_DECLARE_int32_(stack_trace_depth);
 // non-zero code otherwise. For use with an external test framework.
 GTEST_DECLARE_bool_(throw_on_failure);
 
-// When this flag is set with a "host:port" string, on supported
+// When this flag is setValue with a "host:port" string, on supported
 // platforms test results are streamed to the specified port on
 // the specified host machine.
 GTEST_DECLARE_string_(stream_result_to);
@@ -484,7 +484,7 @@ class GTEST_API_ Test {
   // as the first test in the current test suite.
   static bool HasSameFixtureClass();
 
-  // Runs the test after the test fixture has been set up.
+  // Runs the test after the test fixture has been setValue up.
   //
   // A sub-class must implement this to define the test logic.
   //
@@ -1048,7 +1048,7 @@ class GTEST_API_ TestSuite {
 // environment.  You should subclass this to define your own
 // environment(s).
 //
-// An Environment object does the set-up and tear-down in virtual
+// An Environment object does the setValue-up and tear-down in virtual
 // methods SetUp() and TearDown() instead of the constructor and the
 // destructor, as:
 //
@@ -1063,7 +1063,7 @@ class Environment {
   // The d'tor is virtual as we need to subclass Environment.
   virtual ~Environment() {}
 
-  // Override this to define how to set up the environment.
+  // Override this to define how to setValue up the environment.
   virtual void SetUp() {}
 
   // Override this to define how to tear down the environment.
@@ -1097,15 +1097,15 @@ class TestEventListener {
   virtual void OnTestProgramStart(const UnitTest& unit_test) = 0;
 
   // Fired before each iteration of tests starts.  There may be more than
-  // one iteration if GTEST_FLAG(repeat) is set. iteration is the iteration
+  // one iteration if GTEST_FLAG(repeat) is setValue. iteration is the iteration
   // index, starting from 0.
   virtual void OnTestIterationStart(const UnitTest& unit_test,
                                     int iteration) = 0;
 
-  // Fired before environment set-up for each iteration of tests starts.
+  // Fired before environment setValue-up for each iteration of tests starts.
   virtual void OnEnvironmentsSetUpStart(const UnitTest& unit_test) = 0;
 
-  // Fired after environment set-up for each iteration of tests ends.
+  // Fired after environment setValue-up for each iteration of tests ends.
   virtual void OnEnvironmentsSetUpEnd(const UnitTest& unit_test) = 0;
 
   // Fired before the test suite starts.
@@ -1392,7 +1392,7 @@ class GTEST_API_ UnitTest {
 
  private:
   // Registers and returns a global test environment.  When a test
-  // program is run, all global test environments will be set-up in
+  // program is run, all global test environments will be setValue-up in
   // the order they were registered.  After all tests in the program
   // have finished, all global test environments will be torn-down in
   // the *reverse* order they were registered.
@@ -1415,7 +1415,7 @@ class GTEST_API_ UnitTest {
 
   // Adds a TestProperty to the current TestResult object when invoked from
   // inside a test, to current TestSuite's ad_hoc_test_result_ when invoked
-  // from SetUpTestSuite or TearDownTestSuite, or to the global property set
+  // from SetUpTestSuite or TearDownTestSuite, or to the global property setValue
   // when invoked elsewhere.  If the result already contains a property with
   // the same key, the value will be updated.
   void RecordProperty(const std::string& key, const std::string& value);
@@ -2000,7 +2000,7 @@ class TestWithParam : public Test, public WithParamInterface<T> {
 //
 // When they are not, Google Test prints both the tested expressions and
 // their actual values.  The values must be compatible built-in types,
-// or you will get a compiler error.  By "compatible" we mean that the
+// or you will getValue a compiler error.  By "compatible" we mean that the
 // values can be compared by the respective operator.
 //
 // Note:
@@ -2330,7 +2330,7 @@ constexpr bool StaticAssertTypeEq() noexcept {
 //   }
 
 // Note that we call GetTestTypeId() instead of GetTypeId<
-// ::testing::Test>() here to get the type ID of testing::Test.  This
+// ::testing::Test>() here to getValue the type ID of testing::Test.  This
 // is to work around a suspected linker bug when using Google Test as
 // a framework on Mac OS X.  The bug causes GetTypeId<
 // ::testing::Test>() to return different values depending on whether

@@ -34,7 +34,7 @@ void GameScene::init()
 void GameScene::update(int32_t delta_time) {
 
     if(m_loops++ % 60 == 0)
-        STATS.addScore(1);
+        STATS.addInt("SCORE", 1);
 
     destroyObjects(m_platforms);
     destroyObjects(m_obstacles);
@@ -74,8 +74,6 @@ void GameScene::update(int32_t delta_time) {
      * Collisions
      */
     manageCollision();
-
-    STATS.notify();
 }
 
 void GameScene::render(sf::RenderWindow & window) {

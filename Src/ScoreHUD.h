@@ -9,11 +9,10 @@
 #include <map>
 #include <list>
 #include <SFML/Graphics.hpp>
-#include "Observer.h"
 
 class Widget;
 
-class ScoreHUD: public GameObject, Observer {
+class ScoreHUD: public GameObject {
 public:
     ScoreHUD ();
     ~ScoreHUD() override;
@@ -25,25 +24,8 @@ public:
 private:
     sf::Sprite m_sprite;
 
-    Widget * m_score;
-
-    sf::Text lifeTxt;
-    sf::Text numLife;
-    sf::Text knivesTxt;
-    sf::Text numKnives;
-    sf::Text scoreB;
-    sf::Text bestScoreTxt;
-    sf::Text bestScoreB;
-    sf::Text bestScoreNum;
-
-    /*
-     * Observer
-     */
-private:
-    void event() override;
-    void attach() override;
-    void detach() override;
-
+    Widget * m_score{};
+    Widget * m_hero_status{};
 };
 
 

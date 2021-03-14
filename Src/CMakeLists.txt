@@ -42,6 +42,8 @@ target_sources(${TARGET}
         Hero.cpp
         InitState.h
         InitState.cpp
+        ImageWidget.h
+        ImageWidget.cpp
         Knife.h
         Knife.cpp
         main.cpp

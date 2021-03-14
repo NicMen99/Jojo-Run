@@ -3,12 +3,10 @@
 //
 
 #include "Game.h"
-#include "GameConfig.h"
-#include "GameResourceManager.h"
-#include "GameStats.h"
 #include "GameObject.h"
 #include "Widget.h"
 #include "TextWidget.h"
+#include "ImageWidget.h"
 #include "ScoreHUD.h"
 
 
@@ -19,36 +17,57 @@ const unsigned int font_size = 40;
 ScoreHUD::ScoreHUD() :
     GameObject(GameObjectGroup::Scene, GameObjectType::Hud, "HUD", m_sprite)
 {
-    attach();
 }
 
 ScoreHUD::~ScoreHUD()
 {
-    detach();
 }
 
 void ScoreHUD::init() {
 
+    WidgetTheme theme;
+    theme.font_name = "arcadeclassic";
+    theme.font_size = 40;
+    theme.font_color = sf::Color::White;
+
     m_score = new Widget("score");
-    m_score->setPosition({100,100});
-    {
-        auto w = new TextWidget("label");
-        w->setPosition({10, 10});
-        w->setFont(font_name);
-        w->setCharacterSize(font_size);
-        w->setFillColor(sf::Color::White);
-        w->setString("SCORE");
-        m_score->add(w);
-    }
-    {
-        auto w = new TextWidget("value");
-        w->setPosition({10, 100});
-        w->setFont(font_name);
-        w->setCharacterSize(font_size);
-        w->setFillColor(sf::Color::White);
-        w->setString("33");
-        m_score->add(w);
-    }
+    m_score->setPosition({30,30});
+
+    auto score_icon = new ImageWidget("icon");
+    score_icon->setPosition({0, 0});
+    score_icon->setTexture("blockTexture");
+    m_score->add(score_icon);
+
+    auto score_label = new TextWidget("label");
+    score_label->init(theme);
+    score_label->setPosition(sf::Vector2f{score_icon->getSize().x, 0});
+    score_label->setString("SCORE ");
+    score_icon->add(score_label);
+
+    auto score_value = new TextWidget("value");
+    score_value->init(theme);
+    score_value->setPosition(sf::Vector2f{score_label->getSize().x, 0});
+    score_value->setString("");
+    score_value->observe("SCORE");
+    score_label->add(score_value);
+
+    m_hero_status = new Widget("hero_stat");
+    m_hero_status->setPosition({1500,30});
+
+    auto healthPoints_label = new TextWidget("HealthPoints_label");
+    healthPoints_label->init(theme);
+    healthPoints_label->setPosition({0,0});
+    healthPoints_label->setString("HP");
+    m_hero_status->add(healthPoints_label);
+
+    auto healthPoints_value = new TextWidget("HealthPoints_value");
+    healthPoints_value->init(theme);
+    healthPoints_value->setPosition(sf::Vector2f{healthPoints_label->getSize().x, 0});
+    healthPoints_value->setString("");
+    healthPoints_value->observe("HEALTH");
+    healthPoints_label->add(healthPoints_value);
+
+
 
     /*
      * m_score->setPosition({10, 3});
@@ -132,19 +151,7 @@ void ScoreHUD::init() {
 
 void ScoreHUD::render(sf::RenderWindow &window) {
     m_score->render(window);
+    m_hero_status->render(window);
 }
 
-void ScoreHUD::event() {
-    /*
-    m_score.setText("score::label::value", std::to_string(STATS.get()));
-     */
-}
-
-void ScoreHUD::attach() {
-    STATS.subscribe(this);
-}
-
-void ScoreHUD::detach() {
-    STATS.unsubscribe(this);
-}
 

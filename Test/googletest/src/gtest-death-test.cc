@@ -315,7 +315,7 @@ static void DeathTestAbort(const std::string& message) {
 
 // This macro is similar to GTEST_DEATH_TEST_CHECK_, but it is meant for
 // evaluating any system call that fulfills two conditions: it must return
-// -1 on failure, and set errno to EINTR when it is interrupted and
+// -1 on failure, and setValue errno to EINTR when it is interrupted and
 // should be tried again.  The macro expands to a loop that repeatedly
 // evaluates the expression as long as it evaluates to -1 and sets
 // errno to EINTR.  If the expression evaluates to -1 but errno is
@@ -424,7 +424,7 @@ class DeathTestImpl : public DeathTest {
   void set_write_fd(int fd) { write_fd_ = fd; }
 
   // Called in the parent process only. Reads the result code of the death
-  // test child process via a pipe, interprets it to set the outcome_
+  // test child process via a pipe, interprets it to setValue the outcome_
   // member, and closes read_fd_.  Outputs diagnostics and terminates in
   // case of unexpected codes.
   void ReadAndInterpretStatusByte();
@@ -455,7 +455,7 @@ class DeathTestImpl : public DeathTest {
 };
 
 // Called in the parent process only. Reads the result code of the death
-// test child process via a pipe, interprets it to set the outcome_
+// test child process via a pipe, interprets it to setValue the outcome_
 // member, and closes read_fd_.  Outputs diagnostics and terminates in
 // case of unexpected codes.
 void DeathTestImpl::ReadAndInterpretStatusByte() {
@@ -546,7 +546,7 @@ static ::std::string FormatDeathTestOutput(const ::std::string& output) {
 }
 
 // Assesses the success or failure of a death test, using both private
-// members which have previously been set, and one argument:
+// members which have previously been setValue, and one argument:
 //
 // Private data members:
 //   outcome:  An enumeration describing how the death test
@@ -692,7 +692,7 @@ int WindowsDeathTest::Wait() {
     case WAIT_OBJECT_0 + 1:
       break;
     default:
-      GTEST_DEATH_TEST_CHECK_(false);  // Should not get here.
+      GTEST_DEATH_TEST_CHECK_(false);  // Should not getValue here.
   }
 
   // The child has acquired the write end of the pipe or exited.
@@ -913,7 +913,7 @@ int FuchsiaDeathTest::Wait() {
 
     if (packet.key == kExceptionKey) {
       // Process encountered an exception. Kill it directly rather than
-      // letting other handlers process the event. We will get a kProcessKey
+      // letting other handlers process the event. We will getInt a kProcessKey
       // event when the process actually terminates.
       status_zx = child_process_.kill();
       GTEST_DEATH_TEST_CHECK_(status_zx == ZX_OK);
@@ -1160,7 +1160,7 @@ DeathTest::TestRole NoExecDeathTest::AssumeRole() {
 }
 
 // A concrete death test class that forks and re-executes the main
-// program from the beginning, with command-line flags set that cause
+// program from the beginning, with command-line flags setValue that cause
 // only this specific death test to be run.
 class ExecDeathTest : public ForkingDeathTest {
  public:
@@ -1371,7 +1371,7 @@ static pid_t ExecDeathTestSpawnChild(char* const* argv, int close_fd) {
     GTEST_DEATH_TEST_CHECK_(stack != MAP_FAILED);
 
     // Maximum stack alignment in bytes:  For a downward-growing stack, this
-    // amount is subtracted from size of the stack space to get an address
+    // amount is subtracted from size of the stack space to getValue an address
     // that is within the stack space and is aligned on all systems we care
     // about.  As far as I know there is no ABI with stack alignment greater
     // than 64.  We assume stack and stack_size already have alignment of
@@ -1462,7 +1462,7 @@ DeathTest::TestRole ExecDeathTest::AssumeRole() {
 // --gtest_death_test_style flag, and sets the pointer pointed to
 // by the "test" argument to its address.  If the test should be
 // skipped, sets that pointer to NULL.  Returns true, unless the
-// flag is set to an invalid value.
+// flag is setValue to an invalid value.
 bool DefaultDeathTestFactory::Create(const char* statement,
                                      Matcher<const std::string&> matcher,
                                      const char* file, int line,
