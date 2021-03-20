@@ -15,7 +15,7 @@ const unsigned int font_size = 40;
 
 
 ScoreHUD::ScoreHUD() :
-    GameObject(GameObjectGroup::Scene, GameObjectType::Hud, "HUD", m_sprite)
+    GameObject(GameObjectGroup::Scene, GameObjectType::Hud, "HUD")
 {
 }
 

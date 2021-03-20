@@ -7,14 +7,15 @@
 #include "Platform.h"
 
 Platform::Platform(std::string id) :
-    GameObject(GameObjectGroup::Map, GameObjectType::Platform, id, m_sprite)
+    GameObject(GameObjectGroup::Map, GameObjectType::Platform, id)
 {
 
 }
 
 void Platform::init(const std::string& texture_name, sf::Vector2f speed) {
-    std::shared_ptr<sf::Texture> texture = RM.getTexture(texture_name);
-    m_sprite.setTexture(*texture);
+    addTexture("DEFAULT", {texture_name, false, {1.f, 1.f}, {0,0,0,0} });
+    updateSprite("DEFAULT");
+
     m_speed = speed;
 }
 

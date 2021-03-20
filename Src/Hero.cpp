@@ -17,7 +17,7 @@
 #include "Hero.h"
 
 Hero::Hero() :
-    GameObject(GameObjectGroup::Hero, GameObjectType::Hero, "Hero", m_sprite)
+    GameObject(GameObjectGroup::Hero, GameObjectType::Hero, "Hero")
 {
 
 }
@@ -32,9 +32,8 @@ void Hero::init()
 }
 
 void Hero::init(const std::string &texture_name, int hp, int knives, int max_kinves, int max_health) {
-    std::shared_ptr<sf::Texture> texture = RM.getTexture(texture_name);
-
-    setTexture(*texture);
+    addTexture("DEFAULT", {texture_name, false, {0.9f, 0.9f}, {0,0,0,0} });
+    updateSprite("DEFAULT");
 
     m_speed = GC.getSceneSpeed();
 
@@ -43,9 +42,9 @@ void Hero::init(const std::string &texture_name, int hp, int knives, int max_kin
     m_maxhp = max_health;
     m_maxknives = max_kinves;
 
-    addSound("COLLISION", "collisionSound", 15.f);
-    addSound("SHIELD", "shieldSound", 15.f);
-    addSound("SHIELDON", "shieldOn", 15.f);
+    addSound("COLLISION", "collisionSound");
+    addSound("SHIELD", "shieldSound");
+    addSound("SHIELDON", "shieldOn");
 }
 
 void Hero::update(int32_t delta_time) {
@@ -58,11 +57,6 @@ void Hero::update(int32_t delta_time) {
     manageAttack();
     GameObject::update(delta_time);
     setStarted(true);
-}
-
-void Hero::setTexture(const sf::Texture &heroTexture){
-    m_sprite.setTexture(heroTexture);
-    m_sprite.setScale(0.9, 0.9);
 }
 
 void Hero::updatePhysics(int32_t delta_time) {

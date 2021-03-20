@@ -34,7 +34,7 @@ std::unique_ptr<GameObject> Factory::createEnemy(GameObjectType type) {
     if (type == GameObjectType::EmeraldEnemy){
         auto * enemy = new EmeraldEnemy("EmeraldEnemy");
         enemy->init("emeraldEnemyTexture", {-1, 1}, {0, 0}, 90);
-        enemy->addSound("EMERALDACTION", "emeraldEnemyShout", 25.f);
+        enemy->addSound("EMERALDACTION", "emeraldEnemyShout");
         return std::unique_ptr<GameObject>(enemy);
     }
     else if (type == GameObjectType::HamonEnemy){
@@ -45,7 +45,7 @@ std::unique_ptr<GameObject> Factory::createEnemy(GameObjectType type) {
     else if (type == GameObjectType::FireEnemy){
         auto * enemy = new FireEnemy("FireEnemy");
         enemy->init("fireEnemy", {-1, 1}, {0, 0}, 90);
-        enemy->addSound("FIREACTION", "fireEnemyShout", 25.f);
+        enemy->addSound("FIREACTION", "fireEnemyShout");
         return std::unique_ptr<GameObject>(enemy);
     }
     return nullptr;

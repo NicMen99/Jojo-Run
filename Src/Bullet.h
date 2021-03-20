@@ -15,7 +15,6 @@ public:
     int getDamage() const;
 
 private:
-    sf::Sprite m_sprite;
     int m_damage = 150;
 };
 

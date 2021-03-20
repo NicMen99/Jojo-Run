@@ -22,8 +22,6 @@ public:
     void render(sf::RenderWindow & window) override;
 
 private:
-    sf::Sprite m_sprite;
-
     Widget * m_score{};
     Widget * m_hero_status{};
 };

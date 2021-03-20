@@ -8,17 +8,15 @@
 #include "Background.h"
 
 Background::Background(const std::string id) :
-    GameObject(GameObjectGroup::Map, GameObjectType::Background, id, m_sprite)
+    GameObject(GameObjectGroup::Map, GameObjectType::Background, id)
 {
 
 }
 
-void Background::init(const std::string & texture_name, bool repeated, const sf::Vector2f scale, const sf::Vector2f speed)
-{
-    std::shared_ptr<sf::Texture> texture = RM.getTexture(texture_name);
-    texture->setRepeated(repeated);
-    m_sprite.setTexture(*texture);
-    m_sprite.setScale(scale.x, scale.y);
-    m_sprite.setTextureRect(sf::IntRect(0, 0, (500 * GC.getWindowSize().x), GC.getWindowSize().y + static_cast<int>(GC.getGroundYpos())));
+void Background::init(const std::string & texture_name, bool repeated, const sf::Vector2f scale, const sf::Vector2f speed) {
+
+    addTexture("DEFAULT", {texture_name, repeated, scale, sf::IntRect{0,0,static_cast<int>(500 * GC.getWindowSize().x),                                        static_cast<int>((GC.getWindowSize().y + GC.getGroundYpos()))}});
+    updateSprite("DEFAULT");
+
     m_speed = speed;
 }

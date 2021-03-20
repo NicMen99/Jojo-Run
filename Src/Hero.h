@@ -30,17 +30,11 @@ private:
     void collision(GameObject *collider) override;
 
 private:
-    void setTexture(const sf::Texture &heroTexture);
     void updatePhysics(int32_t delta_time);
     void speedCap();
     void update_health(int delta);
     void manageAttack();
 
-private:
-    sf::Sprite m_sprite;
-    sf::Sound m_collisionSound;
-    sf::Sound m_powerUpSound;
-    sf::Sound m_shieldOnSound;
 private:
     State m_state = State::Falling;
     InputManager m_inputManager;

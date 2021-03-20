@@ -7,16 +7,15 @@
 #include "Enemy.h"
 
 Enemy::Enemy(GameObjectType mtype, const std::string & name) :
-    GameObject(GameObjectGroup::Enemy, mtype, name, m_sprite)
-{
+    GameObject(GameObjectGroup::Enemy, mtype, name) {
 
 }
 
 void Enemy::init(const std::string &texture_name, sf::Vector2f scale, sf::Vector2f speed, int damage)
 {
-    std::shared_ptr<sf::Texture> texture = RM.getTexture(texture_name);
-    m_sprite.setTexture(*texture);
-    m_sprite.setScale(scale);
+    addTexture("DEFAULT", {texture_name, false, scale, {0,0,0,0} });
+    updateSprite("DEFAULT");
+
     m_sprite.setOrigin(+m_sprite.getTextureRect().width, 0);
     m_speed = speed;
     m_damage = damage;

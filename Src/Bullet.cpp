@@ -7,15 +7,15 @@
 #include "Bullet.h"
 
 Bullet::Bullet(GameObjectType mtype, const std::string &name):
-    GameObject(GameObjectGroup::Bullet, mtype, name, m_sprite)
+    GameObject(GameObjectGroup::Bullet, mtype, name)
 {
 
 }
 
-void Bullet::init(const std::string &texture_name, sf::Vector2f scale, sf::Vector2f speed, int damage) {
-    std::shared_ptr<sf::Texture> texture = RM.getTexture(texture_name);
-    m_sprite.setTexture(*texture);
-    m_sprite.setScale(scale);
+void Bullet::init(const std::string & texture_name, sf::Vector2f scale, sf::Vector2f speed, int damage) {
+    addTexture("DEFAULT", {texture_name, false, scale, {0,0,0,0} });
+    updateSprite("DEFAULT");
+
     m_speed = speed;
     m_damage = damage;
 }

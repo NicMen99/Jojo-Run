@@ -14,8 +14,6 @@ public:
     ~PowerUp() = default;
     void init(const std::string &texture_name, sf::Vector2f scale, sf::Vector2f speed);
 
-protected:
-    sf::Sprite m_sprite;
 };
 
 #endif //JOJO_RUN_POWERUP_H

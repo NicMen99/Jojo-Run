@@ -21,8 +21,6 @@ std::ofstream bestScoreFileWrite;
 std::ifstream bestScoreFileRead;
 unsigned int score;
 unsigned int bestScore;
-const int ground = 63.0f;
-int txtCount;
 /**/
 
 
@@ -33,7 +31,7 @@ void GameOverState::init() {
     gameOverSound.setVolume(10.f);
 
     gameOverTexture.loadFromFile(GC.getAssetPath("GameOverScreen"));
-    gameOver.setTextureRect(sf::IntRect(0,0,(window_size.x), window_size.y+static_cast<int>(ground)));
+    gameOver.setTextureRect(sf::IntRect(0,0,window_size.x, window_size.y));
     gameOver.setTexture(gameOverTexture);
 }
 
@@ -50,7 +48,6 @@ void GameOverState::update(int32_t delta_time) {
     file << std::endl;
     file << "Score: " << score;
     file.close();
-    txtCount++;
 
     bestScoreFileRead.open("BestScore.txt");
     bestScoreFileRead >> bestScore;

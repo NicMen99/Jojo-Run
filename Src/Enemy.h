@@ -27,7 +27,6 @@ public:
     int getDamage() const { return m_damage; };
 
 protected:
-    sf::Sprite m_sprite;
     State m_state = State::Alive;
     int m_damage = 90;
     sf::Clock m_dyingTimer;
