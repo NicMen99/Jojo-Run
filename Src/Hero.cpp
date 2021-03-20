@@ -28,7 +28,7 @@ void Hero::init()
     m_inputManager.registerKey(sf::Keyboard::Key::Space);
     m_inputManager.registerKey(sf::Keyboard::Key::K);
     init("playerTexture");
-    setPosition(sf::Vector2f(200.f,GC.getMBase()));
+    setPosition(sf::Vector2f(200.f, GC.getMBase()));
 }
 
 void Hero::init(const std::string &texture_name, int hp, int knives, int max_kinves, int max_health) {
@@ -43,21 +43,9 @@ void Hero::init(const std::string &texture_name, int hp, int knives, int max_kin
     m_maxhp = max_health;
     m_maxknives = max_kinves;
 
-    sf::SoundBuffer* soundBuffer = RM.getSound("collisionSound");
-    if(soundBuffer != nullptr) {
-        m_collisionSound.setBuffer(*soundBuffer);
-        m_collisionSound.setVolume(22.f);
-    }
-    soundBuffer = RM.getSound("shieldSound");
-    if(soundBuffer != nullptr) {
-        m_powerUpSound.setBuffer(*soundBuffer);
-        m_powerUpSound.setVolume(22.f);
-    }
-    soundBuffer = RM.getSound("shieldOn");
-    if(soundBuffer != nullptr) {
-        m_shieldOnSound.setBuffer(*soundBuffer);
-        m_shieldOnSound.setVolume(22.f);
-    }
+    addSound("COLLISION", "collisionSound", 15.f);
+    addSound("SHIELD", "shieldSound", 15.f);
+    addSound("SHIELDON", "shieldOn", 15.f);
 }
 
 void Hero::update(int32_t delta_time) {
@@ -129,7 +117,7 @@ void Hero::collision(GameObject * collider)
     {
         sf::Rect<float> collider_rect = collider->getBounds();
         sf::Rect<float> hero_rect = getBounds();
-        sf::Rect<float> intesrect  /* = clacolare il rettangolo di intersezione */;
+        sf::Rect<float> intersect /* = clacolare il rettangolo di intersezione */;
         /*if(intersrect.width > intersrect.heght)*/
         if(m_speed.y >= 0) {
             m_state = State::Grounded;
@@ -149,12 +137,11 @@ void Hero::collision(GameObject * collider)
     else if(collider->getGroup() == GameObjectGroup::Enemy)
     {
         auto * enemy = dynamic_cast<Enemy *>(collider);
-        if(!m_shield) {
-            int damage = enemy->getDamage();
-            update_health(-damage);
-            if (m_health <= 0)
-                m_state = State::Dead;
-        }
+        int damage = !m_shield ? enemy->getDamage() : 0;
+        update_health(-damage);
+        if (m_health <= 0)
+            m_state = State::Dead;
+        playSound(m_shield ? "SHIELDON" : "COLLISION");
         m_shield = false;
     }
 
@@ -164,10 +151,12 @@ void Hero::collision(GameObject * collider)
     else if(collider->getGroup() == GameObjectGroup::Map)
     {
         auto * obstacle = dynamic_cast<Obstacle *>(collider);
-        int damage = obstacle->getDamage();
+        int damage = !m_shield ? obstacle->getDamage() : 0;
         update_health(-damage);
         if (m_health <= 0)
             m_state = State::Dead;
+        playSound(m_shield ? "SHIELDON" : "COLLISION");
+        m_shield = false;
     }
 
     /*
@@ -188,12 +177,14 @@ void Hero::collision(GameObject * collider)
      */
     else if (collider->getGroup() == GameObjectGroup::Bullet)
     {
-        if(collider->getType() != GameObjectType::Knife){
-            auto * bullet =dynamic_cast<Bullet *>(collider);
-            update_health(-bullet->getDamage());
-        }
+        auto * bullet = dynamic_cast<Bullet *>(collider);
+        int damage = !m_shield ? bullet->getDamage():0;
+        update_health(-damage);
+        if (m_health <= 0)
+            m_state = State::Dead;
+        playSound(m_shield ? "SHIELDON" : "COLLISION");
+        m_shield = false;
     }
-
 }
 
 void Hero::speedCap() {
@@ -228,7 +219,7 @@ void Hero::manageAttack() {
         case State::Falling:
             if(m_inputManager.isKeyJustPressed(sf::Keyboard::K)){
                 auto kf = GF.createBullet(GameObjectType::Knife);
-                kf->setPosition({getPosition()});
+                kf->setPosition(sf::Vector2f(getPosition()) + sf::Vector2f(m_sprite.getGlobalBounds().width, 0));
                 kf->setSpeed(sf::Vector2f {m_speed.x + 1000.f, 0.f});
                 GS.addItem(kf);
                 updateKnives(-1);

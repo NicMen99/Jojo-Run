@@ -5,9 +5,11 @@
 #ifndef JOJO_RUN_GAMEOBJECT_H
 #define JOJO_RUN_GAMEOBJECT_H
 
+#include <memory>
 #include <string>
 #include <list>
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 #include "Observer.h"
 
 enum class GameObjectGroup {
@@ -74,6 +76,12 @@ public:
     void setPosition(sf::Vector2f position) { m_active_sprite.setPosition(position);}
     void setSpeed(sf::Vector2f speed) { m_speed = speed; }
 
+public:
+    void addSound(const std::string & sound_name, const std::string & sound_resource, float volume);
+
+protected:
+    void playSound(const std::string & sound_name);
+
 protected:
     GameObjectGroup m_group;
     GameObjectType m_type;
@@ -84,6 +92,8 @@ protected:
     bool m_enabled = true;
     bool m_visible = true;
     bool m_destroyed = false;
+
+    std::map<std::string, std::shared_ptr<sf::Sound>> m_sound_map;
 };
 
 

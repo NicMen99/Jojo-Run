@@ -26,6 +26,7 @@ void FireEnemy::update(int32_t delta_time) {
         bl->setPosition({getPosition()});
         bl->setSpeed(sf::Vector2f {m_speed.x - 1000.f, 0.f});
         GS.addItem(bl);
+        playSound("FIREACTION");
         m_shoot_left -= 1;
     }
     setStarted(true);}

@@ -20,12 +20,12 @@ public:
     virtual ~GameResourceManager()=default;
 
     std::shared_ptr<sf::Texture> getTexture(const std::string & texture);
-    sf::SoundBuffer* getSound(const std::string & sound);
+    std::shared_ptr<sf::SoundBuffer> getSound(const std::string & sound);
     std::shared_ptr<sf::Font> getFont(const std::string & font);
 
 private:
     std::map<std::string, std::shared_ptr<sf::Texture>> m_texture_map;
-    std::map<std::string, sf::SoundBuffer> m_sound_map;
+    std::map<std::string, std::shared_ptr<sf::SoundBuffer>> m_sound_map;
     std::map<std::string, std::shared_ptr<sf::Font>> m_font_map;
 };
 

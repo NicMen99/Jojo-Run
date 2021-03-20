@@ -30,7 +30,7 @@ void GameOverState::init() {
     sf::Vector2u window_size = GC.getWindowSize();
     gameOverBuffer.loadFromFile(GC.getAssetPath("gameOverSound"));
     gameOverSound.setBuffer(gameOverBuffer);
-    gameOverSound.setVolume(21.f);
+    gameOverSound.setVolume(10.f);
 
     gameOverTexture.loadFromFile(GC.getAssetPath("GameOverScreen"));
     gameOver.setTextureRect(sf::IntRect(0,0,(window_size.x), window_size.y+static_cast<int>(ground)));
