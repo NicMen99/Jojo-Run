@@ -14,11 +14,9 @@ PowerUp::PowerUp(GameObjectType mtype, const std::string &mName) :
 
 void PowerUp::init(const std::string &texture_name, sf::Vector2f scale, sf::Vector2f speed)
 {
-    sf::Texture* texture = RM.getTexture(texture_name);
-    if(texture != nullptr){
-        m_sprite.setTexture(*texture);
-        m_sprite.setScale(scale);
-    }
+    std::shared_ptr<sf::Texture> texture = RM.getTexture(texture_name);
+    m_sprite.setTexture(*texture);
+    m_sprite.setScale(scale);
     m_speed = speed;
 }
 

@@ -37,7 +37,7 @@ Game::~Game() {
 void Game::init()
 {
     m_gen.seed(m_rd());
-    m_gameConfig.init("Assets");
+    m_gameConfig.init();
 }
 
 void Game::loop()

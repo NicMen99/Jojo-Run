@@ -5,6 +5,7 @@
 #ifndef JOJO_RUN_GAMERESOURCEMANAGER_H
 #define JOJO_RUN_GAMERESOURCEMANAGER_H
 
+#include <memory>
 #include <string>
 #include <map>
 
@@ -18,15 +19,14 @@ public:
     GameResourceManager()=default;
     virtual ~GameResourceManager()=default;
 
-    sf::Texture* getTexture(const std::string & texture);
+    std::shared_ptr<sf::Texture> getTexture(const std::string & texture);
     sf::SoundBuffer* getSound(const std::string & sound);
-    sf::Font* getFont(const std::string & font);
+    std::shared_ptr<sf::Font> getFont(const std::string & font);
 
 private:
-    std::map<std::string, sf::Texture> m_texture_map;
+    std::map<std::string, std::shared_ptr<sf::Texture>> m_texture_map;
     std::map<std::string, sf::SoundBuffer> m_sound_map;
-    std::map<std::string, sf::Font> m_font_map;
-
+    std::map<std::string, std::shared_ptr<sf::Font>> m_font_map;
 };
 
 #endif //JOJO_RUN_GAMERESOURCEMANAGER_H

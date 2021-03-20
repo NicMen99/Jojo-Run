@@ -13,10 +13,8 @@ Platform::Platform(std::string id) :
 }
 
 void Platform::init(const std::string& texture_name, sf::Vector2f speed) {
-    sf::Texture* texture = RM.getTexture(texture_name);
-    if(texture != nullptr){
-        m_sprite.setTexture(*texture);
-        m_speed = speed;
-    }
+    std::shared_ptr<sf::Texture> texture = RM.getTexture(texture_name);
+    m_sprite.setTexture(*texture);
+    m_speed = speed;
 }
 

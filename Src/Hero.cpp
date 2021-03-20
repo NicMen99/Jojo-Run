@@ -32,10 +32,10 @@ void Hero::init()
 }
 
 void Hero::init(const std::string &texture_name, int hp, int knives, int max_kinves, int max_health) {
-    sf::Texture* texture = RM.getTexture(texture_name);
-    if(texture != nullptr){
-        setTexture(*texture);
-    }
+    std::shared_ptr<sf::Texture> texture = RM.getTexture(texture_name);
+
+    setTexture(*texture);
+
     m_speed = GC.getSceneSpeed();
 
     update_health(hp);
