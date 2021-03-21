@@ -16,7 +16,7 @@ Platform::Platform(std::string id) :
 
 void Platform::init() {
 //    if(m_type == GameObjectType::XPlatform)
-    addTexture("DEFAULT", {"Platform1", false, {1.f, 1.f}, {0, 0, 0, 0}});
+    addTexture("DEFAULT", {"Platform1", {0, 0}, false, false});
     updateSprite("DEFAULT");
 }
 

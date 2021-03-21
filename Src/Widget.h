@@ -14,8 +14,9 @@
 
 struct WidgetTheme {
     std::string font_name;
-    unsigned int font_size;
-    sf::Color font_color;
+    unsigned int font_size = 20;
+    sf::Color font_color = sf::Color::White;
+    float font_outline_thinckness = 0;
 };
 
 

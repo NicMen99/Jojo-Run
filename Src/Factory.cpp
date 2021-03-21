@@ -2,6 +2,8 @@
 // Created by angiolo99 on 23/01/20.
 //
 
+#include <iostream>
+
 #include "Block.h"
 #include "FireWall.h"
 #include "EmeraldEnemy.h"
@@ -95,6 +97,7 @@ std::unique_ptr<GameObject> Factory::createBackground(GameObjectType type) {
     if(type == GameObjectType::Sky) {
         auto * bg = new Background("Sky");
         bg->init(GameObjectType::Sky);
+//        std::cout << "x:" << bg->getBounds().width << " y:" << bg->getBounds().height <<std::endl;
         return std::unique_ptr<GameObject>(bg);
     }
     else if(type == GameObjectType::City) {

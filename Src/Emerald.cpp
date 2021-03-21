@@ -8,7 +8,7 @@ Emerald::Emerald(const std::string& id) :
     Bullet(GameObjectType::EmeraldBullet, id) {}
 
 void Emerald::init() {
-    addTexture("DEFAULT", {"emeraldBlockTexture", false, {1.f,1.f}, {0,0,0,0}});
+    addTexture("DEFAULT", {"emeraldBlockTexture", {0,0}, false, false});
     setSpeed({0.f, 0.f});
     setDamage(150);
     updateSprite("DEFAULT");

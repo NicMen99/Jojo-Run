@@ -42,7 +42,8 @@ const KeyVal resource_table [] = {
         { "emeraldEnemyShout",     "Music/emeraldEnemyShout.wav"},
         { "hamonEnemyShout",       "Music/hamonEnemyShout.wav"},
 
-        { "arcadeclassic",         "Font/ARCADECLASSIC.TTF"}
+        { "arcadeclassic",         "Font/ARCADECLASSIC.TTF"},
+        { "gameover",              "Font/GAME_OVER.TTF"}
 };
 
 void GameConfig::init() {

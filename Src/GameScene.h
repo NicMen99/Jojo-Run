@@ -17,7 +17,7 @@ class GameScene
 {
 public:
     GameScene()=default;
-    virtual ~GameScene();
+    virtual ~GameScene() = default;
     void init();
 public:
     void update(int32_t delta_time);
@@ -29,7 +29,7 @@ public:
 
 private:
     static void destroyObjects(std::vector<std::unique_ptr<GameObject>> & items);
-    void createBackgorund();
+    void generateBackgorund();
     GameObject * createPlatform(sf::Vector2f position);
     void createObstacle(GameObjectType ot, sf::Vector2f position);
     void createEnemy(GameObjectType et, sf::Vector2f position);

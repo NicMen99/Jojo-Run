@@ -14,9 +14,9 @@
 
 struct texture_p {
     std::string name;
-    bool repeated;
-    sf::Vector2f scale;
-    sf::IntRect rect;
+    sf::Vector2u size;
+    bool hflip;
+    bool vflip;
 };
 
 enum class GameObjectGroup {

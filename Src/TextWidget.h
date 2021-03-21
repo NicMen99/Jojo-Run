@@ -16,6 +16,8 @@ public:
     void setFont(const std::string & font_name);
     void setCharacterSize(const unsigned int fontsize) { m_text.setCharacterSize(fontsize); }
     void setFillColor(const sf::Color & color) { m_text.setFillColor(color); }
+    void setOutlineThickness(float thickness) { m_text.setOutlineThickness(thickness); }
+    void setOutlineColor(const sf::Color & color) { m_text.setOutlineColor(color); }
     void setString(const std::string & text) { m_text.setString(text); }
     void observe(const std::string & key) { attach(key); }
     sf::Vector2f getSize();

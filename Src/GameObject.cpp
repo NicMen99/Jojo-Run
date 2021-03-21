@@ -46,14 +46,13 @@ void GameObject::updateSprite(const std::string & texture_name) {
     texture_p texture_parameters = m_texture_map[texture_name];
     if(m_active_texture != texture_parameters.name) {
         std::shared_ptr<sf::Texture> texture = RM.getTexture(texture_parameters.name);
-        texture->setRepeated(texture_parameters.repeated);
-        m_sprite.setScale(texture_parameters.scale);
-        if(texture_parameters.rect.width == 0 && texture_parameters.rect.height == 0)
-            m_sprite.setTexture(*texture, true);
-        else {
-            m_sprite.setTexture(*texture);
-            m_sprite.setTextureRect(texture_parameters.rect);
-        }
+        float scalex = texture_parameters.size.x == 0 ? 1.0f : (float)texture_parameters.size.x/texture->getSize().x;
+        if(texture_parameters.hflip) scalex = -scalex;
+        float scaley = texture_parameters.size.y == 0 ? 1.0f : (float)texture_parameters.size.y/texture->getSize().y;
+        if(texture_parameters.vflip) scaley = -scaley;
+        m_sprite.setTexture(*texture, true);
+        if(scalex!=1 || scaley!=1)
+            m_sprite.setScale(scalex, scaley);
         m_active_texture = texture_parameters.name;
     }
 }

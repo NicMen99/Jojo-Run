@@ -15,7 +15,7 @@ Enemy(GameObjectType::FireEnemy, id) {
 }
 
 void FireEnemy::init() {
-    addTexture("DEFAULT", {"fireEnemy", false, {-1.f, 1.f}, {0,0,0,0} });
+    addTexture("DEFAULT", {"fireEnemy", {0,0}, true, false });
     updateSprite("DEFAULT");
     m_sprite.setOrigin(+m_sprite.getTextureRect().width, 0);
     setDamage(90);

@@ -11,7 +11,7 @@ HamonEnemy::HamonEnemy(const std::string& id) :
 }
 
 void HamonEnemy::init() {
-    addTexture("DEFAULT", {"hamonEnemyTexture", false, {-1.f, 1.f}, {0,0,0,0} });
+    addTexture("DEFAULT", {"hamonEnemyTexture", {0, 0}, true, false });
     updateSprite("DEFAULT");
     m_sprite.setOrigin(+m_sprite.getTextureRect().width, 0);
     setDamage(90);

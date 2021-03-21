@@ -19,10 +19,10 @@ PlayState* PlayState::instance() {
 
 void PlayState::init() {
     m_music.openFromFile(GC.getAssetPath("soundTrack"));
-    GS.init();
 }
 
 void PlayState::onEnter() {
+    GS.init();
     m_music.play();
 }
 

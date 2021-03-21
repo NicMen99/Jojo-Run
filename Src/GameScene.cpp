@@ -16,7 +16,8 @@
 #include "ScoreHUD.h"
 
 
-GameScene::~GameScene() {
+void GameScene::init()
+{
     m_background1.clear();
     m_background2.clear();
     m_background3.clear();
@@ -25,11 +26,8 @@ GameScene::~GameScene() {
     m_obstacles.clear();
     m_enemies.clear();
     m_powerups.clear();
-}
-
-void GameScene::init()
-{
-    createBackgorund();
+    m_hero.reset();
+    m_scorehud.reset();
     createHero();
     createScoreHUD();
 }
@@ -52,6 +50,7 @@ void GameScene::update(int32_t delta_time) {
     /*
      * Map Generator
      */
+    generateBackgorund();
     generateMap();
 
     /*
@@ -137,7 +136,7 @@ void GameScene::render(sf::RenderWindow & window) {
 void GameScene::destroyObjects(std::vector<std::unique_ptr<GameObject>> & items) {
     for (auto it = items.begin(); it != items.end();) {
         if ((*it)->isDestroyed()) {
-            // std::cout << it->get()->getName() << std::endl;
+//            std::cout << it->get()->getName() << std::endl;
             it = items.erase(it);
         }
         else {
@@ -146,7 +145,7 @@ void GameScene::destroyObjects(std::vector<std::unique_ptr<GameObject>> & items)
     }
 }
 
-void GameScene::createBackgorund(){
+void GameScene::generateBackgorund(){
     if(m_background1.size() < 2) {
         if(m_background1.empty()) {
             auto bg = GF.createBackground(GameObjectType::Sky);
@@ -156,7 +155,7 @@ void GameScene::createBackgorund(){
         }
         auto bg = GF.createBackground(GameObjectType::Sky);
         bg->setSpeed({GC.getSceneSpeed().x*0.2f, 0.f});
-        bg->setPosition({m_background1.at(0)->getPosition().x, 0.f});
+        bg->setPosition({m_background1.at(0)->getBounds().width, 0.f});
         m_background1.emplace_back(std::move(bg));
     }
     if (m_background2.size() < 2) {
@@ -168,7 +167,7 @@ void GameScene::createBackgorund(){
         }
         auto bg = GF.createBackground(GameObjectType::City);
         bg->setSpeed({GC.getSceneSpeed().x*0.1f, 0.f});
-        bg->setPosition({m_background2.at(0)->getPosition().x, 0.f});
+        bg->setPosition({m_background2.at(0)->getBounds().width, 0.f});
         m_background2.emplace_back(std::move(bg));
     }
     if (m_background3.size() < 2) {
@@ -180,7 +179,7 @@ void GameScene::createBackgorund(){
         }
         auto bg = GF.createBackground(GameObjectType::SkyScrapers);
         bg->setSpeed({GC.getSceneSpeed().x*0.05f, 0.f});
-        bg->setPosition({m_background3.at(0)->getPosition().x, 0.f});
+        bg->setPosition({m_background3.at(0)->getBounds().width, 0.f});
         m_background3.emplace_back(std::move(bg));
     }
     if (m_background4.size() < 2) {
@@ -192,7 +191,7 @@ void GameScene::createBackgorund(){
         }
         auto bg = GF.createBackground(GameObjectType::Bridge);
         bg->setSpeed({0.f, 0.f});
-        bg->setPosition({m_background4.at(0)->getPosition().x, 0.f});
+        bg->setPosition({m_background4.at(0)->getBounds().width, 0.f});
         m_background4.emplace_back(std::move(bg));
     }
 }

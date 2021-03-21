@@ -9,7 +9,7 @@ Shield::Shield(std::string id) :
 }
 
 void Shield::init() {
-    addTexture("DEFAULT", {"shieldPowerUpTexture", false, {0.2f,0.2f}, {0,0,0,0}});
+    addTexture("DEFAULT", {"shieldPowerUpTexture", {39, 77}, false, false});
     setSpeed({0.f, 0.f});
     //setQuantity(100);
     updateSprite("DEFAULT");
