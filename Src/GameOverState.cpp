@@ -13,8 +13,7 @@ GameOverState* GameOverState::m_instance = nullptr;
 
 void GameOverState::init() {
     m_inputManager.init();
-    m_inputManager.registerKey(sf::Keyboard::Key::R);
-    m_inputManager.registerKey(sf::Keyboard::Key::Q);
+    m_inputManager.registerAll();
 
     /*
     sf::Vector2u window_size = GC.getWindowSize();
@@ -29,7 +28,7 @@ void GameOverState::init() {
 }
 
 void GameOverState::onEnter() {
-    m_scene.init();
+    createScreen();
 //    gameOverSound.play();
 //    m_context->gameMusic.stop();
 }
@@ -38,15 +37,39 @@ void GameOverState::onExit() {
 }
 
 void GameOverState::update(int32_t delta_time) {
-    m_scene.update(delta_time);
+    m_root->update(delta_time);
     m_inputManager.update();
 
-    if(m_inputManager.isKeyJustPressed(sf::Keyboard::Q)) {
-        exit(0);
+    if(m_action == Action::ShowRecords) {
+        if(m_inputManager.isKeyJustPressed(sf::Keyboard::Q)) {
+            exit(0);
+        }
+        else if(m_inputManager.isKeyJustPressed(sf::Keyboard::R)) {
+            changeState(State::Play);
+        }
     }
-    else if(m_inputManager.isKeyJustPressed(sf::Keyboard::R)) {
-        changeState(State::Play);
+    else if (m_action == Action::UserInput) {
+        sf::Keyboard::Key key = m_inputManager.getKeyJustPressed();
+        if(key >= sf::Keyboard::A && key <= sf::Keyboard::Z) {
+            std::string input_value = m_input->getString();
+            if(input_value.size() < 8) {
+                m_input->setString(input_value+static_cast<char>('A' + key));
+            }
+        }
+        else if (key >= sf::Keyboard::Num0 && key <= sf::Keyboard::Num9) {
+            std::string input_value = m_input->getString();
+            if(input_value.size() < 8) {
+                m_input->setString(input_value + static_cast<char>('0' + key));
+            }
+        }
+        else if (key == sf::Keyboard::Enter || key == sf::Keyboard::Escape) {
+            m_action = Action::ShowRecords;
+        }
+        else if (key == sf::Keyboard::BackSpace) {
+            m_input->setString("");
+        }
     }
+
 
     /*
     file.open("Score.txt", std::ios::out | std::ios::app);
@@ -69,7 +92,7 @@ void GameOverState::update(int32_t delta_time) {
 }
 
 void GameOverState::render(sf::RenderWindow &window) {
-    m_scene.render(window);
+    m_root->render(window);
 }
 
 GameOverState* GameOverState::instance() {
@@ -80,9 +103,7 @@ GameOverState* GameOverState::instance() {
     return m_instance;
 }
 
-/**/
-
-void GameOverScene::init() {
+void GameOverState::createScreen() {
 
     delete m_root;
 
@@ -100,33 +121,37 @@ void GameOverScene::init() {
     sf::Vector2f background_size = background->getSize();
     m_root->add(background);
 
-    auto * label = new TextWidget("label");
-    label->setString("G A M E   O V E R");
-    label->init(theme);
-    sf::Vector2f label_size = label->getSize();
-    label->setPosition({background_size.x/2 - label_size.x/2,100});
-    m_root->add(label);
+    auto * message = new TextWidget("Message");
+    message->setString("G A M E   O V E R");
+    message->init(theme);
+    sf::Vector2f label_size = message->getSize();
+    message->setPosition({background_size.x / 2 - label_size.x / 2, 100});
+    m_root->add(message);
 
-    auto * score = new TextWidget("label");
+    auto * score = new TextWidget("Score");
     score->setString("YOUR SCORE IS : " + std::to_string(STATS.getInt("SCORE")));
     score->init(theme);
-    sf::Vector2f score_size = score->getSize();
-    score->setPosition({background_size.x/2 - score_size.x/2,200});
+    score->setPosition({background_size.x / 2 - label_size.x / 2,300});
     m_root->add(score);
 
-    auto * menu = new TextWidget("label");
-    menu->setString("PRESS  [R]  TO START A NEW GAME\nPRESS  [Q] TO QUIT");
+    auto * input_label = new TextWidget("Input");
+    input_label->setString("ENTER YOUR NICKNAME : " );
+    input_label->init(theme);
+    input_label->setPosition({background_size.x / 2 - input_label->getSize().x / 2, 350});
+    m_root->add(input_label);
+
+    auto * input_value = new TextWidget("Value");
+    input_value->setString("");
+    input_value->init(theme);
+    input_value->setPosition({input_label->getSize().x, 0});
+    input_label->add(input_value);
+    m_input = input_value;
+
+    auto * menu = new TextWidget("Menu");
+    menu->setString("[ R ] ESTART A NEW GAME\n[ Q ] UIT");
     menu->init(theme);
     sf::Vector2f menu_size = menu->getSize();
     menu->setPosition({background_size.x/2 - menu_size.x/2,GC.getWindowSize().y-200.0f});
     m_root->add(menu);
-
 }
 
-void GameOverScene::update(int32_t delta_time) {
-    m_root->update(delta_time);
-}
-
-void GameOverScene::render(sf::RenderWindow & window) {
-    m_root->render(window);
-}

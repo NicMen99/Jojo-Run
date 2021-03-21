@@ -19,6 +19,7 @@ public:
     void setOutlineThickness(float thickness) { m_text.setOutlineThickness(thickness); }
     void setOutlineColor(const sf::Color & color) { m_text.setOutlineColor(color); }
     void setString(const std::string & text) { m_text.setString(text); }
+    std::string getString() const { return m_text.getString(); }
     void observe(const std::string & key) { attach(key); }
     sf::Vector2f getSize();
 

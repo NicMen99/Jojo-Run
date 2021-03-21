@@ -32,6 +32,11 @@ Widget * Widget::add(Widget *widget) {
 }
 
 Widget * Widget::findObjectByName(const std::string & name) {
+    if(name == m_name)
+        return this;
+    for (auto& widget : m_children)
+        if(widget->findObjectByName(name) != nullptr)
+            return widget;
     return nullptr;
 }
 

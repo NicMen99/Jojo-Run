@@ -28,7 +28,7 @@ private:
 
 class GameOverState: public AbsGameState{
 
-    enum class action {UserInput, ShowRecords};
+    enum class Action {UserInput, ShowRecords};
 
     static GameOverState* m_instance;
 public:
@@ -42,8 +42,13 @@ public:
     void render(sf::RenderWindow &window) override;
 
 private:
-    GameOverScene m_scene;
+    void createScreen();
+
+private:
+    Action m_action = Action::UserInput;
     InputManager  m_inputManager;
+    Widget * m_root = nullptr;
+    TextWidget * m_input = nullptr;
 };
 
 
