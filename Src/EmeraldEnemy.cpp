@@ -14,6 +14,14 @@ EmeraldEnemy::EmeraldEnemy(const std::string& id) :
 
 }
 
+void EmeraldEnemy::init() {
+    addTexture("DEFAULT", {"emeraldEnemyTexture", false, {-1.f, 1.f}, {0,0,0,0} });
+    updateSprite("DEFAULT");
+    m_sprite.setOrigin(+m_sprite.getTextureRect().width, 0);
+    setDamage(90);
+    addSound("EMERALDACTION", "emeraldEnemyShout");
+}
+
 void EmeraldEnemy::update(int32_t delta_time) {
     Enemy::update(delta_time);
     if(!isStarted()) {

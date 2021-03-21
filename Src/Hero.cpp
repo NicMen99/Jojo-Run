@@ -160,7 +160,7 @@ void Hero::collision(GameObject * collider)
     {
         if(collider->getType() == GameObjectType::Weapon) {
             auto * weapon = dynamic_cast<Weapon *>(collider);
-            updateKnives(weapon->collect());
+            updateKnives(weapon->getQuantity());
         }
         else if(collider->getType() == GameObjectType::Shield) {
             m_shield = true;

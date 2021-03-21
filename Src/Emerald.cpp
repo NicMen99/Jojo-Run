@@ -4,8 +4,15 @@
 
 #include "Emerald.h"
 
-Emerald::Emerald(std::string id) :
+Emerald::Emerald(const std::string& id) :
     Bullet(GameObjectType::EmeraldBullet, id) {}
+
+void Emerald::init() {
+    addTexture("DEFAULT", {"emeraldBlockTexture", false, {1.f,1.f}, {0,0,0,0}});
+    setSpeed({0.f, 0.f});
+    setDamage(150);
+    updateSprite("DEFAULT");
+}
 
 void Emerald::update(int32_t delta_time) {
     GameObject::update(delta_time);

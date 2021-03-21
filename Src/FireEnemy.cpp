@@ -10,9 +10,16 @@
 
 
 FireEnemy::FireEnemy(const std::string& id) :
-    Enemy(GameObjectType::FireEnemy, id)
-{
+Enemy(GameObjectType::FireEnemy, id) {
 
+}
+
+void FireEnemy::init() {
+    addTexture("DEFAULT", {"fireEnemy", false, {-1.f, 1.f}, {0,0,0,0} });
+    updateSprite("DEFAULT");
+    m_sprite.setOrigin(+m_sprite.getTextureRect().width, 0);
+    setDamage(90);
+    addSound("FIREACTION", "fireEnemyShout");
 }
 
 void FireEnemy::update(int32_t delta_time) {

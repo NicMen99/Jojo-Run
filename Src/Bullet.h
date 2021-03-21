@@ -9,13 +9,16 @@
 
 class Bullet: public GameObject {
 public:
-    Bullet(GameObjectType mtype, const std::string & name);
+    Bullet(GameObjectType mtype, const std::string & name) :
+     GameObject(GameObjectGroup::Bullet, mtype, name) {}
     ~Bullet() override = default;
-    void init(const std::string &texture_name, sf::Vector2f scale, sf::Vector2f speed, int damage);
-    int getDamage() const;
+
+public:
+    void setDamage(int damage) { m_damage = damage; }
+    int getDamage() const { return m_damage; };
 
 private:
-    int m_damage = 150;
+    int m_damage = 0;
 };
 
 

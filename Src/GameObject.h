@@ -33,11 +33,10 @@ enum class GameObjectType {
     FireEnemy, HamonEnemy, EmeraldEnemy,
     Weapon, Shield,
     Knife, FireBullet, EmeraldBullet,
-    Platform,
+    Platform, SPlatform, MPlatform, XPlatform,
     Hero,
-    Background,
-    Hud
-
+    Hud,
+    Background, Sky, City, SkyScrapers, Bridge
 };
 
 

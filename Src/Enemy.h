@@ -24,11 +24,12 @@ public:
     void collision(GameObject *collider) override;
 
 public:
+    void setDamage(int damage) { m_damage = damage; }
     int getDamage() const { return m_damage; };
 
 protected:
     State m_state = State::Alive;
-    int m_damage = 90;
+    int m_damage = 0;
     sf::Clock m_dyingTimer;
 
 };

@@ -11,12 +11,11 @@ class Weapon final : public PowerUp {
 public:
 
     explicit Weapon (std::string id);
-    ~Weapon() = default;
-
-    void collision(GameObject * collider) override;
+    ~Weapon() override = default;
+    void init();
 
 public:
-    int collect() const { return m_knives; }
+    void collision(GameObject * collider) override;
 
 private:
     int m_knives = 2;

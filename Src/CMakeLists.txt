@@ -7,7 +7,6 @@ target_sources(${TARGET}
         Block.h
         Block.cpp
         Bullet.h
-        Bullet.cpp
         EmeraldEnemy.h
         EmeraldEnemy.cpp
         Enemy.h
@@ -52,14 +51,12 @@ target_sources(${TARGET}
         Knife.cpp
         main.cpp
         Obstacle.h
-        Obstacle.cpp
         Observer.h
         Platform.h
         Platform.cpp
         PlayState.h
         PlayState.cpp
         PowerUp.h
-        PowerUp.cpp
         ScoreHUD.h
         ScoreHUD.cpp
         Shield.h

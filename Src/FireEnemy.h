@@ -12,6 +12,7 @@ class FireEnemy final : public Enemy
 public:
     explicit FireEnemy(const std::string& id);
     ~FireEnemy() override = default;
+    void init();
 
 private:
     void update(int32_t delta_time) override;
