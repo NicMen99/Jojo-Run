@@ -11,9 +11,9 @@
 class Block final: public Obstacle {
 
 public:
-    explicit Block(std::string id);
+    explicit Block(const std::string& id);
     ~Block() override = default;
-    void init(const std::string &texture_name, sf::Vector2f scale, sf::Vector2f speed);
+    void init();
 
     void collision(GameObject *collider) override;
 };

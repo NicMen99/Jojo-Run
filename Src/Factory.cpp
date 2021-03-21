@@ -13,18 +13,20 @@
 #include "Weapon.h"
 #include "Knife.h"
 #include "Platform.h"
+#include "Background.h"
+#include "GameConfig.h"
 
 #include "Factory.h"
 
 std::unique_ptr<GameObject> Factory::createObstacle(GameObjectType type) {
     if(type == GameObjectType::Block) {
         auto * obstacle = new Block("Block");
-        obstacle->init("blockTexture", {0.70, 0.70}, {0, 0});
+        obstacle->init();
         return std::unique_ptr<GameObject>(obstacle);
     }
     else if (type == GameObjectType::Wall) {
         auto * obstacle = new FireWall("FireWall");
-        obstacle->init("fireWallTexture", {1, 1}, {0,0});
+        obstacle->init();
         return std::unique_ptr<GameObject>(obstacle);
     }
     return nullptr;
@@ -33,17 +35,17 @@ std::unique_ptr<GameObject> Factory::createObstacle(GameObjectType type) {
 std::unique_ptr<GameObject> Factory::createEnemy(GameObjectType type) {
     if (type == GameObjectType::EmeraldEnemy){
         auto * enemy = new EmeraldEnemy("EmeraldEnemy");
-        enemy->init("emeraldEnemyTexture", {-1, 1}, {0, 0}, 90);
+        enemy->init();
         return std::unique_ptr<GameObject>(enemy);
     }
     else if (type == GameObjectType::HamonEnemy){
         auto * enemy =new HamonEnemy("HamonEnemy");
-        enemy->init("hamonEnemyTexture", {-1, 1}, {0, 0}, 90);
+        enemy->init();
         return std::unique_ptr<GameObject>(enemy);
     }
     else if (type == GameObjectType::FireEnemy){
         auto * enemy = new FireEnemy("FireEnemy");
-        enemy->init("fireEnemy", {-1, 1}, {0, 0}, 90);
+        enemy->init();
         return std::unique_ptr<GameObject>(enemy);
     }
     return nullptr;
@@ -52,11 +54,12 @@ std::unique_ptr<GameObject> Factory::createEnemy(GameObjectType type) {
 std::unique_ptr<GameObject> Factory::createPowerUp(GameObjectType type) {
     if (type == GameObjectType::Shield) {
         auto * powerUp = new Shield("Shield");
-        powerUp->init("shieldPowerUpTexture",{0.2, 0.2}, {-0.1, 0});
+        powerUp->init();
         return std::unique_ptr<GameObject>(powerUp);
-    } else if (type == GameObjectType::Weapon) {
+    }
+    else if (type == GameObjectType::Weapon) {
         auto * powerUp = new Weapon("Weapon");
-        powerUp->init("knifeTexture",{1, 1}, {-0.1, 0});
+        powerUp->init();
         return std::unique_ptr<GameObject>(powerUp);
     }
     return nullptr;
@@ -65,25 +68,49 @@ std::unique_ptr<GameObject> Factory::createPowerUp(GameObjectType type) {
 std::unique_ptr<GameObject> Factory::createBullet(GameObjectType type) {
     if (type == GameObjectType::Knife) {
         auto * knife = new Knife("Knife");
-        knife -> init("knifeTexture", {1,1}, {0.1, 0}, 100);
+        knife -> init();
         return std::unique_ptr<GameObject>(knife);
-    } else if (type == GameObjectType::EmeraldBullet) {
+    }
+    else if (type == GameObjectType::EmeraldBullet) {
         auto * emerald = new Emerald("Emerald");
-        emerald -> init("emeraldBlockTexture", {1,1}, {0.1, 0}, 150);
+        emerald -> init();
         return std::unique_ptr<GameObject>(emerald);
-    } else if (type == GameObjectType::FireBullet) {
+    }
+    else if (type == GameObjectType::FireBullet) {
         auto * fire = new Fire("Fire");
-        fire -> init("fireBlockTexture", {1,1}, {0.1, 0}, 50);
+        fire -> init();
         return std::unique_ptr<GameObject>(fire);
     }
     return nullptr;
 }
 
-std::unique_ptr<GameObject> Factory::createMap(PlatformType type) {
-    if (type == PlatformType::Large) {
-        auto * platform = new Platform("Platform");
-        platform->init("Platform1", sf::Vector2f {-0.1,0});
-        return std::unique_ptr<GameObject>(platform);
+std::unique_ptr<GameObject> Factory::createPlatform(GameObjectType type) {
+    auto * platform = new Platform("Platform");
+    platform->init();
+    return std::unique_ptr<GameObject>(platform);
+}
+
+std::unique_ptr<GameObject> Factory::createBackground(GameObjectType type) {
+    float speedx = GC.getSceneSpeed().x;
+    if(type == GameObjectType::Sky) {
+        auto * bg = new Background("Sky");
+        bg->init(GameObjectType::Sky);
+        return std::unique_ptr<GameObject>(bg);
+    }
+    else if(type == GameObjectType::City) {
+        auto * bg = new Background("City");
+        bg->init(GameObjectType::City);
+        return std::unique_ptr<GameObject>(bg);
+    }
+    else if(type == GameObjectType::SkyScrapers) {
+        auto * bg = new Background("SkyScrapers");
+        bg->init(GameObjectType::SkyScrapers);
+        return std::unique_ptr<GameObject>(bg);
+    }
+    else if(type == GameObjectType::Bridge) {
+        auto * bg = new Background("Bridge");
+        bg->init(GameObjectType::Bridge);
+        return std::unique_ptr<GameObject>(bg);
     }
     return nullptr;
 }

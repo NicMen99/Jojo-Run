@@ -13,6 +13,7 @@ class Knife final:  public Bullet
 public:
     explicit Knife (std::string id);
     ~Knife() override = default;
+    void init();
 
 private:
     void update(int32_t delta_time) override;

@@ -6,15 +6,15 @@
 #include "Block.h"
 
 
-Block::Block(std::string id) :
-    Obstacle(GameObjectType::Block, id)
-{
+Block::Block(const std::string& id) :
+    Obstacle(GameObjectType::Block, id) {
 
 }
 
-void Block::init(const std::string &texture_name, sf::Vector2f scale, sf::Vector2f speed) {
-    Obstacle::init(texture_name, scale, 70);
-    m_speed = speed;
+void Block::init() {
+    addTexture("DEFAULT", {"blockTexture", false, {0.70f, 0.70f}, {0, 0, 0, 0}});
+    setSpeed({0.f, 0.f});
+    setDamage(70);
 }
 
 void Block::collision(GameObject *collider) {

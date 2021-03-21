@@ -13,7 +13,7 @@ class EmeraldEnemy final : public Enemy
  public:
     explicit EmeraldEnemy(const std::string& id);
     ~EmeraldEnemy() override = default;
-
+    void init();
 
 private:
     void update(int32_t delta_time) override;

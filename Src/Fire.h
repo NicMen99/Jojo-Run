@@ -11,6 +11,7 @@ class Fire final: public Bullet{
 public:
     explicit Fire(std::string id);
     ~Fire() override = default;
+    void init();
 
 private:
     void update(int32_t delta_time) override;

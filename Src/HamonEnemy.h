@@ -10,9 +10,9 @@
 class HamonEnemy final: public Enemy
 {
 public:
-    explicit HamonEnemy(std::string id);
+    explicit HamonEnemy(const std::string& id);
     ~HamonEnemy() override = default;
-
+    void init();
 };
 
 #endif //JOJO_RUN_HAMONENEMY_H

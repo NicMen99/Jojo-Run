@@ -6,13 +6,15 @@
 #include "GameResourceManager.h"
 #include "FireWall.h"
 
-FireWall::FireWall(std::string id) :
-    Obstacle(GameObjectType::Wall, id)
-{
-
+FireWall::FireWall(const std::string& id) :
+    Obstacle(GameObjectType::Wall, id) {
 }
 
-void FireWall::init(const std::string &texture_name, sf::Vector2f scale, sf::Vector2f speed) {
-    Obstacle::init(texture_name, scale, 1);
-    m_speed = speed;
+void FireWall::init() {
+    addTexture("DEFAULT", {"fireWallTexture", false, {1.0f, 1.0f}, {0, 0, 0, 0}});
+    setSpeed({0.f, 0.f});
+    setDamage(10);
+}
+
+void FireWall::collision(GameObject *collider) {
 }

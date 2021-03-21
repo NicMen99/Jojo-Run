@@ -8,14 +8,13 @@
 #include <SFML/Graphics.hpp>
 #include "GameObject.h"
 
+
 class Platform : public GameObject {
 public:
-    explicit Platform(std::string id);
-    ~Platform() = default;
-    void init(const std::string& texture_name, sf::Vector2f speed);
+    Platform(std::string id);
+    ~Platform() override = default;
+    void init();
 
-private:
-    sf::Sprite m_sprite;
 };
 
 

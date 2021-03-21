@@ -10,9 +10,16 @@
 
 
 FireEnemy::FireEnemy(const std::string& id) :
-    Enemy(GameObjectType::FireEnemy, id)
-{
+Enemy(GameObjectType::FireEnemy, id) {
 
+}
+
+void FireEnemy::init() {
+    addTexture("DEFAULT", {"fireEnemy", false, {-1.f, 1.f}, {0,0,0,0} });
+    updateSprite("DEFAULT");
+    m_sprite.setOrigin(+m_sprite.getTextureRect().width, 0);
+    setDamage(90);
+    addSound("FIREACTION", "fireEnemyShout");
 }
 
 void FireEnemy::update(int32_t delta_time) {
@@ -26,6 +33,7 @@ void FireEnemy::update(int32_t delta_time) {
         bl->setPosition({getPosition()});
         bl->setSpeed(sf::Vector2f {m_speed.x - 1000.f, 0.f});
         GS.addItem(bl);
+        playSound("FIREACTION");
         m_shoot_left -= 1;
     }
     setStarted(true);}

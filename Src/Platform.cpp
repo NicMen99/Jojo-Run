@@ -6,17 +6,17 @@
 #include "GameResourceManager.h"
 #include "Platform.h"
 
+#include <utility>
+
 Platform::Platform(std::string id) :
-    GameObject(GameObjectGroup::Map, GameObjectType::Platform, id, m_sprite)
+    GameObject(GameObjectGroup::Map, GameObjectType::Platform, std::move(id))
 {
 
 }
 
-void Platform::init(const std::string& texture_name, sf::Vector2f speed) {
-    sf::Texture* texture = RM.getTexture(texture_name);
-    if(texture != nullptr){
-        m_sprite.setTexture(*texture);
-        m_speed = speed;
-    }
+void Platform::init() {
+//    if(m_type == GameObjectType::XPlatform)
+    addTexture("DEFAULT", {"Platform1", false, {1.f, 1.f}, {0, 0, 0, 0}});
+    updateSprite("DEFAULT");
 }
 

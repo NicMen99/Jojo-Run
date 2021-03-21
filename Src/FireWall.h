@@ -11,9 +11,11 @@
 class FireWall final : public Obstacle {
 
 public:
-    explicit FireWall (std::string id);
-    ~FireWall() = default;
-    void init(const std::string &texture_name, sf::Vector2f scale, sf::Vector2f speed);
+    explicit FireWall (const std::string& id);
+    ~FireWall() override = default;
+    void init();
+
+    void collision (GameObject * collider) override;
 };
 
 #endif //JOJO_RUN_FIREWALL_H
