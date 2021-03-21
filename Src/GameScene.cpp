@@ -17,7 +17,10 @@
 
 
 GameScene::~GameScene() {
-    m_backgrounds.clear();
+    m_background1.clear();
+    m_background2.clear();
+    m_background3.clear();
+    m_background4.clear();
     m_platforms.clear();
     m_obstacles.clear();
     m_enemies.clear();
@@ -36,12 +39,15 @@ void GameScene::update(int32_t delta_time) {
     if(m_loops++ % 60 == 0)
         STATS.addInt("SCORE", 1);
 
+    destroyObjects(m_background1);
+    destroyObjects(m_background2);
+    destroyObjects(m_background3);
+    destroyObjects(m_background4);
     destroyObjects(m_platforms);
     destroyObjects(m_obstacles);
     destroyObjects(m_enemies);
     destroyObjects(m_powerups);
     destroyObjects(m_bullets);
-
 
     /*
      * Map Generator
@@ -61,7 +67,16 @@ void GameScene::update(int32_t delta_time) {
     /*
      * Map Update
      * */
-    for (auto & it : m_backgrounds) {
+    for (auto & it : m_background1) {
+        it->update(delta_time);
+    }
+    for (auto & it : m_background2) {
+        it->update(delta_time);
+    }
+    for (auto & it : m_background3) {
+        it->update(delta_time);
+    }
+    for (auto & it : m_background4) {
         it->update(delta_time);
     }
     for (auto & it : m_platforms) {
@@ -88,7 +103,16 @@ void GameScene::update(int32_t delta_time) {
 }
 
 void GameScene::render(sf::RenderWindow & window) {
-    for (auto & it : m_backgrounds) {
+    for (auto & it : m_background1) {
+        it->render(window);
+    }
+    for (auto & it : m_background2) {
+        it->render(window);
+    }
+    for (auto & it : m_background3) {
+        it->render(window);
+    }
+    for (auto & it : m_background4) {
         it->render(window);
     }
     for (auto & it : m_platforms) {
@@ -123,19 +147,54 @@ void GameScene::destroyObjects(std::vector<std::unique_ptr<GameObject>> & items)
 }
 
 void GameScene::createBackgorund(){
-    float speedx = GC.getSceneSpeed().x;
-    auto * bg = new Background("Sky");
-    bg->init("BG", true, {7.4, 7.4}, {static_cast<float>(speedx*0.2),0});
-    m_backgrounds.push_back(std::unique_ptr<GameObject>(bg));
-    bg = new Background("City");
-    bg->init("Background1", true, {7.4, 7.4}, {static_cast<float>(speedx*0.1),0});
-    m_backgrounds.push_back(std::unique_ptr<GameObject>(bg));
-    bg = new Background("SkyScrapers");
-    bg->init("Foreground", true, {7.4, 7.4}, {static_cast<float>(speedx*0.05), 0});
-    m_backgrounds.push_back(std::unique_ptr<GameObject>(bg));
-    bg = new Background("Bridge");
-    bg->init("Middle", true, {7.4, 7.4}, {0, 0});
-    m_backgrounds.push_back(std::unique_ptr<GameObject>(bg));
+    if(m_background1.size() < 2) {
+        if(m_background1.empty()) {
+            auto bg = GF.createBackground(BackgroundTpe::Sky);
+            bg->setSpeed({GC.getSceneSpeed().x*0.2f, 0.f});
+            bg->setPosition({0.f, 0.f});
+            m_background1.emplace_back(std::move(bg));
+        }
+        auto bg = GF.createBackground(BackgroundTpe::Sky);
+        bg->setSpeed({GC.getSceneSpeed().x*0.2f, 0.f});
+        bg->setPosition({m_background1.at(0)->getPosition().x, 0.f});
+        m_background1.emplace_back(std::move(bg));
+    }
+    if (m_background2.size() < 2) {
+        if(m_background2.empty()) {
+            auto bg = GF.createBackground(BackgroundTpe::City);
+            bg->setSpeed({GC.getSceneSpeed().x*0.1f, 0.f});
+            bg->setPosition({0.f, 0.f});
+            m_background2.emplace_back(std::move(bg));
+        }
+        auto bg = GF.createBackground(BackgroundTpe::City);
+        bg->setSpeed({GC.getSceneSpeed().x*0.1f, 0.f});
+        bg->setPosition({m_background2.at(0)->getPosition().x, 0.f});
+        m_background2.emplace_back(std::move(bg));
+    }
+    if (m_background3.size() < 2) {
+        if(m_background3.empty()) {
+            auto bg = GF.createBackground(BackgroundTpe::SkyScrapers);
+            bg->setSpeed({GC.getSceneSpeed().x * 0.05f, 0.f});
+            bg->setPosition({0.f, 0.f});
+            m_background3.emplace_back(std::move(bg));
+        }
+        auto bg = GF.createBackground(BackgroundTpe::SkyScrapers);
+        bg->setSpeed({GC.getSceneSpeed().x*0.05f, 0.f});
+        bg->setPosition({m_background3.at(0)->getPosition().x, 0.f});
+        m_background3.emplace_back(std::move(bg));
+    }
+    if (m_background4.size() < 2) {
+        if(m_background4.empty()) {
+            auto bg = GF.createBackground(BackgroundTpe::Bridge);
+            bg->setSpeed({0.f, 0.f});
+            bg->setPosition({0.f, 0.f});
+            m_background4.emplace_back(std::move(bg));
+        }
+        auto bg = GF.createBackground(BackgroundTpe::Bridge);
+        bg->setSpeed({0.f, 0.f});
+        bg->setPosition({m_background4.at(0)->getPosition().x, 0.f});
+        m_background4.emplace_back(std::move(bg));
+    }
 }
 
 GameObject * GameScene::createPlatform(sf::Vector2f position) {

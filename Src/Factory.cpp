@@ -13,6 +13,8 @@
 #include "Weapon.h"
 #include "Knife.h"
 #include "Platform.h"
+#include "Background.h"
+#include "GameConfig.h"
 
 #include "Factory.h"
 
@@ -86,6 +88,31 @@ std::unique_ptr<GameObject> Factory::createMap(PlatformType type) {
         auto * platform = new Platform("Platform");
         platform->init("Platform1", sf::Vector2f {-0.1,0});
         return std::unique_ptr<GameObject>(platform);
+    }
+    return nullptr;
+}
+
+std::unique_ptr<GameObject> Factory::createBackground(BackgroundTpe type) {
+    float speedx = GC.getSceneSpeed().x;
+    if(type == BackgroundTpe::Sky) {
+        auto * bg = new Background("Sky");
+        bg->init("BG", true, {7.4, 7.4}, {(speedx*0.2f),0.f});
+        return std::unique_ptr<GameObject>(bg);
+    }
+    else if(type == BackgroundTpe::City) {
+        auto * bg = new Background("City");
+        bg->init("Background1", true, {7.4, 7.4}, {(speedx*0.1f),0.f});
+        return std::unique_ptr<GameObject>(bg);
+    }
+    else if(type == BackgroundTpe::SkyScrapers) {
+        auto * bg = new Background("SkyScrapers");
+        bg->init("Foreground", true, {7.4, 7.4}, {(speedx*0.05f), 0.f});
+        return std::unique_ptr<GameObject>(bg);
+    }
+    else if(type == BackgroundTpe::Bridge) {
+        auto * bg = new Background("Bridge");
+        bg->init("Middle", true, {7.4, 7.4}, {0, 0});
+        return std::unique_ptr<GameObject>(bg);
     }
     return nullptr;
 }

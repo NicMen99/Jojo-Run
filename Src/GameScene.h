@@ -41,7 +41,10 @@ private:
     void manageCollision();
 
 private:
-    std::vector<std::unique_ptr<GameObject>> m_backgrounds;
+    std::vector<std::unique_ptr<GameObject>> m_background1;
+    std::vector<std::unique_ptr<GameObject>> m_background2;
+    std::vector<std::unique_ptr<GameObject>> m_background3;
+    std::vector<std::unique_ptr<GameObject>> m_background4;
     std::vector<std::unique_ptr<GameObject>> m_platforms;
     std::vector<std::unique_ptr<GameObject>> m_obstacles;
     std::vector<std::unique_ptr<GameObject>> m_enemies;
