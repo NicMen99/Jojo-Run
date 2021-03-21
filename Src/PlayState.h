@@ -20,6 +20,7 @@ public:
 
 private:
     static PlayState* m_instance;
+    sf::Music m_music;
 };
 
 

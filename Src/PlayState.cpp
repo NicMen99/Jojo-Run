@@ -18,37 +18,16 @@ PlayState* PlayState::instance() {
 }
 
 void PlayState::init() {
+    m_music.openFromFile(GC.getAssetPath("soundTrack"));
     GS.init();
-
-    /*
-    fireEnemyBuffer.loadFromFile(GC.getAssetPath("fireEnemyShout"));
-    m_context->fireEnemySound.setBuffer(fireEnemyBuffer);
-    m_context->fireEnemySound.setVolume(21.f);
-
-    emeraldEnemyBuffer.loadFromFile(GC.getAssetPath("emeraldEnemyShout"));
-    m_context->emeraldEnemySound.setBuffer(emeraldEnemyBuffer);
-    m_context->emeraldEnemySound.setVolume(21.f);
-
-    hamonEnemyBuffer.loadFromFile(GC.getAssetPath("hamonEnemyShout"));
-    m_context->hamonEnemySound.setBuffer(hamonEnemyBuffer);
-    m_context->hamonEnemySound.setVolume(21.f);
-
-    // Loading Font
-    m_context->m_font.loadFromFile(GC.getAssetPath("arcadeclassic"));
-
-    m_context->gameMusic.openFromFile(GC.getAssetPath("soundTrack"));
-    m_context->gameMusic.setLoop(true);
-    m_context->gameMusic.setVolume(10.f);
-    */
 }
 
 void PlayState::onEnter() {
-    /*
-    m_context->gameMusic.play();
-     */
+    m_music.play();
 }
 
 void PlayState::onExit() {
+    m_music.stop();
 }
 
 void PlayState::update(int32_t delta_time) {
