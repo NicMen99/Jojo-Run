@@ -28,6 +28,8 @@ void GameScene::init()
     m_powerups.clear();
     m_hero.reset();
     m_scorehud.reset();
+    STATS.clear();
+
     createHero();
     createScoreHUD();
 }

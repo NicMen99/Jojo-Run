@@ -30,6 +30,7 @@ public:
 
 private:
     void createScreen();
+    void showScore();
     void saveScore();
     void updateInput();
 

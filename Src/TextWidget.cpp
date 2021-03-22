@@ -11,6 +11,9 @@ TextWidget::TextWidget(const std::string & name):
     Widget(name) {
 }
 
+TextWidget::~TextWidget() {
+}
+
 void TextWidget::init(const WidgetTheme & theme) {
     setFont(theme.font_name);
     setCharacterSize(theme.font_size);
@@ -35,17 +38,3 @@ sf::Vector2f TextWidget::getSize() {
     sf::FloatRect size = m_text.getGlobalBounds();
     return sf::Vector2f{size.width, size.height};
 }
-
-void TextWidget::event(const std::string & value) {
-    setString(value);
-}
-
-void TextWidget::attach(const std::string & key) {
-    STATS.subscribe(this, key);
-}
-
-void TextWidget::detach(const std::string & key) {
-    STATS.unsubscribe(this, key);
-}
-
-

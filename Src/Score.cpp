@@ -20,16 +20,19 @@ void Score::load() {
     while (std::getline(infile, line)) {
         std::istringstream iss(line);
         Score::Record record;
-        if (!(iss >> record.nickname
+        record.added = false;
+        std::string tmp;
+        if (!(iss >> tmp
+                  >> record.nickname
                   >> record.score )) {
-            break;
+            continue;
         }
         m_records.emplace_back(record);
     }
     sort();
 }
 
-void Score::add(const Score::Record &r) {
+void Score::add(const Score::Record & r) {
     m_records.emplace_back(r);
 }
 
@@ -40,17 +43,21 @@ void Score::save() {
     if(!outfile.is_open())
         return;
 
-    for(auto record : m_records) {
-        outfile << record.nickname
+    for(const auto& record : m_records) {
+        outfile << (record.added ? "*": "-")
+                << " "
+                << record.nickname
                 << " "
                 << record.score
                 << std::endl;
     }
 }
 
+std::vector<Score::Record> Score::get() {
+    return m_records;
+}
+
 void Score::sort() {
     std::sort(m_records.begin(), m_records.end(),
               [](Record const &l, Record const &r) { return l.score > r.score; });
 }
-
-

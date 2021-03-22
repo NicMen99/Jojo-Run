@@ -8,6 +8,7 @@
 #include <string>
 #include <list>
 #include "Observer.h"
+#include "Subject.h"
 
 #include "SFML/Graphics.hpp"
 
@@ -40,15 +41,21 @@ protected:
     sf::Vector2f getPosition() { return m_position; }
 
 private:
-    void event(const std::string & value) override {}
-    void attach(const std::string & value) override {};
-    void detach(const std::string & value) override {};
-
-private:
     std::string m_name;
     sf::Vector2f m_position = {0,0};
     Widget * m_parent = nullptr;
     std::list<Widget*> m_children;
+
+
+public:
+    void observe(Subject * observed, const std::string & item_name);
+
+private:
+    void event(const std::string & item_value) override {}
+    void attach(const std::string & item_name) override;
+    void detach(const std::string & item_name) override;
+    Subject * m_observed = nullptr;
+    std::string m_observed_value;
 };
 
 

@@ -11,34 +11,21 @@
 
 #include "Subject.h"
 
-class GameStatAbsItem : public Subject {
+class GameStats  : public Subject {
 public:
-    void notify() override;
-    void unsubscribe(Observer *o) override;
-    void subscribe(Observer *o) override;
-
-    void setValue(int value) { m_value = value; }
-    int getValue() const { return m_value; }
-
+    void unsubscribe(Observer * observer, const std::string & item_name) override;
+    void subscribe(Observer * observer, const std::string & item_name) override;
+    void notify(const std::string & item_name) override;
 private:
-    std::list<Observer*> m_observers;
-    int m_value;
-};
-
-class GameStats {
-
-    std::map<std::string, GameStatAbsItem> m_stats;
+    std::map<std::string, std::list<Observer*>> m_observers;
 
 public:
+    void clear();
     void setInt(const std::string & key, int value);
     int getInt(const std::string &key);
     void addInt(const std::string & key, int value);
-
-
-public:
-    void unsubscribe(Observer *o, const std::string & item_name);
-    void subscribe(Observer *o, const std::string & item_name);
-public:
+private:
+    std::map<std::string, int> m_stats;
 };
 
 

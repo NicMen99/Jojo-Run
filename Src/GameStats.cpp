@@ -5,40 +5,34 @@
 #include "GameStats.h"
 
 
-void GameStatAbsItem::notify() {
-    for (auto it = std::begin(m_observers); it != std::end(m_observers); it++)
-        (*it)->event(std::to_string(m_value));
+void GameStats::subscribe(Observer * observer, const std::string & item_name) {
+    m_observers[item_name].emplace_back(observer);
 }
 
-void GameStatAbsItem::unsubscribe(Observer *o) {
-    m_observers.remove(o);
+void GameStats::unsubscribe(Observer * observer, const std::string & item_name) {
+    m_observers[item_name].remove(observer);
 }
 
-void GameStatAbsItem::subscribe(Observer *o) {
-    m_observers.push_back(o);
+void GameStats::notify(const std::string & item_name) {
+    for (auto it = std::begin(m_observers[item_name]); it != std::end(m_observers[item_name]); it++)
+        (*it)->event(std::to_string(m_stats[item_name]));
 }
 
-void GameStats::setInt(const std::string & key, int value) {
-    m_stats[key].setValue(value);
-    m_stats[key].notify();
+void GameStats::clear() {
+    m_stats.clear();
+    m_observers.clear();
 }
 
-int GameStats::getInt(const std::string & key) {
-    return (int) m_stats[key].getValue();
+void GameStats::setInt(const std::string & item_name, int item_value) {
+    m_stats[item_name] = item_value;
+    notify(item_name);
 }
 
-void GameStats::addInt(const std::string & key, int value) {
-    int result = getInt(key);
-    result += value;
-    setInt(key, result);
+int GameStats::getInt(const std::string & item_name) {
+    return m_stats[item_name];
 }
 
-void GameStats::subscribe(Observer *o, const std::string & item_name) {
-    m_stats[item_name].subscribe(o);
+void GameStats::addInt(const std::string & item_name, int item_value) {
+    setInt(item_name, getInt(item_name) + item_value);
+    notify(item_name);
 }
-
-void GameStats::unsubscribe(Observer *o, const std::string & item_name) {
-    m_stats[item_name].unsubscribe(o);
-}
-
-

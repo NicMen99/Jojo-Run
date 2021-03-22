@@ -3,7 +3,7 @@
 //
 
 #include "Game.h"
-#include "GameObject.h"
+#include "GameStats.h"
 #include "Widget.h"
 #include "TextWidget.h"
 #include "ImageWidget.h"
@@ -19,8 +19,9 @@ ScoreHUD::ScoreHUD() :
 {
 }
 
-ScoreHUD::~ScoreHUD()
-{
+ScoreHUD::~ScoreHUD() {
+    delete m_score;
+    delete m_hero_status;
 }
 
 void ScoreHUD::init() {
@@ -48,7 +49,7 @@ void ScoreHUD::init() {
     score_value->init(theme);
     score_value->setPosition(sf::Vector2f{score_label->getSize().x, 0});
     score_value->setString("");
-    score_value->observe("SCORE");
+    score_value->observe(&STATS, "SCORE");
     score_label->add(score_value);
 
     m_hero_status = new Widget("hero_stat");
@@ -64,7 +65,7 @@ void ScoreHUD::init() {
     healthPoints_value->init(theme);
     healthPoints_value->setPosition(sf::Vector2f{healthPoints_label->getSize().x, 0});
     healthPoints_value->setString("");
-    healthPoints_value->observe("HEALTH");
+    healthPoints_value->observe(&STATS,"HEALTH");
     healthPoints_label->add(healthPoints_value);
 
     auto knives_label = new TextWidget("Knives_label");
@@ -77,7 +78,7 @@ void ScoreHUD::init() {
     knives_value->init(theme);
     knives_value->setPosition(sf::Vector2f{knives_label->getSize().x, 0});
     knives_value->setString("");
-    knives_value->observe("KNIVES");
+    knives_value->observe(&STATS,"KNIVES");
     knives_label->add(knives_value);
 
 }
