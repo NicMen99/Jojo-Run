@@ -52,8 +52,8 @@ public:
 
 private:
     void event(const std::string & item_value) override {}
-    void attach(const std::string & item_name) override;
-    void detach(const std::string & item_name) override;
+    void attach() override;
+    void detach() override;
     Subject * m_observed = nullptr;
     std::string m_observed_value;
 };

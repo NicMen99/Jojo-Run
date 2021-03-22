@@ -49,8 +49,8 @@ void ScoreHUD::init() {
     score_value->init(theme);
     score_value->setPosition(sf::Vector2f{score_label->getSize().x, 0});
     score_value->setString("");
-    score_value->observe(&STATS, "SCORE");
     score_label->add(score_value);
+    score_value->observe(&STATS, "SCORE");
 
     m_hero_status = new Widget("hero_stat");
     m_hero_status->setPosition({1350,30});
@@ -65,8 +65,8 @@ void ScoreHUD::init() {
     healthPoints_value->init(theme);
     healthPoints_value->setPosition(sf::Vector2f{healthPoints_label->getSize().x, 0});
     healthPoints_value->setString("");
-    healthPoints_value->observe(&STATS,"HEALTH");
     healthPoints_label->add(healthPoints_value);
+    healthPoints_value->observe(&STATS,"HEALTH");
 
     auto knives_label = new TextWidget("Knives_label");
     knives_label->init(theme);
@@ -78,8 +78,8 @@ void ScoreHUD::init() {
     knives_value->init(theme);
     knives_value->setPosition(sf::Vector2f{knives_label->getSize().x, 0});
     knives_value->setString("");
-    knives_value->observe(&STATS,"KNIVES");
     knives_label->add(knives_value);
+    knives_value->observe(&STATS,"KNIVES");
 
 }
 

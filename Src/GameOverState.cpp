@@ -173,12 +173,7 @@ void GameOverState::showScore() {
 void GameOverState::saveScore() {
     m_score.load();
     if(!m_input->getString().empty()) {
-        Score::Record r = {
-                true,
-                m_input->getString(),
-                STATS.getInt("SCORE")
-                };
-        m_score.add(r);
+        m_score.add(m_input->getString(), STATS.getInt("SCORE"));
         m_score.save();
     }
 }
@@ -188,13 +183,13 @@ void GameOverState::updateInput() {
     if(key >= sf::Keyboard::A && key <= sf::Keyboard::Z) {
         std::string input_value = m_input->getString();
         if(input_value.size() < 8) {
-            m_input->setString(input_value+static_cast<char>('A' + key));
+            m_input->setString(input_value + static_cast<char>('A' + key - sf::Keyboard::A));
         }
     }
     else if (key >= sf::Keyboard::Num0 && key <= sf::Keyboard::Num9) {
         std::string input_value = m_input->getString();
         if(input_value.size() < 8) {
-            m_input->setString(input_value + static_cast<char>('0' + key));
+            m_input->setString(input_value + static_cast<char>('0' + key - sf::Keyboard::Num0));
         }
     }
     else if (key == sf::Keyboard::BackSpace || key == sf::Keyboard::Escape) {

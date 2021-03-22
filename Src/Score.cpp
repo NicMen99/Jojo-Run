@@ -17,14 +17,14 @@ void Score::load() {
         return;
 
     std::string line;
+    std::string tmp;
     while (std::getline(infile, line)) {
         std::istringstream iss(line);
         Score::Record record;
         record.added = false;
-        std::string tmp;
-        if (!(iss >> tmp
+        if (!(iss >> tmp //discard first field
                   >> record.nickname
-                  >> record.score )) {
+                  >> record.score)) {
             continue;
         }
         m_records.emplace_back(record);
@@ -32,7 +32,11 @@ void Score::load() {
     sort();
 }
 
-void Score::add(const Score::Record & r) {
+void Score::add(const std::string & nickname, int score) {
+    Record r;
+    r.added = true;
+    r.nickname = nickname;
+    r.score = score;
     m_records.emplace_back(r);
 }
 

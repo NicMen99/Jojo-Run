@@ -11,19 +11,16 @@
 
 class Score {
 
-public:
-
     struct Record {
         bool        added;
         std::string nickname;
         int         score;
-
     };
 
+public:
     void load();
-    void add(const Record & r);
+    void add(const std::string & nickname, int score);
     void save();
-
     std::vector<Score::Record> get();
 
 private:
