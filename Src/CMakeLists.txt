@@ -57,6 +57,8 @@ target_sources(${TARGET}
         PlayState.h
         PlayState.cpp
         PowerUp.h
+        Score.h
+        Score.cpp
         ScoreHUD.h
         ScoreHUD.cpp
         Shield.h

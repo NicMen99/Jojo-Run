@@ -10,21 +10,8 @@
 #include "ImageWidget.h"
 #include "TextWidget.h"
 #include "InputManager.h"
+#include "Score.h"
 #include "AbsGameState.h"
-
-class GameOverScene {
-public:
-    GameOverScene() = default;
-    virtual ~GameOverScene() = default;
-    void init();
-
-public:
-    void update(int32_t delta_time);
-    void render(sf::RenderWindow & window);
-
-private:
-    Widget * m_root = nullptr;
-};
 
 class GameOverState: public AbsGameState{
 
@@ -43,10 +30,13 @@ public:
 
 private:
     void createScreen();
+    void saveScore();
+    void updateInput();
 
 private:
     Action m_action = Action::UserInput;
     InputManager  m_inputManager;
+    Score m_score;
     Widget * m_root = nullptr;
     TextWidget * m_input = nullptr;
 };

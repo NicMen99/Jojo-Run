@@ -10,27 +10,35 @@
 
 GameOverState* GameOverState::m_instance = nullptr;
 
+void GameOverState::render(sf::RenderWindow &window) {
+    m_root->render(window);
+}
+
+GameOverState* GameOverState::instance() {
+    if(nullptr == m_instance){
+        m_instance = new GameOverState;
+        m_instance->init();
+    }
+    return m_instance;
+}
+
 
 void GameOverState::init() {
-    m_inputManager.init();
-    m_inputManager.registerAll();
-
     /*
     sf::Vector2u window_size = GC.getWindowSize();
     gameOverBuffer.loadFromFile(GC.getAssetPath("gameOverSound"));
     gameOverSound.setBuffer(gameOverBuffer);
     gameOverSound.setVolume(10.f);
-
-    gameOverTexture.loadFromFile(GC.getAssetPath("GameOverScreen"));
-    gameOver.setTextureRect(sf::IntRect(0,0,window_size.x, window_size.y));
-    gameOver.setTexture(gameOverTexture);
-     */
+    */
 }
 
 void GameOverState::onEnter() {
     createScreen();
+    m_inputManager.init();
+    m_inputManager.registerAll();
+    m_score.load();
+    m_action = Action::UserInput;
 //    gameOverSound.play();
-//    m_context->gameMusic.stop();
 }
 
 void GameOverState::onExit() {
@@ -49,27 +57,15 @@ void GameOverState::update(int32_t delta_time) {
         }
     }
     else if (m_action == Action::UserInput) {
-        sf::Keyboard::Key key = m_inputManager.getKeyJustPressed();
-        if(key >= sf::Keyboard::A && key <= sf::Keyboard::Z) {
-            std::string input_value = m_input->getString();
-            if(input_value.size() < 8) {
-                m_input->setString(input_value+static_cast<char>('A' + key));
-            }
-        }
-        else if (key >= sf::Keyboard::Num0 && key <= sf::Keyboard::Num9) {
-            std::string input_value = m_input->getString();
-            if(input_value.size() < 8) {
-                m_input->setString(input_value + static_cast<char>('0' + key));
-            }
-        }
-        else if (key == sf::Keyboard::Enter || key == sf::Keyboard::Escape) {
+        updateInput();
+        if(m_inputManager.isKeyJustPressed(sf::Keyboard::Enter)) {
+            saveScore();
             m_action = Action::ShowRecords;
         }
-        else if (key == sf::Keyboard::BackSpace) {
-            m_input->setString("");
+        else if(m_inputManager.isKeyJustPressed(sf::Keyboard::Escape)) {
+            m_action = Action::ShowRecords;
         }
     }
-
 
     /*
     file.open("Score.txt", std::ios::out | std::ios::app);
@@ -91,17 +87,7 @@ void GameOverState::update(int32_t delta_time) {
     */
 }
 
-void GameOverState::render(sf::RenderWindow &window) {
-    m_root->render(window);
-}
 
-GameOverState* GameOverState::instance() {
-    if(nullptr == m_instance){
-        m_instance = new GameOverState;
-        m_instance->init();
-    }
-    return m_instance;
-}
 
 void GameOverState::createScreen() {
 
@@ -155,3 +141,32 @@ void GameOverState::createScreen() {
     m_root->add(menu);
 }
 
+void GameOverState::saveScore() {
+    m_score.load();
+    if(!m_input->getString().empty()) {
+        Score::Record r = {
+                m_input->getString(),
+                STATS.getInt("SCORE")};
+        m_score.add(r);
+        m_score.save();
+    }
+}
+
+void GameOverState::updateInput() {
+    sf::Keyboard::Key key = m_inputManager.getKeyJustPressed();
+    if(key >= sf::Keyboard::A && key <= sf::Keyboard::Z) {
+        std::string input_value = m_input->getString();
+        if(input_value.size() < 8) {
+            m_input->setString(input_value+static_cast<char>('A' + key));
+        }
+    }
+    else if (key >= sf::Keyboard::Num0 && key <= sf::Keyboard::Num9) {
+        std::string input_value = m_input->getString();
+        if(input_value.size() < 8) {
+            m_input->setString(input_value + static_cast<char>('0' + key));
+        }
+    }
+    else if (key == sf::Keyboard::BackSpace || key == sf::Keyboard::Escape) {
+        m_input->setString("");
+    }
+}
