@@ -100,14 +100,14 @@ class ParamIteratorInterface {
   // Advances iterator to point to the next element
   // provided by the generator. The caller is responsible
   // for not calling Advance() on an iterator equal to
-  // BaseGenerator()->End().
+  // BaseGenerator()->GameOver().
   virtual void Advance() = 0;
   // Clones the iterator object. Used for implementing copy semantics
   // of ParamIterator<T>.
   virtual ParamIteratorInterface* Clone() const = 0;
   // Dereferences the current iterator and provides (read-only) access
   // to the pointed value. It is the caller's responsibility not to call
-  // Current() on an iterator equal to BaseGenerator()->End().
+  // Current() on an iterator equal to BaseGenerator()->GameOver().
   // Used for implementing ParamGenerator<T>::operator*().
   virtual const T* Current() const = 0;
   // Determines whether the given iterator and other point to the same

@@ -61,6 +61,8 @@ target_sources(${TARGET}
         Score.cpp
         ScoreHUD.h
         ScoreHUD.cpp
+        ShapeWidget.h
+        ShapeWidget.cpp
         Shield.h
         Shield.cpp
         Subject.h

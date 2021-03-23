@@ -10,10 +10,6 @@
 
 GameOverState* GameOverState::m_instance = nullptr;
 
-void GameOverState::render(sf::RenderWindow &window) {
-    m_root->render(window);
-}
-
 GameOverState* GameOverState::instance() {
     if(nullptr == m_instance){
         m_instance = new GameOverState;
@@ -22,14 +18,7 @@ GameOverState* GameOverState::instance() {
     return m_instance;
 }
 
-
 void GameOverState::init() {
-    /*
-    sf::Vector2u window_size = GC.getWindowSize();
-    gameOverBuffer.loadFromFile(GC.getAssetPath("gameOverSound"));
-    gameOverSound.setBuffer(gameOverBuffer);
-    gameOverSound.setVolume(10.f);
-    */
 }
 
 void GameOverState::onEnter() {
@@ -38,7 +27,6 @@ void GameOverState::onEnter() {
     m_inputManager.registerAll();
     m_score.load();
     m_action = Action::UserInput;
-//    gameOverSound.play();
 }
 
 void GameOverState::onExit() {
@@ -69,6 +57,12 @@ void GameOverState::update(int32_t delta_time) {
         }
     }
 }
+
+void GameOverState::render(sf::RenderWindow &window) {
+    m_root->render(window);
+}
+
+/**/
 
 void GameOverState::createScreen() {
 
@@ -178,17 +172,18 @@ void GameOverState::saveScore() {
     }
 }
 
+static const int MAX_NAME_SIZE = 16;
 void GameOverState::updateInput() {
     sf::Keyboard::Key key = m_inputManager.getKeyJustPressed();
     if(key >= sf::Keyboard::A && key <= sf::Keyboard::Z) {
         std::string input_value = m_input->getString();
-        if(input_value.size() < 8) {
+        if(input_value.size() < MAX_NAME_SIZE) {
             m_input->setString(input_value + static_cast<char>('A' + key - sf::Keyboard::A));
         }
     }
     else if (key >= sf::Keyboard::Num0 && key <= sf::Keyboard::Num9) {
         std::string input_value = m_input->getString();
-        if(input_value.size() < 8) {
+        if(input_value.size() < MAX_NAME_SIZE) {
             m_input->setString(input_value + static_cast<char>('0' + key - sf::Keyboard::Num0));
         }
     }

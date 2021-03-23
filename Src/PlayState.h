@@ -5,9 +5,20 @@
 #ifndef JOJO_RUN_PLAYSTATE_H
 #define JOJO_RUN_PLAYSTATE_H
 
+#include "InputManager.h"
+#include "TextWidget.h"
+#include "ShapeWidget.h"
+
 #include "AbsGameState.h"
 
 class PlayState: public AbsGameState{
+
+    enum Action {Play, Pause};
+
+    static PlayState* m_instance;
+public:
+    static PlayState* instance();
+
 public:
     void init() override;
     void onEnter() override;
@@ -15,12 +26,14 @@ public:
     void update(int32_t delta_time) override;
     void render(sf::RenderWindow &window) override;
 
-public:
-    static PlayState* instance();
+private:
+    void createOverlay();
 
 private:
-    static PlayState* m_instance;
-    sf::Music m_music;
+    Action m_action = Action::Play;
+    InputManager  m_inputManager;
+    sf::Music m_music{};
+    Widget * m_root = nullptr;
 };
 
 

@@ -2026,7 +2026,7 @@ You may append more than one listener to the list. When an `On*Start()` or
 `OnTestPartResult()` event is fired, the listeners will receive it in the order
 they appear in the list (since new listeners are added to the end of the list,
 the default text printer and the default XML generator will receive the event
-first). An `On*End()` event will be received by the listeners in the *reverse*
+first). An `On*GameOver()` event will be received by the listeners in the *reverse*
 order. This allows output by listeners added later to be framed by output from
 listeners added earlier.
 

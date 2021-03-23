@@ -24,7 +24,7 @@ Game* Game::instance() {
 }
 
 Game::Game():
-    m_gameMachine(new GameStateMachine(this, State::Init)),
+    m_gameMachine(new GameStateMachine(State::Init)),
     m_gameConfig(*new GameConfig()),
     m_resourceManager(*new GameResourceManager()),
     m_factory(*new Factory()),

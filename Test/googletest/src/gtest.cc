@@ -3642,7 +3642,7 @@ void PrettyUnitTestResultPrinter::OnTestIterationEnd(const UnitTest& unit_test,
   fflush(stdout);
 }
 
-// End PrettyUnitTestResultPrinter
+// GameOver PrettyUnitTestResultPrinter
 
 // This class implements the TestEventListener interface.
 //
@@ -3746,7 +3746,7 @@ void BriefUnitTestResultPrinter::OnTestIterationEnd(const UnitTest& unit_test,
   fflush(stdout);
 }
 
-// End BriefUnitTestResultPrinter
+// GameOver BriefUnitTestResultPrinter
 
 // class TestEventRepeater
 //
@@ -3876,7 +3876,7 @@ void TestEventRepeater::OnTestIterationEnd(const UnitTest& unit_test,
   }
 }
 
-// End TestEventRepeater
+// GameOver TestEventRepeater
 
 // This class generates an XML output file.
 class XmlUnitTestResultPrinter : public EmptyTestEventListener {
@@ -4342,7 +4342,7 @@ void XmlUnitTestResultPrinter::OutputXmlTestProperties(
   *stream << "</" << kProperties << ">\n";
 }
 
-// End XmlUnitTestResultPrinter
+// GameOver XmlUnitTestResultPrinter
 
 // This class generates an JSON output file.
 class JsonUnitTestResultPrinter : public EmptyTestEventListener {
@@ -4717,7 +4717,7 @@ std::string JsonUnitTestResultPrinter::TestPropertiesAsJson(
   return attributes.GetString();
 }
 
-// End JsonUnitTestResultPrinter
+// GameOver JsonUnitTestResultPrinter
 
 #if GTEST_CAN_STREAM_RESULTS_
 
@@ -4786,7 +4786,7 @@ void StreamingListener::SocketWriter::MakeConnection() {
   }
 }
 
-// End of class Streaming Listener
+// GameOver of class Streaming Listener
 #endif  // GTEST_CAN_STREAM_RESULTS__
 
 // class OsStackTraceGetter

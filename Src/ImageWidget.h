@@ -14,7 +14,6 @@ public:
     void init(const WidgetTheme & theme);
 
     void setTexture(const std::string & texture_name, const sf::Vector2u & texture_size = {0, 0});
-
     sf::Vector2f getSize() const;
 
 protected:
