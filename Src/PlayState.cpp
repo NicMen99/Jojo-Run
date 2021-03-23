@@ -75,7 +75,7 @@ void PlayState::createOverlay() {
 
     auto * overlay = new ShapeWidget("Overlay");
     overlay->init(theme);
-    overlay->SetFillColor(sf::Color(255,255,255,100));
+    overlay->setFillColor(sf::Color(255, 255, 255, 100));
     overlay->setSize(static_cast<sf::Vector2f>(GC.getWindowSize()));
     sf::Vector2f overlay_size = overlay->getSize();
     m_root->add(overlay);

@@ -50,6 +50,8 @@ target_sources(${TARGET}
         Knife.h
         Knife.cpp
         main.cpp
+        MenuState.h
+        MenuState.cpp
         Obstacle.h
         Observer.h
         Platform.h

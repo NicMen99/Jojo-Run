@@ -19,6 +19,7 @@ GameOverState* GameOverState::instance() {
 }
 
 void GameOverState::init() {
+    // m_music.openFromFile(GC.getAssetPath(""));
 }
 
 void GameOverState::onEnter() {
@@ -124,9 +125,10 @@ void GameOverState::showScore() {
     menu->setPosition({GC.getWindowSize().x/2.f - menu_size.x/2.f,GC.getWindowSize().y-200.0f});
     m_root->add(menu);
 
-    auto * topfive = new ImageWidget("TopFive");
+    auto * topfive = new ShapeWidget("TopFive");
     topfive->init(theme);
-    topfive->setTexture("GameOverScreen", {GC.getWindowSize().x-200,400});
+    topfive->setSize({GC.getWindowSize().x-200.f,400.f});
+    topfive->setFillColor(sf::Color(255, 255, 0, 64));
     topfive->setPosition({100,400});
     m_root->add(topfive);
 

@@ -1,9 +1,9 @@
 //
-// Created by Niccolo on 15/02/2021.
+// Created by Niccolo on 23/03/2021.
 //
 
-#ifndef JOJO_RUN_PLAYSTATE_H
-#define JOJO_RUN_PLAYSTATE_H
+#ifndef JOJO_RUN_MENUSTATE_H
+#define JOJO_RUN_MENUSTATE_H
 
 #include <SFML/Audio/Music.hpp>
 
@@ -14,13 +14,13 @@
 
 #include "AbsGameState.h"
 
-class PlayState: public AbsGameState{
+class MenuState: public AbsGameState {
 
-    enum Action {Play, Pause};
+    enum Action {MainMenu, Credits };
 
-    static PlayState* m_instance;
+    static MenuState* m_instance;
 public:
-    static PlayState* instance();
+    static MenuState* instance();
 
 public:
     void init() override;
@@ -30,14 +30,15 @@ public:
     void render(sf::RenderWindow &window) override;
 
 private:
-    void createOverlay();
+    void createMenuScreen();
+    void createCreditScreen();
 
 private:
-    Action       m_action = Action::Play;
+    Action       m_action = Action::MainMenu;
     InputManager m_inputManager;
     sf::Music    m_music{};
     Widget *     m_root = nullptr;
 };
 
 
-#endif //JOJO_RUN_PLAYSTATE_H
+#endif //JOJO_RUN_MENUSTATE_H

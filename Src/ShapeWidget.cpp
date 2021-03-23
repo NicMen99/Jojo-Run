@@ -20,7 +20,7 @@ void ShapeWidget::_render(sf::RenderWindow &window, const sf::Vector2f &parent_p
     window.draw(m_shape);
 }
 
-void ShapeWidget::SetFillColor(const sf::Color & color) {
+void ShapeWidget::setFillColor(const sf::Color & color) {
     m_shape.setFillColor(color);
 }
 

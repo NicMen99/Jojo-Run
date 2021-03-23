@@ -6,11 +6,13 @@
 #define JOJO_RUN_GAMEOVERSTATE_H
 
 #include <SFML/Audio.hpp>
-#include <SFML/Graphics.hpp>
+
 #include "ImageWidget.h"
 #include "TextWidget.h"
+#include "ShapeWidget.h"
 #include "InputManager.h"
 #include "Score.h"
+
 #include "AbsGameState.h"
 
 class GameOverState: public AbsGameState{
@@ -35,10 +37,11 @@ private:
     void updateInput();
 
 private:
-    Action m_action = Action::UserInput;
-    InputManager  m_inputManager;
-    Score m_score;
-    Widget * m_root = nullptr;
+    Action       m_action = Action::UserInput;
+    InputManager m_inputManager;
+    Score        m_score;
+    sf::Music    m_music{};
+    Widget *     m_root = nullptr;
     TextWidget * m_input = nullptr;
 };
 

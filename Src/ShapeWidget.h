@@ -14,7 +14,7 @@ public:
     ~ShapeWidget() override = default;
     void init(const WidgetTheme & theme);
 
-    void SetFillColor(const sf::Color & color);
+    void setFillColor(const sf::Color & color);
     void setSize(sf::Vector2f size);
 
     sf::Vector2f getSize() const;

@@ -5,6 +5,7 @@
 #include "Game.h"
 #include "AbsGameState.h"
 #include "InitState.h"
+#include "MenuState.h"
 #include "PlayState.h"
 #include "GameOverState.h"
 
@@ -32,6 +33,7 @@ AbsGameState* AbsGameState::getCurrentState() {
         case State::Init:
             return InitState::instance();
         case State::Menu:
+            return MenuState::instance();
             break;
         case State::Play:
             return PlayState::instance();
