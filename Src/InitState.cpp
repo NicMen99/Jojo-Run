@@ -15,5 +15,5 @@ InitState* InitState::instance() {
 }
 
 void InitState::onEnter() {
-    changeState(State::Play);
+    changeState(State::Menu);
 }

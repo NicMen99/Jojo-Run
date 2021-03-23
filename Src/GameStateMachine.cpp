@@ -5,8 +5,7 @@
 #include "GameStateMachine.h"
 
 
-GameStateMachine::GameStateMachine(Game* pContext, State initialState) {
-    setContext(pContext);
+GameStateMachine::GameStateMachine(State initialState) {
     changeState(initialState);
 }
 

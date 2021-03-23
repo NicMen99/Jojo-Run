@@ -9,6 +9,7 @@
 #include <map>
 #include <list>
 #include <SFML/Graphics.hpp>
+#include "GameObject.h"
 
 class Widget;
 

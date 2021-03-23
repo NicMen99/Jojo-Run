@@ -22,14 +22,19 @@ void ImageWidget::_render(sf::RenderWindow &window, const sf::Vector2f &parent_p
     window.draw(m_image);
 }
 
-void ImageWidget::setTexture(const std::string & texture_name) {
+void ImageWidget::setTexture(const std::string & texture_name, const sf::Vector2u & texture_size) {
     auto t = RM.getTexture(texture_name);
-    if(t != nullptr)
+    if(texture_size.x == 0 && texture_size.y ==0) {
+        m_image.setTexture(*t, true);
+    }
+    else {
         m_image.setTexture(*t);
+        m_image.setScale((float)texture_size.x / t->getSize().x, (float)texture_size.y / t->getSize().y);
+    }
 }
 
-sf::Vector2f ImageWidget::getSize() {
-    sf::FloatRect size = m_image.getLocalBounds();
+sf::Vector2f ImageWidget::getSize() const {
+    sf::FloatRect size = m_image.getGlobalBounds();
     return sf::Vector2f{size.width, size.height};
 }
 

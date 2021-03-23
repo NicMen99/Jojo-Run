@@ -11,11 +11,9 @@ class Game;
 enum class State{
     None,
     Init,
-    Splash,
     Menu,
     Play,
-    Pause,
-    Over};
+    GameOver};
 
 
 class AbsGameState {
@@ -34,8 +32,6 @@ protected:
     virtual void onEnter() {}
     virtual void onExit() {}
 
-protected:
-    static Game * m_context;
 private:
     static State m_currentState;
     static State m_nextState;

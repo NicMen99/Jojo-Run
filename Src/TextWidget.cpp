@@ -11,10 +11,14 @@ TextWidget::TextWidget(const std::string & name):
     Widget(name) {
 }
 
+TextWidget::~TextWidget() {
+}
+
 void TextWidget::init(const WidgetTheme & theme) {
     setFont(theme.font_name);
     setCharacterSize(theme.font_size);
     setFillColor(theme.font_color);
+    setOutlineThickness(theme.font_outline_thinckness);
 }
 
 void TextWidget::_update(int32_t delta_time) {
@@ -31,20 +35,6 @@ void TextWidget::setFont(const std::string & font_name) {
 }
 
 sf::Vector2f TextWidget::getSize() {
-    sf::FloatRect size = m_text.getLocalBounds();
+    sf::FloatRect size = m_text.getGlobalBounds();
     return sf::Vector2f{size.width, size.height};
 }
-
-void TextWidget::event(const std::string & value) {
-    setString(value);
-}
-
-void TextWidget::attach(const std::string & key) {
-    STATS.subscribe(this, key);
-}
-
-void TextWidget::detach(const std::string & key) {
-    STATS.unsubscribe(this, key);
-}
-
-

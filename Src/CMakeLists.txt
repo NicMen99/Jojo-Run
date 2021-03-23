@@ -50,6 +50,8 @@ target_sources(${TARGET}
         Knife.h
         Knife.cpp
         main.cpp
+        MenuState.h
+        MenuState.cpp
         Obstacle.h
         Observer.h
         Platform.h
@@ -57,8 +59,12 @@ target_sources(${TARGET}
         PlayState.h
         PlayState.cpp
         PowerUp.h
+        Score.h
+        Score.cpp
         ScoreHUD.h
         ScoreHUD.cpp
+        ShapeWidget.h
+        ShapeWidget.cpp
         Shield.h
         Shield.cpp
         Subject.h

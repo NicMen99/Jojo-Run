@@ -10,7 +10,7 @@ Fire::Fire(std::string id) :
 }
 
 void Fire::init() {
-    addTexture("DEFAULT", {"fireBlockTexture", false, {1.f,1.f}, {0,0,0,0}});
+    addTexture("DEFAULT", {"fireBlockTexture", {0,0 }});
     setSpeed({0.f, 0.f});
     setDamage(50);
     updateSprite("DEFAULT");

@@ -1,6 +1,8 @@
 //
 // Created by angiolo99 on 23/08/20.
 //
+#include <iostream>
+
 #include "GameStateMachine.h"
 #include "GameConfig.h"
 #include "GameResourceManager.h"
@@ -22,7 +24,7 @@ Game* Game::instance() {
 }
 
 Game::Game():
-    m_gameMachine(new GameStateMachine(this, State::Init)),
+    m_gameMachine(new GameStateMachine(State::Init)),
     m_gameConfig(*new GameConfig()),
     m_resourceManager(*new GameResourceManager()),
     m_factory(*new Factory()),
@@ -31,8 +33,7 @@ Game::Game():
 {
 }
 
-Game::~Game() {
-}
+Game::~Game() = default;
 
 void Game::init()
 {
@@ -54,8 +55,9 @@ void Game::loop()
 
         sf::Time elapsedTime = m_clock.restart();
 #ifdef DEBUG
-        if(elapsedTime > sf::milliseconds(100))
-            elapsedTime = sf::milliseconds(100);
+        if(elapsedTime > sf::milliseconds(50)) {
+            elapsedTime = sf::milliseconds(50);
+        }
 #endif
         m_accumulator += elapsedTime;
 

@@ -48,6 +48,26 @@ bool InputManager::isKeyJustReleased(const sf::Keyboard::Key &key) {
 
 }
 
+void InputManager::registerAll() {
+    for(int k = sf::Keyboard::A; k < sf::Keyboard::KeyCount; k++) {
+        registerKey((sf::Keyboard::Key)k);
+    }
+}
+
+void InputManager::unregisterAll() {
+    for(int k = sf::Keyboard::A; k < sf::Keyboard::KeyCount; k++) {
+        unregisterKey((sf::Keyboard::Key)k);
+    }
+}
+
+sf::Keyboard::Key InputManager::getKeyJustPressed() {
+    for(int k = sf::Keyboard::A; k < sf::Keyboard::KeyCount; k++) {
+        if(isKeyJustPressed((sf::Keyboard::Key)k)) {
+            return (sf::Keyboard::Key)k;
+        }
+    }
+    return sf::Keyboard::Unknown;
+}
 
 
 

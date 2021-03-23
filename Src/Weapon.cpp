@@ -11,7 +11,7 @@ Weapon::Weapon(std::string id) :
 }
 
 void Weapon::init() {
-    addTexture("DEFAULT", {"knifeTexture", false, {1.f,1.f}, {0,0,0,0}});
+    addTexture("DEFAULT", {"knifeTexture", {0, 0}, false, false});
     setSpeed({0.f, 0.f});
     setQuantity(2);
     updateSprite("DEFAULT");

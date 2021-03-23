@@ -15,7 +15,7 @@ EmeraldEnemy::EmeraldEnemy(const std::string& id) :
 }
 
 void EmeraldEnemy::init() {
-    addTexture("DEFAULT", {"emeraldEnemyTexture", false, {-1.f, 1.f}, {0,0,0,0} });
+    addTexture("DEFAULT", {"emeraldEnemyTexture", {0, 0}, true, false });
     updateSprite("DEFAULT");
     m_sprite.setOrigin(+m_sprite.getTextureRect().width, 0);
     setDamage(90);

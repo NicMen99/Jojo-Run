@@ -12,7 +12,7 @@ Block::Block(const std::string& id) :
 }
 
 void Block::init() {
-    addTexture("DEFAULT", {"blockTexture", false, {0.70f, 0.70f}, {0, 0, 0, 0}});
+    addTexture("DEFAULT", {"blockTexture", {50, 85}});
     setSpeed({0.f, 0.f});
     setDamage(70);
 }

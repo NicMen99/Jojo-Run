@@ -10,14 +10,16 @@
 class TextWidget : public Widget {
 public:
     explicit TextWidget(const std::string & name);
-    ~TextWidget() override = default;
+    ~TextWidget() override;
     void init(const WidgetTheme & theme);
 
     void setFont(const std::string & font_name);
     void setCharacterSize(const unsigned int fontsize) { m_text.setCharacterSize(fontsize); }
     void setFillColor(const sf::Color & color) { m_text.setFillColor(color); }
+    void setOutlineThickness(float thickness) { m_text.setOutlineThickness(thickness); }
+    void setOutlineColor(const sf::Color & color) { m_text.setOutlineColor(color); }
     void setString(const std::string & text) { m_text.setString(text); }
-    void observe(const std::string & key) { attach(key); }
+    std::string getString() const { return m_text.getString(); }
     sf::Vector2f getSize();
 
 protected:
@@ -25,9 +27,8 @@ protected:
     void _render(sf::RenderWindow & window, const sf::Vector2f & parent_position) override;
 
 private:
-    void event(const std::string & value) override;
-    void attach(const std::string & value) override;
-    void detach(const std::string & value) override;
+    void event(const std::string & item_value) override { m_text.setString(item_value); }
+
 private:
     sf::Text m_text;
 };

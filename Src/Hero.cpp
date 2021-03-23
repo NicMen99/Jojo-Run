@@ -32,7 +32,7 @@ void Hero::init()
 }
 
 void Hero::init(const std::string &texture_name, int hp, int knives, int max_kinves, int max_health) {
-    addTexture("DEFAULT", {texture_name, false, {0.9f, 0.9f}, {0,0,0,0} });
+    addTexture("DEFAULT", {texture_name, {0, 0}, false, false});
     updateSprite("DEFAULT");
 
     m_speed = GC.getSceneSpeed();

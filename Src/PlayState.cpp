@@ -19,10 +19,15 @@ PlayState* PlayState::instance() {
 
 void PlayState::init() {
     m_music.openFromFile(GC.getAssetPath("soundTrack"));
-    GS.init();
 }
 
 void PlayState::onEnter() {
+    m_action = Action::Play;
+    m_inputManager.init();
+    m_inputManager.registerKey(sf::Keyboard::P);
+    GS.init();
+    createOverlay();
+    m_music.setVolume(70.f);
     m_music.play();
 }
 
@@ -31,13 +36,55 @@ void PlayState::onExit() {
 }
 
 void PlayState::update(int32_t delta_time) {
-    if(GS.levelend()) {
-        changeState(State::Over);
+    m_inputManager.update();
+    if(m_action == Action::Play) {
+        GS.update(delta_time);
+        if(GS.levelend()) {
+            changeState(State::GameOver);
+        }
+        if(m_inputManager.isKeyJustPressed(sf::Keyboard::P)) {
+            m_music.setVolume(30.f);
+            m_action = Action::Pause;
+        }
     }
-    GS.update(delta_time);
+    else if (m_action == Action::Pause) {
+        if(m_inputManager.isKeyJustPressed(sf::Keyboard::P)) {
+            m_music.setVolume(70.f);
+            m_action = Action::Play;
+        }
+    }
 }
 
 void PlayState::render(sf::RenderWindow& window) {
     GS.render(window);
+    if(m_action == Action::Pause) {
+        m_root->render(window);
+    }
+}
+
+void PlayState::createOverlay() {
+    delete m_root;
+
+    WidgetTheme theme;
+    theme.font_name = "gameover";
+    theme.font_size = 100;
+    theme.font_color = sf::Color::White;
+    theme.font_outline_thinckness = 2;
+
+    m_root = new Widget("Root");
+
+    auto * overlay = new ShapeWidget("Overlay");
+    overlay->init(theme);
+    overlay->setFillColor(sf::Color(255, 255, 255, 100));
+    overlay->setSize(static_cast<sf::Vector2f>(GC.getWindowSize()));
+    sf::Vector2f overlay_size = overlay->getSize();
+    m_root->add(overlay);
+
+    auto * message = new TextWidget("Message");
+    message->init(theme);
+    message->setString("P A U S E");
+    sf::Vector2f message_size = message->getSize();
+    message->setPosition({(overlay_size.x-message_size.x)/2, (overlay_size.y-message_size.y)/2});
+    m_root->add(message);
 }
 

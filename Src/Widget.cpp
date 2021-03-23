@@ -15,6 +15,9 @@ Widget::~Widget() {
     for (auto& widget : m_children)
         delete widget;
     m_children.clear();
+
+    if(m_observed)
+        detach();
 }
 
 Widget * Widget::getParent() const {
@@ -32,6 +35,11 @@ Widget * Widget::add(Widget *widget) {
 }
 
 Widget * Widget::findObjectByName(const std::string & name) {
+    if(name == m_name)
+        return this;
+    for (auto& widget : m_children)
+        if(widget->findObjectByName(name) != nullptr)
+            return widget;
     return nullptr;
 }
 
@@ -52,4 +60,19 @@ void Widget::setPosition(const sf::Vector2f & position) {
     m_position = position;
 }
 
+void Widget::observe(Subject * observed, const std::string & item_name) {
+    if(nullptr != m_observed) {
+        detach();
+    }
+    m_observed = observed;
+    m_observed_value = item_name;
+    attach();
+}
 
+void Widget::attach() {
+    m_observed->subscribe(this, m_observed_value);
+}
+
+void Widget::detach() {
+    m_observed->unsubscribe(this, m_observed_value);
+}

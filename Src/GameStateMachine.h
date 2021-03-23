@@ -9,7 +9,7 @@
 
 class GameStateMachine : public AbsGameState {
 public:
-    GameStateMachine(Game* pContext, State initialState);
+    explicit GameStateMachine(State initialState);
     void exec() override;
 private:
     void update(int32_t delta_time) override { getCurrentState()->update(delta_time);}

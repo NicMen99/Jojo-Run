@@ -11,7 +11,7 @@ FireWall::FireWall(const std::string& id) :
 }
 
 void FireWall::init() {
-    addTexture("DEFAULT", {"fireWallTexture", false, {1.0f, 1.0f}, {0, 0, 0, 0}});
+    addTexture("DEFAULT", {"fireWallTexture", {0, 0}, false, false});
     setSpeed({0.f, 0.f});
     setDamage(10);
 }

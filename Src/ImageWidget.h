@@ -13,9 +13,8 @@ public:
     ~ImageWidget() override = default;
     void init(const WidgetTheme & theme);
 
-    void setTexture(const std::string & texture_name);
-
-    sf::Vector2f getSize();
+    void setTexture(const std::string & texture_name, const sf::Vector2u & texture_size = {0, 0});
+    sf::Vector2f getSize() const;
 
 protected:
     void _update(int32_t delta_time) override;

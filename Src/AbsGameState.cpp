@@ -5,12 +5,12 @@
 #include "Game.h"
 #include "AbsGameState.h"
 #include "InitState.h"
+#include "MenuState.h"
 #include "PlayState.h"
 #include "GameOverState.h"
 
 State AbsGameState::m_currentState = State::None;
 State AbsGameState::m_nextState = State::None;
-Game* AbsGameState::m_context = nullptr;
 
 void AbsGameState::changeState(State nextState) {
     m_nextState = nextState;
@@ -26,23 +26,19 @@ void AbsGameState::switchState(bool forceExec) {
         getCurrentState()->onEnter();
     }
 }
-void AbsGameState::setContext(Game *pContext) {
-    m_context = pContext;
-}
 
 AbsGameState* AbsGameState::getCurrentState() {
     switch(m_currentState) {
         case State::None:
         case State::Init:
             return InitState::instance();
+        case State::Menu:
+            return MenuState::instance();
+            break;
         case State::Play:
             return PlayState::instance();
-        case State::Over:
+        case State::GameOver:
             return GameOverState::instance();
-        case State::Splash:
-        case State::Menu:
-        case State::Pause:
-            break;
     }
 
     static_assert(true, "Bad state");

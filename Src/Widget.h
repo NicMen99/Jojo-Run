@@ -8,14 +8,16 @@
 #include <string>
 #include <list>
 #include "Observer.h"
+#include "Subject.h"
 
 #include "SFML/Graphics.hpp"
 
 
 struct WidgetTheme {
     std::string font_name;
-    unsigned int font_size;
-    sf::Color font_color;
+    unsigned int font_size = 20;
+    sf::Color font_color = sf::Color::White;
+    float font_outline_thinckness = 0;
 };
 
 
@@ -39,15 +41,21 @@ protected:
     sf::Vector2f getPosition() { return m_position; }
 
 private:
-    void event(const std::string & value) override {}
-    void attach(const std::string & value) override {};
-    void detach(const std::string & value) override {};
-
-private:
     std::string m_name;
     sf::Vector2f m_position = {0,0};
     Widget * m_parent = nullptr;
     std::list<Widget*> m_children;
+
+
+public:
+    void observe(Subject * observed, const std::string & item_name);
+
+private:
+    void event(const std::string & item_value) override {}
+    void attach() override;
+    void detach() override;
+    Subject * m_observed = nullptr;
+    std::string m_observed_value;
 };
 
 

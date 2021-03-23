@@ -11,9 +11,9 @@ class Subject {
 public:
     virtual ~Subject() = default;
 
-    virtual void subscribe (Observer* o) = 0;
-    virtual void unsubscribe (Observer* o) = 0;
-    virtual void notify() = 0;
+    virtual void subscribe (Observer * observer, const std::string & item_name) = 0;
+    virtual void unsubscribe (Observer * observer, const std::string & item_name) = 0;
+    virtual void notify(const std::string & item_value) = 0;
 };
 
 
