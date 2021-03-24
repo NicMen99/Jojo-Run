@@ -1,5 +1,7 @@
 target_sources(${TARGET}
         PRIVATE
+        Animator.h
+        Animator.cpp
         AbsGameState.h
         AbsGameState.cpp
         Background.h
