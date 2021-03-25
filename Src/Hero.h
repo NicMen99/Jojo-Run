@@ -24,7 +24,6 @@ public:
     ~Hero() override = default;
 
     void init();
-    void init(const std::string &texture_name, int hp = 300, int knives = 0, int max_kinves = 8, int max_health = 300);
     void update(int32_t delta_time) override;
 private:
     void collision(GameObject *collider) override;

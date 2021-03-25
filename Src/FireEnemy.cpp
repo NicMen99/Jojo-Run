@@ -15,9 +15,11 @@ Enemy(GameObjectType::FireEnemy, id) {
 }
 
 void FireEnemy::init() {
-    addTexture("DEFAULT", {"fireEnemy", {0,0}, true, false });
-    updateSprite("DEFAULT");
-    m_sprite.setOrigin(+m_sprite.getTextureRect().width, 0);
+    auto animation = m_animator.createAnimation();
+    animation->addFrame("fireEnemy", {0,0,0,0}, 1, {0,0}, true, false);
+    m_animator.play();
+    // setScale({-1,1});
+    // m_sprite.setOrigin(+m_sprite.getTextureRect().width, 0);
     setDamage(90);
     addSound("FIREACTION", "fireEnemyShout");
 }

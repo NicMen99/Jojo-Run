@@ -11,10 +11,11 @@ Weapon::Weapon(std::string id) :
 }
 
 void Weapon::init() {
-    addTexture("DEFAULT", {"knifeTexture", {0, 0}, false, false});
+    auto animation = m_animator.createAnimation();
+    animation->addFrame("knifeTexture");
+    m_animator.play();
     setSpeed({0.f, 0.f});
     setQuantity(2);
-    updateSprite("DEFAULT");
 }
 
 void Weapon::collision(GameObject *collider) {

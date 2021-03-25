@@ -9,10 +9,11 @@ Shield::Shield(std::string id) :
 }
 
 void Shield::init() {
-    addTexture("DEFAULT", {"shieldPowerUpTexture", {39, 77}, false, false});
+    auto animation = m_animator.createAnimation();
+    animation->addFrame("shieldPowerUpTexture", {0,0,0,0}, 1, {39,77}, true, false);
+    m_animator.play();
     setSpeed({0.f, 0.f});
     //setQuantity(100);
-    updateSprite("DEFAULT");
 }
 
 void Shield::collision(GameObject *collider) {

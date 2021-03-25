@@ -24,27 +24,25 @@ Hero::Hero() :
 
 void Hero::init()
 {
-    m_inputManager.init();
-    m_inputManager.registerKey(sf::Keyboard::Key::Space);
-    m_inputManager.registerKey(sf::Keyboard::Key::K);
-    init("playerTexture");
-    setPosition(sf::Vector2f(200.f, GC.getMBase()));
-}
-
-void Hero::init(const std::string &texture_name, int hp, int knives, int max_kinves, int max_health) {
-    addTexture("DEFAULT", {texture_name, {0, 0}, false, false});
-    updateSprite("DEFAULT");
+    auto animation = m_animator.createAnimation();
+    animation->addFrame("playerTexture");
+    m_animator.play();
 
     m_speed = GC.getSceneSpeed();
 
-    update_health(hp);
-    updateKnives(knives);
-    m_maxhp = max_health;
-    m_maxknives = max_kinves;
+    setPosition(sf::Vector2f(200.f, GC.getMBase()));
+    update_health(300);
+    updateKnives(0);
+    m_maxhp = 300;
+    m_maxknives = 8;
 
     addSound("COLLISION", "collisionSound");
     addSound("SHIELD", "shieldSound");
     addSound("SHIELDON", "shieldOn");
+
+    m_inputManager.init();
+    m_inputManager.registerKey(sf::Keyboard::Key::Space);
+    m_inputManager.registerKey(sf::Keyboard::Key::K);
 }
 
 void Hero::update(int32_t delta_time) {
@@ -213,7 +211,7 @@ void Hero::manageAttack() {
         case State::Falling:
             if(m_inputManager.isKeyJustPressed(sf::Keyboard::K)){
                 auto kf = GF.createBullet(GameObjectType::Knife);
-                kf->setPosition(sf::Vector2f(getPosition()) + sf::Vector2f(m_sprite.getGlobalBounds().width, 0));
+                kf->setPosition(sf::Vector2f(getPosition()) + sf::Vector2f(getBounds().width, 0));
                 kf->setSpeed(sf::Vector2f {m_speed.x + 1000.f, 0.f});
                 GS.addItem(kf);
                 updateKnives(-1);

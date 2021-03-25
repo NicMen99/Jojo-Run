@@ -151,7 +151,7 @@ TEST_F(GameTest, testCollisionMovingBlock) {
 
 /*TEST_F(GameTest, testCollisionStillFirewall) {
     int numHP = game.getHealth();
-    std::unique_ptr<FireWall> wall = factory.createFireWall(FireWallType::StillWall);
+    std::unique_ptr<Fire> wall = factory.createFireWall(FireWallType::StillWall);
     wall->setPosition(sf::Vector2f(2*game.getMap()->getMapSize().x,game.randomPosY()));
     wall->move(-game.getSpeed().x, 0);
     m_hero.setHeroPos(game.getMap()->getMapSize().x, -game.randomPosY());

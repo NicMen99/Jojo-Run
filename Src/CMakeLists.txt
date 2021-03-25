@@ -19,12 +19,12 @@ target_sources(${TARGET}
         InputManager.cpp
         Factory.h
         Factory.cpp
-        Fire.h
-        Fire.cpp
+        FireBall.h
+        FireBall.cpp
         FireEnemy.h
         FireEnemy.cpp
-        FireWall.h
-        FireWall.cpp
+        Fire.h
+        Fire.cpp
         Game.h
         Game.cpp
         GameConfig.h

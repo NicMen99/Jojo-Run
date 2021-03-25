@@ -1,22 +1,21 @@
 //
-// Created by Niccolo on 14/03/2021.
+// Created by angiolo99 on 23/01/20.
 //
 
 #ifndef JOJO_RUN_FIRE_H
 #define JOJO_RUN_FIRE_H
 
-#include "Bullet.h"
+#include "Obstacle.h"
+#include <SFML/Graphics.hpp>
 
-class Fire final: public Bullet{
+class Fire final : public Obstacle {
+
 public:
-    explicit Fire(std::string id);
+    explicit Fire (const std::string& id);
     ~Fire() override = default;
     void init();
 
-private:
-    void update(int32_t delta_time) override;
-    void collision(GameObject* collider) override;
+    void collision (GameObject * collider) override;
 };
-
 
 #endif //JOJO_RUN_FIRE_H

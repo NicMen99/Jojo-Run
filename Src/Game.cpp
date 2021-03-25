@@ -68,7 +68,7 @@ void Game::loop()
             sf::sleep(sf::milliseconds(10));
         }
 
-        m_window.clear();
+        m_window.clear(sf::Color::Black);
         m_gameMachine->render(m_window);
         m_window.display();
     }

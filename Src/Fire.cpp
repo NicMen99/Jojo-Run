@@ -1,29 +1,24 @@
 //
-// Created by Niccolo on 14/03/2021.
+// Created by angiolo99 on 23/01/20.
 //
 
+#include "Game.h"
+#include "GameResourceManager.h"
 #include "Fire.h"
 
-Fire::Fire(std::string id) :
-    Bullet(GameObjectType::FireBullet, id) {
-
+Fire::Fire(const std::string& id) :
+    Obstacle(GameObjectType::Wall, id) {
 }
 
 void Fire::init() {
-    addTexture("DEFAULT", {"fireBlockTexture", {0,0 }});
-    setSpeed({0.f, 0.f});
-    setDamage(50);
-    updateSprite("DEFAULT");
-}
+    auto animation = m_animator.createAnimation();
+    animation->addFrame("Fire", {0,0,32,32}, 8, {64, 64});
+    animation->addFrame("Fire", {32,0,32,32}, 8, {64, 64});
 
-void Fire::update(int32_t delta_time) {
-    GameObject::update(delta_time);
-    if(getPosition().x < 0)
-        setDestroyed();
+    m_animator.play();
+    setSpeed({0.f, 0.f});
+    setDamage(10);
 }
 
 void Fire::collision(GameObject *collider) {
-    GameObject::collision(collider);
-    if (collider->getType() == GameObjectType::Hero)
-        setDestroyed();
 }

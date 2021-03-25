@@ -12,7 +12,9 @@ Block::Block(const std::string& id) :
 }
 
 void Block::init() {
-    addTexture("DEFAULT", {"blockTexture", {50, 85}});
+    auto animation = m_animator.createAnimation();
+    animation->addFrame("blockTexture");
+    m_animator.play();
     setSpeed({0.f, 0.f});
     setDamage(70);
 }
