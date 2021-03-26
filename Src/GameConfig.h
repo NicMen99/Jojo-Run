@@ -21,7 +21,7 @@ public:
     const sf::Vector2f & getGravity() const { return m_gravity; }
 
     const std::string getAssetPath(const std::string & name) const {
-        auto it = m_asset_map.find(name);  return (it == m_asset_map.end()) ? "" : it->second; }
+        auto it = m_asset_map.find(name);  return (it == m_asset_map.end()) ? "["+name+"]" : it->second; }
 
     /**/
     float getMBase() const { return m_base; }

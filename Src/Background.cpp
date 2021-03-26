@@ -17,27 +17,31 @@ void Background::init(GameObjectType type) {
     sf::Vector2u sz = GC.getWindowSize();
 
     if(type == GameObjectType::Sky) {
-        auto animation = m_animator.createAnimation();
-        animation->addFrame("BG", {0,0,0,0}, 1, {GC.getWindowSize().x, GC.getWindowSize().y});
-        m_animator.play();
+        const std::list<Animation::FrameParams> frames = {
+                {1, "BG", {0,0,0,0}, {GC.getWindowSize()}, {false, false}}
+        };
+        m_animator.addAnimation("DEFAULT", frames);
         setSpeed({(GC.getSceneSpeed().x*0.2f),0.f});
     }
     else if(type == GameObjectType::City) {
-        auto animation = m_animator.createAnimation();
-        animation->addFrame("Background1", {0,0,0,0}, 1, {GC.getWindowSize().x, GC.getWindowSize().y});
-        m_animator.play();
+        const std::list<Animation::FrameParams> frames = {
+                {1, "Background1", {0,0,0,0}, {GC.getWindowSize()}, {false, false}}
+        };
+        m_animator.addAnimation("DEFAULT", frames);
         setSpeed({(GC.getSceneSpeed().x*0.1f),0.f});
     }
     else if(type == GameObjectType::SkyScrapers) {
-        auto animation = m_animator.createAnimation();
-        animation->addFrame("Foreground", {0,0,0,0}, 1, {GC.getWindowSize().x, GC.getWindowSize().y});
-        m_animator.play();
+        const std::list<Animation::FrameParams> frames = {
+                {1, "Foreground", {0,0,0,0}, {GC.getWindowSize()}, {false, false}}
+        };
+        m_animator.addAnimation("DEFAULT", frames);
         setSpeed({(GC.getSceneSpeed().x*0.05f),0.f});
     }
     else if(type == GameObjectType::Bridge) {
-        auto animation = m_animator.createAnimation();
-        animation->addFrame("Middle", {0,0,0,0}, 1, {GC.getWindowSize().x, GC.getWindowSize().y});
-        m_animator.play();
+        const std::list<Animation::FrameParams> frames = {
+                {1, "Middle", {0,0,0,0}, {GC.getWindowSize()}, {false, false}}
+        };
+        m_animator.addAnimation("DEFAULT", frames);
         setSpeed({(0.f),0.f});
     }
 }

@@ -8,9 +8,10 @@ Emerald::Emerald(const std::string& id) :
     Bullet(GameObjectType::EmeraldBullet, id) {}
 
 void Emerald::init() {
-    auto animation = m_animator.createAnimation();
-    animation->addFrame("emeraldBlockTexture");
-    m_animator.play();
+    const std::list<Animation::FrameParams> frames = {
+            {1, "emeraldBlockTexture", {0,0,0,0}, {0,0}, {false, false}}
+    };
+    m_animator.addAnimation("DEFAULT", frames);
     setSpeed({0.f, 0.f});
     setDamage(150);
 }

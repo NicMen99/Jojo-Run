@@ -10,9 +10,10 @@ FireBall::FireBall(std::string id) :
 }
 
 void FireBall::init() {
-    auto animation = m_animator.createAnimation("DEFAULT");
-    animation->addFrame("fireBlockTexture");
-    m_animator.play();
+    const std::list<Animation::FrameParams> frames = {
+            {1, "fireBlockTexture", {0,0,0,0}, {0,0}, {false, false}}
+    };
+    m_animator.addAnimation("DEFAULT", frames);
     setSpeed({0.f, 0.f});
     setDamage(50);
 }

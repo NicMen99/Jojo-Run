@@ -15,8 +15,9 @@ Platform::Platform(std::string id) :
 }
 
 void Platform::init() {
-    auto animation = m_animator.createAnimation();
-    animation->addFrame("Platform1");
-    m_animator.play();
+    const std::list<Animation::FrameParams> frames = {
+            {1, "Platform1", {0,0,0,0}, {0,0}, {false, false}}
+    };
+    m_animator.addAnimation("DEFAULT", frames);
 }
 

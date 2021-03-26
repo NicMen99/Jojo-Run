@@ -1,18 +1,19 @@
 //
 // Created by Niccolo on 25/02/2021.
 //
+#include <cassert>
 #include <iostream>
 
 #include "Game.h"
 #include "GameConfig.h"
 #include "GameObject.h"
 
-#include <utility>
 #include "GameResourceManager.h"
 
 
 GameObject::GameObject(GameObjectGroup mgroup, GameObjectType mtype, std::string  mName) :
         m_group(mgroup), m_type(mtype), m_name(std::move(mName)) {
+    m_animator.init();
 }
 
 void GameObject::update(int32_t delta_time) {
@@ -24,17 +25,27 @@ void GameObject::update(int32_t delta_time) {
 
 void GameObject::render(sf::RenderWindow & window) {
     auto frame = m_animator.getCurrentFrame();
+    assert(frame!=nullptr);
     frame->setPosition(getPosition());
-    /*
-    if(getName() == "Fire")
-        std::cout << getName() << " " << frame->getPosition().x << "," << frame->getPosition().y << std::endl;
-    */
+    //std::cout << getName() << " " << frame->getPosition().x << "," << frame->getPosition().y << std::endl;
     window.draw(*frame);
+
+    /**/
+#ifdef HIT_BOX_DEBUG
+    m_bounds = getBounds();
+    sf::RectangleShape hitbox;
+    hitbox.setPosition(m_bounds.left, m_bounds.top);
+    hitbox.setSize({m_bounds.width, m_bounds.height});
+    hitbox.setFillColor(sf::Color::Transparent);
+    hitbox.setOutlineColor(sf::Color::Red);
+    hitbox.setOutlineThickness(1);
+    window.draw(hitbox);
+#endif
+    /**/
 }
 
 void GameObject::move(const sf::Vector2f & offset) {
     setPosition(getPosition() + offset);
-//    m_animator.getCurrentFrame()->setPosition(getPosition());
     if((getPosition().x + getBounds().width) < 0) {
         m_destroyed = true;
     }
@@ -45,9 +56,12 @@ void GameObject::applyImpulse(const sf::Vector2f & acceleration, int32_t delta_t
 }
 
 sf::FloatRect GameObject::getBounds() const {
-    sf::FloatRect bounds = m_animator.getCurrentFrame()->getGlobalBounds();
+    auto frame = m_animator.getCurrentFrame();
+    assert(frame!=nullptr);
+    sf::FloatRect bounds = frame->getGlobalBounds();
     bounds.left = m_position.x;
     bounds.top = m_position.y;
+    //std::cout << getName() << " " << bounds.left << "," << bounds.top << "," << bounds.width << "," << bounds.height << std::endl;
     return bounds;
 }
 

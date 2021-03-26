@@ -15,11 +15,10 @@ Enemy(GameObjectType::FireEnemy, id) {
 }
 
 void FireEnemy::init() {
-    auto animation = m_animator.createAnimation();
-    animation->addFrame("fireEnemy", {0,0,0,0}, 1, {0,0}, true, false);
-    m_animator.play();
-    // setScale({-1,1});
-    // m_sprite.setOrigin(+m_sprite.getTextureRect().width, 0);
+    const std::list<Animation::FrameParams> frames = {
+            {1, "fireEnemy", {0,0,0,0}, {0,0}, {true, false}}
+    };
+    m_animator.addAnimation("DEFAULT", frames);
     setDamage(90);
     addSound("FIREACTION", "fireEnemyShout");
 }

@@ -9,9 +9,10 @@ Shield::Shield(std::string id) :
 }
 
 void Shield::init() {
-    auto animation = m_animator.createAnimation();
-    animation->addFrame("shieldPowerUpTexture", {0,0,0,0}, 1, {39,77}, true, false);
-    m_animator.play();
+    const std::list<Animation::FrameParams> frames = {
+            {1, "shieldPowerUpTexture", {0,0,0,0}, {39,77}, {true, false}}
+    };
+    m_animator.addAnimation("DEFAULT", frames);
     setSpeed({0.f, 0.f});
     //setQuantity(100);
 }

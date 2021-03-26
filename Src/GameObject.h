@@ -13,6 +13,7 @@
 #include "Animator.h"
 #include "Observer.h"
 
+#define HIT_BOX_DEBUG
 
 enum class GameObjectGroup {
     Scene,
@@ -57,7 +58,7 @@ public:
 
 public:
     const sf::Vector2f & getPosition() const { return m_position; };
-    virtual sf::FloatRect getBounds() const; // { return m_animator.getCurrentFrame()->getGlobalBounds(); }
+    sf::FloatRect getBounds() const;
     bool isStarted() const { return m_started; };
     bool isEnabled() const { return m_enabled; };
     bool isVisible() const { return m_visible; };
@@ -82,6 +83,7 @@ protected:
     GameObjectType m_type;
     std::string m_name;
     sf::Vector2f m_position = {0, 0};
+    sf::FloatRect m_bounds = {0, 0, 0, 0}; // debug
     sf::Vector2f m_speed = {0, 0};
     bool m_started = false;
     bool m_enabled = true;

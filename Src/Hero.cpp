@@ -24,9 +24,10 @@ Hero::Hero() :
 
 void Hero::init()
 {
-    auto animation = m_animator.createAnimation();
-    animation->addFrame("playerTexture");
-    m_animator.play();
+    const std::list<Animation::FrameParams> frames = {
+            {1, "playerTexture", {0,0,0,0}, {0,0}, {false, false}}
+    };
+    m_animator.addAnimation("DEFAULT", frames);
 
     m_speed = GC.getSceneSpeed();
 

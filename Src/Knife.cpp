@@ -11,9 +11,10 @@ Knife::Knife(std::string id) :
 }
 
 void Knife::init() {
-    auto animation = m_animator.createAnimation();
-    animation->addFrame("knifeTexture");
-    m_animator.play();
+    const std::list<Animation::FrameParams> frames = {
+            {1, "knifeTexture", {0,0,0,0}, {0,0}, {false, false}}
+    };
+    m_animator.addAnimation("DEFAULT", frames);
     setSpeed({0.f, 0.f});
     setDamage(100);
 }

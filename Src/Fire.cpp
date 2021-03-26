@@ -11,11 +11,11 @@ Fire::Fire(const std::string& id) :
 }
 
 void Fire::init() {
-    auto animation = m_animator.createAnimation();
-    animation->addFrame("Fire", {0,0,32,32}, 8, {64, 64});
-    animation->addFrame("Fire", {32,0,32,32}, 8, {64, 64});
-
-    m_animator.play();
+    const std::list<Animation::FrameParams> frames = {
+            {8, "Fire", {0,0,32,32}, {64,64}, {false, false}},
+            {8, "Fire", {32,0,32,32}, {64,64}, {false, false}}
+    };
+    m_animator.addAnimation("DEFAULT", frames);
     setSpeed({0.f, 0.f});
     setDamage(10);
 }
