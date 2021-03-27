@@ -4,9 +4,9 @@
 
 #include "Game.h"
 #include "GameStats.h"
-#include "Widget.h"
-#include "TextWidget.h"
-#include "ImageWidget.h"
+#include "Widgets/Widget.h"
+#include "Widgets/TextWidget.h"
+#include "Widgets/ImageWidget.h"
 #include "ScoreHUD.h"
 
 
@@ -15,7 +15,7 @@ const unsigned int font_size = 40;
 
 
 ScoreHUD::ScoreHUD() :
-    GameObject(GameObjectGroup::Scene, GameObjectType::Hud, "HUD")
+        Entity(GameObjectGroup::Scene, GameObjectType::Hud, "HUD")
 {
 }
 

@@ -13,10 +13,10 @@
 #include <SFML/Audio.hpp>
 
 class AbsGameState;
-class GameResourceManager;
+class ResourceManager;
 class GameConfig;
 class Factory;
-class GameScene;
+class SceneManager;
 class GameStats;
 
 #define GC Game::instance()->configManager()
@@ -39,9 +39,9 @@ public:
     void loop();
 
     GameConfig & configManager() { return m_gameConfig; }
-    GameResourceManager & resourceManager() { return m_resourceManager; }
+    ResourceManager & resourceManager() { return m_resourceManager; }
     Factory & factory() { return m_factory; }
-    GameScene & gameScene() { return m_scene; }
+    SceneManager & gameScene() { return m_scene; }
     GameStats & gameStats() { return m_stats; }
     int rand(int max) { std::uniform_int_distribution<int> d(0, max - 1); return d(m_gen);}
 
@@ -55,9 +55,9 @@ private:
 private:
     AbsGameState* m_gameMachine;
     GameConfig& m_gameConfig;
-    GameResourceManager& m_resourceManager;
+    ResourceManager& m_resourceManager;
     Factory& m_factory;
-    GameScene& m_scene;
+    SceneManager& m_scene;
     GameStats& m_stats;
 
     std::random_device m_rd;  //Will be used to obtain a seed for the random number engine

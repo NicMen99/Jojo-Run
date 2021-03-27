@@ -1,0 +1,11 @@
+target_sources(${TARGET}
+        PRIVATE
+        Widget.h
+        Widget.cpp
+        ImageWidget.h
+        ImageWidget.cpp
+        ShapeWidget.h
+        ShapeWidget.cpp
+        TextWidget.h
+        TextWidget.cpp
+        )

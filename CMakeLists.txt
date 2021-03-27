@@ -6,12 +6,15 @@ set(CMAKE_CXX_STANDARD 11)
 set(TARGET JoJoRun)
 
 add_executable(${TARGET} "")
+add_subdirectory(Src)
+add_subdirectory(Test)
+
+file(COPY Assets DESTINATION ${CMAKE_BINARY_DIR})
 
 #
 # SFML2, OPENGL
 #
 
-# OPENGL not enabled at the moment
 # find_package (OPENGL REQUIRED)
 # find_package (GLUT REQUIRED)
 # find_package (GLEW REQUIRED)
@@ -33,18 +36,7 @@ else()
     message("\n-> SFML directory not found. Set SFML_ROOT to SFML's top-level path (containing \"include\" and \"lib\" directories).")
     message("-> Make sure the SFML libraries with the same configuration (Release/Debug, Static/Dynamic) exist.\n")
 endif()
-
 message("SFML_FOUND: " ${SFML_FOUND})
 message("SFML_INCLUDE_DIR: " ${SFML_INCLUDE_DIR})
 message("SFML_LIBRARIES: " ${SFML_LIBRARIES})
 message("SFML_DEPENDENCIES: " ${SFML_DEPENDENCIES})
-
-
-#
-# Components
-#
-add_subdirectory(Src)
-add_subdirectory(Test)
-
-
-file(COPY Assets DESTINATION ${CMAKE_BINARY_DIR})
