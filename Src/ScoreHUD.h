@@ -9,11 +9,11 @@
 #include <map>
 #include <list>
 #include <SFML/Graphics.hpp>
-#include "GameObject.h"
+#include "Entity.h"
 
 class Widget;
 
-class ScoreHUD: public GameObject {
+class ScoreHUD: public Entity {
 public:
     ScoreHUD ();
     ~ScoreHUD() override;

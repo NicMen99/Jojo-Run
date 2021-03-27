@@ -3,10 +3,10 @@
 //
 #include <iostream>
 
-#include "GameStateMachine.h"
+#include "StateMachine/GameStateMachine.h"
 #include "GameConfig.h"
-#include "GameResourceManager.h"
-#include "GameScene.h"
+#include "ResourceManager.h"
+#include "SceneManager.h"
 #include "GameStats.h"
 #include "Factory.h"
 #include "Game.h"
@@ -26,9 +26,9 @@ Game* Game::instance() {
 Game::Game():
     m_gameMachine(new GameStateMachine(State::Init)),
     m_gameConfig(*new GameConfig()),
-    m_resourceManager(*new GameResourceManager()),
+    m_resourceManager(*new ResourceManager()),
     m_factory(*new Factory()),
-    m_scene(*new GameScene()),
+    m_scene(*new SceneManager()),
     m_stats(*new GameStats())
 {
 }

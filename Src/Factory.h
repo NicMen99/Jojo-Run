@@ -19,12 +19,12 @@ public:
     Factory() = default;
     virtual ~Factory() = default;
 
-    virtual std::unique_ptr<GameObject> createObstacle(GameObjectType type);
-    virtual std::unique_ptr<GameObject> createEnemy(GameObjectType type);
-    virtual std::unique_ptr<GameObject> createPowerUp(GameObjectType type);
-    virtual std::unique_ptr<GameObject> createBullet(GameObjectType type);
-    virtual std::unique_ptr<GameObject> createPlatform(GameObjectType type);
-    virtual std::unique_ptr<GameObject> createBackground(GameObjectType type);
+    virtual std::unique_ptr<Entity> createObstacle(GameObjectType type);
+    virtual std::unique_ptr<Entity> createEnemy(GameObjectType type);
+    virtual std::unique_ptr<Entity> createPowerUp(GameObjectType type);
+    virtual std::unique_ptr<Entity> createBullet(GameObjectType type);
+    virtual std::unique_ptr<Entity> createPlatform(GameObjectType type);
+    virtual std::unique_ptr<Entity> createBackground(GameObjectType type);
 };
 
 #endif //JOJO_RUN_FACTORY_H

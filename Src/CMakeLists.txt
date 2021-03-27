@@ -1,81 +1,86 @@
 target_sources(${TARGET}
         PRIVATE
+        main.cpp
+
         Animator.h
         Animator.cpp
-        AbsGameState.h
-        AbsGameState.cpp
-        Background.h
-        Background.cpp
-        Block.h
-        Block.cpp
-        Bullet.h
-        EmeraldEnemy.h
-        EmeraldEnemy.cpp
-        Enemy.h
-        Enemy.cpp
-        Emerald.h
-        Emerald.cpp
         InputManager.h
         InputManager.cpp
         Factory.h
         Factory.cpp
-        FireBall.h
-        FireBall.cpp
-        FireEnemy.h
-        FireEnemy.cpp
-        Fire.h
-        Fire.cpp
         Game.h
         Game.cpp
         GameConfig.h
         GameConfig.cpp
-        GameObject.h
-        GameObject.cpp
-        GameOverState.h
-        GameOverState.cpp
-        GameResourceManager.h
-        GameResourceManager.cpp
-        GameScene.h
-        GameScene.cpp
-        GameStateMachine.h
-        GameStateMachine.cpp
+        Entity.h
+        Entity.cpp
+        ResourceManager.h
+        ResourceManager.cpp
+        SceneManager.h
+        SceneManager.cpp
         GameStats.h
         GameStats.cpp
-        HamonEnemy.h
-        HamonEnemy.cpp
-        Hero.h
-        Hero.cpp
-        InitState.h
-        InitState.cpp
-        ImageWidget.h
-        ImageWidget.cpp
-        Knife.h
-        Knife.cpp
-        main.cpp
-        MenuState.h
-        MenuState.cpp
-        Obstacle.h
         Observer.h
-        Platform.h
-        Platform.cpp
-        PlayState.h
-        PlayState.cpp
-        PowerUp.h
         Score.h
         Score.cpp
         ScoreHUD.h
         ScoreHUD.cpp
-        ShapeWidget.h
-        ShapeWidget.cpp
-        Shield.h
-        Shield.cpp
         Subject.h
-        TextWidget.h
-        TextWidget.cpp
-        Weapon.h
-        Weapon.cpp
-        Widget.h
-        Widget.cpp)
+
+        StateMachine/AbsGameState.h
+        StateMachine/AbsGameState.cpp
+        StateMachine/GameStateMachine.h
+        StateMachine/GameStateMachine.cpp
+        StateMachine/InitState.h
+        StateMachine/InitState.cpp
+        StateMachine/MenuState.h
+        StateMachine/MenuState.cpp
+        StateMachine/PlayState.h
+        StateMachine/PlayState.cpp
+        StateMachine/GameOverState.h
+        StateMachine/GameOverState.cpp
+
+        Entities/Background.h
+        Entities/Background.cpp
+        Entities/Block.h
+        Entities/Block.cpp
+        Entities/Bullet.h
+        Entities/EmeraldEnemy.h
+        Entities/EmeraldEnemy.cpp
+        Entities/Enemy.h
+        Entities/Enemy.cpp
+        Entities/Emerald.h
+        Entities/Emerald.cpp
+        Entities/FireBall.h
+        Entities/FireBall.cpp
+        Entities/FireEnemy.h
+        Entities/FireEnemy.cpp
+        Entities/Fire.h
+        Entities/Fire.cpp
+        Entities/HamonEnemy.h
+        Entities/HamonEnemy.cpp
+        Entities/Hero.h
+        Entities/Hero.cpp
+        Entities/Knife.h
+        Entities/Knife.cpp
+        Entities/Obstacle.h
+        Entities/Platform.h
+        Entities/Platform.cpp
+        Entities/PowerUp.h
+        Entities/Shield.h
+        Entities/Shield.cpp
+        Entities/Weapon.h
+        Entities/Weapon.cpp
+
+        Widgets/Widget.h
+        Widgets/Widget.cpp
+        Widgets/ImageWidget.h
+        Widgets/ImageWidget.cpp
+        Widgets/ShapeWidget.h
+        Widgets/ShapeWidget.cpp
+        Widgets/TextWidget.h
+        Widgets/TextWidget.cpp
+        )
 
 target_include_directories(${TARGET}
         PUBLIC
