@@ -12,8 +12,9 @@
 
 
 GameObject::GameObject(GameObjectGroup mgroup, GameObjectType mtype, std::string  mName) :
-        m_group(mgroup), m_type(mtype), m_name(std::move(mName)) {
-    m_animator.init();
+        m_group(mgroup),
+        m_type(mtype),
+        m_name(std::move(mName)) {
 }
 
 void GameObject::update(int32_t delta_time) {

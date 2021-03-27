@@ -35,11 +35,11 @@ private:
 
 class Animator {
 public:
-    Animator() = default;
+    Animator();
     virtual ~Animator() = default;
-    void init();
 
-    void addAnimation(const std::string & animation_name, std::list<Animation::FrameParams> frames);
+
+    void addAnimation(const std::string & animation_name, const std::list<Animation::FrameParams>& frames);
     void update(int32_t delta_time);
 
 public:
@@ -49,7 +49,6 @@ public:
     std::shared_ptr<sf::Sprite> getCurrentFrame() const;
 
 private:
-    std::shared_ptr<Animation> getAnimation(const std::string & animation_name);
     std::shared_ptr<Animation> createAnimation(const std::string & animation_name);
 
 private:

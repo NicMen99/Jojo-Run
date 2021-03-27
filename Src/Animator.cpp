@@ -33,29 +33,36 @@ void Animation::addFrame(const FrameParams & frame_params) {
     }
 }
 
+Animator::Animator() :
+    m_current_sprite(std::make_shared<sf::Sprite>()),
+    m_current_animation(nullptr) {
+
+}
+
 std::shared_ptr<sf::Sprite> Animation::update(int32_t delta_time) {
-    if(total_frames() == 0) return std::shared_ptr<sf::Sprite>();
+    if(total_frames() == 0) return nullptr;
     return m_frames.at(m_count++%m_frames.size()).first;
 }
 
-void Animator::init() {
-
-}
 
 void Animator::update(int32_t delta_time) {
-    if(m_current_animation != nullptr)
-        m_current_sprite = m_current_animation->update(delta_time);
+    if(m_current_animation != nullptr) {
+        std::shared_ptr<sf::Sprite> animation = m_current_animation->update(delta_time);
+        if(animation != nullptr)
+            m_current_sprite = m_current_animation->update(delta_time);
+    }
 }
 
 void Animator::play(const std::string & animation_name, int repetitions) {
-    auto animation = getAnimation(animation_name);
-    if(nullptr == animation) return;
-    m_current_animation = getAnimation(animation_name);
-    update(0);
+    auto it = m_animations.find(animation_name);
+    if(it != m_animations.end()) {
+        m_current_animation = it->second;
+        update(0);
+    }
 }
 
 bool Animator::done() const {
-    return m_current_animation != nullptr ? m_current_animation->isDone() : false;
+    return m_current_animation == nullptr || m_current_animation->isDone();
 }
 
 std::shared_ptr<sf::Sprite> Animator::getCurrentFrame() {
@@ -66,7 +73,7 @@ std::shared_ptr<sf::Sprite> Animator::getCurrentFrame() const {
     return m_current_sprite;
 }
 
-void Animator::addAnimation(const std::string & animation_name, const std::list<Animation::FrameParams> frames) {
+void Animator::addAnimation(const std::string & animation_name, const std::list<Animation::FrameParams>& frames) {
     auto animation = createAnimation(animation_name);
     for(const auto& frame : frames) {
         animation->addFrame(frame);
@@ -74,11 +81,6 @@ void Animator::addAnimation(const std::string & animation_name, const std::list<
     if(m_animations.size()==1) {
         play(animation_name, 0);
     }
-}
-
-std::shared_ptr<Animation> Animator::getAnimation(const std::string & animation_name) {
-    auto it = m_animations.find(animation_name);
-    return it != m_animations.end() ? it->second :nullptr;
 }
 
 std::shared_ptr<Animation> Animator::createAnimation(const std::string & animation_name) {
