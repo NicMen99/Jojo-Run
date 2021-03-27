@@ -5,11 +5,11 @@
 #include <iostream>
 
 #include "Block.h"
-#include "FireWall.h"
+#include "Fire.h"
 #include "EmeraldEnemy.h"
 #include "Emerald.h"
 #include "FireEnemy.h"
-#include "Fire.h"
+#include "FireBall.h"
 #include "HamonEnemy.h"
 #include "Shield.h"
 #include "Weapon.h"
@@ -27,7 +27,7 @@ std::unique_ptr<GameObject> Factory::createObstacle(GameObjectType type) {
         return std::unique_ptr<GameObject>(obstacle);
     }
     else if (type == GameObjectType::Wall) {
-        auto * obstacle = new FireWall("FireWall");
+        auto * obstacle = new Fire("Fire");
         obstacle->init();
         return std::unique_ptr<GameObject>(obstacle);
     }
@@ -79,7 +79,7 @@ std::unique_ptr<GameObject> Factory::createBullet(GameObjectType type) {
         return std::unique_ptr<GameObject>(emerald);
     }
     else if (type == GameObjectType::FireBullet) {
-        auto * fire = new Fire("Fire");
+        auto * fire = new FireBall("FireBall");
         fire -> init();
         return std::unique_ptr<GameObject>(fire);
     }

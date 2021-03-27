@@ -17,23 +17,31 @@ void Background::init(GameObjectType type) {
     sf::Vector2u sz = GC.getWindowSize();
 
     if(type == GameObjectType::Sky) {
-        addTexture("DEFAULT", {"BG", GC.getWindowSize(), false, false});
+        const std::list<Animation::FrameParams> frames = {
+                {1, "BG", {0,0,0,0}, {GC.getWindowSize()}, {false, false}}
+        };
+        m_animator.addAnimation("DEFAULT", frames);
         setSpeed({(GC.getSceneSpeed().x*0.2f),0.f});
-        updateSprite("DEFAULT");
     }
     else if(type == GameObjectType::City) {
-        addTexture("DEFAULT", {"Background1", GC.getWindowSize(), false, false});
+        const std::list<Animation::FrameParams> frames = {
+                {1, "Background1", {0,0,0,0}, {GC.getWindowSize()}, {false, false}}
+        };
+        m_animator.addAnimation("DEFAULT", frames);
         setSpeed({(GC.getSceneSpeed().x*0.1f),0.f});
-        updateSprite("DEFAULT");
     }
     else if(type == GameObjectType::SkyScrapers) {
-        addTexture("DEFAULT", {"Foreground", GC.getWindowSize(), false, false});
+        const std::list<Animation::FrameParams> frames = {
+                {1, "Foreground", {0,0,0,0}, {GC.getWindowSize()}, {false, false}}
+        };
+        m_animator.addAnimation("DEFAULT", frames);
         setSpeed({(GC.getSceneSpeed().x*0.05f),0.f});
-        updateSprite("DEFAULT");
     }
     else if(type == GameObjectType::Bridge) {
-        addTexture("DEFAULT", {"Middle", GC.getWindowSize(), false, false});
+        const std::list<Animation::FrameParams> frames = {
+                {1, "Middle", {0,0,0,0}, {GC.getWindowSize()}, {false, false}}
+        };
+        m_animator.addAnimation("DEFAULT", frames);
         setSpeed({(0.f),0.f});
-        updateSprite("DEFAULT");
     }
 }

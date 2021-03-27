@@ -15,8 +15,9 @@ Platform::Platform(std::string id) :
 }
 
 void Platform::init() {
-//    if(m_type == GameObjectType::XPlatform)
-    addTexture("DEFAULT", {"Platform1", {0, 0}, false, false});
-    updateSprite("DEFAULT");
+    const std::list<Animation::FrameParams> frames = {
+            {1, "Platform1", {0,0,0,0}, {0,0}, {false, false}}
+    };
+    m_animator.addAnimation("DEFAULT", frames);
 }
 

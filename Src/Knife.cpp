@@ -11,10 +11,12 @@ Knife::Knife(std::string id) :
 }
 
 void Knife::init() {
-    addTexture("DEFAULT", {"knifeTexture", {0, 0}, false, false});
+    const std::list<Animation::FrameParams> frames = {
+            {1, "knifeTexture", {0,0,0,0}, {0,0}, {false, false}}
+    };
+    m_animator.addAnimation("DEFAULT", frames);
     setSpeed({0.f, 0.f});
     setDamage(100);
-    updateSprite("DEFAULT");
 }
 
 void Knife::update(int32_t delta_time) {

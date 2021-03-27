@@ -10,14 +10,10 @@
 #include <list>
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
+#include "Animator.h"
 #include "Observer.h"
 
-struct texture_p {
-    std::string name;
-    sf::Vector2u size;
-    bool hflip;
-    bool vflip;
-};
+#define HIT_BOX_DEBUG
 
 enum class GameObjectGroup {
     Scene,
@@ -42,7 +38,7 @@ enum class GameObjectType {
 
 class GameObject {
 public:
-    GameObject(GameObjectGroup mgroup, GameObjectType mtype, std::string mName);
+    GameObject(GameObjectGroup mgroup, GameObjectType mtype, std::string  mName);
     virtual ~GameObject() = default;
 
 public:
@@ -61,8 +57,8 @@ public:
     const std::string & getName() const { return m_name; };
 
 public:
-    const sf::Vector2f & getPosition() const { return m_sprite.getPosition(); };
-    virtual sf::FloatRect getBounds() const { return m_sprite.getGlobalBounds(); }
+    const sf::Vector2f & getPosition() const { return m_position; };
+    sf::FloatRect getBounds() const;
     bool isStarted() const { return m_started; };
     bool isEnabled() const { return m_enabled; };
     bool isVisible() const { return m_visible; };
@@ -73,30 +69,28 @@ public:
     void setEnabled(bool mEnabled) { m_enabled = mEnabled; };
     void setVisible(bool mVisible) { m_visible = mVisible; };
     void setDestroyed() { m_destroyed = true; };
-    void setPosition(sf::Vector2f position) { m_sprite.setPosition(position);}
+    void setPosition(sf::Vector2f position) { m_position = position;}
     void setSpeed(sf::Vector2f speed) { m_speed = speed; }
 
 public:
-    void addTexture(const std::string & texture_name, const texture_p & texture_params);
     void addSound(const std::string & sound_name, const std::string & sound_resource);
 
 protected:
-    void updateSprite(const std::string & texture_name);
     void playSound(const std::string & sound_name, float volume = 100.f);
 
 protected:
     GameObjectGroup m_group;
     GameObjectType m_type;
     std::string m_name;
+    sf::Vector2f m_position = {0, 0};
+    sf::FloatRect m_bounds = {0, 0, 0, 0}; // debug
     sf::Vector2f m_speed = {0, 0};
     bool m_started = false;
     bool m_enabled = true;
     bool m_visible = true;
     bool m_destroyed = false;
 
-    sf::Sprite m_sprite;
-    std::string m_active_texture;
-    std::map<std::string, texture_p> m_texture_map;
+    Animator m_animator;
 
     sf::Sound m_sound;
     std::string m_active_sound;

@@ -2,29 +2,30 @@
 // Created by Niccolo on 14/03/2021.
 //
 
-#include "Emerald.h"
+#include "FireBall.h"
 
-Emerald::Emerald(const std::string& id) :
-    Bullet(GameObjectType::EmeraldBullet, id) {}
+FireBall::FireBall(std::string id) :
+    Bullet(GameObjectType::FireBullet, id) {
 
-void Emerald::init() {
+}
+
+void FireBall::init() {
     const std::list<Animation::FrameParams> frames = {
-            {1, "emeraldBlockTexture", {0,0,0,0}, {0,0}, {false, false}}
+            {1, "fireBlockTexture", {0,0,0,0}, {0,0}, {false, false}}
     };
     m_animator.addAnimation("DEFAULT", frames);
     setSpeed({0.f, 0.f});
-    setDamage(150);
+    setDamage(50);
 }
 
-void Emerald::update(int32_t delta_time) {
+void FireBall::update(int32_t delta_time) {
     GameObject::update(delta_time);
     if(getPosition().x < 0)
         setDestroyed();
 }
 
-void Emerald::collision(GameObject *collider) {
+void FireBall::collision(GameObject *collider) {
     GameObject::collision(collider);
     if (collider->getType() == GameObjectType::Hero)
         setDestroyed();
 }
-

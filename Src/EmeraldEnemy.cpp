@@ -15,9 +15,10 @@ EmeraldEnemy::EmeraldEnemy(const std::string& id) :
 }
 
 void EmeraldEnemy::init() {
-    addTexture("DEFAULT", {"emeraldEnemyTexture", {0, 0}, true, false });
-    updateSprite("DEFAULT");
-    m_sprite.setOrigin(+m_sprite.getTextureRect().width, 0);
+    const std::list<Animation::FrameParams> frames = {
+            {1, "emeraldEnemyTexture", {0,0,0,0}, {0,0}, {true, false}}
+    };
+    m_animator.addAnimation("DEFAULT", frames);
     setDamage(90);
     addSound("EMERALDACTION", "emeraldEnemyShout");
 }
