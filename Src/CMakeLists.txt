@@ -1,7 +1,6 @@
 target_sources(${TARGET}
         PRIVATE
         main.cpp
-
         Animator.h
         Animator.cpp
         InputManager.h
@@ -26,61 +25,12 @@ target_sources(${TARGET}
         ScoreHUD.h
         ScoreHUD.cpp
         Subject.h
-
-        StateMachine/AbsGameState.h
-        StateMachine/AbsGameState.cpp
-        StateMachine/GameStateMachine.h
-        StateMachine/GameStateMachine.cpp
-        StateMachine/InitState.h
-        StateMachine/InitState.cpp
-        StateMachine/MenuState.h
-        StateMachine/MenuState.cpp
-        StateMachine/PlayState.h
-        StateMachine/PlayState.cpp
-        StateMachine/GameOverState.h
-        StateMachine/GameOverState.cpp
-
-        Entities/Background.h
-        Entities/Background.cpp
-        Entities/Block.h
-        Entities/Block.cpp
-        Entities/Bullet.h
-        Entities/EmeraldEnemy.h
-        Entities/EmeraldEnemy.cpp
-        Entities/Enemy.h
-        Entities/Enemy.cpp
-        Entities/Emerald.h
-        Entities/Emerald.cpp
-        Entities/FireBall.h
-        Entities/FireBall.cpp
-        Entities/FireEnemy.h
-        Entities/FireEnemy.cpp
-        Entities/Fire.h
-        Entities/Fire.cpp
-        Entities/HamonEnemy.h
-        Entities/HamonEnemy.cpp
-        Entities/Hero.h
-        Entities/Hero.cpp
-        Entities/Knife.h
-        Entities/Knife.cpp
-        Entities/Obstacle.h
-        Entities/Platform.h
-        Entities/Platform.cpp
-        Entities/PowerUp.h
-        Entities/Shield.h
-        Entities/Shield.cpp
-        Entities/Weapon.h
-        Entities/Weapon.cpp
-
-        Widgets/Widget.h
-        Widgets/Widget.cpp
-        Widgets/ImageWidget.h
-        Widgets/ImageWidget.cpp
-        Widgets/ShapeWidget.h
-        Widgets/ShapeWidget.cpp
-        Widgets/TextWidget.h
-        Widgets/TextWidget.cpp
         )
+
+add_subdirectory(StateMachine)
+add_subdirectory(Entities)
+add_subdirectory(Widgets)
+
 
 target_include_directories(${TARGET}
         PUBLIC
