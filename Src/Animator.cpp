@@ -10,7 +10,7 @@ void Animation::addFrame(const FrameParams & frame_params) {
     while (count-- >0) {
         auto sprite = std::make_shared<sf::Sprite>();
 
-        auto texture = RM.getTexture(frame_params.texture_name);
+        auto texture = RESOURCE.getTexture(frame_params.texture_name);
         if(frame_params.texture_rect == sf::IntRect{0,0,0,0}) {
             sprite->setTexture(*texture, true);
         }

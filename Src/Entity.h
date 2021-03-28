@@ -47,7 +47,7 @@ public:
     virtual void collision(Entity * collider) {}
 
 protected:
-    virtual void move(const sf::Vector2f & offset);
+    virtual void move(int32_t delta_time);
     virtual void applyImpulse(const sf::Vector2f & acceleration, int32_t delta_time);
 
     //Getter & setter

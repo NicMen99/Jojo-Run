@@ -13,7 +13,7 @@ std::shared_ptr<sf::Texture> ResourceManager::getTexture(const std::string & tex
         return it->second;
     }
     std::shared_ptr<sf::Texture> resource = std::make_shared<sf::Texture>();
-    bool result = resource->loadFromFile(GC.getAssetPath(texture));
+    bool result = resource->loadFromFile(CONFIG.getAssetPath(texture));
     assert(result);
     m_texture_map[texture] = resource;
     return m_texture_map[texture];
@@ -25,7 +25,7 @@ std::shared_ptr<sf::SoundBuffer> ResourceManager::getSound(const std::string & s
         return it->second;
     }
     std::shared_ptr<sf::SoundBuffer> resource = std::make_shared<sf::SoundBuffer>();
-    bool result = resource->loadFromFile(GC.getAssetPath(sound));
+    bool result = resource->loadFromFile(CONFIG.getAssetPath(sound));
     assert(result);
     /* mette nella cache */
     m_sound_map[sound] = resource;
@@ -38,7 +38,7 @@ std::shared_ptr<sf::Font> ResourceManager::getFont(const std::string & font) {
         return it->second;
     }
     std::shared_ptr<sf::Font> resource = std::make_shared<sf::Font>();
-    bool result = resource->loadFromFile(GC.getAssetPath(font));
+    bool result = resource->loadFromFile(CONFIG.getAssetPath(font));
     assert(result);
     /* mette nella cache */
     m_font_map[font] = resource;

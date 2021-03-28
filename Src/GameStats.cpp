@@ -18,7 +18,7 @@ void GameStats::notify(const std::string & item_name) {
         (*it)->event(std::to_string(m_stats[item_name]));
 }
 
-void GameStats::clear() {
+void GameStats::init() {
     m_stats.clear();
     m_observers.clear();
 }

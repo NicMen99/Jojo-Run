@@ -18,3 +18,10 @@ void HamonEnemy::init() {
     setDamage(90);
     addSound("HAMONACTION", "hamonEnemyShout");
 }
+
+void HamonEnemy::update(int32_t delta_time) {
+    Enemy::update(delta_time);
+    if(!isStarted()) {
+        setStarted(true);
+    }
+}

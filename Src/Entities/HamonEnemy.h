@@ -13,6 +13,10 @@ public:
     explicit HamonEnemy(const std::string& id);
     ~HamonEnemy() override = default;
     void init();
+
+private:
+    void update(int32_t delta_time) override;
+
 };
 
 #endif //JOJO_RUN_HAMONENEMY_H

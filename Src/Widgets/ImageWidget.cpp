@@ -23,7 +23,7 @@ void ImageWidget::_render(sf::RenderWindow &window, const sf::Vector2f &parent_p
 }
 
 void ImageWidget::setTexture(const std::string & texture_name, const sf::Vector2u & texture_size) {
-    auto t = RM.getTexture(texture_name);
+    auto t = RESOURCE.getTexture(texture_name);
     if(texture_size.x == 0 && texture_size.y ==0) {
         m_image.setTexture(*t, true);
     }

@@ -18,12 +18,14 @@ class GameConfig;
 class Factory;
 class SceneManager;
 class GameStats;
+class ScoreManager;
 
-#define GC Game::instance()->configManager()
-#define RM Game::instance()->resourceManager()
-#define GF Game::instance()->factory()
-#define GS Game::instance()->gameScene()
+#define CONFIG Game::instance()->configManager()
+#define RESOURCE Game::instance()->resourceManager()
+#define FACTORY Game::instance()->factory()
+#define SCENE Game::instance()->gameScene()
 #define STATS Game::instance()->gameStats()
+#define SCORE Game::instance()->gameScore()
 #define RAND Game::instance()->rand
 
 class Game
@@ -43,6 +45,7 @@ public:
     Factory & factory() { return m_factory; }
     SceneManager & gameScene() { return m_scene; }
     GameStats & gameStats() { return m_stats; }
+    ScoreManager & gameScore() { return m_score; }
     int rand(int max) { std::uniform_int_distribution<int> d(0, max - 1); return d(m_gen);}
 
 private:
@@ -59,6 +62,7 @@ private:
     Factory& m_factory;
     SceneManager& m_scene;
     GameStats& m_stats;
+    ScoreManager& m_score;
 
     std::random_device m_rd;  //Will be used to obtain a seed for the random number engine
     std::mt19937 m_gen; //Standard mersenne_twister_engine seeded with rd()

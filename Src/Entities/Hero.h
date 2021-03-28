@@ -45,7 +45,6 @@ private:
 
 private:
     sf::Clock m_jumpTimer;
-    sf::Time m_maxJumpTime = sf::milliseconds(700);
 
 private:
     int m_health = 0;
@@ -53,6 +52,7 @@ private:
     int m_knives = 0;
     int m_maxknives = 8;
     bool m_shield = false;
+    float m_distance = 0;
 };
 
 #endif //JOJO_RUN_HERO_H

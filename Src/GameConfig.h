@@ -20,7 +20,7 @@ public:
     const sf::Vector2f & getSceneSpeed() const { return m_scene_speed; }
     const sf::Vector2f & getGravity() const { return m_gravity; }
     float getHeroJumpForce() const { return m_jumpForce; }
-    float getHeroInitialJumpForce() const { return m_initialJumpForce; }
+    int getHeroJumpMaxTime() const { return m_jumpMaxTime; }
     float getHeroJumpSpeedLimit() const { return m_jumpSpeedLimit; }
     float getHeroFallSpeedLimit() const { return m_fallingSpeedLimit; }
 
@@ -43,10 +43,13 @@ private:
 
     /* Hero settings */
 private:
-    float m_jumpForce = 20.f;
-    float m_initialJumpForce = m_jumpForce * 3;
-    float m_jumpSpeedLimit = -500.f;
-    float m_fallingSpeedLimit = 1000.f;
+    /* delta pixels per secondo */
+    float m_jumpForce = m_gravity.y * 3;
+    /* millisecondi */
+    int m_jumpMaxTime = 250;
+    /* pixels per secondo */
+    float m_jumpSpeedLimit = -800.f;
+    float m_fallingSpeedLimit = 1500.f;
 
     /* assets */
     const char * m_asset_base_dir = "Assets";

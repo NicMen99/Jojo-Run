@@ -31,7 +31,7 @@ void TextWidget::_render(sf::RenderWindow & window, const sf::Vector2f & parent_
 }
 
 void TextWidget::setFont(const std::string & font_name) {
-    m_text.setFont(*RM.getFont(font_name));
+    m_text.setFont(*RESOURCE.getFont(font_name));
 }
 
 sf::Vector2f TextWidget::getSize() {

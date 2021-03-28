@@ -11,7 +11,7 @@
 
 #include "Subject.h"
 
-class GameStats  : public Subject {
+class GameStats : public Subject {
 public:
     void unsubscribe(Observer * observer, const std::string & item_name) override;
     void subscribe(Observer * observer, const std::string & item_name) override;
@@ -20,7 +20,7 @@ private:
     std::map<std::string, std::list<Observer*>> m_observers;
 
 public:
-    void clear();
+    void init();
     void setInt(const std::string & key, int value);
     int getInt(const std::string &key);
     void addInt(const std::string & key, int value);

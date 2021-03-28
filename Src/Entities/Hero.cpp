@@ -29,7 +29,7 @@ void Hero::init()
     };
     addAnimation("DEFAULT", frames);
 
-    setSpeed(GC.getSceneSpeed());
+    setSpeed(CONFIG.getSceneSpeed());
 
     update_health(300);
     updateKnives(0);
@@ -55,13 +55,17 @@ void Hero::update(int32_t delta_time) {
     updatePhysics(delta_time);
     manageAttack();
     Entity::update(delta_time);
+
+    /**/
+    m_distance += getSpeed().x * delta_time / 1000;
+    STATS.setInt("DISTANCE", (int)m_distance);
 }
 
 void Hero::updatePhysics(int32_t delta_time) {
     /*
      * Fallen
      */
-    if(getPosition().y > (GC.getWindowSize().y)) {
+    if(getPosition().y > (CONFIG.getWindowSize().y)) {
         m_state = State::Dead;
     }
 
@@ -72,7 +76,7 @@ void Hero::updatePhysics(int32_t delta_time) {
     {
         case State::Grounded:
             if(m_inputManager.isKeyJustPressed(sf::Keyboard::Space)) {
-                sf::Vector2f accel = {GC.getHeroInitialJumpForce() * GC.getGravity().x, -GC.getHeroInitialJumpForce() * GC.getGravity().y};
+                sf::Vector2f accel = {CONFIG.getHeroJumpForce() * CONFIG.getGravity().x, -CONFIG.getHeroJumpForce() * CONFIG.getGravity().y};
                 applyImpulse(accel, delta_time);
                 m_jumpTimer.restart();
                 m_state = State::Jumping;
@@ -82,8 +86,8 @@ void Hero::updatePhysics(int32_t delta_time) {
             break;
         case State::Jumping:
             if(m_inputManager.isKeyPressed(sf::Keyboard::Space) &&
-               m_jumpTimer.getElapsedTime() < m_maxJumpTime) {
-                    sf::Vector2f accel = {GC.getHeroJumpForce() * GC.getGravity().x, -GC.getHeroJumpForce() * GC.getGravity().y};
+               m_jumpTimer.getElapsedTime() < sf::milliseconds(CONFIG.getHeroJumpMaxTime())) {
+                    sf::Vector2f accel = {CONFIG.getHeroJumpForce() * CONFIG.getGravity().x, -CONFIG.getHeroJumpForce() * CONFIG.getGravity().y};
                     applyImpulse(accel, delta_time);
             }
             else {
@@ -95,7 +99,7 @@ void Hero::updatePhysics(int32_t delta_time) {
         case State::Dead:
             break;
     }
-    applyImpulse(GC.getGravity(), delta_time);
+    applyImpulse(CONFIG.getGravity(), delta_time);
     speedCap();
 }
 
@@ -181,12 +185,12 @@ void Hero::collision(Entity * collider) {
 
 void Hero::speedCap() {
     sf::Vector2f speed = getSpeed();
-    if(speed.y > GC.getHeroFallSpeedLimit()) {
-        speed.y = GC.getHeroFallSpeedLimit();
+    if(speed.y > CONFIG.getHeroFallSpeedLimit()) {
+        speed.y = CONFIG.getHeroFallSpeedLimit();
         setSpeed(speed);
     }
-    else if(speed.y < GC.getHeroJumpSpeedLimit()){
-        speed.y = GC.getHeroJumpSpeedLimit();
+    else if(speed.y < CONFIG.getHeroJumpSpeedLimit()){
+        speed.y = CONFIG.getHeroJumpSpeedLimit();
         setSpeed(speed);
     }
 }
@@ -211,10 +215,10 @@ void Hero::manageAttack() {
         case State::Jumping:
         case State::Falling:
             if(m_inputManager.isKeyJustPressed(sf::Keyboard::K)){
-                auto kf = GF.createBullet(GameObjectType::Knife);
+                auto kf = FACTORY.createBullet(GameObjectType::Knife);
                 kf->setPosition(sf::Vector2f(getPosition()) + sf::Vector2f(getBounds().width, 0));
                 kf->setSpeed(sf::Vector2f {getSpeed().x + 1000.f, 0.f});
-                GS.addNewEntity(kf);
+                SCENE.addNewEntity(kf);
                 updateKnives(-1);
             }
             break;

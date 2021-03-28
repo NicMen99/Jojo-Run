@@ -38,7 +38,6 @@ private:
 
 private:
     std::unique_ptr<CollisionManager> m_collisionManager;
-
     std::vector<std::unique_ptr<Entity>> m_background1;
     std::vector<std::unique_ptr<Entity>> m_background2;
     std::vector<std::unique_ptr<Entity>> m_background3;
@@ -52,8 +51,6 @@ private:
     std::unique_ptr<Entity> m_hero;
     std::unique_ptr<ScoreHUD> m_scorehud;
 
-private:
-    unsigned long m_loops = 0;
 };
 
 #endif //JOJO_RUN_SCENEMANAGER_H

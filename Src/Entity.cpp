@@ -21,9 +21,7 @@ void Entity::update(int32_t delta_time) {
     m_prev_frame = m_frame;
     m_frame = m_animator.getCurrentFrame()->getGlobalBounds();
     setPosition(getPrevPosition());
-    sf::Vector2f speed = m_speed - GC.getSceneSpeed();
-    sf::Vector2f offset = {speed.x * delta_time / 1000, speed.y * delta_time / 1000};
-    move(offset);
+    move(delta_time);
     m_animator.update(delta_time);
 }
 
@@ -48,7 +46,9 @@ void Entity::render(sf::RenderWindow & window) {
     /**/
 }
 
-void Entity::move(const sf::Vector2f & offset) {
+void Entity::move(int32_t delta_time) {
+    sf::Vector2f speed = m_speed - CONFIG.getSceneSpeed();
+    sf::Vector2f offset = {speed.x * delta_time / 1000, speed.y * delta_time / 1000};
     setPosition(getPosition() + offset);
     if((getPosition().x + getBounds().width) < 0) {
         m_destroyed = true;
@@ -78,7 +78,7 @@ void Entity::addSound(const std::string &sound_name, const std::string & sound_r
 void Entity::playSound(const std::string & sound_name, float volume) {
     std::string sound_resource = m_sound_map[sound_name];
     if(m_active_sound != sound_resource) {
-        std::shared_ptr<sf::SoundBuffer> resource = RM.getSound(sound_resource);
+        std::shared_ptr<sf::SoundBuffer> resource = RESOURCE.getSound(sound_resource);
         m_sound.setBuffer(*resource);
         m_active_sound = sound_resource;
     }
