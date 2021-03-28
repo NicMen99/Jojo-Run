@@ -29,7 +29,7 @@ private:
     static void destroyObjects(std::vector<std::unique_ptr<Entity>> & items);
     void generateBackgorund();
     void generateMap();
-    void manageCollision();
+    void manageCollisions();
 
     Entity * createPlatform(sf::Vector2f position);
     void createObstacle(GameObjectType ot, sf::Vector2f position);
@@ -38,7 +38,8 @@ private:
     void createHero();
     void createScoreHUD();
 
-    bool collisionCheck(Entity * hero, Entity * platform);
+    bool collisionCheck(Entity * item1, Entity * item2);
+    bool collisionHeroPlatformCheck(Entity * hero, Entity * platform);
     std::shared_ptr<sf::FloatRect> intersectionRect(Entity * hero, Entity * platform);
 
 
