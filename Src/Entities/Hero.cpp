@@ -72,7 +72,7 @@ void Hero::updatePhysics(int32_t delta_time) {
     {
         case State::Grounded:
             if(m_inputManager.isKeyJustPressed(sf::Keyboard::Space)) {
-                sf::Vector2f accel = {m_initialJumpForce * GC.getGravity().x, -m_initialJumpForce * GC.getGravity().y};
+                sf::Vector2f accel = {GC.getHeroInitialJumpForce() * GC.getGravity().x, -GC.getHeroInitialJumpForce() * GC.getGravity().y};
                 applyImpulse(accel, delta_time);
                 m_jumpTimer.restart();
                 m_state = State::Jumping;
@@ -83,7 +83,7 @@ void Hero::updatePhysics(int32_t delta_time) {
         case State::Jumping:
             if(m_inputManager.isKeyPressed(sf::Keyboard::Space) &&
                m_jumpTimer.getElapsedTime() < m_maxJumpTime) {
-                    sf::Vector2f accel = {m_jumpForce * GC.getGravity().x, -m_jumpForce * GC.getGravity().y};
+                    sf::Vector2f accel = {GC.getHeroJumpForce() * GC.getGravity().x, -GC.getHeroJumpForce() * GC.getGravity().y};
                     applyImpulse(accel, delta_time);
             }
             else {
@@ -181,18 +181,14 @@ void Hero::collision(Entity * collider) {
 
 void Hero::speedCap() {
     sf::Vector2f speed = getSpeed();
-    if(speed.y > m_fallingSpeedLimit) {
-        speed.y = m_fallingSpeedLimit;
+    if(speed.y > GC.getHeroFallSpeedLimit()) {
+        speed.y = GC.getHeroFallSpeedLimit();
         setSpeed(speed);
     }
-    else if(speed.y < m_jumpSpeedLimit){
-        speed.y = m_jumpSpeedLimit;
+    else if(speed.y < GC.getHeroJumpSpeedLimit()){
+        speed.y = GC.getHeroJumpSpeedLimit();
         setSpeed(speed);
     }
-}
-
-bool Hero::gameOver() {
-    return m_state == State::Dead;
 }
 
 void Hero::update_health(int delta) {

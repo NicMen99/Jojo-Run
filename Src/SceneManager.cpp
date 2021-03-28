@@ -139,7 +139,7 @@ void SceneManager::render(sf::RenderWindow & window) {
 }
 
 bool SceneManager::levelend() const {
-    return dynamic_cast<Hero*>(m_hero.get())->gameOver();
+    return dynamic_cast<Hero *>(m_hero.get())->isDead();
 }
 
 void SceneManager::addNewEntity(std::unique_ptr<Entity> & newObject) {
