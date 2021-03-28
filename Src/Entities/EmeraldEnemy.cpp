@@ -20,6 +20,7 @@ void EmeraldEnemy::init() {
     };
     addAnimation("DEFAULT", frames);
     setDamage(90);
+    setLifeBonus(20);
     addSound("EMERALDACTION", "emeraldEnemyShout");
 }
 

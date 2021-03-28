@@ -4,6 +4,7 @@
 
 #include "Game.h"
 #include "ResourceManager.h"
+#include "GameStats.h"
 #include "Enemy.h"
 
 Enemy::Enemy(GameObjectType mtype, const std::string & name) :
@@ -19,14 +20,14 @@ void Enemy::update(int32_t delta_time) {
     Entity::update(delta_time);
     if(m_state == State::Dying) {
         setEnabled(false);
-        if(m_dyingTimer.getElapsedTime() > sf::milliseconds(500))
+        if(m_dyingTimer.getElapsedTime() > sf::milliseconds(100))
             m_state = State::Dead;
     }
     else if(m_state == State::Dead)
         setDestroyed();
 }
 
-void Enemy::collision(Entity *collider) {
+void Enemy::event(GameEvent event, Entity *collider) {
     if(m_state == State::Alive) {
         if(collider->getType() == GameObjectType::Hero) {
             m_state = State::Dying;
@@ -35,6 +36,7 @@ void Enemy::collision(Entity *collider) {
         if (collider->getType() == GameObjectType::Knife) {
             m_state = State::Dead;
             m_dyingTimer.restart();
+            STATS.addInt("KILLED", 1);
         }
     }
 }

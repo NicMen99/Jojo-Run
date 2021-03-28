@@ -20,5 +20,5 @@ void Fire::init() {
     setDamage(1);
 }
 
-void Fire::collision(Entity *collider) {
+void Fire::event(GameEvent event, Entity *collider) {
 }

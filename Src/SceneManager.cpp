@@ -291,15 +291,15 @@ void SceneManager::manageCollisions() {
          */
         for (auto & platform : m_platforms) {
             if(m_collisionManager->collisionCheck(m_hero.get(), platform.get()))
-                m_hero->collision(platform.get());
+                m_hero->event(GameEvent::Collision, platform.get());
         }
         /*
          * Collisione Eroe Nemici
          */
         for (auto & enemy : m_enemies) {
             if (m_collisionManager->collisionCheck(m_hero.get(), enemy.get())) {
-                m_hero->collision(enemy.get());
-                enemy->collision(m_hero.get());
+                m_hero->event(GameEvent::Collision, enemy.get());
+                enemy->event(GameEvent::Collision, m_hero.get());
             }
         }
         /*
@@ -307,8 +307,8 @@ void SceneManager::manageCollisions() {
          */
         for (auto & obstacle : m_obstacles) {
             if (m_collisionManager->collisionCheck(m_hero.get(), obstacle.get())) {
-                m_hero->collision(obstacle.get());
-                obstacle->collision(m_hero.get());
+                m_hero->event(GameEvent::Collision, obstacle.get());
+                obstacle->event(GameEvent::Collision, m_hero.get());
             }
         }
         /*
@@ -316,8 +316,8 @@ void SceneManager::manageCollisions() {
          */
         for (auto & powerup : m_powerups) {
             if (m_collisionManager->collisionCheck(m_hero.get(), powerup.get())) {
-                m_hero->collision(powerup.get());
-                powerup->collision(m_hero.get());
+                m_hero->event(GameEvent::Collision, powerup.get());
+                powerup->event(GameEvent::Collision, m_hero.get());
             }
         }
         /*
@@ -325,8 +325,8 @@ void SceneManager::manageCollisions() {
          */
         for (auto & bullet : m_bullets) {
             if (m_collisionManager->collisionCheck(m_hero.get(), bullet.get())) {
-                m_hero->collision(bullet.get());
-                bullet->collision(m_hero.get());
+                m_hero->event(GameEvent::Collision, bullet.get());
+                bullet->event(GameEvent::Collision, m_hero.get());
             }
         }
         /*
@@ -335,8 +335,9 @@ void SceneManager::manageCollisions() {
         for (auto & bullet : m_bullets) {
             for(auto & enemy : m_enemies) {
                 if (m_collisionManager->collisionCheck(enemy.get(), bullet.get())) {
-                    enemy->collision(bullet.get());
-                    bullet->collision(enemy.get());
+                    enemy->event(GameEvent::Collision, bullet.get());
+                    bullet->event(GameEvent::Collision, enemy.get());
+                    m_hero->event(GameEvent::EnemyKilled, enemy.get());
                 }
             }
         }

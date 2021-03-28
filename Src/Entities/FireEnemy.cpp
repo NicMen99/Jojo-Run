@@ -20,6 +20,7 @@ void FireEnemy::init() {
     };
     addAnimation("DEFAULT", frames);
     setDamage(90);
+    setLifeBonus(30);
     addSound("FIREACTION", "fireEnemyShout");
 }
 

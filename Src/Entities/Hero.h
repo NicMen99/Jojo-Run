@@ -29,13 +29,13 @@ public:
     bool isDead() { return m_state == State::Dead; }
 
 private:
-    void collision(Entity *collider) override;
+    void event(GameEvent event, Entity * entity) override;
     void updatePhysics(int32_t delta_time);
     void speedCap();
     void manageAttack();
 
 private:
-    void update_health(int delta);
+    void updateHealth(int delta);
     void updateKnives(int delta);
 
 
@@ -48,7 +48,7 @@ private:
 
 private:
     int m_health = 0;
-    int m_maxhp = 300;
+    int m_maxhealthpoints = 300;
     int m_knives = 0;
     int m_maxknives = 8;
     bool m_shield = false;
