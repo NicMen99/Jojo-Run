@@ -21,9 +21,11 @@ private:
 
 public:
     void init();
-    void setInt(const std::string & key, int value);
-    int getInt(const std::string &key);
-    void addInt(const std::string & key, int value);
+    void setInt(const std::string & item_name, int item_value);
+    int getInt(const std::string & item_name);
+    void addInt(const std::string & item_name, int item_value);
+    void setString(const std::string & item_name, const std::string & item_value);
+
 private:
     std::map<std::string, int> m_stats;
 };

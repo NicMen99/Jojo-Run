@@ -37,6 +37,9 @@ private:
     std::vector<Record> m_records;
     Record m_score_record;
     int m_last_distance = 0;
+
+private:
+    bool m_killed = false;
 };
 
 

@@ -32,6 +32,8 @@ public:
     Widget* add(Widget* widget);
     Widget* findObjectByName(const std::string & name);
     void setPosition(const sf::Vector2f & position);
+    void setVisible(bool visible) { m_visible = visible; }
+    void setTimer(sf::Time time) { m_time = time; }
 
 protected:
     virtual void _update(int32_t delta_time) {}
@@ -40,12 +42,17 @@ protected:
     Widget * getParent() const;
     sf::Vector2f getPosition() { return m_position; }
 
+protected:
+    sf::Clock m_clock;
+    sf::Time m_time = sf::seconds(0);
+    bool m_timer_started = false;
+
 private:
     std::string m_name;
+    bool m_visible=true;
     sf::Vector2f m_position = {0,0};
     Widget * m_parent = nullptr;
     std::list<Widget*> m_children;
-
 
 public:
     void observe(Subject * observed, const std::string & item_name);

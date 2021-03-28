@@ -4,6 +4,7 @@
 
 #include "Game.h"
 #include "GameStats.h"
+#include "GameConfig.h"
 #include "Widgets/Widget.h"
 #include "Widgets/TextWidget.h"
 #include "Widgets/ImageWidget.h"
@@ -31,6 +32,7 @@ void ScoreHUD::init() {
     theme.font_size = 40;
     theme.font_color = sf::Color::White;
 
+    /* score */
     m_score = new Widget("score");
     m_score->setPosition({30,30});
 
@@ -52,6 +54,18 @@ void ScoreHUD::init() {
     score_label->add(score_value);
     score_value->observe(&STATS, "SCORE");
 
+    /* achievement */
+    m_achievements = new Widget("achiemements");
+    m_achievements->setPosition({400, 30});
+
+    auto achievement_label = new TextWidget("achievement_label");
+    achievement_label->init(theme);
+    achievement_label->setPosition({0,0});
+    achievement_label->setTimer(sf::seconds(3));
+    m_achievements->add(achievement_label);
+    achievement_label->observe(&STATS,"ACHIEVEMENTS");
+
+    /* hero */
     m_hero_status = new Widget("hero_stat");
     m_hero_status->setPosition({1350,30});
 
@@ -83,8 +97,15 @@ void ScoreHUD::init() {
 
 }
 
+void ScoreHUD::update(int32_t delta_time) {
+    m_score->update(delta_time);
+    m_achievements->update(delta_time);
+    m_hero_status->update(delta_time);
+}
+
 void ScoreHUD::render(sf::RenderWindow &window) {
     m_score->render(window);
+    m_achievements->render(window);
     m_hero_status->render(window);
 }
 

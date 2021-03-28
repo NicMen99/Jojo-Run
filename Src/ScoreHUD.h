@@ -19,11 +19,12 @@ public:
     ~ScoreHUD() override;
 
     void init();
-    void update(int32_t delta_time) override {}
+    void update(int32_t delta_time) override;
     void render(sf::RenderWindow & window) override;
 
 private:
     Widget * m_score{};
+    Widget * m_achievements{};
     Widget * m_hero_status{};
 };
 

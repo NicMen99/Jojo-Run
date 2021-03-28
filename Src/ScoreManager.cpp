@@ -14,6 +14,7 @@
 void ScoreManager::init() {
     m_score_record.nickname = "";
     m_score_record.score = 0;
+    m_killed = false;
 }
 
 void ScoreManager::update() {
@@ -29,6 +30,11 @@ void ScoreManager::update() {
     }
 
     STATS.setInt("SCORE", m_score_record.score);
+
+    if(STATS.getInt("KILLED") == 1 && !m_killed) {
+        STATS.setString("ACHIEVEMENTS", "YOU KILLED YOUR FIRST ENEMY");
+        m_killed = true;
+    }
 }
 
 void ScoreManager::loadFromFile() {

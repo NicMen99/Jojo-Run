@@ -44,6 +44,7 @@ Widget * Widget::findObjectByName(const std::string & name) {
 }
 
 void Widget::render(sf::RenderWindow & window, const sf::Vector2f & parent_position) {
+    if(!m_visible) return;
     sf::Vector2f offset = parent_position + getPosition();
     _render(window, offset);
     for (auto& widget : m_children)

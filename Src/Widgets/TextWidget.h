@@ -27,7 +27,7 @@ protected:
     void _render(sf::RenderWindow & window, const sf::Vector2f & parent_position) override;
 
 private:
-    void event(const std::string & item_value) override { m_text.setString(item_value); }
+    void event(const std::string & item_value) override;
 
 private:
     sf::Text m_text;
