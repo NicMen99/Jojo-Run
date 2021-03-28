@@ -22,14 +22,15 @@ public:
 public:
     void update(int32_t delta_time);
     void render(sf::RenderWindow & window);
-    void addItem(std::unique_ptr<Entity> & newObject);
-
     bool levelend() const;
-
+    void addNewEntity(std::unique_ptr<Entity> & newObject);
 
 private:
     static void destroyObjects(std::vector<std::unique_ptr<Entity>> & items);
     void generateBackgorund();
+    void generateMap();
+    void manageCollision();
+
     Entity * createPlatform(sf::Vector2f position);
     void createObstacle(GameObjectType ot, sf::Vector2f position);
     void createEnemy(GameObjectType et, sf::Vector2f position);
@@ -37,8 +38,9 @@ private:
     void createHero();
     void createScoreHUD();
 
-    void generateMap();
-    void manageCollision();
+    bool collisionCheck(Entity * hero, Entity * platform);
+    std::shared_ptr<sf::FloatRect> intersectionRect(Entity * hero, Entity * platform);
+
 
 private:
     std::vector<std::unique_ptr<Entity>> m_background1;

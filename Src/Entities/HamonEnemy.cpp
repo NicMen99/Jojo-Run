@@ -14,7 +14,7 @@ void HamonEnemy::init() {
     const std::list<Animation::FrameParams> frames = {
             {1, "hamonEnemyTexture", {0,0,0,0}, {0,0}, {true, false}}
     };
-    m_animator.addAnimation("DEFAULT", frames);
+    addAnimation("DEFAULT", frames);
     setDamage(90);
     addSound("HAMONACTION", "hamonEnemyShout");
 }

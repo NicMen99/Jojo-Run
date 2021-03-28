@@ -27,11 +27,10 @@ void Hero::init()
     const std::list<Animation::FrameParams> frames = {
             {1, "playerTexture", {0,0,0,0}, {0,0}, {false, false}}
     };
-    m_animator.addAnimation("DEFAULT", frames);
+    addAnimation("DEFAULT", frames);
 
-    m_speed = GC.getSceneSpeed();
+    setSpeed(GC.getSceneSpeed());
 
-    setPosition(sf::Vector2f(200.f, GC.getMBase()));
     update_health(300);
     updateKnives(0);
     m_maxhp = 300;
@@ -50,16 +49,15 @@ void Hero::update(int32_t delta_time) {
     if(!isStarted()) {
         update_health(0);
         updateKnives(0);
+        setStarted(true);
     }
     m_inputManager.update();
     updatePhysics(delta_time);
     manageAttack();
     Entity::update(delta_time);
-    setStarted(true);
 }
 
 void Hero::updatePhysics(int32_t delta_time) {
-
     /*
      * Fallen
      */
@@ -101,8 +99,7 @@ void Hero::updatePhysics(int32_t delta_time) {
     speedCap();
 }
 
-void Hero::collision(Entity * collider)
-{
+void Hero::collision(Entity * collider) {
     /*
      * Collisione con una piattaforma
      */
@@ -112,15 +109,17 @@ void Hero::collision(Entity * collider)
         sf::Rect<float> hero_rect = getBounds();
         sf::Rect<float> intersect /* = clacolare il rettangolo di intersezione */;
         /*if(intersrect.width > intersrect.heght)*/
-        if(m_speed.y >= 0) {
+        sf::Vector2f speed = getSpeed();
+        if(speed.y >= 0) {
             m_state = State::Grounded;
-            m_speed.y = 0;
+            speed.y = 0;
             setPosition(sf::Vector2f(hero_rect.left, collider_rect.top - hero_rect.height));
         }
-        else if (m_speed.y <= 0.f) {
-            m_speed.y -= m_speed.y;
+        else if (speed.y < 0.f) {
+            speed.y -= speed.y;
             setPosition(sf::Vector2f(hero_rect.left, collider_rect.top + collider_rect.height));
         }
+        setSpeed(speed);
         /*}*/
     }
 
@@ -181,10 +180,15 @@ void Hero::collision(Entity * collider)
 }
 
 void Hero::speedCap() {
-    if(m_speed.y > m_fallingSpeedLimit)
-        m_speed.y = m_fallingSpeedLimit;
-    else if(m_speed.y < m_jumpSpeedLimit)
-        m_speed.y = m_jumpSpeedLimit;
+    sf::Vector2f speed = getSpeed();
+    if(speed.y > m_fallingSpeedLimit) {
+        speed.y = m_fallingSpeedLimit;
+        setSpeed(speed);
+    }
+    else if(speed.y < m_jumpSpeedLimit){
+        speed.y = m_jumpSpeedLimit;
+        setSpeed(speed);
+    }
 }
 
 bool Hero::gameOver() {
@@ -213,8 +217,8 @@ void Hero::manageAttack() {
             if(m_inputManager.isKeyJustPressed(sf::Keyboard::K)){
                 auto kf = GF.createBullet(GameObjectType::Knife);
                 kf->setPosition(sf::Vector2f(getPosition()) + sf::Vector2f(getBounds().width, 0));
-                kf->setSpeed(sf::Vector2f {m_speed.x + 1000.f, 0.f});
-                GS.addItem(kf);
+                kf->setSpeed(sf::Vector2f {getSpeed().x + 1000.f, 0.f});
+                GS.addNewEntity(kf);
                 updateKnives(-1);
             }
             break;

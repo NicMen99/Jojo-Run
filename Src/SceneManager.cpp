@@ -135,6 +135,15 @@ void SceneManager::render(sf::RenderWindow & window) {
     m_scorehud->render(window);
 }
 
+bool SceneManager::levelend() const {
+    return dynamic_cast<Hero*>(m_hero.get())->gameOver();
+}
+
+void SceneManager::addNewEntity(std::unique_ptr<Entity> & newObject) {
+    m_spawned_objects.emplace_back(std::move(newObject));
+}
+
+
 void SceneManager::destroyObjects(std::vector<std::unique_ptr<Entity>> & items) {
     for (auto it = items.begin(); it != items.end();) {
         if ((*it)->isDestroyed()) {
@@ -197,55 +206,6 @@ void SceneManager::generateBackgorund(){
         m_background4.emplace_back(std::move(bg));
     }
 }
-
-Entity * SceneManager::createPlatform(sf::Vector2f position) {
-    auto pl = GF.createPlatform(GameObjectType::Platform);
-    pl->setPosition(position);
-    m_platforms.emplace_back(std::move(pl));
-    return m_platforms.back().get();
-}
-
-
-void SceneManager::createObstacle(GameObjectType ot, sf::Vector2f position) {
-    auto bl = GF.createObstacle(ot);
-    if (ot == GameObjectType::Wall){
-        bl->setPosition(sf::Vector2f(0, -bl->getBounds().height) + position);
-    } else {
-        bl->setPosition(sf::Vector2f(0, -2*bl->getBounds().height) + position);
-    }
-    m_obstacles.emplace_back(std::move(bl));
-}
-
-void SceneManager::createEnemy(GameObjectType et, sf::Vector2f position) {
-    auto en = GF.createEnemy(et);
-    en->setPosition(sf::Vector2f(0, -en->getBounds().height) + position);
-    m_enemies.emplace_back(std::move(en));
-}
-
-void SceneManager::createPowerup(GameObjectType pt, sf::Vector2f position) {
-    auto pu = GF.createPowerUp(pt);
-    pu->setPosition(sf::Vector2f(0, -2*pu->getBounds().height) + position);
-    m_powerups.emplace_back(std::move(pu));
-}
-
-void SceneManager::createHero() {
-    auto * hero = new Hero();
-    hero->init();
-
-    m_hero = std::unique_ptr<Entity>(hero);
-}
-
-void SceneManager::createScoreHUD() {
-    auto * hud = new ScoreHUD();
-    hud->init();
-    m_scorehud = std::unique_ptr<ScoreHUD>(hud);
-}
-
-
-bool SceneManager::levelend() const {
-    return dynamic_cast<Hero*>(m_hero.get())->gameOver();
-}
-
 
 void SceneManager::generateMap() {
 
@@ -316,16 +276,16 @@ void SceneManager::generateMap() {
         std::vector<GameObjectType> echoice = {GameObjectType::FireEnemy, GameObjectType::HamonEnemy, GameObjectType::EmeraldEnemy};
         createEnemy(echoice[RAND(echoice.size())], sf::Vector2f(posx+size*3/4, posy));
     }
-    /*
-     * Genera ostacoli
-     */
+        /*
+         * Genera ostacoli
+         */
     else if(m_obstacles.empty()) {
         std::vector<GameObjectType> ochoice = {GameObjectType::Wall, GameObjectType::Block};
         createObstacle(ochoice[RAND(ochoice.size())], sf::Vector2f(posx + size/2, posy));
     }
-    /*
-     * Genera PowerUps
-     */
+        /*
+         * Genera PowerUps
+         */
     else if (m_powerups.empty()) {
         std::vector<GameObjectType> pchoice = {GameObjectType::Weapon, GameObjectType::Shield};
         createPowerup(pchoice[RAND(pchoice.size())], sf::Vector2f(posx + size/2, posy));
@@ -340,7 +300,8 @@ void SceneManager::manageCollision() {
          */
         for (auto & platform : m_platforms) {
             if (platform->isEnabled() && platform->getBounds().intersects(m_hero->getBounds())) {
-                m_hero->collision(platform.get());
+                if(collisionCheck(m_hero.get(), platform.get()))
+                    m_hero->collision(platform.get());
             }
         }
         /*
@@ -387,7 +348,6 @@ void SceneManager::manageCollision() {
                 if (bullet->isEnabled() && bullet->getBounds().intersects(enemy->getBounds())) {
                     enemy->collision(bullet.get());
                     bullet->collision(enemy.get());
-
                 }
             }
         }
@@ -395,8 +355,92 @@ void SceneManager::manageCollision() {
 
 }
 
-void SceneManager::addItem(std::unique_ptr<Entity> & newObject) {
-    m_spawned_objects.emplace_back(std::move(newObject));
+Entity * SceneManager::createPlatform(sf::Vector2f position) {
+    auto pl = GF.createPlatform(GameObjectType::Platform);
+    pl->setPosition(position);
+    m_platforms.emplace_back(std::move(pl));
+    return m_platforms.back().get();
 }
+
+void SceneManager::createObstacle(GameObjectType ot, sf::Vector2f position) {
+    auto bl = GF.createObstacle(ot);
+    if (ot == GameObjectType::Wall){
+        bl->setPosition(sf::Vector2f(0, -bl->getBounds().height) + position);
+    } else {
+        bl->setPosition(sf::Vector2f(0, -2*bl->getBounds().height) + position);
+    }
+    m_obstacles.emplace_back(std::move(bl));
+}
+
+void SceneManager::createEnemy(GameObjectType et, sf::Vector2f position) {
+    auto en = GF.createEnemy(et);
+    en->setPosition(sf::Vector2f(0, -en->getBounds().height) + position);
+    m_enemies.emplace_back(std::move(en));
+}
+
+void SceneManager::createPowerup(GameObjectType pt, sf::Vector2f position) {
+    auto pu = GF.createPowerUp(pt);
+    pu->setPosition(sf::Vector2f(0, -2*pu->getBounds().height) + position);
+    m_powerups.emplace_back(std::move(pu));
+}
+
+void SceneManager::createHero() {
+    auto * hero = new Hero();
+    hero->init();
+    hero->setPosition(sf::Vector2f(200.f, GC.getMBase() - hero->getBounds().height));
+
+    m_hero = std::unique_ptr<Entity>(hero);
+}
+
+void SceneManager::createScoreHUD() {
+    auto * hud = new ScoreHUD();
+    hud->init();
+    m_scorehud = std::unique_ptr<ScoreHUD>(hud);
+}
+
+bool SceneManager::collisionCheck(Entity * hero, Entity * platform) {
+
+    /*
+     * Se una collisione precende già in atto non fa niente
+     */
+    auto hero_prev = hero->getPrevBounds();
+    auto platform_prev = platform->getPrevBounds();
+    if (hero_prev.intersects(platform_prev))
+        return false;
+
+    auto platform_rect = platform->getBounds();
+    auto hero_rect = hero->getBounds();
+
+    /*
+     * Condizione 1 :
+     *  Istante attuale : Top Hero sopra Top Piattaforma
+     *  Istante precedente : Bottom Hero sopra Top Piattaforma
+     *  Collisione
+     */
+    if (hero_rect.top < platform_rect.top && (hero_prev.top + hero_prev.height) <= platform_prev.top)
+        return true;
+
+
+    /*
+     * Condizione 2 :
+     * Istante attuale : Top Hero sotto Top Piattaforma
+     * Istante precedente : Top Hero sotto Bottom Piattaforma*/
+
+    if (hero_rect.top > platform_rect.top && hero_prev.top >= (platform_prev.top + platform_prev.height))
+        return true;
+
+    return false;
+}
+
+std::shared_ptr<sf::FloatRect> SceneManager::intersectionRect(Entity *hero, Entity *platform) {
+    auto new_rect = std::make_shared<sf::FloatRect> (0,0,0,0);
+    new_rect->top = std::max(hero->getBounds().top, platform->getBounds().top);
+    new_rect->left = std::max(hero->getBounds().left, platform->getBounds().left);
+    new_rect->height= std::min(hero->getBounds().top + hero->getBounds().height, platform->getBounds().top + platform->getBounds().height) - new_rect->top;
+    new_rect->width = std::min(hero->getBounds().left + hero->getBounds().width, platform->getBounds().left + platform->getBounds().width) - new_rect->left;
+    return new_rect;
+}
+
+
 
 

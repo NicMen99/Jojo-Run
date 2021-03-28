@@ -18,7 +18,7 @@ void EmeraldEnemy::init() {
     const std::list<Animation::FrameParams> frames = {
             {1, "emeraldEnemyTexture", {0,0,0,0}, {0,0}, {true, false}}
     };
-    m_animator.addAnimation("DEFAULT", frames);
+    addAnimation("DEFAULT", frames);
     setDamage(90);
     addSound("EMERALDACTION", "emeraldEnemyShout");
 }
@@ -32,8 +32,8 @@ void EmeraldEnemy::update(int32_t delta_time) {
     if(m_shoot_left > 0 && m_shootTimer.getElapsedTime() >= m_shootTime) {
         auto bl = GF.createBullet(GameObjectType::EmeraldBullet);
         bl->setPosition({getPosition()});
-        bl->setSpeed(sf::Vector2f {m_speed.x - 1000.f, 0.f});
-        GS.addItem(bl);
+        bl->setSpeed(sf::Vector2f {bl->getSpeed().x - 1000.f, 0.f});
+        GS.addNewEntity(bl);
         playSound("EMERALDACTION");
         m_shoot_left -= 1;
     }
