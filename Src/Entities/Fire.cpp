@@ -15,9 +15,9 @@ void Fire::init() {
             {8, "Fire", {0,0,32,32}, {64,64}, {false, false}},
             {8, "Fire", {32,0,32,32}, {64,64}, {false, false}}
     };
-    m_animator.addAnimation("DEFAULT", frames);
+    addAnimation("DEFAULT", frames);
     setSpeed({0.f, 0.f});
-    setDamage(10);
+    setDamage(1);
 }
 
 void Fire::collision(Entity *collider) {

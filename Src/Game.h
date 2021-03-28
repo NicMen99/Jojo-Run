@@ -47,7 +47,7 @@ public:
 
 private:
     sf::RenderWindow m_window;
-    sf::Event m_event;
+    sf::Event m_event{};
     sf::Clock m_clock;
     sf::Time m_accumulator = sf::Time::Zero;
     sf::Time m_framerate = sf::seconds(1.f/60.f);

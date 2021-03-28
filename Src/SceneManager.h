@@ -6,30 +6,29 @@
 #define JOJO_RUN_SCENEMANAGER_H
 
 #include <SFML/Graphics.hpp>
-#include "Entity.h"
-#include "ScoreHUD.h"
-
-enum class EnemyType;
-enum class ObstacleType;
-enum class PowerUpType;
+class Entity;
+enum class GameObjectType;
+class ScoreHUD;
+class CollisionManager;
 
 class SceneManager
 {
 public:
-    SceneManager()=default;
+    SceneManager() = default;
     virtual ~SceneManager() = default;
     void init();
 public:
     void update(int32_t delta_time);
     void render(sf::RenderWindow & window);
-    void addItem(std::unique_ptr<Entity> & newObject);
-
     bool levelend() const;
-
+    void addNewEntity(std::unique_ptr<Entity> & newObject);
 
 private:
     static void destroyObjects(std::vector<std::unique_ptr<Entity>> & items);
     void generateBackgorund();
+    void generateMap();
+    void manageCollisions();
+
     Entity * createPlatform(sf::Vector2f position);
     void createObstacle(GameObjectType ot, sf::Vector2f position);
     void createEnemy(GameObjectType et, sf::Vector2f position);
@@ -37,10 +36,9 @@ private:
     void createHero();
     void createScoreHUD();
 
-    void generateMap();
-    void manageCollision();
-
 private:
+    std::unique_ptr<CollisionManager> m_collisionManager;
+
     std::vector<std::unique_ptr<Entity>> m_background1;
     std::vector<std::unique_ptr<Entity>> m_background2;
     std::vector<std::unique_ptr<Entity>> m_background3;

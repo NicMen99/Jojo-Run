@@ -8,16 +8,19 @@
 #include "Game.h"
 #include "ResourceManager.h"
 #include "GameConfig.h"
-#include "SceneManager.h"
 #include "GameStats.h"
 #include "Factory.h"
 #include "Entities/Background.h"
 #include "Entities/Hero.h"
 #include "ScoreHUD.h"
+#include "CollisionManager.h"
+#include "SceneManager.h"
 
 
 void SceneManager::init()
 {
+    m_collisionManager = std::unique_ptr<CollisionManager>();
+
     m_background1.clear();
     m_background2.clear();
     m_background3.clear();
@@ -100,7 +103,7 @@ void SceneManager::update(int32_t delta_time) {
     /*
      * Collisions
      */
-    manageCollision();
+    manageCollisions();
 }
 
 void SceneManager::render(sf::RenderWindow & window) {
@@ -134,6 +137,15 @@ void SceneManager::render(sf::RenderWindow & window) {
     m_hero->render(window);
     m_scorehud->render(window);
 }
+
+bool SceneManager::levelend() const {
+    return dynamic_cast<Hero*>(m_hero.get())->gameOver();
+}
+
+void SceneManager::addNewEntity(std::unique_ptr<Entity> & newObject) {
+    m_spawned_objects.emplace_back(std::move(newObject));
+}
+
 
 void SceneManager::destroyObjects(std::vector<std::unique_ptr<Entity>> & items) {
     for (auto it = items.begin(); it != items.end();) {
@@ -198,55 +210,6 @@ void SceneManager::generateBackgorund(){
     }
 }
 
-Entity * SceneManager::createPlatform(sf::Vector2f position) {
-    auto pl = GF.createPlatform(GameObjectType::Platform);
-    pl->setPosition(position);
-    m_platforms.emplace_back(std::move(pl));
-    return m_platforms.back().get();
-}
-
-
-void SceneManager::createObstacle(GameObjectType ot, sf::Vector2f position) {
-    auto bl = GF.createObstacle(ot);
-    if (ot == GameObjectType::Wall){
-        bl->setPosition(sf::Vector2f(0, -bl->getBounds().height) + position);
-    } else {
-        bl->setPosition(sf::Vector2f(0, -2*bl->getBounds().height) + position);
-    }
-    m_obstacles.emplace_back(std::move(bl));
-}
-
-void SceneManager::createEnemy(GameObjectType et, sf::Vector2f position) {
-    auto en = GF.createEnemy(et);
-    en->setPosition(sf::Vector2f(0, -en->getBounds().height) + position);
-    m_enemies.emplace_back(std::move(en));
-}
-
-void SceneManager::createPowerup(GameObjectType pt, sf::Vector2f position) {
-    auto pu = GF.createPowerUp(pt);
-    pu->setPosition(sf::Vector2f(0, -2*pu->getBounds().height) + position);
-    m_powerups.emplace_back(std::move(pu));
-}
-
-void SceneManager::createHero() {
-    auto * hero = new Hero();
-    hero->init();
-
-    m_hero = std::unique_ptr<Entity>(hero);
-}
-
-void SceneManager::createScoreHUD() {
-    auto * hud = new ScoreHUD();
-    hud->init();
-    m_scorehud = std::unique_ptr<ScoreHUD>(hud);
-}
-
-
-bool SceneManager::levelend() const {
-    return dynamic_cast<Hero*>(m_hero.get())->gameOver();
-}
-
-
 void SceneManager::generateMap() {
 
     /*
@@ -257,6 +220,7 @@ void SceneManager::generateMap() {
      * si parte con una piattaforma origine 0,0 e lunga tutto lo schermo
      * ogni piattaforma dista 0 <= x <= 250 dalla precedente e salta di -1 / 0 / +1 livelli ok
      */
+
     float posx;
     float posy;
     float size;
@@ -308,7 +272,6 @@ void SceneManager::generateMap() {
         sizex += prev->getBounds().width;
     }
 
-
     /*
      * Genera nemici
      */
@@ -316,38 +279,37 @@ void SceneManager::generateMap() {
         std::vector<GameObjectType> echoice = {GameObjectType::FireEnemy, GameObjectType::HamonEnemy, GameObjectType::EmeraldEnemy};
         createEnemy(echoice[RAND(echoice.size())], sf::Vector2f(posx+size*3/4, posy));
     }
-    /*
-     * Genera ostacoli
-     */
+        /*
+         * Genera ostacoli
+         */
     else if(m_obstacles.empty()) {
         std::vector<GameObjectType> ochoice = {GameObjectType::Wall, GameObjectType::Block};
         createObstacle(ochoice[RAND(ochoice.size())], sf::Vector2f(posx + size/2, posy));
     }
-    /*
-     * Genera PowerUps
-     */
+        /*
+         * Genera PowerUps
+         */
     else if (m_powerups.empty()) {
         std::vector<GameObjectType> pchoice = {GameObjectType::Weapon, GameObjectType::Shield};
         createPowerup(pchoice[RAND(pchoice.size())], sf::Vector2f(posx + size/2, posy));
     }
 }
 
-void SceneManager::manageCollision() {
+void SceneManager::manageCollisions() {
 
     if(m_hero->isEnabled()) {
         /*
          * Collisione Eroe Piattaforma
          */
         for (auto & platform : m_platforms) {
-            if (platform->isEnabled() && platform->getBounds().intersects(m_hero->getBounds())) {
+            if(m_collisionManager->collisionCheck(m_hero.get(), platform.get()))
                 m_hero->collision(platform.get());
-            }
         }
         /*
          * Collisione Eroe Nemici
          */
         for (auto & enemy : m_enemies) {
-            if (enemy->isEnabled() && enemy->getBounds().intersects(m_hero->getBounds())) {
+            if (m_collisionManager->collisionCheck(m_hero.get(), enemy.get())) {
                 m_hero->collision(enemy.get());
                 enemy->collision(m_hero.get());
             }
@@ -356,47 +318,83 @@ void SceneManager::manageCollision() {
          * Collisione Eroe Ostacoli
          */
         for (auto & obstacle : m_obstacles) {
-            if (obstacle->isEnabled() && obstacle->getBounds().intersects(m_hero->getBounds())) {
+            if (m_collisionManager->collisionCheck(m_hero.get(), obstacle.get())) {
                 m_hero->collision(obstacle.get());
                 obstacle->collision(m_hero.get());
             }
         }
         /*
-         * Collisione Eroe PowerUp
+         * Collisione Eroe Potenziamenti
          */
         for (auto & powerup : m_powerups) {
-            if (powerup->isEnabled() && powerup->getBounds().intersects(m_hero->getBounds())) {
+            if (m_collisionManager->collisionCheck(m_hero.get(), powerup.get())) {
                 m_hero->collision(powerup.get());
                 powerup->collision(m_hero.get());
             }
         }
         /*
-         * Collisione Eroe Bullet
+         * Collisione Eroe Proiettili
          */
         for (auto & bullet : m_bullets) {
-            if (bullet->isEnabled() && bullet->getBounds().intersects(m_hero->getBounds())) {
+            if (m_collisionManager->collisionCheck(m_hero.get(), bullet.get())) {
                 m_hero->collision(bullet.get());
                 bullet->collision(m_hero.get());
             }
         }
         /*
-         * Collisione Nemici Coltello
+         * Collisione Nemici Proiettili
          */
         for (auto & bullet : m_bullets) {
             for(auto & enemy : m_enemies) {
-                if (bullet->isEnabled() && bullet->getBounds().intersects(enemy->getBounds())) {
+                if (m_collisionManager->collisionCheck(enemy.get(), bullet.get())) {
                     enemy->collision(bullet.get());
                     bullet->collision(enemy.get());
-
                 }
             }
         }
     }
-
 }
 
-void SceneManager::addItem(std::unique_ptr<Entity> & newObject) {
-    m_spawned_objects.emplace_back(std::move(newObject));
+Entity * SceneManager::createPlatform(sf::Vector2f position) {
+    auto pl = GF.createPlatform(GameObjectType::Platform);
+    pl->setPosition(position);
+    m_platforms.emplace_back(std::move(pl));
+    return m_platforms.back().get();
 }
 
+void SceneManager::createObstacle(GameObjectType ot, sf::Vector2f position) {
+    auto bl = GF.createObstacle(ot);
+    if (ot == GameObjectType::Wall){
+        bl->setPosition(sf::Vector2f(0, -bl->getBounds().height) + position);
+    } else {
+        bl->setPosition(sf::Vector2f(0, -2*bl->getBounds().height) + position);
+    }
+    m_obstacles.emplace_back(std::move(bl));
+}
+
+void SceneManager::createEnemy(GameObjectType et, sf::Vector2f position) {
+    auto en = GF.createEnemy(et);
+    en->setPosition(sf::Vector2f(0, -en->getBounds().height) + position);
+    m_enemies.emplace_back(std::move(en));
+}
+
+void SceneManager::createPowerup(GameObjectType pt, sf::Vector2f position) {
+    auto pu = GF.createPowerUp(pt);
+    pu->setPosition(sf::Vector2f(0, -2*pu->getBounds().height) + position);
+    m_powerups.emplace_back(std::move(pu));
+}
+
+void SceneManager::createHero() {
+    auto * hero = new Hero();
+    hero->init();
+    hero->setPosition(sf::Vector2f(200.f, GC.getMBase() - hero->getBounds().height));
+
+    m_hero = std::unique_ptr<Entity>(hero);
+}
+
+void SceneManager::createScoreHUD() {
+    auto * hud = new ScoreHUD();
+    hud->init();
+    m_scorehud = std::unique_ptr<ScoreHUD>(hud);
+}
 

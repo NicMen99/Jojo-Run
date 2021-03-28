@@ -18,7 +18,7 @@ void FireEnemy::init() {
     const std::list<Animation::FrameParams> frames = {
             {1, "fireEnemy", {0,0,0,0}, {0,0}, {true, false}}
     };
-    m_animator.addAnimation("DEFAULT", frames);
+    addAnimation("DEFAULT", frames);
     setDamage(90);
     addSound("FIREACTION", "fireEnemyShout");
 }
@@ -32,8 +32,8 @@ void FireEnemy::update(int32_t delta_time) {
     if(m_shoot_left > 0 && m_shootTimer.getElapsedTime() >= m_shootTime) {
         auto bl = GF.createBullet(GameObjectType::FireBullet);
         bl->setPosition({getPosition()});
-        bl->setSpeed(sf::Vector2f {m_speed.x - 1000.f, 0.f});
-        GS.addItem(bl);
+        bl->setSpeed(sf::Vector2f {getSpeed().x - 1000.f, 0.f});
+        GS.addNewEntity(bl);
         playSound("FIREACTION");
         m_shoot_left -= 1;
     }

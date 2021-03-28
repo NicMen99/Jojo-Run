@@ -18,6 +18,9 @@ Entity::Entity(GameObjectGroup mgroup, GameObjectType mtype, std::string  mName)
 }
 
 void Entity::update(int32_t delta_time) {
+    m_prev_frame = m_frame;
+    m_frame = m_animator.getCurrentFrame()->getGlobalBounds();
+    setPosition(getPrevPosition());
     sf::Vector2f speed = m_speed - GC.getSceneSpeed();
     sf::Vector2f offset = {speed.x * delta_time / 1000, speed.y * delta_time / 1000};
     move(offset);
@@ -33,10 +36,10 @@ void Entity::render(sf::RenderWindow & window) {
 
     /**/
 #ifdef HIT_BOX_DEBUG
-    m_bounds = getBounds();
+    m_frame = getBounds();
     sf::RectangleShape hitbox;
-    hitbox.setPosition(m_bounds.left, m_bounds.top);
-    hitbox.setSize({m_bounds.width, m_bounds.height});
+    hitbox.setPosition(m_frame.left, m_frame.top);
+    hitbox.setSize({m_frame.width, m_frame.height});
     hitbox.setFillColor(sf::Color::Transparent);
     hitbox.setOutlineColor(sf::Color::Red);
     hitbox.setOutlineThickness(1);
@@ -56,16 +59,16 @@ void Entity::applyImpulse(const sf::Vector2f & acceleration, int32_t delta_time)
     m_speed += {acceleration.x * delta_time / 1000, acceleration.y * delta_time / 1000};
 }
 
-sf::FloatRect Entity::getBounds() const {
-    auto frame = m_animator.getCurrentFrame();
-    assert(frame!=nullptr);
-    sf::FloatRect bounds = frame->getGlobalBounds();
-    bounds.left = m_position.x;
-    bounds.top = m_position.y;
-    //std::cout << getName() << " " << bounds.left << "," << bounds.top << "," << bounds.width << "," << bounds.height << std::endl;
-    return bounds;
+void Entity::addAnimation(const std::string & animation_name, const std::list<Animation::FrameParams>& frames) {
+    m_animator.addAnimation(animation_name, frames);
+    sf::FloatRect frame = m_animator.getCurrentFrame()->getGlobalBounds();
+    setPosition(getPosition());
+    m_frame = frame;
 }
 
+void Entity::playAnimation(const std::string & animation_name, int repetitions) {
+    m_animator.play(animation_name, repetitions);
+}
 
 
 void Entity::addSound(const std::string &sound_name, const std::string & sound_resource) {

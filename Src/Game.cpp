@@ -6,12 +6,14 @@
 #include "StateMachine/GameStateMachine.h"
 #include "GameConfig.h"
 #include "ResourceManager.h"
+#include "Factory.h"
 #include "SceneManager.h"
 #include "GameStats.h"
-#include "Factory.h"
+#include "ScoreHUD.h"
+#include "CollisionManager.h"
 #include "Game.h"
 
-#define DEBUG
+
 
 Game* Game::m_instance = nullptr;
 
@@ -54,18 +56,17 @@ void Game::loop()
         }
 
         sf::Time elapsedTime = m_clock.restart();
-#ifdef DEBUG
-        if(elapsedTime > sf::milliseconds(50)) {
-            elapsedTime = sf::milliseconds(50);
+        if(elapsedTime > sf::milliseconds(100)) {
+            std::cout << elapsedTime.asMilliseconds() << std::endl;
+            elapsedTime = sf::milliseconds(100);
         }
-#endif
         m_accumulator += elapsedTime;
 
         while (m_accumulator > m_framerate) {
             m_accumulator -= m_framerate;
             m_gameMachine->exec();
             m_gameMachine->update(m_framerate.asMilliseconds());
-            sf::sleep(sf::milliseconds(10));
+            // sf::sleep(sf::milliseconds(1));
         }
 
         m_window.clear(sf::Color::Black);
