@@ -8,16 +8,19 @@
 #include "Game.h"
 #include "ResourceManager.h"
 #include "GameConfig.h"
-#include "SceneManager.h"
 #include "GameStats.h"
 #include "Factory.h"
 #include "Entities/Background.h"
 #include "Entities/Hero.h"
 #include "ScoreHUD.h"
+#include "CollisionManager.h"
+#include "SceneManager.h"
 
 
 void SceneManager::init()
 {
+    m_collisionManager = std::unique_ptr<CollisionManager>();
+
     m_background1.clear();
     m_background2.clear();
     m_background3.clear();
@@ -299,14 +302,14 @@ void SceneManager::manageCollisions() {
          * Collisione Eroe Piattaforma
          */
         for (auto & platform : m_platforms) {
-            if(collisionHeroPlatformCheck(m_hero.get(), platform.get()))
+            if(m_collisionManager->collisionCheck(m_hero.get(), platform.get()))
                 m_hero->collision(platform.get());
         }
         /*
          * Collisione Eroe Nemici
          */
         for (auto & enemy : m_enemies) {
-            if (collisionCheck(m_hero.get(), enemy.get())) {
+            if (m_collisionManager->collisionCheck(m_hero.get(), enemy.get())) {
                 m_hero->collision(enemy.get());
                 enemy->collision(m_hero.get());
             }
@@ -315,7 +318,7 @@ void SceneManager::manageCollisions() {
          * Collisione Eroe Ostacoli
          */
         for (auto & obstacle : m_obstacles) {
-            if (collisionCheck(m_hero.get(), obstacle.get())) {
+            if (m_collisionManager->collisionCheck(m_hero.get(), obstacle.get())) {
                 m_hero->collision(obstacle.get());
                 obstacle->collision(m_hero.get());
             }
@@ -324,7 +327,7 @@ void SceneManager::manageCollisions() {
          * Collisione Eroe Potenziamenti
          */
         for (auto & powerup : m_powerups) {
-            if (collisionCheck(m_hero.get(), powerup.get())) {
+            if (m_collisionManager->collisionCheck(m_hero.get(), powerup.get())) {
                 m_hero->collision(powerup.get());
                 powerup->collision(m_hero.get());
             }
@@ -333,7 +336,7 @@ void SceneManager::manageCollisions() {
          * Collisione Eroe Proiettili
          */
         for (auto & bullet : m_bullets) {
-            if (collisionCheck(m_hero.get(), bullet.get())) {
+            if (m_collisionManager->collisionCheck(m_hero.get(), bullet.get())) {
                 m_hero->collision(bullet.get());
                 bullet->collision(m_hero.get());
             }
@@ -343,7 +346,7 @@ void SceneManager::manageCollisions() {
          */
         for (auto & bullet : m_bullets) {
             for(auto & enemy : m_enemies) {
-                if (collisionCheck(enemy.get(), bullet.get())) {
+                if (m_collisionManager->collisionCheck(enemy.get(), bullet.get())) {
                     enemy->collision(bullet.get());
                     bullet->collision(enemy.get());
                 }
@@ -394,66 +397,4 @@ void SceneManager::createScoreHUD() {
     hud->init();
     m_scorehud = std::unique_ptr<ScoreHUD>(hud);
 }
-
-bool SceneManager::collisionCheck(Entity * item1, Entity * item2) {
-
-    /*
-     * Se una collisione non in atto non fa niente
-     */
-    auto item1_rect = item1->getBounds();
-    auto item2_rect = item2->getBounds();
-    if (!item1->isEnabled() || !item2->isEnabled())
-        return false;
-    return  item1_rect.intersects(item2_rect);
-}
-
-bool SceneManager::collisionHeroPlatformCheck(Entity * hero, Entity * platform) {
-
-        /*
-         * Se una collisione non in atto non fa niente
-         */
-    auto platform_rect = platform->getBounds();
-    auto hero_rect = hero->getBounds();
-    if (!hero->isEnabled() || !platform->isEnabled() || !hero_rect.intersects(platform_rect))
-        return false;
-
-        /*
-         * Se una collisione precende già in atto non fa niente
-         */
-    auto hero_prev = hero->getPrevBounds();
-    auto platform_prev = platform->getPrevBounds();
-    if (hero_prev.intersects(platform_prev))
-        return false;
-
-        /*
-         * Condizione 1 :
-         *  Istante attuale : Top Hero sopra Top Piattaforma
-         *  Istante precedente : Bottom Hero sopra Top Piattaforma
-         *  Collisione
-         */
-    if (hero_rect.top < platform_rect.top && (hero_prev.top + hero_prev.height) <= platform_prev.top)
-        return true;
-
-        /*
-         * Condizione 2 :
-         * Istante attuale : Top Hero sotto Top Piattaforma
-         * Istante precedente : Top Hero sotto Bottom Piattaforma
-         */
-    if (hero_rect.top > platform_rect.top && hero_prev.top >= (platform_prev.top + platform_prev.height))
-        return true;
-
-    return false;
-}
-
-std::shared_ptr<sf::FloatRect> SceneManager::intersectionRect(Entity *hero, Entity *platform) {
-    auto new_rect = std::make_shared<sf::FloatRect> (0,0,0,0);
-    new_rect->top = std::max(hero->getBounds().top, platform->getBounds().top);
-    new_rect->left = std::max(hero->getBounds().left, platform->getBounds().left);
-    new_rect->height= std::min(hero->getBounds().top + hero->getBounds().height, platform->getBounds().top + platform->getBounds().height) - new_rect->top;
-    new_rect->width = std::min(hero->getBounds().left + hero->getBounds().width, platform->getBounds().left + platform->getBounds().width) - new_rect->left;
-    return new_rect;
-}
-
-
-
 

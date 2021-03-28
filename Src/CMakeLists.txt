@@ -3,6 +3,8 @@ target_sources(${TARGET}
         main.cpp
         Animator.h
         Animator.cpp
+        CollisionManager.h
+        CollisionManager.cpp
         InputManager.h
         InputManager.cpp
         Factory.h

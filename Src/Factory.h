@@ -5,14 +5,8 @@
 #ifndef JOJO_RUN_FACTORY_H
 #define JOJO_RUN_FACTORY_H
 
-class Obstacle;
-class Enemy;
-class PowerUp;
-class Bullet;
-class Platform;
-class Background;
-
-enum class PlatformType;
+class Entity;
+enum class GameObjectType;
 
 class Factory {
 public:

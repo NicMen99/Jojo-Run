@@ -17,7 +17,7 @@ void Fire::init() {
     };
     addAnimation("DEFAULT", frames);
     setSpeed({0.f, 0.f});
-    setDamage(10);
+    setDamage(1);
 }
 
 void Fire::collision(Entity *collider) {

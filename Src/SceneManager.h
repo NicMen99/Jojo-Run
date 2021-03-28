@@ -6,17 +6,15 @@
 #define JOJO_RUN_SCENEMANAGER_H
 
 #include <SFML/Graphics.hpp>
-#include "Entity.h"
-#include "ScoreHUD.h"
-
-enum class EnemyType;
-enum class ObstacleType;
-enum class PowerUpType;
+class Entity;
+enum class GameObjectType;
+class ScoreHUD;
+class CollisionManager;
 
 class SceneManager
 {
 public:
-    SceneManager()=default;
+    SceneManager() = default;
     virtual ~SceneManager() = default;
     void init();
 public:
@@ -38,12 +36,9 @@ private:
     void createHero();
     void createScoreHUD();
 
-    bool collisionCheck(Entity * item1, Entity * item2);
-    bool collisionHeroPlatformCheck(Entity * hero, Entity * platform);
-    std::shared_ptr<sf::FloatRect> intersectionRect(Entity * hero, Entity * platform);
-
-
 private:
+    std::unique_ptr<CollisionManager> m_collisionManager;
+
     std::vector<std::unique_ptr<Entity>> m_background1;
     std::vector<std::unique_ptr<Entity>> m_background2;
     std::vector<std::unique_ptr<Entity>> m_background3;

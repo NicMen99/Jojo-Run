@@ -6,9 +6,11 @@
 #include "StateMachine/GameStateMachine.h"
 #include "GameConfig.h"
 #include "ResourceManager.h"
+#include "Factory.h"
 #include "SceneManager.h"
 #include "GameStats.h"
-#include "Factory.h"
+#include "ScoreHUD.h"
+#include "CollisionManager.h"
 #include "Game.h"
 
 
