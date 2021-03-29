@@ -11,6 +11,28 @@
 
 #include "Subject.h"
 
+
+struct Stats {
+    static const char * Time;
+    static const char * Score;
+    static const char * Health;
+    static const char * Knives;
+    static const char * Distance;
+    static const char * Killed;
+    static const char * ConsecutiveKilled;
+    static const char * CleanDistance;
+};
+
+struct Achievements {
+    static const char * Score;
+    static const char * Distance;
+    static const char * Killed;
+    static const char * ConsecutiveKilled;
+    static const char * CleanDistance;
+};
+
+
+
 class GameStats : public Subject {
 public:
     void unsubscribe(Observer * observer, const std::string & item_name) override;

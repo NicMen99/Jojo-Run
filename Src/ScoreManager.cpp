@@ -14,76 +14,48 @@
 void ScoreManager::init() {
     m_score_record.nickname = "";
     m_score_record.score = 0;
-    m_killed_1 = false;
-    m_killed_2 = false;
-    m_killed_3 = false;
-    m_distance_1 = false;
-    m_distance_2 = false;
-    m_distance_3 = false;
-    m_combo_1 = false;
-    m_combo_2 = false;
-    m_combo_3 = false;
+
+    m_distance_achiev = {3000, 5000};
+    m_killed_achiev = {3, 5};
+    m_conseckilled_achiev = {3,5};
+
 }
 
 void ScoreManager::update() {
 
-    int dist = STATS.getInt("DISTANCE");
-    if(dist - m_last_distance > CONFIG.getWindowSize().x) {
-        m_last_distance = dist;
+    /*
+     *  distanza
+     */
+    int distance = STATS.getInt(Stats::Distance);
+    if(distance - m_last_distance > CONFIG.getWindowSize().x) {
+        m_last_distance = distance;
         m_score_record.score += 1;
+        STATS.addInt(Stats::Score, 1);
     }
-    STATS.setInt("SCORE", m_score_record.score);
-
-    /*
-     * Achievments distanza
-     */
-
-    if(STATS.getInt("DISTANCE") > 30000 && !m_distance_1){
-        STATS.setInt("ACHIEVEMENT_D1", 1);
-        m_distance_1 = true;
-    }
-    if(STATS.getInt("DISTANCE") > 75000 && !m_distance_2){
-        STATS.setInt("ACHIEVEMENT_D2", 1);
-        m_distance_1 = true;
-    }
-    if(STATS.getInt("DISTANCE") > 150000 && !m_distance_3){
-        STATS.setInt("ACHIEVEMENT_D3", 1);
-        m_distance_1 = true;
+    STATS.setInt(Stats::Score, m_score_record.score);
+    if(distance >= m_distance_achiev.second){
+        STATS.setInt(Achievements::Distance, distance/100*100);
+        m_distance_achiev = {m_distance_achiev.second, m_distance_achiev.first + m_distance_achiev.second};
     }
 
     /*
-     * Achievements uccisioni
+     * uccisioni
      */
-
-    if(STATS.getInt("KILLED") == 5 && !m_killed_1) {
-        STATS.setInt("ACHIEVEMENT_K1", 1);
-        m_killed_1 = true;
-    }
-    if(STATS.getInt("KILLED") == 15 && !m_killed_2) {
-        STATS.setInt("ACHIEVEMENT_K2", 1);
-        m_killed_2 = true;
-    }
-    if(STATS.getInt("KILLED") == 30 && !m_killed_3) {
-        STATS.setInt("ACHIEVEMENT_K3", 1);
-        m_killed_3 = true;
+    int killed = STATS.getInt(Stats::Killed);
+    if(killed >= m_killed_achiev.second){
+        STATS.setInt(Achievements::Killed, killed);
+        m_killed_achiev = {m_killed_achiev.second, m_killed_achiev.first + m_killed_achiev.second};
     }
 
     /*
-     * Achievements uccisioni consecutive
+     * uccisioni consecutive
      */
+    int consecutive_killed = STATS.getInt(Stats::ConsecutiveKilled);
+    if(consecutive_killed >= m_killed_achiev.second){
+        STATS.setInt(Achievements::Distance, consecutive_killed);
+        m_conseckilled_achiev = {m_conseckilled_achiev.second, m_conseckilled_achiev.first + m_conseckilled_achiev.second};
+    }
 
-    if(STATS.getInt("COMBO") == 3 && !m_combo_1) {
-        STATS.setInt("ACHIEVEMENT_C1", 1);
-        m_combo_1 = true;
-    }
-    if(STATS.getInt("COMBO") == 7 && !m_combo_2) {
-        STATS.setInt("ACHIEVEMENT_C2", 1);
-        m_combo_2 = true;
-    }
-    if(STATS.getInt("COMBO") == 10 && !m_combo_3) {
-        STATS.setInt("ACHIEVEMENT_C3", 1);
-        m_combo_3 = true;
-    }
 }
 
 void ScoreManager::loadFromFile() {

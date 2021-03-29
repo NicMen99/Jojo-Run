@@ -53,7 +53,7 @@ void Entity::move(int32_t delta_time) {
     setPosition(getPosition() + offset);
     if((getPosition().x + getBounds().width) < 0) {
         if(getGroup() == GameObjectGroup::Enemy) {
-            STATS.setInt("COMBO", 0);
+            STATS.setInt(Stats::ConsecutiveKilled, 0);
         }
         setDestroyed();
     }

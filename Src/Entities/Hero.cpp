@@ -58,7 +58,7 @@ void Hero::update(int32_t delta_time) {
 
     /**/
     m_distance += getSpeed().x * delta_time / 1000;
-    STATS.setInt("DISTANCE", (int)m_distance);
+    STATS.setInt(Stats::Distance, (int)m_distance);
 }
 
 void Hero::updatePhysics(int32_t delta_time) {
@@ -200,13 +200,13 @@ void Hero::updateHealth(int delta) {
     if(m_health > m_maxhealthpoints) {
         m_health = m_maxhealthpoints;
     }
-    STATS.setInt("HEALTH", m_health);
+    STATS.setInt(Stats::Health, m_health);
 }
 
 void Hero::updateKnives(int delta) {
     m_knives += delta;
     m_knives = (m_knives>m_maxknives) ? m_maxknives : m_knives;
-    STATS.setInt("KNIVES", m_knives);
+    STATS.setInt(Stats::Knives, m_knives);
 }
 
 void Hero::manageAttack() {
