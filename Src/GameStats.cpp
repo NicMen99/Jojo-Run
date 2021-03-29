@@ -16,7 +16,7 @@ void GameStats::unsubscribe(Observer * observer, const std::string & item_name) 
 void GameStats::notify(const std::string & item_name) {
     std::string val = std::to_string(m_stats[item_name]);
     for (auto it = std::begin(m_observers[item_name]); it != std::end(m_observers[item_name]); it++)
-        (*it)->event((val));
+        (*it)->data_update(item_name, val);
 }
 
 void GameStats::init() {
@@ -38,7 +38,7 @@ void GameStats::addInt(const std::string & item_name, int item_value) {
     notify(item_name);
 }
 
-void GameStats::setString(const std::string & item_name, const std::string & item_value) {
+void GameStats::notifyValue(const std::string & item_name, const std::string & item_value) {
     for (auto it = std::begin(m_observers[item_name]); it != std::end(m_observers[item_name]); it++)
-        (*it)->event((item_value));
+        (*it)->data_update(item_name, item_value);
 }

@@ -33,7 +33,7 @@ public:
     Widget* findObjectByName(const std::string & name);
     void setPosition(const sf::Vector2f & position);
     void setVisible(bool visible) { m_visible = visible; }
-    void setTimer(sf::Time time) { m_time = time; }
+    void startTimer(sf::Time time);
 
 protected:
     virtual void _update(int32_t delta_time) {}
@@ -58,7 +58,7 @@ public:
     void observe(Subject * observed, const std::string & item_name);
 
 private:
-    void event(const std::string & item_value) override {}
+    void data_update(const std::string & item_name, const std::string & item_value) override {}
     void attach() override;
     void detach() override;
     Subject * m_observed = nullptr;

@@ -32,7 +32,7 @@ void ScoreManager::update() {
     STATS.setInt("SCORE", m_score_record.score);
 
     if(STATS.getInt("KILLED") == 1 && !m_killed) {
-        STATS.setString("ACHIEVEMENTS", "YOU KILLED YOUR FIRST ENEMY");
+        STATS.setInt("ACHIEVEMENT", 1);
         m_killed = true;
     }
 }

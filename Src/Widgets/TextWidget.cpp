@@ -45,12 +45,6 @@ sf::Vector2f TextWidget::getSize() {
     return sf::Vector2f{size.width, size.height};
 }
 
-void TextWidget::event(const std::string & item_value) {
+void TextWidget::data_update(const std::string & item_name, const std::string & item_value) {
     m_text.setString(item_value);
-    if(m_time > sf::seconds(0)) {
-        setVisible(true);
-        m_clock.restart();
-        m_timer_started = true;
-
-    }
 }

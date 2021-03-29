@@ -18,6 +18,8 @@ const unsigned int font_size = 40;
 ScoreHUD::ScoreHUD() :
         Entity(GameObjectGroup::Scene, GameObjectType::Hud, "HUD")
 {
+    if(m_observed)
+        detach();
 }
 
 ScoreHUD::~ScoreHUD() {
@@ -54,17 +56,6 @@ void ScoreHUD::init() {
     score_label->add(score_value);
     score_value->observe(&STATS, "SCORE");
 
-    /* achievement */
-    m_achievements = new Widget("achiemements");
-    m_achievements->setPosition({400, 30});
-
-    auto achievement_label = new TextWidget("achievement_label");
-    achievement_label->init(theme);
-    achievement_label->setPosition({0,0});
-    achievement_label->setTimer(sf::seconds(3));
-    m_achievements->add(achievement_label);
-    achievement_label->observe(&STATS,"ACHIEVEMENTS");
-
     /* hero */
     m_hero_status = new Widget("hero_stat");
     m_hero_status->setPosition({1350,30});
@@ -95,6 +86,15 @@ void ScoreHUD::init() {
     knives_label->add(knives_value);
     knives_value->observe(&STATS,"KNIVES");
 
+    /* achievement */
+    m_achievements = new Widget("achiemements");
+    m_achievements->setPosition({400, 30});
+
+    auto achievement_label = new TextWidget("achievement_message");
+    achievement_label->init(theme);
+    achievement_label->setPosition({0,0});
+    m_achievements->add(achievement_label);
+    observe(&STATS,"ACHIEVEMENT");
 }
 
 void ScoreHUD::update(int32_t delta_time) {
@@ -109,4 +109,29 @@ void ScoreHUD::render(sf::RenderWindow &window) {
     m_hero_status->render(window);
 }
 
+/**/
 
+void ScoreHUD::data_update(const std::string & item_name, const std::string & item_value){
+    if(item_name == "ACHIEVEMENT") {
+        TextWidget* widget = dynamic_cast<TextWidget*>(m_achievements->findObjectByName("achievement_message"));
+        widget->setString("CONGRATULATION!  YOU KILLED YOUR FIRST ENEMY.");
+        widget->startTimer(sf::seconds(3));
+    }
+}
+
+void ScoreHUD::observe(Subject * observed, const std::string & item_name) {
+    if(nullptr != m_observed) {
+        detach();
+    }
+    m_observed = observed;
+    m_observed_value = item_name;
+    attach();
+}
+
+void ScoreHUD::attach() {
+    m_observed->subscribe(this, m_observed_value);
+}
+
+void ScoreHUD::detach() {
+    m_observed->unsubscribe(this, m_observed_value);
+}

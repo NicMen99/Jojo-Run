@@ -61,6 +61,17 @@ void Widget::setPosition(const sf::Vector2f & position) {
     m_position = position;
 }
 
+void Widget::startTimer(sf::Time time) {
+    if(time > sf::seconds(0)) {
+        setVisible(true);
+        m_clock.restart();
+        m_time = time;
+        m_timer_started = true;
+    }
+}
+
+/**/
+
 void Widget::observe(Subject * observed, const std::string & item_name) {
     if(nullptr != m_observed) {
         detach();

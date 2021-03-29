@@ -10,10 +10,11 @@
 #include <list>
 #include <SFML/Graphics.hpp>
 #include "Entity.h"
+#include "Observer.h"
 
 class Widget;
 
-class ScoreHUD: public Entity {
+class ScoreHUD: public Entity, Observer {
 public:
     ScoreHUD ();
     ~ScoreHUD() override;
@@ -26,6 +27,18 @@ private:
     Widget * m_score{};
     Widget * m_achievements{};
     Widget * m_hero_status{};
+
+    /**/
+public:
+    void observe(Subject * observed, const std::string & item_name);
+
+private:
+    void data_update(const std::string & item_name, const std::string & item_value) override;
+    void attach() override;
+    void detach() override;
+    Subject * m_observed = nullptr;
+    std::string m_observed_value;
+
 };
 
 
