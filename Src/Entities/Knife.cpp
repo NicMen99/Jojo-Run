@@ -21,12 +21,12 @@ void Knife::init() {
 
 void Knife::update(int32_t delta_time) {
     Entity::update(delta_time);
-    if(getPosition().x > GC.getWindowSize().x)
+    if(getPosition().x > CONFIG.getWindowSize().x)
         setDestroyed();
 }
 
-void Knife::collision(Entity *collider) {
-    Entity::collision(collider);
+void Knife::event(GameEvent event, Entity *collider) {
+    Entity::event(GameEvent::Collision, collider);
     setDestroyed();
 }
 

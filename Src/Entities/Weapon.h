@@ -15,7 +15,7 @@ public:
     void init();
 
 public:
-    void collision(Entity * collider) override;
+    void event(GameEvent event, Entity *collider) override;
 
 private:
     int m_knives = 2;

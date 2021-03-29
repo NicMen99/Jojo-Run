@@ -35,6 +35,9 @@ enum class GameObjectType {
     Background, Sky, City, SkyScrapers, Bridge
 };
 
+enum class GameEvent {
+    Collision, EnemyKilled
+};
 
 class Entity {
 public:
@@ -44,10 +47,10 @@ public:
 public:
     virtual void update(int32_t delta_time);
     virtual void render(sf::RenderWindow & window);
-    virtual void collision(Entity * collider) {}
+    virtual void event(GameEvent event, Entity *collider) {}
 
 protected:
-    virtual void move(const sf::Vector2f & offset);
+    virtual void move(int32_t delta_time);
     virtual void applyImpulse(const sf::Vector2f & acceleration, int32_t delta_time);
 
     //Getter & setter

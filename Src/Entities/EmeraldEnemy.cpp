@@ -20,6 +20,7 @@ void EmeraldEnemy::init() {
     };
     addAnimation("DEFAULT", frames);
     setDamage(90);
+    setLifeBonus(20);
     addSound("EMERALDACTION", "emeraldEnemyShout");
 }
 
@@ -28,15 +29,15 @@ void EmeraldEnemy::update(int32_t delta_time) {
     if(!isStarted()) {
         m_shootTimer.restart();
         m_shootTime = sf::milliseconds(RAND(3000));
+        setStarted(true);
     }
     if(m_shoot_left > 0 && m_shootTimer.getElapsedTime() >= m_shootTime) {
-        auto bl = GF.createBullet(GameObjectType::EmeraldBullet);
-        bl->setPosition({getPosition()});
+        auto bl = FACTORY.createBullet(GameObjectType::EmeraldBullet);
+        bl->setPosition(sf::Vector2f (getPosition()) - sf::Vector2f(bl->getBounds().width, 0)   );
         bl->setSpeed(sf::Vector2f {bl->getSpeed().x - 1000.f, 0.f});
-        GS.addNewEntity(bl);
+        SCENE.addNewEntity(bl);
         playSound("EMERALDACTION");
         m_shoot_left -= 1;
     }
-    setStarted(true);
 }
 

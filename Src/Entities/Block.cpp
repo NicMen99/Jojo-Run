@@ -20,7 +20,7 @@ void Block::init() {
     setDamage(70);
 }
 
-void Block::collision(Entity *collider) {
+void Block::event(GameEvent event, Entity *collider) {
     if(collider->getType() == GameObjectType::Hero) {
         setDestroyed();
     }

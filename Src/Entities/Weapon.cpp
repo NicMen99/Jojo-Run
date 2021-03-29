@@ -19,6 +19,6 @@ void Weapon::init() {
     setQuantity(2);
 }
 
-void Weapon::collision(Entity *collider) {
+void Weapon::event(GameEvent event, Entity *collider) {
     setDestroyed();
 }

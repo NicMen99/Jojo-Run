@@ -17,6 +17,6 @@ void Shield::init() {
     //setQuantity(100);
 }
 
-void Shield::collision(Entity *collider) {
+void Shield::event(GameEvent event, Entity *collider) {
     setDestroyed();
 }

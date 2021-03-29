@@ -15,7 +15,7 @@ public:
     ~Block() override = default;
     void init();
 
-    void collision(Entity *collider) override;
+    void event(GameEvent event, Entity *collider) override;
 };
 
 #endif //JOJO_RUN_BLOCK_H

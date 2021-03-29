@@ -93,11 +93,9 @@ std::unique_ptr<Entity> Factory::createPlatform(GameObjectType type) {
 }
 
 std::unique_ptr<Entity> Factory::createBackground(GameObjectType type) {
-    float speedx = GC.getSceneSpeed().x;
     if(type == GameObjectType::Sky) {
         auto * bg = new Background("Sky");
         bg->init(GameObjectType::Sky);
-//        std::cout << "x:" << bg->getBounds().width << " y:" << bg->getBounds().height <<std::endl;
         return std::unique_ptr<Entity>(bg);
     }
     else if(type == GameObjectType::City) {

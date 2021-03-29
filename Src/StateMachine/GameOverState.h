@@ -11,7 +11,7 @@
 #include "Widgets/TextWidget.h"
 #include "Widgets/ShapeWidget.h"
 #include "InputManager.h"
-#include "Score.h"
+#include "ScoreManager.h"
 
 #include "StateMachine/AbsGameState.h"
 
@@ -39,7 +39,7 @@ private:
 private:
     Action       m_action = Action::UserInput;
     InputManager m_inputManager;
-    Score        m_score;
+    ScoreManager        m_score;
     sf::Music    m_music{};
     Widget *     m_root = nullptr;
     TextWidget * m_input = nullptr;

@@ -19,29 +19,42 @@ public:
     const sf::Vector2u & getWindowSize() const { return m_window_size; }
     const sf::Vector2f & getSceneSpeed() const { return m_scene_speed; }
     const sf::Vector2f & getGravity() const { return m_gravity; }
+    float getHeroJumpForce() const { return m_jumpForce; }
+    int getHeroJumpMaxTime() const { return m_jumpMaxTime; }
+    float getHeroJumpSpeedLimit() const { return m_jumpSpeedLimit; }
+    float getHeroFallSpeedLimit() const { return m_fallingSpeedLimit; }
 
-    const std::string getAssetPath(const std::string & name) const {
+    std::string getAssetPath(const std::string & name) const {
         auto it = m_asset_map.find(name);  return (it == m_asset_map.end()) ? "["+name+"]" : it->second; }
 
     /**/
     float getMBase() const { return m_base; }
     float getMMiddle() const { return m_middle; }
     float getMTop() const { return m_top; }
-    float getGroundYpos() const { return m_groundYpos; }
 
+    /*Scene settings*/
 private:
     /* pixels */
     const sf::Vector2u m_window_size = {1600,1000};
     /* pixels per secondo */
-    const sf::Vector2f m_scene_speed = {400.f, 0.f};
+    const sf::Vector2f m_scene_speed = {450.f, 0.f};
     /* delta pixels per secondo */
     const sf::Vector2f m_gravity     = {0.f, 1500.f};
+
+    /* Hero settings */
+private:
+    /* delta pixels per secondo */
+    float m_jumpForce = m_gravity.y * 3;
+    /* millisecondi */
+    int m_jumpMaxTime = 250;
+    /* pixels per secondo */
+    float m_jumpSpeedLimit = -750.f;
+    float m_fallingSpeedLimit = 1500.f;
 
     /* assets */
     const char * m_asset_base_dir = "Assets";
     std::map<std::string, std::string> m_asset_map;
 
-    const float m_groundYpos         = 63.0f;
     float m_levelDelta_y             = 300.f;
     float m_base                     = m_window_size.y-100.f;
     float m_middle                   = m_base - m_levelDelta_y;

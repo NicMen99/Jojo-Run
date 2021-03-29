@@ -29,18 +29,15 @@ void SceneManager::init()
     m_obstacles.clear();
     m_enemies.clear();
     m_powerups.clear();
+    m_bullets.clear();
     m_hero.reset();
     m_scorehud.reset();
-    STATS.clear();
 
     createHero();
     createScoreHUD();
 }
 
 void SceneManager::update(int32_t delta_time) {
-
-    if(m_loops++ % 60 == 0)
-        STATS.addInt("SCORE", 1);
 
     destroyObjects(m_background1);
     destroyObjects(m_background2);
@@ -70,7 +67,8 @@ void SceneManager::update(int32_t delta_time) {
 
     /*
      * Map Update
-     * */
+     */
+    m_hero->update(delta_time);
     for (auto & it : m_background1) {
         it->update(delta_time);
     }
@@ -98,12 +96,16 @@ void SceneManager::update(int32_t delta_time) {
     for (auto & it : m_bullets) {
         it->update(delta_time);
     }
-    m_hero->update(delta_time);
 
     /*
      * Collisions
      */
     manageCollisions();
+
+    /*
+     * HUD
+     */
+    m_scorehud->update(delta_time);
 }
 
 void SceneManager::render(sf::RenderWindow & window) {
@@ -139,7 +141,7 @@ void SceneManager::render(sf::RenderWindow & window) {
 }
 
 bool SceneManager::levelend() const {
-    return dynamic_cast<Hero*>(m_hero.get())->gameOver();
+    return dynamic_cast<Hero *>(m_hero.get())->isDead();
 }
 
 void SceneManager::addNewEntity(std::unique_ptr<Entity> & newObject) {
@@ -150,7 +152,6 @@ void SceneManager::addNewEntity(std::unique_ptr<Entity> & newObject) {
 void SceneManager::destroyObjects(std::vector<std::unique_ptr<Entity>> & items) {
     for (auto it = items.begin(); it != items.end();) {
         if ((*it)->isDestroyed()) {
-//            std::cout << it->get()->getName() << std::endl;
             it = items.erase(it);
         }
         else {
@@ -162,49 +163,41 @@ void SceneManager::destroyObjects(std::vector<std::unique_ptr<Entity>> & items) 
 void SceneManager::generateBackgorund(){
     if(m_background1.size() < 2) {
         if(m_background1.empty()) {
-            auto bg = GF.createBackground(GameObjectType::Sky);
-            bg->setSpeed({GC.getSceneSpeed().x*0.2f, 0.f});
+            auto bg = FACTORY.createBackground(GameObjectType::Sky);
             bg->setPosition({0.f, 0.f});
             m_background1.emplace_back(std::move(bg));
         }
-        auto bg = GF.createBackground(GameObjectType::Sky);
-        bg->setSpeed({GC.getSceneSpeed().x*0.2f, 0.f});
+        auto bg = FACTORY.createBackground(GameObjectType::Sky);
         bg->setPosition({m_background1.at(0)->getPosition().x + m_background1.at(0)->getBounds().width, 0.f});
         m_background1.emplace_back(std::move(bg));
     }
     if (m_background2.size() < 2) {
         if(m_background2.empty()) {
-            auto bg = GF.createBackground(GameObjectType::City);
-            bg->setSpeed({GC.getSceneSpeed().x*0.1f, 0.f});
+            auto bg = FACTORY.createBackground(GameObjectType::City);
             bg->setPosition({0.f, 0.f});
             m_background2.emplace_back(std::move(bg));
         }
-        auto bg = GF.createBackground(GameObjectType::City);
-        bg->setSpeed({GC.getSceneSpeed().x*0.1f, 0.f});
+        auto bg = FACTORY.createBackground(GameObjectType::City);
         bg->setPosition({m_background2.at(0)->getPosition().x + m_background2.at(0)->getBounds().width, 0.f});
         m_background2.emplace_back(std::move(bg));
     }
     if (m_background3.size() < 2) {
         if(m_background3.empty()) {
-            auto bg = GF.createBackground(GameObjectType::SkyScrapers);
-            bg->setSpeed({GC.getSceneSpeed().x * 0.05f, 0.f});
+            auto bg = FACTORY.createBackground(GameObjectType::SkyScrapers);
             bg->setPosition({0.f, 0.f});
             m_background3.emplace_back(std::move(bg));
         }
-        auto bg = GF.createBackground(GameObjectType::SkyScrapers);
-        bg->setSpeed({GC.getSceneSpeed().x*0.05f, 0.f});
+        auto bg = FACTORY.createBackground(GameObjectType::SkyScrapers);
         bg->setPosition({m_background3.at(0)->getPosition().x + m_background3.at(0)->getBounds().width, 0.f});
         m_background3.emplace_back(std::move(bg));
     }
     if (m_background4.size() < 2) {
         if(m_background4.empty()) {
-            auto bg = GF.createBackground(GameObjectType::Bridge);
-            bg->setSpeed({0.f, 0.f});
+            auto bg = FACTORY.createBackground(GameObjectType::Bridge);
             bg->setPosition({0.f, 0.f});
             m_background4.emplace_back(std::move(bg));
         }
-        auto bg = GF.createBackground(GameObjectType::Bridge);
-        bg->setSpeed({0.f, 0.f});
+        auto bg = FACTORY.createBackground(GameObjectType::Bridge);
         bg->setPosition({m_background4.at(0)->getPosition().x + m_background4.at(0)->getBounds().width, 0.f});
         m_background4.emplace_back(std::move(bg));
     }
@@ -233,8 +226,8 @@ void SceneManager::generateMap() {
          * Prima piattaforma
          */
         posx = 0;
-        posy = GC.getMBase();
-        size = GC.getWindowSize().x;
+        posy = CONFIG.getMBase();
+        size = CONFIG.getWindowSize().x;
         std::vector<float> hchoice = {100, 200, 300, 400};
         space = hchoice[RAND(hchoice.size())];
     }
@@ -244,20 +237,20 @@ void SceneManager::generateMap() {
          * Piattaforme successive
          */
         last = m_platforms.back().get();
-        if(GC.getWindowSize().x - (last->getPosition().x + last->getBounds().width) < space)
+        if(CONFIG.getWindowSize().x - (last->getPosition().x + last->getBounds().width) < space)
             return;
 
         std::vector<float> vchoice;
-        if(last->getPosition().y == GC.getMBase()) {
-            vchoice = {GC.getMBase(), GC.getMMiddle()};
-        } else if (last->getPosition().y == GC.getMTop()) {
-            vchoice = {GC.getMTop(), GC.getMMiddle()};
+        if(last->getPosition().y == CONFIG.getMBase()) {
+            vchoice = {CONFIG.getMBase(), CONFIG.getMMiddle()};
+        } else if (last->getPosition().y == CONFIG.getMTop()) {
+            vchoice = {CONFIG.getMTop(), CONFIG.getMMiddle()};
         }
         else {
-            vchoice = {GC.getMTop(), GC.getMMiddle(), GC.getMBase()};
+            vchoice = {CONFIG.getMTop(), CONFIG.getMMiddle(), CONFIG.getMBase()};
         }
         posy = vchoice[RAND(vchoice.size())];
-        posx = GC.getWindowSize().x;
+        posx = CONFIG.getWindowSize().x;
         size = (float)(1 + RAND(2)) * last->getBounds().width;
         std::vector<float> hchoice = {100, 200, 300, 400};
         space = hchoice[RAND(hchoice.size())];
@@ -303,15 +296,15 @@ void SceneManager::manageCollisions() {
          */
         for (auto & platform : m_platforms) {
             if(m_collisionManager->collisionCheck(m_hero.get(), platform.get()))
-                m_hero->collision(platform.get());
+                m_hero->event(GameEvent::Collision, platform.get());
         }
         /*
          * Collisione Eroe Nemici
          */
         for (auto & enemy : m_enemies) {
             if (m_collisionManager->collisionCheck(m_hero.get(), enemy.get())) {
-                m_hero->collision(enemy.get());
-                enemy->collision(m_hero.get());
+                m_hero->event(GameEvent::Collision, enemy.get());
+                enemy->event(GameEvent::Collision, m_hero.get());
             }
         }
         /*
@@ -319,8 +312,8 @@ void SceneManager::manageCollisions() {
          */
         for (auto & obstacle : m_obstacles) {
             if (m_collisionManager->collisionCheck(m_hero.get(), obstacle.get())) {
-                m_hero->collision(obstacle.get());
-                obstacle->collision(m_hero.get());
+                m_hero->event(GameEvent::Collision, obstacle.get());
+                obstacle->event(GameEvent::Collision, m_hero.get());
             }
         }
         /*
@@ -328,8 +321,8 @@ void SceneManager::manageCollisions() {
          */
         for (auto & powerup : m_powerups) {
             if (m_collisionManager->collisionCheck(m_hero.get(), powerup.get())) {
-                m_hero->collision(powerup.get());
-                powerup->collision(m_hero.get());
+                m_hero->event(GameEvent::Collision, powerup.get());
+                powerup->event(GameEvent::Collision, m_hero.get());
             }
         }
         /*
@@ -337,8 +330,8 @@ void SceneManager::manageCollisions() {
          */
         for (auto & bullet : m_bullets) {
             if (m_collisionManager->collisionCheck(m_hero.get(), bullet.get())) {
-                m_hero->collision(bullet.get());
-                bullet->collision(m_hero.get());
+                m_hero->event(GameEvent::Collision, bullet.get());
+                bullet->event(GameEvent::Collision, m_hero.get());
             }
         }
         /*
@@ -347,8 +340,9 @@ void SceneManager::manageCollisions() {
         for (auto & bullet : m_bullets) {
             for(auto & enemy : m_enemies) {
                 if (m_collisionManager->collisionCheck(enemy.get(), bullet.get())) {
-                    enemy->collision(bullet.get());
-                    bullet->collision(enemy.get());
+                    enemy->event(GameEvent::Collision, bullet.get());
+                    bullet->event(GameEvent::Collision, enemy.get());
+                    m_hero->event(GameEvent::EnemyKilled, enemy.get());
                 }
             }
         }
@@ -356,14 +350,14 @@ void SceneManager::manageCollisions() {
 }
 
 Entity * SceneManager::createPlatform(sf::Vector2f position) {
-    auto pl = GF.createPlatform(GameObjectType::Platform);
+    auto pl = FACTORY.createPlatform(GameObjectType::Platform);
     pl->setPosition(position);
     m_platforms.emplace_back(std::move(pl));
     return m_platforms.back().get();
 }
 
 void SceneManager::createObstacle(GameObjectType ot, sf::Vector2f position) {
-    auto bl = GF.createObstacle(ot);
+    auto bl = FACTORY.createObstacle(ot);
     if (ot == GameObjectType::Wall){
         bl->setPosition(sf::Vector2f(0, -bl->getBounds().height) + position);
     } else {
@@ -373,13 +367,13 @@ void SceneManager::createObstacle(GameObjectType ot, sf::Vector2f position) {
 }
 
 void SceneManager::createEnemy(GameObjectType et, sf::Vector2f position) {
-    auto en = GF.createEnemy(et);
+    auto en = FACTORY.createEnemy(et);
     en->setPosition(sf::Vector2f(0, -en->getBounds().height) + position);
     m_enemies.emplace_back(std::move(en));
 }
 
 void SceneManager::createPowerup(GameObjectType pt, sf::Vector2f position) {
-    auto pu = GF.createPowerUp(pt);
+    auto pu = FACTORY.createPowerUp(pt);
     pu->setPosition(sf::Vector2f(0, -2*pu->getBounds().height) + position);
     m_powerups.emplace_back(std::move(pu));
 }
@@ -387,7 +381,7 @@ void SceneManager::createPowerup(GameObjectType pt, sf::Vector2f position) {
 void SceneManager::createHero() {
     auto * hero = new Hero();
     hero->init();
-    hero->setPosition(sf::Vector2f(200.f, GC.getMBase() - hero->getBounds().height));
+    hero->setPosition(sf::Vector2f(200.f, CONFIG.getMBase() - hero->getBounds().height));
 
     m_hero = std::unique_ptr<Entity>(hero);
 }

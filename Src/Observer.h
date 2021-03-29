@@ -9,7 +9,7 @@ class Observer {
 public:
     virtual ~Observer() = default;
 
-    virtual void event(const std::string & value) = 0;
+    virtual void data_update(const std::string & item_name, const std::string & value_value) = 0;
     virtual void attach() = 0;
     virtual void detach() = 0;
 };

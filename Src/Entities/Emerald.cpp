@@ -22,8 +22,8 @@ void Emerald::update(int32_t delta_time) {
         setDestroyed();
 }
 
-void Emerald::collision(Entity *collider) {
-    Entity::collision(collider);
+void Emerald::event(GameEvent event, Entity *collider) {
+    Entity::event(GameEvent::Collision, collider);
     if (collider->getType() == GameObjectType::Hero)
         setDestroyed();
 }

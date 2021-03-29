@@ -19,14 +19,14 @@ GameOverState* GameOverState::instance() {
 }
 
 void GameOverState::init() {
-    // m_music.openFromFile(GC.getAssetPath(""));
+    // m_music.openFromFile(CONFIG.getAssetPath(""));
 }
 
 void GameOverState::onEnter() {
     createScreen();
     m_inputManager.init();
     m_inputManager.registerAll();
-    m_score.load();
+    m_score.loadFromFile();
     m_action = Action::UserInput;
 }
 
@@ -79,7 +79,7 @@ void GameOverState::createScreen() {
 
     auto * background = new ImageWidget("Background");
     background->init(theme);
-    background->setTexture("GameOverScreen", GC.getWindowSize());
+    background->setTexture("GameOverScreen", CONFIG.getWindowSize());
     sf::Vector2f background_size = background->getSize();
     m_root->add(background);
 
@@ -90,7 +90,7 @@ void GameOverState::createScreen() {
     message->setPosition({background_size.x / 2 - label_size.x / 2, 50});
     m_root->add(message);
 
-    auto * score = new TextWidget("Score");
+    auto * score = new TextWidget("ScoreManager");
     score->setString("YOUR SCORE IS : " + std::to_string(STATS.getInt("SCORE")));
     score->init(theme);
     score->setPosition({background_size.x / 2 - label_size.x / 2,150});
@@ -122,19 +122,19 @@ void GameOverState::showScore() {
     menu->setString("[ R ] ESTART A NEW GAME\n[ Q ] UIT");
     menu->init(theme);
     sf::Vector2f menu_size = menu->getSize();
-    menu->setPosition({GC.getWindowSize().x/2.f - menu_size.x/2.f,GC.getWindowSize().y-200.0f});
+    menu->setPosition({CONFIG.getWindowSize().x / 2.f - menu_size.x / 2.f, CONFIG.getWindowSize().y - 200.0f});
     m_root->add(menu);
 
     auto * topfive = new ShapeWidget("TopFive");
     topfive->init(theme);
-    topfive->setSize({GC.getWindowSize().x-200.f,400.f});
+    topfive->setSize({CONFIG.getWindowSize().x - 200.f, 400.f});
     topfive->setFillColor(sf::Color(255, 255, 0, 64));
     topfive->setPosition({100,400});
     m_root->add(topfive);
 
     int count = 0;
     float posy = 10;
-    for(const auto& record : m_score.get()) {
+    for(const auto& record : m_score.getScoreRecord()) {
 
         count ++;
 
@@ -152,7 +152,7 @@ void GameOverState::showScore() {
         if(record.added) name->setFillColor(sf::Color::Red);
         topfive->add(name);
 
-        auto * score = new TextWidget("Score");
+        auto * score = new TextWidget("ScoreManager");
         score->init(theme);
         score->setString(std::to_string(record.score));
         score->setPosition({600, posy});
@@ -167,10 +167,10 @@ void GameOverState::showScore() {
 }
 
 void GameOverState::saveScore() {
-    m_score.load();
+    m_score.loadFromFile();
     if(!m_input->getString().empty()) {
-        m_score.add(m_input->getString(), STATS.getInt("SCORE"));
-        m_score.save();
+        m_score.addScoreRecord(m_input->getString(), STATS.getInt("SCORE"));
+        m_score.saveToFile();
     }
 }
 

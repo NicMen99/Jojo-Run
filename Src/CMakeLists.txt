@@ -22,8 +22,8 @@ target_sources(${TARGET}
         GameStats.h
         GameStats.cpp
         Observer.h
-        Score.h
-        Score.cpp
+        ScoreManager.h
+        ScoreManager.cpp
         ScoreHUD.h
         ScoreHUD.cpp
         Subject.h

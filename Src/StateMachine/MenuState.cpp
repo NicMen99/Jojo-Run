@@ -18,7 +18,7 @@ MenuState* MenuState::instance() {
 }
 
 void MenuState::init() {
-    // m_music.openFromFile(GC.getAssetPath(""));
+    // m_music.openFromFile(CONFIG.getAssetPath(""));
 }
 
 void MenuState::onEnter() {
@@ -63,7 +63,7 @@ void MenuState::createMenuScreen(){
     auto * overlay = new ShapeWidget("Overlay");
     overlay->init(theme);
     overlay->setFillColor(sf::Color(0, 0, 0, 0));
-    overlay->setSize(static_cast<sf::Vector2f>(GC.getWindowSize()));
+    overlay->setSize(static_cast<sf::Vector2f>(CONFIG.getWindowSize()));
     sf::Vector2f overlay_size = overlay->getSize();
     m_root->add(overlay);
 

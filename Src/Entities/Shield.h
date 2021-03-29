@@ -13,7 +13,7 @@ public:
     void init();
 
 public:
-    void collision(Entity * collider) override;
+    void event(GameEvent event, Entity *collider) override;
 };
 
 #endif //JOJO_RUN_SHIELD_H

@@ -9,10 +9,11 @@
 #include "Factory.h"
 #include "SceneManager.h"
 #include "GameStats.h"
+#include "Entity.h"
 #include "ScoreHUD.h"
 #include "CollisionManager.h"
+#include "ScoreManager.h"
 #include "Game.h"
-
 
 
 Game* Game::m_instance = nullptr;
@@ -31,7 +32,8 @@ Game::Game():
     m_resourceManager(*new ResourceManager()),
     m_factory(*new Factory()),
     m_scene(*new SceneManager()),
-    m_stats(*new GameStats())
+    m_stats(*new GameStats()),
+    m_score(*new ScoreManager())
 {
 }
 
@@ -45,7 +47,7 @@ void Game::init()
 
 void Game::loop()
 {
-    m_window.create(sf::VideoMode(GC.getWindowSize().x, GC.getWindowSize().y), "JoJo Run");
+    m_window.create(sf::VideoMode(CONFIG.getWindowSize().x, CONFIG.getWindowSize().y), "JoJo Run");
     m_window.setVerticalSyncEnabled(true);
     m_window.setKeyRepeatEnabled(false);
 

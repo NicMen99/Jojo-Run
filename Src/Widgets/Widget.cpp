@@ -44,6 +44,7 @@ Widget * Widget::findObjectByName(const std::string & name) {
 }
 
 void Widget::render(sf::RenderWindow & window, const sf::Vector2f & parent_position) {
+    if(!m_visible) return;
     sf::Vector2f offset = parent_position + getPosition();
     _render(window, offset);
     for (auto& widget : m_children)
@@ -59,6 +60,17 @@ void Widget::update(int32_t delta_time) {
 void Widget::setPosition(const sf::Vector2f & position) {
     m_position = position;
 }
+
+void Widget::startTimer(sf::Time time) {
+    if(time > sf::seconds(0)) {
+        setVisible(true);
+        m_clock.restart();
+        m_time = time;
+        m_timer_started = true;
+    }
+}
+
+/**/
 
 void Widget::observe(Subject * observed, const std::string & item_name) {
     if(nullptr != m_observed) {

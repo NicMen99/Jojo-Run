@@ -24,8 +24,8 @@ void FireBall::update(int32_t delta_time) {
         setDestroyed();
 }
 
-void FireBall::collision(Entity *collider) {
-    Entity::collision(collider);
+void FireBall::event(GameEvent event, Entity *collider) {
+    Entity::event(GameEvent::Collision, collider);
     if (collider->getType() == GameObjectType::Hero)
         setDestroyed();
 }
