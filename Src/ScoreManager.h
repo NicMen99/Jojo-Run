@@ -39,7 +39,17 @@ private:
     int m_last_distance = 0;
 
 private:
-    bool m_killed = false;
+    bool m_killed_1 = false;
+    bool m_killed_2 = false;
+    bool m_killed_3 = false;
+
+    bool m_distance_1 = false;
+    bool m_distance_2 = false;
+    bool m_distance_3 = false;
+
+    bool m_combo_1 = false;
+    bool m_combo_2 = false;
+    bool m_combo_3 = false;
 };
 
 

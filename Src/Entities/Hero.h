@@ -49,7 +49,7 @@ private:
 private:
     int m_health = 0;
     int m_maxhealthpoints = 300;
-    int m_knives = 1;
+    int m_knives = 2;
     int m_maxknives = 8;
     bool m_shield = false;
     float m_distance = 0;

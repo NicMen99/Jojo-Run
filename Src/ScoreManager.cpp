@@ -14,7 +14,15 @@
 void ScoreManager::init() {
     m_score_record.nickname = "";
     m_score_record.score = 0;
-    m_killed = false;
+    m_killed_1 = false;
+    m_killed_2 = false;
+    m_killed_3 = false;
+    m_distance_1 = false;
+    m_distance_2 = false;
+    m_distance_3 = false;
+    m_combo_1 = false;
+    m_combo_2 = false;
+    m_combo_3 = false;
 }
 
 void ScoreManager::update() {
@@ -24,16 +32,57 @@ void ScoreManager::update() {
         m_last_distance = dist;
         m_score_record.score += 1;
     }
-
-    if (dist > CONFIG.getWindowSize().x * 13) {
-        m_score_record.score += 10;
-    }
-
     STATS.setInt("SCORE", m_score_record.score);
 
-    if(STATS.getInt("KILLED") == 1 && !m_killed) {
-        STATS.setInt("ACHIEVEMENT", 1);
-        m_killed = true;
+    /*
+     * Achievments distanza
+     */
+
+    if(STATS.getInt("DISTANCE") > 30000 && !m_distance_1){
+        STATS.setInt("ACHIEVEMENT_D1", 1);
+        m_distance_1 = true;
+    }
+    if(STATS.getInt("DISTANCE") > 75000 && !m_distance_2){
+        STATS.setInt("ACHIEVEMENT_D2", 1);
+        m_distance_1 = true;
+    }
+    if(STATS.getInt("DISTANCE") > 150000 && !m_distance_3){
+        STATS.setInt("ACHIEVEMENT_D3", 1);
+        m_distance_1 = true;
+    }
+
+    /*
+     * Achievements uccisioni
+     */
+
+    if(STATS.getInt("KILLED") == 5 && !m_killed_1) {
+        STATS.setInt("ACHIEVEMENT_K1", 1);
+        m_killed_1 = true;
+    }
+    if(STATS.getInt("KILLED") == 15 && !m_killed_2) {
+        STATS.setInt("ACHIEVEMENT_K2", 1);
+        m_killed_2 = true;
+    }
+    if(STATS.getInt("KILLED") == 30 && !m_killed_3) {
+        STATS.setInt("ACHIEVEMENT_K3", 1);
+        m_killed_3 = true;
+    }
+
+    /*
+     * Achievements uccisioni consecutive
+     */
+
+    if(STATS.getInt("COMBO") == 3 && !m_combo_1) {
+        STATS.setInt("ACHIEVEMENT_C1", 1);
+        m_combo_1 = true;
+    }
+    if(STATS.getInt("COMBO") == 7 && !m_combo_2) {
+        STATS.setInt("ACHIEVEMENT_C2", 1);
+        m_combo_2 = true;
+    }
+    if(STATS.getInt("COMBO") == 10 && !m_combo_3) {
+        STATS.setInt("ACHIEVEMENT_C3", 1);
+        m_combo_3 = true;
     }
 }
 

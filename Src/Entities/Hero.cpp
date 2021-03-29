@@ -112,8 +112,6 @@ void Hero::event(GameEvent event, Entity * entity) {
         if (entity->getType() == GameObjectType::Platform) {
             sf::Rect<float> collider_rect = entity->getBounds();
             sf::Rect<float> hero_rect = getBounds();
-            sf::Rect<float> intersect /* = clacolare il rettangolo di intersezione */;
-            /*if(intersrect.width > intersrect.heght)*/
             sf::Vector2f speed = getSpeed();
             if (speed.y >= 0) {
                 m_state = State::Grounded;

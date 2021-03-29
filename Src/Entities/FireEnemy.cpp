@@ -33,7 +33,7 @@ void FireEnemy::update(int32_t delta_time) {
     }
     if(m_shoot_left > 0 && m_shootTimer.getElapsedTime() >= m_shootTime) {
         auto bl = FACTORY.createBullet(GameObjectType::FireBullet);
-        bl->setPosition({getPosition()});
+        bl->setPosition(sf::Vector2f (getPosition()) - sf::Vector2f(bl->getBounds().width, 0));
         bl->setSpeed(sf::Vector2f {getSpeed().x - 1000.f, 0.f});
         SCENE.addNewEntity(bl);
         playSound("FIREACTION");

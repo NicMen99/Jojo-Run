@@ -152,7 +152,6 @@ void SceneManager::addNewEntity(std::unique_ptr<Entity> & newObject) {
 void SceneManager::destroyObjects(std::vector<std::unique_ptr<Entity>> & items) {
     for (auto it = items.begin(); it != items.end();) {
         if ((*it)->isDestroyed()) {
-//            std::cout << it->getScoreRecord()->getName() << std::endl;
             it = items.erase(it);
         }
         else {

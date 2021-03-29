@@ -94,7 +94,16 @@ void ScoreHUD::init() {
     achievement_label->init(theme);
     achievement_label->setPosition({0,0});
     m_achievements->add(achievement_label);
-    observe(&STATS,"ACHIEVEMENT");
+    observe(&STATS,"ACHIEVEMENT_K1");
+    observe(&STATS, "ACHIEVEMENT_K2");
+    observe(&STATS, "ACHIEVEMENT_K3");
+    observe(&STATS, "ACHIEVEMENT_D1");
+    observe(&STATS, "ACHIEVEMENT_D2");
+    observe(&STATS, "ACHIEVEMENT_D3");
+    observe(&STATS, "ACHIEVEMENT_C1");
+    observe(&STATS, "ACHIEVEMENT_C2");
+    observe(&STATS, "ACHIEVEMENT_C3");
+
 }
 
 void ScoreHUD::update(int32_t delta_time) {
@@ -112,17 +121,56 @@ void ScoreHUD::render(sf::RenderWindow &window) {
 /**/
 
 void ScoreHUD::data_update(const std::string & item_name, const std::string & item_value){
-    if(item_name == "ACHIEVEMENT") {
+    if(item_name == "ACHIEVEMENT_D1") {
         TextWidget* widget = dynamic_cast<TextWidget*>(m_achievements->findObjectByName("achievement_message"));
-        widget->setString("CONGRATULATION!  YOU KILLED YOUR FIRST ENEMY.");
+        widget->setString("MILE RUNNER I; 30000 METERS RUN");
+        widget->startTimer(sf::seconds(3));
+    }
+    if(item_name == "ACHIEVEMENT_D2") {
+        TextWidget* widget = dynamic_cast<TextWidget*>(m_achievements->findObjectByName("achievement_message"));
+        widget->setString("MILE RUNNER II; 75000 METERS RUN");
+        widget->startTimer(sf::seconds(3));
+    }
+    if(item_name == "ACHIEVEMENT_D3") {
+        TextWidget* widget = dynamic_cast<TextWidget*>(m_achievements->findObjectByName("achievement_message"));
+        widget->setString("MILE RUNNER III; 150000 METERS RUN");
+        widget->startTimer(sf::seconds(3));
+    }
+
+    if(item_name == "ACHIEVEMENT_K1") {
+        TextWidget* widget = dynamic_cast<TextWidget*>(m_achievements->findObjectByName("achievement_message"));
+        widget->setString("KILLING SPREE I; KILLED 5 ENEMIES");
+        widget->startTimer(sf::seconds(3));
+    }
+    if(item_name == "ACHIEVEMENT_K2") {
+        TextWidget* widget = dynamic_cast<TextWidget*>(m_achievements->findObjectByName("achievement_message"));
+        widget->setString("KILLING SPREE II; KILLED 15 ENEMIES");
+        widget->startTimer(sf::seconds(3));
+    }
+    if(item_name == "ACHIEVEMENT_K3") {
+        TextWidget* widget = dynamic_cast<TextWidget*>(m_achievements->findObjectByName("achievement_message"));
+        widget->setString("KILLING SPREE III; KILLED 30 ENEMIES");
+        widget->startTimer(sf::seconds(3));
+    }
+
+    if(item_name == "ACHIEVEMENT_C1") {
+        TextWidget* widget = dynamic_cast<TextWidget*>(m_achievements->findObjectByName("achievement_message"));
+        widget->setString("COMBO I; 3 CONSECUTIVE KILLS");
+        widget->startTimer(sf::seconds(3));
+    }
+    if(item_name == "ACHIEVEMENT_C2") {
+        TextWidget* widget = dynamic_cast<TextWidget*>(m_achievements->findObjectByName("achievement_message"));
+        widget->setString("COMBO II; 7 CONSECUTIVE KILLS");
+        widget->startTimer(sf::seconds(3));
+    }
+    if(item_name == "ACHIEVEMENT_C3") {
+        TextWidget* widget = dynamic_cast<TextWidget*>(m_achievements->findObjectByName("achievement_message"));
+        widget->setString("COMBO III; 10 CONSECUTIVE KILLS");
         widget->startTimer(sf::seconds(3));
     }
 }
 
 void ScoreHUD::observe(Subject * observed, const std::string & item_name) {
-    if(nullptr != m_observed) {
-        detach();
-    }
     m_observed = observed;
     m_observed_value = item_name;
     attach();

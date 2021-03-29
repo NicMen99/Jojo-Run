@@ -32,11 +32,13 @@ void Enemy::event(GameEvent event, Entity *collider) {
         if(collider->getType() == GameObjectType::Hero) {
             m_state = State::Dying;
             m_dyingTimer.restart();
+            STATS.setInt("COMBO", 0);
         }
         if (collider->getType() == GameObjectType::Knife) {
             m_state = State::Dead;
             m_dyingTimer.restart();
             STATS.addInt("KILLED", 1);
+            STATS.addInt("COMBO", 1);
         }
     }
 }

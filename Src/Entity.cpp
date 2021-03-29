@@ -5,6 +5,7 @@
 #include <iostream>
 
 #include "Game.h"
+#include "GameStats.h"
 #include "GameConfig.h"
 #include "Entity.h"
 
@@ -51,7 +52,10 @@ void Entity::move(int32_t delta_time) {
     sf::Vector2f offset = {speed.x * delta_time / 1000, speed.y * delta_time / 1000};
     setPosition(getPosition() + offset);
     if((getPosition().x + getBounds().width) < 0) {
-        m_destroyed = true;
+        if(getGroup() == GameObjectGroup::Enemy) {
+            STATS.setInt("COMBO", 0);
+        }
+        setDestroyed();
     }
 }
 
