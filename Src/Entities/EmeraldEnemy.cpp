@@ -6,10 +6,12 @@
 #include "Game.h"
 #include "Factory.h"
 #include "SceneManager.h"
+#include "AnimationManager.h"
+
 #include "EmeraldEnemy.h"
 
 EmeraldEnemy::EmeraldEnemy(const std::string& id) :
-    Enemy(GameObjectType::EmeraldEnemy, id)
+    Enemy(EntityType::EmeraldEnemy, id)
 {
 
 }
@@ -19,7 +21,7 @@ EmeraldEnemy::~EmeraldEnemy(){
 }
 
 void EmeraldEnemy::init() {
-    const std::list<Animation::FrameParams> frames = {
+    const std::list<FrameParams> frames = {
             {1, "emeraldEnemyTexture", {0,0,0,0}, {0,0}, {true, false}}
     };
     addAnimation("DEFAULT", frames);
@@ -36,7 +38,7 @@ void EmeraldEnemy::update(int32_t delta_time) {
         setStarted(true);
     }
     if(m_shoot_left > 0 && m_shootTimer.getElapsedTime() >= m_shootTime) {
-        auto bl = FACTORY.createBullet(GameObjectType::EmeraldBullet);
+        auto bl = FACTORY.createBullet(EntityType::EmeraldBullet);
         bl->setPosition(sf::Vector2f (getPosition()) - sf::Vector2f(bl->getBounds().width, 0)   );
         bl->setSpeed(sf::Vector2f {bl->getSpeed().x - 1000.f, 0.f});
         SCENE.addNewEntity(bl);

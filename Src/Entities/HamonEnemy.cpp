@@ -3,10 +3,12 @@
 //
 
 #include "Knife.h"
+#include "AnimationManager.h"
+
 #include "HamonEnemy.h"
 
 HamonEnemy::HamonEnemy(const std::string& id) :
-    Enemy(GameObjectType::HamonEnemy, id) {
+    Enemy(EntityType::HamonEnemy, id) {
 }
 
 HamonEnemy::~HamonEnemy() {
@@ -14,7 +16,7 @@ HamonEnemy::~HamonEnemy() {
 }
 
 void HamonEnemy::init() {
-    const std::list<Animation::FrameParams> frames = {
+    const std::list<FrameParams> frames = {
             {1, "hamonEnemyTexture", {0,0,0,0}, {0,0}, {true, false}}
     };
     addAnimation("DEFAULT", frames);

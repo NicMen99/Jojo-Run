@@ -2,10 +2,13 @@
 // Created by Niccolo on 28/02/2021.
 //
 
+#include <list>
+#include "AnimationManager.h"
+
 #include "Weapon.h"
 
 Weapon::Weapon(std::string id) :
-    PowerUp(GameObjectType::Weapon, "Weapons")
+    PowerUp(EntityType::Weapon, "Weapons")
 {
 
 }
@@ -15,7 +18,7 @@ Weapon::~Weapon() {
 }
 
 void Weapon::init() {
-    const std::list<Animation::FrameParams> frames = {
+    const std::list<FrameParams> frames = {
             {1, "knifeTexture", {0,0,0,0}, {0,0}, {false, false}}
     };
     addAnimation("DEFAULT", frames);

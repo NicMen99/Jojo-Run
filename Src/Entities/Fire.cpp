@@ -4,10 +4,12 @@
 
 #include "Game.h"
 #include "ResourceManager.h"
+#include "AnimationManager.h"
+
 #include "Fire.h"
 
 Fire::Fire(const std::string& id) :
-    Obstacle(GameObjectType::Wall, id) {
+    Obstacle(EntityType::Wall, id) {
 }
 
 Fire::~Fire() {
@@ -15,7 +17,7 @@ Fire::~Fire() {
 }
 
 void Fire::init() {
-    const std::list<Animation::FrameParams> frames = {
+    const std::list<FrameParams> frames = {
             {8, "Fire", {0,0,32,32}, {64,64}, {false, false}},
             {8, "Fire", {32,0,32,32}, {64,64}, {false, false}}
     };

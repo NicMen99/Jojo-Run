@@ -7,8 +7,8 @@
 #include "GameStats.h"
 #include "Enemy.h"
 
-Enemy::Enemy(GameObjectType mtype, const std::string & name) :
-        Entity(GameObjectGroup::Enemy, mtype, name) {
+Enemy::Enemy(EntityType mtype, const std::string & name) :
+        Entity(EntityGroup::Enemy, mtype, name) {
 
 }
 
@@ -33,12 +33,12 @@ void Enemy::update(int32_t delta_time) {
 
 void Enemy::event(GameEvent event, Entity *collider) {
     if(m_state == State::Alive) {
-        if(collider->getType() == GameObjectType::Hero) {
+        if(collider->getType() == EntityType::Hero) {
             m_state = State::Dying;
             m_dyingTimer.restart();
             STATS.setInt(Stats::ConsecutiveKilled, 0);
         }
-        if (collider->getType() == GameObjectType::Knife) {
+        if (collider->getType() == EntityType::Knife) {
             m_state = State::Dead;
             m_dyingTimer.restart();
             STATS.addInt(Stats::Killed, 1);

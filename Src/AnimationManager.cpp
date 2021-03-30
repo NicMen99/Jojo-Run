@@ -3,7 +3,7 @@
 //
 #include "Game.h"
 #include "ResourceManager.h"
-#include "Animator.h"
+#include "AnimationManager.h"
 
 void Animation::addFrame(const FrameParams & frame_params) {
     uint8_t count = frame_params.count;
@@ -33,13 +33,13 @@ void Animation::addFrame(const FrameParams & frame_params) {
     }
 }
 
-Animator::Animator() :
+AnimationManager::AnimationManager() :
     m_current_sprite(std::make_shared<sf::Sprite>()),
     m_current_animation(nullptr) {
 
 }
 
-Animator::~Animator() {
+AnimationManager::~AnimationManager() {
 
 }
 
@@ -49,7 +49,7 @@ std::shared_ptr<sf::Sprite> Animation::update(int32_t delta_time) {
 }
 
 
-void Animator::update(int32_t delta_time) {
+void AnimationManager::update(int32_t delta_time) {
     if(m_current_animation != nullptr) {
         std::shared_ptr<sf::Sprite> animation = m_current_animation->update(delta_time);
         if(animation != nullptr)
@@ -57,7 +57,7 @@ void Animator::update(int32_t delta_time) {
     }
 }
 
-void Animator::play(const std::string & animation_name, int repetitions) {
+void AnimationManager::play(const std::string & animation_name, int repetitions) {
     auto it = m_animations.find(animation_name);
     if(it != m_animations.end()) {
         m_current_animation = it->second;
@@ -65,19 +65,19 @@ void Animator::play(const std::string & animation_name, int repetitions) {
     }
 }
 
-bool Animator::done() const {
+bool AnimationManager::done() const {
     return m_current_animation == nullptr || m_current_animation->isDone();
 }
 
-std::shared_ptr<sf::Sprite> Animator::getCurrentFrame() {
+std::shared_ptr<sf::Sprite> AnimationManager::getCurrentFrame() {
     return m_current_sprite;
 }
 
-std::shared_ptr<sf::Sprite> Animator::getCurrentFrame() const {
+std::shared_ptr<sf::Sprite> AnimationManager::getCurrentFrame() const {
     return m_current_sprite;
 }
 
-void Animator::addAnimation(const std::string & animation_name, const std::list<Animation::FrameParams>& frames) {
+void AnimationManager::addAnimation(const std::string & animation_name, const std::list<FrameParams>& frames) {
     auto animation = createAnimation(animation_name);
     for(const auto& frame : frames) {
         animation->addFrame(frame);
@@ -87,7 +87,7 @@ void Animator::addAnimation(const std::string & animation_name, const std::list<
     }
 }
 
-std::shared_ptr<Animation> Animator::createAnimation(const std::string & animation_name) {
+std::shared_ptr<Animation> AnimationManager::createAnimation(const std::string & animation_name) {
     auto it = m_animations.find(animation_name);
     if(it != m_animations.end()) {
         return it->second;

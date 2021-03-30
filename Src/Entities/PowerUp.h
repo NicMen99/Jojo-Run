@@ -10,8 +10,8 @@
 
 class PowerUp : public Entity {
 public:
-    explicit PowerUp(GameObjectType mtype, const std::string & name) :
-            Entity(GameObjectGroup::Powerup, mtype, name) {}
+    explicit PowerUp(EntityType mtype, const std::string & name) :
+            Entity(EntityGroup::Powerup, mtype, name) {}
     ~PowerUp() override {};
 
 public:

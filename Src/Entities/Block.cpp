@@ -1,13 +1,16 @@
 //
 // Created by angiolo99 on 23/01/20.
 //
+#include <list>
 #include "Game.h"
 #include "ResourceManager.h"
+#include "AnimationManager.h"
+
 #include "Block.h"
 
 
 Block::Block(const std::string& id) :
-    Obstacle(GameObjectType::Block, id) {
+    Obstacle(EntityType::Block, id) {
 
 }
 
@@ -16,7 +19,7 @@ Block::~Block(){
 }
 
 void Block::init() {
-    const std::list<Animation::FrameParams> frames = {
+    const std::list<FrameParams> frames = {
             {1, "blockTexture", {0,0,0,0}, {0,0}, {false, false}}
     };
     addAnimation("DEFAULT", frames);
@@ -25,7 +28,7 @@ void Block::init() {
 }
 
 void Block::event(GameEvent event, Entity *collider) {
-    if(collider->getType() == GameObjectType::Hero) {
+    if(collider->getType() == EntityType::Hero) {
         setDestroyed();
     }
 }

@@ -1,8 +1,8 @@
 target_sources(${TARGET}
         PRIVATE
         main.cpp
-        Animator.h
-        Animator.cpp
+        AnimationManager.h
+        AnimationManager.cpp
         CollisionManager.h
         CollisionManager.cpp
         InputManager.h
@@ -26,6 +26,8 @@ target_sources(${TARGET}
         ScoreManager.cpp
         ScoreHUD.h
         ScoreHUD.cpp
+        SoundManager.h
+        SoundManager.cpp
         Subject.h
         )
 

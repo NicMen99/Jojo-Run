@@ -9,13 +9,15 @@
 #include <string>
 #include <list>
 #include <SFML/Graphics.hpp>
-#include <SFML/Audio.hpp>
-#include "Animator.h"
 #include "Observer.h"
+
+class AnimationManager;
+class SoundManager;
+class FrameParams;
 
 #define HIT_BOX_DEBUG
 
-enum class GameObjectGroup {
+enum class EntityGroup {
     Scene,
     Map,
     Bullet,
@@ -24,7 +26,7 @@ enum class GameObjectGroup {
     Hero
 };
 
-enum class GameObjectType {
+enum class EntityType {
     Block, Wall,
     FireEnemy, HamonEnemy, EmeraldEnemy,
     Weapon, Shield,
@@ -41,7 +43,7 @@ enum class GameEvent {
 
 class Entity {
 public:
-    Entity(GameObjectGroup mgroup, GameObjectType mtype, std::string  mName);
+    Entity(EntityGroup mgroup, EntityType mtype, std::string  mName);
     virtual ~Entity();
 
 public:
@@ -55,8 +57,8 @@ protected:
 
     //Getter & setter
 public:
-    GameObjectGroup getGroup() { return m_group; }
-    GameObjectType getType() { return m_type; }
+    EntityGroup getGroup() { return m_group; }
+    EntityType getType() { return m_type; }
     const std::string & getName() const { return m_name; };
 
 public:
@@ -76,10 +78,12 @@ public:
     void setVisible(bool mVisible) { m_visible = mVisible; }
     void setDestroyed() { m_destroyed = true; };
     void setPosition(sf::Vector2f position) { m_frame.left = position.x; m_frame.top = position.y; }
+    void setPosition(float positionX, float positionY) { m_frame.left = positionX; m_frame.top = positionY; }
     void setSpeed(sf::Vector2f speed) { m_speed = speed; }
+    void setSpeed(float speedX, float speedY) { m_speed.x = speedX; m_speed.y = speedY; }
 
 public:
-    void addAnimation(const std::string & animation_name, const std::list<Animation::FrameParams>& frames);
+    void addAnimation(const std::string & animation_name, const std::list<FrameParams>& frames);
     void addSound(const std::string & sound_name, const std::string & sound_resource);
 
 protected:
@@ -87,11 +91,9 @@ protected:
     void playSound(const std::string & sound_name, float volume = 100.f);
 
 private:
-    GameObjectGroup m_group;
-    GameObjectType m_type;
+    EntityGroup m_group;
+    EntityType m_type;
     std::string m_name;
-    // sf::Vector2f m_position = {0, 0};
-    // sf::Vector2f m_previous_position = {0, 0};
     sf::FloatRect m_frame = {0, 0, 0, 0};
     sf::FloatRect m_prev_frame = {0, 0, 0, 0};
     sf::Vector2f m_speed = {0, 0};
@@ -100,11 +102,8 @@ private:
     bool m_visible = true;
     bool m_destroyed = false;
 
-    Animator m_animator;
-
-    sf::Sound m_sound;
-    std::string m_active_sound;
-    std::map<std::string, std::string> m_sound_map;
+    std::unique_ptr<AnimationManager> m_animationManager;
+    std::unique_ptr<SoundManager> m_soundManager;
 };
 
 

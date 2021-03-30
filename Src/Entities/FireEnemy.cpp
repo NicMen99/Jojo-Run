@@ -6,11 +6,13 @@
 #include "Game.h"
 #include "Factory.h"
 #include "SceneManager.h"
+#include "AnimationManager.h"
+
 #include "FireEnemy.h"
 
 
 FireEnemy::FireEnemy(const std::string& id) :
-Enemy(GameObjectType::FireEnemy, id) {
+Enemy(EntityType::FireEnemy, id) {
 
 }
 
@@ -19,7 +21,7 @@ FireEnemy::~FireEnemy() {
 }
 
 void FireEnemy::init() {
-    const std::list<Animation::FrameParams> frames = {
+    const std::list<FrameParams> frames = {
             {1, "fireEnemy", {0,0,0,0}, {0,0}, {true, false}}
     };
     addAnimation("DEFAULT", frames);
@@ -36,7 +38,7 @@ void FireEnemy::update(int32_t delta_time) {
         setStarted(true);
     }
     if(m_shoot_left > 0 && m_shootTimer.getElapsedTime() >= m_shootTime) {
-        auto bl = FACTORY.createBullet(GameObjectType::FireBullet);
+        auto bl = FACTORY.createBullet(EntityType::FireBullet);
         bl->setPosition(sf::Vector2f (getPosition()) - sf::Vector2f(bl->getBounds().width, 0));
         bl->setSpeed(sf::Vector2f {getSpeed().x - 1000.f, 0.f});
         SCENE.addNewEntity(bl);

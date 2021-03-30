@@ -16,7 +16,7 @@ const unsigned int font_size = 40;
 
 
 ScoreHUD::ScoreHUD() :
-        Entity(GameObjectGroup::Scene, GameObjectType::Hud, "HUD")
+        Entity(EntityGroup::Scene, EntityType::Hud, "HUD")
 {
     if(m_observed)
         detach();

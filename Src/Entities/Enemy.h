@@ -16,7 +16,7 @@ class Enemy: public Entity {
     enum State {Alive, Dying, Dead};
 
 public:
-    Enemy(GameObjectType mtype, const std::string & name);
+    Enemy(EntityType mtype, const std::string & name);
     ~Enemy() override;
     void init(const std::string & texture_name, sf::Vector2f scale, sf::Vector2f speed, int damage);
 

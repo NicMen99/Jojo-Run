@@ -60,14 +60,14 @@ void SceneManager::update(int32_t delta_time) {
     /*
      * Map Generator
      */
-    generateBackgorund();
+    generateBackground();
     generateMap();
 
     /*
      * Add spawened objects
      */
     for(auto & it : m_spawned_objects) {
-        if (it->getGroup() == GameObjectGroup::Bullet) {
+        if (it->getGroup() == EntityGroup::Bullet) {
             m_bullets.emplace_back(std::move(it));
         }
     }
@@ -168,44 +168,44 @@ void SceneManager::destroyObjects(std::vector<std::unique_ptr<Entity>> & items) 
     }
 }
 
-void SceneManager::generateBackgorund(){
+void SceneManager::generateBackground(){
     if(m_background1.size() < 2) {
         if(m_background1.empty()) {
-            auto bg = FACTORY.createBackground(GameObjectType::Sky);
+            auto bg = FACTORY.createBackground(EntityType::Sky);
             bg->setPosition({0.f, 0.f});
             m_background1.emplace_back(std::move(bg));
         }
-        auto bg = FACTORY.createBackground(GameObjectType::Sky);
+        auto bg = FACTORY.createBackground(EntityType::Sky);
         bg->setPosition({m_background1.at(0)->getPosition().x + m_background1.at(0)->getBounds().width, 0.f});
         m_background1.emplace_back(std::move(bg));
     }
     if (m_background2.size() < 2) {
         if(m_background2.empty()) {
-            auto bg = FACTORY.createBackground(GameObjectType::City);
+            auto bg = FACTORY.createBackground(EntityType::City);
             bg->setPosition({0.f, 0.f});
             m_background2.emplace_back(std::move(bg));
         }
-        auto bg = FACTORY.createBackground(GameObjectType::City);
+        auto bg = FACTORY.createBackground(EntityType::City);
         bg->setPosition({m_background2.at(0)->getPosition().x + m_background2.at(0)->getBounds().width, 0.f});
         m_background2.emplace_back(std::move(bg));
     }
     if (m_background3.size() < 2) {
         if(m_background3.empty()) {
-            auto bg = FACTORY.createBackground(GameObjectType::SkyScrapers);
+            auto bg = FACTORY.createBackground(EntityType::SkyScrapers);
             bg->setPosition({0.f, 0.f});
             m_background3.emplace_back(std::move(bg));
         }
-        auto bg = FACTORY.createBackground(GameObjectType::SkyScrapers);
+        auto bg = FACTORY.createBackground(EntityType::SkyScrapers);
         bg->setPosition({m_background3.at(0)->getPosition().x + m_background3.at(0)->getBounds().width, 0.f});
         m_background3.emplace_back(std::move(bg));
     }
     if (m_background4.size() < 2) {
         if(m_background4.empty()) {
-            auto bg = FACTORY.createBackground(GameObjectType::Bridge);
+            auto bg = FACTORY.createBackground(EntityType::Bridge);
             bg->setPosition({0.f, 0.f});
             m_background4.emplace_back(std::move(bg));
         }
-        auto bg = FACTORY.createBackground(GameObjectType::Bridge);
+        auto bg = FACTORY.createBackground(EntityType::Bridge);
         bg->setPosition({m_background4.at(0)->getPosition().x + m_background4.at(0)->getBounds().width, 0.f});
         m_background4.emplace_back(std::move(bg));
     }
@@ -277,21 +277,21 @@ void SceneManager::generateMap() {
      * Genera nemici
      */
     if(m_enemies.empty()) {
-        std::vector<GameObjectType> echoice = {GameObjectType::FireEnemy, GameObjectType::HamonEnemy, GameObjectType::EmeraldEnemy};
+        std::vector<EntityType> echoice = {EntityType::FireEnemy, EntityType::HamonEnemy, EntityType::EmeraldEnemy};
         createEnemy(echoice[RAND(echoice.size())], sf::Vector2f(posx+size*3/4, posy));
     }
         /*
          * Genera ostacoli
          */
     else if(m_obstacles.empty()) {
-        std::vector<GameObjectType> ochoice = {GameObjectType::Wall, GameObjectType::Block};
+        std::vector<EntityType> ochoice = {EntityType::Wall, EntityType::Block};
         createObstacle(ochoice[RAND(ochoice.size())], sf::Vector2f(posx + size/2, posy));
     }
         /*
          * Genera PowerUps
          */
     else if (m_powerups.empty()) {
-        std::vector<GameObjectType> pchoice = {GameObjectType::Weapon, GameObjectType::Shield};
+        std::vector<EntityType> pchoice = {EntityType::Weapon, EntityType::Shield};
         createPowerup(pchoice[RAND(pchoice.size())], sf::Vector2f(posx + size/2, posy));
     }
 }
@@ -358,15 +358,15 @@ void SceneManager::manageCollisions() {
 }
 
 Entity * SceneManager::createPlatform(sf::Vector2f position) {
-    auto pl = FACTORY.createPlatform(GameObjectType::Platform);
+    auto pl = FACTORY.createPlatform(EntityType::Platform);
     pl->setPosition(position);
     m_platforms.emplace_back(std::move(pl));
     return m_platforms.back().get();
 }
 
-void SceneManager::createObstacle(GameObjectType ot, sf::Vector2f position) {
+void SceneManager::createObstacle(EntityType ot, sf::Vector2f position) {
     auto bl = FACTORY.createObstacle(ot);
-    if (ot == GameObjectType::Wall){
+    if (ot == EntityType::Wall){
         bl->setPosition(sf::Vector2f(0, -bl->getBounds().height) + position);
     } else {
         bl->setPosition(sf::Vector2f(0, -2*bl->getBounds().height) + position);
@@ -374,13 +374,13 @@ void SceneManager::createObstacle(GameObjectType ot, sf::Vector2f position) {
     m_obstacles.emplace_back(std::move(bl));
 }
 
-void SceneManager::createEnemy(GameObjectType et, sf::Vector2f position) {
+void SceneManager::createEnemy(EntityType et, sf::Vector2f position) {
     auto en = FACTORY.createEnemy(et);
     en->setPosition(sf::Vector2f(0, -en->getBounds().height) + position);
     m_enemies.emplace_back(std::move(en));
 }
 
-void SceneManager::createPowerup(GameObjectType pt, sf::Vector2f position) {
+void SceneManager::createPowerup(EntityType pt, sf::Vector2f position) {
     auto pu = FACTORY.createPowerUp(pt);
     pu->setPosition(sf::Vector2f(0, -2*pu->getBounds().height) + position);
     m_powerups.emplace_back(std::move(pu));

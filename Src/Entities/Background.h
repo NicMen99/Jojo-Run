@@ -15,7 +15,7 @@ class Background final: public Entity
 public:
     explicit Background(std::string id);
     ~Background() override;
-    void init(GameObjectType type);
+    void init(EntityType type);
 };
 
 
