@@ -6,7 +6,6 @@
 #define JOJO_RUN_POWERUP_H
 
 #include "Entity.h"
-#include <SFML/Graphics/Sprite.hpp>
 
 class PowerUp : public Entity {
 public:

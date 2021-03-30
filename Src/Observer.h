@@ -5,6 +5,8 @@
 #ifndef JOJO_RUN_OBSERVER_H
 #define JOJO_RUN_OBSERVER_H
 
+#include <string>
+
 class Observer {
 public:
     virtual ~Observer() = default;

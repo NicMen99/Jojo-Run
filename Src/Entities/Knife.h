@@ -5,7 +5,6 @@
 #ifndef JOJO_RUN_KNIFE_H
 #define JOJO_RUN_KNIFE_H
 
-#include <SFML/Graphics.hpp>
 #include "Entities/Bullet.h"
 
 class Knife final:  public Bullet

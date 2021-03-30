@@ -5,7 +5,6 @@
 #ifndef JOJO_RUN_SHAPEWIDGET_H
 #define JOJO_RUN_SHAPEWIDGET_H
 
-
 #include "Widgets/Widget.h"
 
 class ShapeWidget : public Widget {

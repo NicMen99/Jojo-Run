@@ -6,7 +6,6 @@
 #define JOJO_RUN_FIRE_H
 
 #include "Obstacle.h"
-#include <SFML/Graphics.hpp>
 
 class Fire final : public Obstacle {
 

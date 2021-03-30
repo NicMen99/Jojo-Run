@@ -5,7 +5,6 @@
 #ifndef JOJO_RUN_BLOCK_H
 #define JOJO_RUN_BLOCK_H
 
-#include <SFML/Graphics.hpp>
 #include "Obstacle.h"
 
 class Block final: public Obstacle {

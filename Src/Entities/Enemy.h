@@ -6,8 +6,6 @@
 #define JOJO_RUN_ENEMY_H
 
 
-#include <random>
-#include <SFML/Graphics.hpp>
 #include "Entity.h"
 
 class Bullet;

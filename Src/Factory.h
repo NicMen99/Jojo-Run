@@ -5,6 +5,8 @@
 #ifndef JOJO_RUN_FACTORY_H
 #define JOJO_RUN_FACTORY_H
 
+#include <memory>
+
 class Entity;
 enum class EntityType;
 

@@ -5,9 +5,7 @@
 #ifndef JOJO_RUN_BACKGROUND_H
 #define JOJO_RUN_BACKGROUND_H
 
-
 #include "Entity.h"
-#include <SFML/Graphics.hpp>
 
 
 class Background final: public Entity

@@ -5,7 +5,6 @@
 #ifndef JOJO_RUN_OBSTACLE_H
 #define JOJO_RUN_OBSTACLE_H
 
-#include "Game.h"
 #include "Entity.h"
 
 class Obstacle : public Entity

@@ -27,7 +27,7 @@ protected:
     static void changeState(State nextState);
     static void switchState(bool forceExec=false);
     static AbsGameState* getCurrentState();
-    static void setContext(Game* pContext);
+
 protected:
     virtual void onEnter() {}
     virtual void onExit() {}

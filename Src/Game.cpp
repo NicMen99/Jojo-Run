@@ -3,16 +3,6 @@
 //
 #include <iostream>
 
-#include "StateMachine/GameStateMachine.h"
-#include "GameConfig.h"
-#include "ResourceManager.h"
-#include "Factory.h"
-#include "SceneManager.h"
-#include "GameStats.h"
-#include "Entity.h"
-#include "ScoreHUD.h"
-#include "CollisionManager.h"
-#include "ScoreManager.h"
 #include "Game.h"
 
 
