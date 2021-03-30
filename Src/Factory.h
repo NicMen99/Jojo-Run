@@ -5,20 +5,22 @@
 #ifndef JOJO_RUN_FACTORY_H
 #define JOJO_RUN_FACTORY_H
 
+#include <memory>
+
 class Entity;
-enum class GameObjectType;
+enum class EntityType;
 
 class Factory {
 public:
-    Factory() = default;
-    virtual ~Factory() = default;
+    Factory();
+    virtual ~Factory();
 
-    virtual std::unique_ptr<Entity> createObstacle(GameObjectType type);
-    virtual std::unique_ptr<Entity> createEnemy(GameObjectType type);
-    virtual std::unique_ptr<Entity> createPowerUp(GameObjectType type);
-    virtual std::unique_ptr<Entity> createBullet(GameObjectType type);
-    virtual std::unique_ptr<Entity> createPlatform(GameObjectType type);
-    virtual std::unique_ptr<Entity> createBackground(GameObjectType type);
+    virtual std::unique_ptr<Entity> createObstacle(EntityType type);
+    virtual std::unique_ptr<Entity> createEnemy(EntityType type);
+    virtual std::unique_ptr<Entity> createPowerUp(EntityType type);
+    virtual std::unique_ptr<Entity> createBullet(EntityType type);
+    virtual std::unique_ptr<Entity> createPlatform(EntityType type);
+    virtual std::unique_ptr<Entity> createBackground(EntityType type);
 };
 
 #endif //JOJO_RUN_FACTORY_H

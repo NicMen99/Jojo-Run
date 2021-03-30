@@ -6,13 +6,12 @@
 #define JOJO_RUN_FIRE_H
 
 #include "Obstacle.h"
-#include <SFML/Graphics.hpp>
 
 class Fire final : public Obstacle {
 
 public:
     explicit Fire (const std::string& id);
-    ~Fire() override = default;
+    ~Fire() override;
     void init();
 
     void event(GameEvent event, Entity *collider) override;

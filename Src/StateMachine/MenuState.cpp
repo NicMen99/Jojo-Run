@@ -3,8 +3,6 @@
 //
 
 #include "Game.h"
-#include "SceneManager.h"
-#include "GameConfig.h"
 #include "MenuState.h"
 
 MenuState* MenuState::m_instance = nullptr;

@@ -2,27 +2,26 @@
 // Created by Niccolo on 23/03/2021.
 //
 
-#ifndef JOJO_RUN_ANIMATOR_H
-#define JOJO_RUN_ANIMATOR_H
+#ifndef JOJO_RUN_ANIMATIONMANAGER_H
+#define JOJO_RUN_ANIMATIONMANAGER_H
 
 #include <string>
-#include <utility>
 #include <vector>
 #include <memory>
 #include <SFML/Graphics.hpp>
 
+struct FrameParams {
+    FrameParams(int c, const char * n, const sf::IntRect& r, const sf::Vector2u& s, const sf::Vector2<bool>& f) :
+            count(c), texture_name(n), texture_rect(r), scale(s), flip(f) {}
+    int               count;
+    std::string       texture_name{};
+    sf::IntRect       texture_rect;
+    sf::Vector2u      scale;
+    sf::Vector2<bool> flip;
+};
+
 class Animation {
 public:
-    struct FrameParams {
-        FrameParams(int c, const char * n, const sf::IntRect& r, const sf::Vector2u& s, const sf::Vector2<bool>& f) :
-            count(c), texture_name(n), texture_rect(r), scale(s), flip(f) {}
-        int               count;
-        std::string       texture_name{};
-        sf::IntRect       texture_rect;
-        sf::Vector2u      scale;
-        sf::Vector2<bool> flip;
-    };
-
     unsigned int total_frames() const { return m_frames.size(); }
     void addFrame(const FrameParams & frame_params);
     bool isDone() const { return m_count > total_frames(); }
@@ -33,13 +32,13 @@ private:
     std::vector< std::pair< std::shared_ptr<sf::Sprite>, uint32_t> > m_frames;
 };
 
-class Animator {
+class AnimationManager {
 public:
-    Animator();
-    virtual ~Animator() = default;
+    AnimationManager();
+    virtual ~AnimationManager();
 
 
-    void addAnimation(const std::string & animation_name, const std::list<Animation::FrameParams>& frames);
+    void addAnimation(const std::string & animation_name, const std::list<FrameParams>& frames);
     void update(int32_t delta_time);
 
 public:
@@ -58,4 +57,4 @@ private:
 };
 
 
-#endif //JOJO_RUN_ANIMATOR_H
+#endif //JOJO_RUN_ANIMATIONMANAGER_H

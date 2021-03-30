@@ -2,29 +2,29 @@
 // Created by angiolo99 on 23/01/20.
 //
 
-#include "Entity.h"
-#include "Factory.h"
 #include "Game.h"
-#include "ResourceManager.h"
-#include "GameConfig.h"
-#include "SceneManager.h"
-#include "GameStats.h"
-#include "InputManager.h"
+#include "Entity.h"
 #include "Entities/Enemy.h"
 #include "Entities/Obstacle.h"
 #include "Entities/Knife.h"
 #include "Entities/Weapon.h"
+#include "AnimationManager.h"
+
 #include "Hero.h"
 
 Hero::Hero() :
-        Entity(GameObjectGroup::Hero, GameObjectType::Hero, "Hero")
+        Entity(EntityGroup::Hero, EntityType::Hero, "Hero")
 {
+
+}
+
+Hero::~Hero() {
 
 }
 
 void Hero::init()
 {
-    const std::list<Animation::FrameParams> frames = {
+    const std::list<FrameParams> frames = {
             {1, "playerTexture", {0,0,0,0}, {0,0}, {false, false}}
     };
     addAnimation("DEFAULT", frames);
@@ -109,7 +109,7 @@ void Hero::event(GameEvent event, Entity * entity) {
         /*
          * Collisione con una piattaforma
          */
-        if (entity->getType() == GameObjectType::Platform) {
+        if (entity->getType() == EntityType::Platform) {
             sf::Rect<float> collider_rect = entity->getBounds();
             sf::Rect<float> hero_rect = getBounds();
             sf::Vector2f speed = getSpeed();
@@ -128,7 +128,7 @@ void Hero::event(GameEvent event, Entity * entity) {
             /*
              * Collisione con un nemico
              */
-        else if (entity->getGroup() == GameObjectGroup::Enemy) {
+        else if (entity->getGroup() == EntityGroup::Enemy) {
             auto *enemy = dynamic_cast<Enemy *>(entity);
             int damage = !m_shield ? enemy->getDamage() : 0;
             updateHealth(-damage);
@@ -141,7 +141,7 @@ void Hero::event(GameEvent event, Entity * entity) {
             /*
              * Collisione con un ostacolo
              */
-        else if (entity->getGroup() == GameObjectGroup::Map) {
+        else if (entity->getGroup() == EntityGroup::Map) {
             auto *obstacle = dynamic_cast<Obstacle *>(entity);
             int damage = !m_shield ? obstacle->getDamage() : 0;
             updateHealth(-damage);
@@ -154,18 +154,18 @@ void Hero::event(GameEvent event, Entity * entity) {
             /*
              * Collisione con un powerup
              */
-        else if (entity->getGroup() == GameObjectGroup::Powerup) {
-            if (entity->getType() == GameObjectType::Weapon) {
+        else if (entity->getGroup() == EntityGroup::Powerup) {
+            if (entity->getType() == EntityType::Weapon) {
                 auto *weapon = dynamic_cast<Weapon *>(entity);
                 updateKnives(weapon->getQuantity());
-            } else if (entity->getType() == GameObjectType::Shield) {
+            } else if (entity->getType() == EntityType::Shield) {
                 m_shield = true;
             }
         }
             /*
              * Collisione con proiettile nemico
              */
-        else if (entity->getGroup() == GameObjectGroup::Bullet) {
+        else if (entity->getGroup() == EntityGroup::Bullet) {
             auto *bullet = dynamic_cast<Bullet *>(entity);
             int damage = !m_shield ? bullet->getDamage() : 0;
             updateHealth(-damage);
@@ -176,7 +176,7 @@ void Hero::event(GameEvent event, Entity * entity) {
         }
     }
     else if (event == GameEvent::EnemyKilled) {
-        if(entity->getGroup() == GameObjectGroup::Enemy) {
+        if(entity->getGroup() == EntityGroup::Enemy) {
             auto * enemy = dynamic_cast<Enemy*>(entity);
             updateHealth(enemy->getLifeBonus());
         }
@@ -218,7 +218,7 @@ void Hero::manageAttack() {
         case State::Jumping:
         case State::Falling:
             if(m_inputManager.isKeyJustPressed(sf::Keyboard::K)){
-                auto kf = FACTORY.createBullet(GameObjectType::Knife);
+                auto kf = FACTORY.createBullet(EntityType::Knife);
                 kf->setPosition(sf::Vector2f(getPosition()) + sf::Vector2f(getBounds().width, 0));
                 kf->setSpeed(sf::Vector2f {getSpeed().x + 1000.f, 0.f});
                 SCENE.addNewEntity(kf);
@@ -229,6 +229,7 @@ void Hero::manageAttack() {
             break;
     }
 }
+
 
 
 

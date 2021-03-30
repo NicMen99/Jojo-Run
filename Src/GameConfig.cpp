@@ -11,6 +11,14 @@ struct KeyVal{
 };
 
 
+GameConfig::GameConfig() {
+
+}
+
+GameConfig::~GameConfig() {
+
+}
+
 const KeyVal resource_table [] = {
         { "blockTexture",          "Textures/blockTexture.png"},
         { "fireWallTexture",       "Textures/fireWallTexture.png"},

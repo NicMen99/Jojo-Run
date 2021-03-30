@@ -5,15 +5,14 @@
 #ifndef JOJO_RUN_OBSTACLE_H
 #define JOJO_RUN_OBSTACLE_H
 
-#include "Game.h"
 #include "Entity.h"
 
 class Obstacle : public Entity
 {
 public:
-    Obstacle(GameObjectType mtype, const std::string & name) :
-            Entity(GameObjectGroup::Map, mtype, name) { }
-    ~Obstacle() override = default;
+    Obstacle(EntityType mtype, const std::string & name) :
+            Entity(EntityGroup::Map, mtype, name) { }
+    ~Obstacle() override {};
 
 public:
     void setDamage(int damage) { m_damage = damage; }

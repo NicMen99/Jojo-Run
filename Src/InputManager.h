@@ -5,6 +5,8 @@
 #ifndef JOJO_RUN_INPUTMANAGER_H
 #define JOJO_RUN_INPUTMANAGER_H
 
+#include <map>
+#include <SFML/Window.hpp>
 
 class InputManager {
 public:

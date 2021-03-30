@@ -7,15 +7,15 @@
 
 #include <SFML/Graphics.hpp>
 class Entity;
-enum class GameObjectType;
+enum class EntityType;
 class ScoreHUD;
 class CollisionManager;
 
 class SceneManager
 {
 public:
-    SceneManager() = default;
-    virtual ~SceneManager() = default;
+    SceneManager();
+    virtual ~SceneManager();
     void init();
 public:
     void update(int32_t delta_time);
@@ -25,14 +25,14 @@ public:
 
 private:
     static void destroyObjects(std::vector<std::unique_ptr<Entity>> & items);
-    void generateBackgorund();
+    void generateBackground();
     void generateMap();
     void manageCollisions();
 
     Entity * createPlatform(sf::Vector2f position);
-    void createObstacle(GameObjectType ot, sf::Vector2f position);
-    void createEnemy(GameObjectType et, sf::Vector2f position);
-    void createPowerup(GameObjectType pt, sf::Vector2f position);
+    void createObstacle(EntityType ot, sf::Vector2f position);
+    void createEnemy(EntityType et, sf::Vector2f position);
+    void createPowerup(EntityType pt, sf::Vector2f position);
     void createHero();
     void createScoreHUD();
 

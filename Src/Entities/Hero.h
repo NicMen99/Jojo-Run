@@ -5,13 +5,6 @@
 #ifndef JOJO_RUN_HERO_H
 #define JOJO_RUN_HERO_H
 
-#include <list>
-#include <string>
-#include <fstream>
-#include <SFML/Graphics.hpp>
-
-#include "Subject.h"
-#include "Entities/PowerUp.h"
 #include "Entity.h"
 #include "InputManager.h"
 
@@ -21,7 +14,7 @@ class Hero final : public Entity {
 
 public:
     Hero ();
-    ~Hero() override = default;
+    ~Hero() override;
 
     void init();
     void update(int32_t delta_time) override;

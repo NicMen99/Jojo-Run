@@ -6,8 +6,6 @@
 #define JOJO_RUN_ENEMY_H
 
 
-#include <random>
-#include <SFML/Graphics.hpp>
 #include "Entity.h"
 
 class Bullet;
@@ -16,8 +14,8 @@ class Enemy: public Entity {
     enum State {Alive, Dying, Dead};
 
 public:
-    Enemy(GameObjectType mtype, const std::string & name);
-    ~Enemy() override = default;
+    Enemy(EntityType mtype, const std::string & name);
+    ~Enemy() override;
     void init(const std::string & texture_name, sf::Vector2f scale, sf::Vector2f speed, int damage);
 
     void update(int32_t delta_time) override;

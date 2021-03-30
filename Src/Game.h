@@ -12,13 +12,13 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
 
-class AbsGameState;
-class ResourceManager;
-class GameConfig;
-class Factory;
-class SceneManager;
-class GameStats;
-class ScoreManager;
+#include "StateMachine/GameStateMachine.h"
+#include "GameConfig.h"
+#include "GameStats.h"
+#include "ResourceManager.h"
+#include "Factory.h"
+#include "SceneManager.h"
+#include "ScoreManager.h"
 
 #define CONFIG Game::instance()->configManager()
 #define RESOURCE Game::instance()->resourceManager()
@@ -27,6 +27,7 @@ class ScoreManager;
 #define STATS Game::instance()->gameStats()
 #define SCORE Game::instance()->gameScore()
 #define RAND Game::instance()->rand
+
 
 class Game
 {

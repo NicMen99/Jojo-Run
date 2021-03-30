@@ -3,12 +3,16 @@
 //
 
 #include "Game.h"
-#include "ResourceManager.h"
 #include "ImageWidget.h"
 
 ImageWidget::ImageWidget(const std::string & name):
         Widget(name) {
 }
+
+ImageWidget::~ImageWidget() {
+
+}
+
 
 void ImageWidget::init(const WidgetTheme &theme) {
 }
@@ -37,4 +41,3 @@ sf::Vector2f ImageWidget::getSize() const {
     sf::FloatRect size = m_image.getGlobalBounds();
     return sf::Vector2f{size.width, size.height};
 }
-

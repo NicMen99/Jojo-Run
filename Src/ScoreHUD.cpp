@@ -3,8 +3,6 @@
 //
 
 #include "Game.h"
-#include "GameStats.h"
-#include "GameConfig.h"
 #include "Widgets/Widget.h"
 #include "Widgets/TextWidget.h"
 #include "Widgets/ImageWidget.h"
@@ -16,7 +14,7 @@ const unsigned int font_size = 40;
 
 
 ScoreHUD::ScoreHUD() :
-        Entity(GameObjectGroup::Scene, GameObjectType::Hud, "HUD")
+        Entity(EntityGroup::Scene, EntityType::Hud, "HUD")
 {
     if(m_observed)
         detach();

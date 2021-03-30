@@ -12,8 +12,8 @@
 
 class GameConfig {
 public:
-    GameConfig()=default;
-    virtual ~GameConfig()=default;
+    GameConfig();
+    virtual ~GameConfig();
     void init();
 
     const sf::Vector2u & getWindowSize() const { return m_window_size; }

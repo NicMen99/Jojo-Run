@@ -3,10 +3,6 @@
 //
 
 #include "Game.h"
-#include "GameStats.h"
-#include "ScoreManager.h"
-#include "SceneManager.h"
-#include "GameConfig.h"
 #include "PlayState.h"
 
 PlayState* PlayState::m_instance = nullptr;

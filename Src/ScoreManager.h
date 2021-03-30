@@ -25,7 +25,7 @@ public:
     /* Record file management */
 public:
     void loadFromFile();
-    void addScoreRecord(const std::string & nickname, int score);
+    void setName(const std::string & nickname);
     void saveToFile();
     std::vector<Record> getScoreRecord();
 

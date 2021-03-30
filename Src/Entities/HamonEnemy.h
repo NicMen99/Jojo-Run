@@ -11,7 +11,7 @@ class HamonEnemy final: public Enemy
 {
 public:
     explicit HamonEnemy(const std::string& id);
-    ~HamonEnemy() override = default;
+    ~HamonEnemy() override;
     void init();
 
 private:

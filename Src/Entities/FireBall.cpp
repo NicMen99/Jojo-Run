@@ -2,15 +2,22 @@
 // Created by Niccolo on 14/03/2021.
 //
 
+#include <list>
+#include "AnimationManager.h"
+
 #include "FireBall.h"
 
 FireBall::FireBall(std::string id) :
-    Bullet(GameObjectType::FireBullet, id) {
+    Bullet(EntityType::FireBullet, id) {
+
+}
+
+FireBall::~FireBall() {
 
 }
 
 void FireBall::init() {
-    const std::list<Animation::FrameParams> frames = {
+    const std::list<FrameParams> frames = {
             {1, "fireBlockTexture", {0,0,0,0}, {0,0}, {false, false}}
     };
     addAnimation("DEFAULT", frames);
@@ -26,6 +33,7 @@ void FireBall::update(int32_t delta_time) {
 
 void FireBall::event(GameEvent event, Entity *collider) {
     Entity::event(GameEvent::Collision, collider);
-    if (collider->getType() == GameObjectType::Hero)
+    if (collider->getType() == EntityType::Hero)
         setDestroyed();
 }
+

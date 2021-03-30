@@ -14,7 +14,7 @@ bool CollisionManager::collisionCheck(Entity *item1, Entity *item2) {
     if (!item1->isEnabled() || !item2->isEnabled() || !item1_rect.intersects(item2_rect))
         return false;
 
-    if(item1->getType() == GameObjectType::Hero && item2->getType() == GameObjectType::Platform)
+    if(item1->getType() == EntityType::Hero && item2->getType() == EntityType::Platform)
         return checkHeroPlatform(item1, item2);
 
     return  item1_rect.intersects(item2_rect);

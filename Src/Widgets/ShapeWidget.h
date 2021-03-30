@@ -5,13 +5,12 @@
 #ifndef JOJO_RUN_SHAPEWIDGET_H
 #define JOJO_RUN_SHAPEWIDGET_H
 
-
 #include "Widgets/Widget.h"
 
 class ShapeWidget : public Widget {
 public:
     explicit ShapeWidget(const std::string & name);
-    ~ShapeWidget() override = default;
+    ~ShapeWidget() override;
     void init(const WidgetTheme & theme);
 
     void setFillColor(const sf::Color & color);

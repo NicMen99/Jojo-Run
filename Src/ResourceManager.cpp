@@ -4,8 +4,16 @@
 
 #include <cassert>
 #include "Game.h"
-#include "GameConfig.h"
 #include "ResourceManager.h"
+
+
+ResourceManager::ResourceManager() {
+
+}
+
+ResourceManager::~ResourceManager() {
+
+}
 
 std::shared_ptr<sf::Texture> ResourceManager::getTexture(const std::string & texture) {
     auto it = m_texture_map.find(texture);

@@ -3,15 +3,19 @@
 //
 
 #include "Game.h"
-#include "GameConfig.h"
+#include "AnimationManager.h"
 #include "Knife.h"
 
 Knife::Knife(std::string id) :
-    Bullet(GameObjectType::Knife, id) {
+    Bullet(EntityType::Knife, id) {
+}
+
+Knife::~Knife() {
+
 }
 
 void Knife::init() {
-    const std::list<Animation::FrameParams> frames = {
+    const std::list<FrameParams> frames = {
             {1, "knifeTexture", {0,0,0,0}, {0,0}, {false, false}}
     };
     addAnimation("DEFAULT", frames);
@@ -29,8 +33,3 @@ void Knife::event(GameEvent event, Entity *collider) {
     Entity::event(GameEvent::Collision, collider);
     setDestroyed();
 }
-
-
-
-
-

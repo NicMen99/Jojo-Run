@@ -2,13 +2,19 @@
 // Created by Niccolo on 14/03/2021.
 //
 
+#include <list>
+#include "AnimationManager.h"
 #include "Emerald.h"
 
 Emerald::Emerald(const std::string& id) :
-    Bullet(GameObjectType::EmeraldBullet, id) {}
+    Bullet(EntityType::EmeraldBullet, id) {}
+
+Emerald::~Emerald(){
+
+}
 
 void Emerald::init() {
-    const std::list<Animation::FrameParams> frames = {
+    const std::list<FrameParams> frames = {
             {1, "emeraldBlockTexture", {0,0,0,0}, {0,0}, {false, false}}
     };
     addAnimation("DEFAULT", frames);
@@ -24,7 +30,7 @@ void Emerald::update(int32_t delta_time) {
 
 void Emerald::event(GameEvent event, Entity *collider) {
     Entity::event(GameEvent::Collision, collider);
-    if (collider->getType() == GameObjectType::Hero)
+    if (collider->getType() == EntityType::Hero)
         setDestroyed();
 }
 

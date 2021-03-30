@@ -6,13 +6,12 @@
 #define JOJO_RUN_POWERUP_H
 
 #include "Entity.h"
-#include <SFML/Graphics/Sprite.hpp>
 
 class PowerUp : public Entity {
 public:
-    explicit PowerUp(GameObjectType mtype, const std::string & name) :
-            Entity(GameObjectGroup::Powerup, mtype, name) {}
-    ~PowerUp() override = default;
+    explicit PowerUp(EntityType mtype, const std::string & name) :
+            Entity(EntityGroup::Powerup, mtype, name) {}
+    ~PowerUp() override {};
 
 public:
     void setQuantity(int quantity) { m_quantity = quantity; }

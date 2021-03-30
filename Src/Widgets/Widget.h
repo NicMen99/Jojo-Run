@@ -7,10 +7,9 @@
 
 #include <string>
 #include <list>
+#include <SFML/Graphics.hpp>
 #include "Observer.h"
 #include "Subject.h"
-
-#include "SFML/Graphics.hpp"
 
 
 struct WidgetTheme {

@@ -4,6 +4,7 @@
 
 #include <iostream>
 
+#include "Game.h"
 #include "Entities/Block.h"
 #include "Entities/Fire.h"
 #include "Entities/EmeraldEnemy.h"
@@ -16,17 +17,24 @@
 #include "Entities/Knife.h"
 #include "Entities/Platform.h"
 #include "Entities/Background.h"
-#include "GameConfig.h"
 
 #include "Factory.h"
 
-std::unique_ptr<Entity> Factory::createObstacle(GameObjectType type) {
-    if(type == GameObjectType::Block) {
+Factory::Factory() {
+
+}
+
+Factory::~Factory() {
+
+}
+
+std::unique_ptr<Entity> Factory::createObstacle(EntityType type) {
+    if(type == EntityType::Block) {
         auto * obstacle = new Block("Block");
         obstacle->init();
         return std::unique_ptr<Entity>(obstacle);
     }
-    else if (type == GameObjectType::Wall) {
+    else if (type == EntityType::Wall) {
         auto * obstacle = new Fire("Fire");
         obstacle->init();
         return std::unique_ptr<Entity>(obstacle);
@@ -34,18 +42,18 @@ std::unique_ptr<Entity> Factory::createObstacle(GameObjectType type) {
     return nullptr;
 }
 
-std::unique_ptr<Entity> Factory::createEnemy(GameObjectType type) {
-    if (type == GameObjectType::EmeraldEnemy){
+std::unique_ptr<Entity> Factory::createEnemy(EntityType type) {
+    if (type == EntityType::EmeraldEnemy){
         auto * enemy = new EmeraldEnemy("EmeraldEnemy");
         enemy->init();
         return std::unique_ptr<Entity>(enemy);
     }
-    else if (type == GameObjectType::HamonEnemy){
+    else if (type == EntityType::HamonEnemy){
         auto * enemy =new HamonEnemy("HamonEnemy");
         enemy->init();
         return std::unique_ptr<Entity>(enemy);
     }
-    else if (type == GameObjectType::FireEnemy){
+    else if (type == EntityType::FireEnemy){
         auto * enemy = new FireEnemy("FireEnemy");
         enemy->init();
         return std::unique_ptr<Entity>(enemy);
@@ -53,13 +61,13 @@ std::unique_ptr<Entity> Factory::createEnemy(GameObjectType type) {
     return nullptr;
 }
 
-std::unique_ptr<Entity> Factory::createPowerUp(GameObjectType type) {
-    if (type == GameObjectType::Shield) {
+std::unique_ptr<Entity> Factory::createPowerUp(EntityType type) {
+    if (type == EntityType::Shield) {
         auto * powerUp = new Shield("Shield");
         powerUp->init();
         return std::unique_ptr<Entity>(powerUp);
     }
-    else if (type == GameObjectType::Weapon) {
+    else if (type == EntityType::Weapon) {
         auto * powerUp = new Weapon("Weapon");
         powerUp->init();
         return std::unique_ptr<Entity>(powerUp);
@@ -67,18 +75,18 @@ std::unique_ptr<Entity> Factory::createPowerUp(GameObjectType type) {
     return nullptr;
 }
 
-std::unique_ptr<Entity> Factory::createBullet(GameObjectType type) {
-    if (type == GameObjectType::Knife) {
+std::unique_ptr<Entity> Factory::createBullet(EntityType type) {
+    if (type == EntityType::Knife) {
         auto * knife = new Knife("Knife");
         knife -> init();
         return std::unique_ptr<Entity>(knife);
     }
-    else if (type == GameObjectType::EmeraldBullet) {
+    else if (type == EntityType::EmeraldBullet) {
         auto * emerald = new Emerald("Emerald");
         emerald -> init();
         return std::unique_ptr<Entity>(emerald);
     }
-    else if (type == GameObjectType::FireBullet) {
+    else if (type == EntityType::FireBullet) {
         auto * fire = new FireBall("FireBall");
         fire -> init();
         return std::unique_ptr<Entity>(fire);
@@ -86,32 +94,33 @@ std::unique_ptr<Entity> Factory::createBullet(GameObjectType type) {
     return nullptr;
 }
 
-std::unique_ptr<Entity> Factory::createPlatform(GameObjectType type) {
+std::unique_ptr<Entity> Factory::createPlatform(EntityType type) {
     auto * platform = new Platform("Platform");
     platform->init();
     return std::unique_ptr<Entity>(platform);
 }
 
-std::unique_ptr<Entity> Factory::createBackground(GameObjectType type) {
-    if(type == GameObjectType::Sky) {
+std::unique_ptr<Entity> Factory::createBackground(EntityType type) {
+    if(type == EntityType::Sky) {
         auto * bg = new Background("Sky");
-        bg->init(GameObjectType::Sky);
+        bg->init(EntityType::Sky);
         return std::unique_ptr<Entity>(bg);
     }
-    else if(type == GameObjectType::City) {
+    else if(type == EntityType::City) {
         auto * bg = new Background("City");
-        bg->init(GameObjectType::City);
+        bg->init(EntityType::City);
         return std::unique_ptr<Entity>(bg);
     }
-    else if(type == GameObjectType::SkyScrapers) {
+    else if(type == EntityType::SkyScrapers) {
         auto * bg = new Background("SkyScrapers");
-        bg->init(GameObjectType::SkyScrapers);
+        bg->init(EntityType::SkyScrapers);
         return std::unique_ptr<Entity>(bg);
     }
-    else if(type == GameObjectType::Bridge) {
+    else if(type == EntityType::Bridge) {
         auto * bg = new Background("Bridge");
-        bg->init(GameObjectType::Bridge);
+        bg->init(EntityType::Bridge);
         return std::unique_ptr<Entity>(bg);
     }
     return nullptr;
 }
+
