@@ -18,6 +18,10 @@ Entity::Entity(GameObjectGroup mgroup, GameObjectType mtype, std::string  mName)
         m_name(std::move(mName)) {
 }
 
+Entity::~Entity() {
+
+}
+
 void Entity::update(int32_t delta_time) {
     m_prev_frame = m_frame;
     m_frame = m_animator.getCurrentFrame()->getGlobalBounds();

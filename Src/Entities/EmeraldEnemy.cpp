@@ -14,6 +14,10 @@ EmeraldEnemy::EmeraldEnemy(const std::string& id) :
 
 }
 
+EmeraldEnemy::~EmeraldEnemy(){
+
+}
+
 void EmeraldEnemy::init() {
     const std::list<Animation::FrameParams> frames = {
             {1, "emeraldEnemyTexture", {0,0,0,0}, {0,0}, {true, false}}

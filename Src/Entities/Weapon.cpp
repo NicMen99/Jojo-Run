@@ -10,6 +10,10 @@ Weapon::Weapon(std::string id) :
 
 }
 
+Weapon::~Weapon() {
+
+}
+
 void Weapon::init() {
     const std::list<Animation::FrameParams> frames = {
             {1, "knifeTexture", {0,0,0,0}, {0,0}, {false, false}}

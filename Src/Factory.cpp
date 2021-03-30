@@ -20,6 +20,14 @@
 
 #include "Factory.h"
 
+Factory::Factory() {
+
+}
+
+Factory::~Factory() {
+
+}
+
 std::unique_ptr<Entity> Factory::createObstacle(GameObjectType type) {
     if(type == GameObjectType::Block) {
         auto * obstacle = new Block("Block");
@@ -115,3 +123,4 @@ std::unique_ptr<Entity> Factory::createBackground(GameObjectType type) {
     }
     return nullptr;
 }
+

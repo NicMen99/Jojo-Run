@@ -36,7 +36,7 @@ private:
 class Animator {
 public:
     Animator();
-    virtual ~Animator() = default;
+    virtual ~Animator();
 
 
     void addAnimation(const std::string & animation_name, const std::list<Animation::FrameParams>& frames);

@@ -9,7 +9,7 @@
 class Shield final: public PowerUp {
 public:
     explicit Shield (std::string id);
-    ~Shield() override = default;
+    ~Shield() override;
     void init();
 
 public:

@@ -11,6 +11,10 @@ Block::Block(const std::string& id) :
 
 }
 
+Block::~Block(){
+
+}
+
 void Block::init() {
     const std::list<Animation::FrameParams> frames = {
             {1, "blockTexture", {0,0,0,0}, {0,0}, {false, false}}

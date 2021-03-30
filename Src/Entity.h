@@ -42,7 +42,7 @@ enum class GameEvent {
 class Entity {
 public:
     Entity(GameObjectGroup mgroup, GameObjectType mtype, std::string  mName);
-    virtual ~Entity() = default;
+    virtual ~Entity();
 
 public:
     virtual void update(int32_t delta_time);

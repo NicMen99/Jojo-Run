@@ -9,6 +9,10 @@ FireBall::FireBall(std::string id) :
 
 }
 
+FireBall::~FireBall() {
+
+}
+
 void FireBall::init() {
     const std::list<Animation::FrameParams> frames = {
             {1, "fireBlockTexture", {0,0,0,0}, {0,0}, {false, false}}
@@ -29,3 +33,4 @@ void FireBall::event(GameEvent event, Entity *collider) {
     if (collider->getType() == GameObjectType::Hero)
         setDestroyed();
 }
+

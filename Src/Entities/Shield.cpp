@@ -8,6 +8,10 @@ Shield::Shield(std::string id) :
 {
 }
 
+Shield::~Shield() {
+
+}
+
 void Shield::init() {
     const std::list<Animation::FrameParams> frames = {
             {1, "shieldPowerUpTexture", {0,0,0,0}, {39,77}, {true, false}}

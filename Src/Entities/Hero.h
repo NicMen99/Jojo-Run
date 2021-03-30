@@ -21,7 +21,7 @@ class Hero final : public Entity {
 
 public:
     Hero ();
-    ~Hero() override = default;
+    ~Hero() override;
 
     void init();
     void update(int32_t delta_time) override;

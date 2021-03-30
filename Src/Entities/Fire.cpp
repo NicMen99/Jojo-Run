@@ -10,6 +10,10 @@ Fire::Fire(const std::string& id) :
     Obstacle(GameObjectType::Wall, id) {
 }
 
+Fire::~Fire() {
+
+}
+
 void Fire::init() {
     const std::list<Animation::FrameParams> frames = {
             {8, "Fire", {0,0,32,32}, {64,64}, {false, false}},

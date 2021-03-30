@@ -11,7 +11,7 @@
 class ShapeWidget : public Widget {
 public:
     explicit ShapeWidget(const std::string & name);
-    ~ShapeWidget() override = default;
+    ~ShapeWidget() override;
     void init(const WidgetTheme & theme);
 
     void setFillColor(const sf::Color & color);

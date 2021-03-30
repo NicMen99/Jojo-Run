@@ -7,6 +7,10 @@
 Emerald::Emerald(const std::string& id) :
     Bullet(GameObjectType::EmeraldBullet, id) {}
 
+Emerald::~Emerald(){
+
+}
+
 void Emerald::init() {
     const std::list<Animation::FrameParams> frames = {
             {1, "emeraldBlockTexture", {0,0,0,0}, {0,0}, {false, false}}

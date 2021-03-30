@@ -12,7 +12,7 @@ class Fire final : public Obstacle {
 
 public:
     explicit Fire (const std::string& id);
-    ~Fire() override = default;
+    ~Fire() override;
     void init();
 
     void event(GameEvent event, Entity *collider) override;

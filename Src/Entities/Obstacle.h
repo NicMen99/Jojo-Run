@@ -13,7 +13,7 @@ class Obstacle : public Entity
 public:
     Obstacle(GameObjectType mtype, const std::string & name) :
             Entity(GameObjectGroup::Map, mtype, name) { }
-    ~Obstacle() override = default;
+    ~Obstacle() override {};
 
 public:
     void setDamage(int damage) { m_damage = damage; }

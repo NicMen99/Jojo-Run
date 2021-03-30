@@ -12,7 +12,7 @@ class PowerUp : public Entity {
 public:
     explicit PowerUp(GameObjectType mtype, const std::string & name) :
             Entity(GameObjectGroup::Powerup, mtype, name) {}
-    ~PowerUp() override = default;
+    ~PowerUp() override {};
 
 public:
     void setQuantity(int quantity) { m_quantity = quantity; }

@@ -8,6 +8,10 @@ ShapeWidget::ShapeWidget(const std::string & name):
         Widget(name) {
 }
 
+ShapeWidget::~ShapeWidget() {
+
+}
+
 void ShapeWidget::init(const WidgetTheme &theme) {
 }
 
@@ -32,4 +36,3 @@ sf::Vector2f ShapeWidget::getSize() const {
     sf::FloatRect size = m_shape.getGlobalBounds();
     return sf::Vector2f{size.width, size.height};
 }
-

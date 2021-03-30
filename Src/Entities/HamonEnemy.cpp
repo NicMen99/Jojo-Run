@@ -9,6 +9,10 @@ HamonEnemy::HamonEnemy(const std::string& id) :
     Enemy(GameObjectType::HamonEnemy, id) {
 }
 
+HamonEnemy::~HamonEnemy() {
+
+}
+
 void HamonEnemy::init() {
     const std::list<Animation::FrameParams> frames = {
             {1, "hamonEnemyTexture", {0,0,0,0}, {0,0}, {true, false}}
@@ -25,3 +29,4 @@ void HamonEnemy::update(int32_t delta_time) {
         setStarted(true);
     }
 }
+

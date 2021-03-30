@@ -10,7 +10,7 @@
 class ImageWidget : public Widget {
 public:
     explicit ImageWidget(const std::string & name);
-    ~ImageWidget() override = default;
+    ~ImageWidget() override;
     void init(const WidgetTheme & theme);
 
     void setTexture(const std::string & texture_name, const sf::Vector2u & texture_size = {0, 0});

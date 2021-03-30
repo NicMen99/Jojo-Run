@@ -18,7 +18,6 @@ void ScoreManager::init() {
     m_distance_achiev = {3000, 5000};
     m_killed_achiev = {3, 5};
     m_conseckilled_achiev = {3,5};
-
 }
 
 void ScoreManager::update() {
@@ -82,12 +81,10 @@ void ScoreManager::loadFromFile() {
     sort();
 }
 
-void ScoreManager::addScoreRecord(const std::string & nickname, int score) {
-    Record r;
-    r.added = true;
-    r.nickname = nickname;
-    r.score = score;
-    m_records.emplace_back(r);
+void ScoreManager::setName(const std::string & nickname) {
+    m_score_record.nickname = nickname;
+    m_score_record.added = true;
+    m_records.emplace_back(m_score_record);
 }
 
 void ScoreManager::saveToFile() {

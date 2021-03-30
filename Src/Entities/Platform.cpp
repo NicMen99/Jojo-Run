@@ -14,10 +14,13 @@ Platform::Platform(std::string id) :
 
 }
 
+Platform::~Platform() {
+
+}
+
 void Platform::init() {
     const std::list<Animation::FrameParams> frames = {
             {1, "Platform1", {0,0,0,0}, {0,0}, {false, false}}
     };
     addAnimation("DEFAULT", frames);
 }
-

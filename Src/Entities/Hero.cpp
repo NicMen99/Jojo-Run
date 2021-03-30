@@ -22,6 +22,10 @@ Hero::Hero() :
 
 }
 
+Hero::~Hero() {
+
+}
+
 void Hero::init()
 {
     const std::list<Animation::FrameParams> frames = {
@@ -229,6 +233,7 @@ void Hero::manageAttack() {
             break;
     }
 }
+
 
 
 

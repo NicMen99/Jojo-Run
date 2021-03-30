@@ -10,7 +10,7 @@
 class Emerald final: public Bullet{
 public:
     explicit Emerald(const std::string& id);
-    ~Emerald() override = default;
+    ~Emerald() override;
     void init();
 
 private:

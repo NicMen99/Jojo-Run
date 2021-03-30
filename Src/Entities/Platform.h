@@ -11,8 +11,8 @@
 
 class Platform : public Entity {
 public:
-    Platform(std::string id);
-    ~Platform() override = default;
+    explicit Platform(std::string id);
+    ~Platform() override;
     void init();
 
 };

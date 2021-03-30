@@ -3,7 +3,6 @@
 //
 
 #include <vector>
-#include <iostream>
 
 #include "Game.h"
 #include "ResourceManager.h"
@@ -15,6 +14,15 @@
 #include "ScoreHUD.h"
 #include "CollisionManager.h"
 #include "SceneManager.h"
+
+
+SceneManager::SceneManager() {
+
+}
+
+SceneManager::~SceneManager() {
+
+}
 
 
 void SceneManager::init()

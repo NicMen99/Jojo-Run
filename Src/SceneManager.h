@@ -14,8 +14,8 @@ class CollisionManager;
 class SceneManager
 {
 public:
-    SceneManager() = default;
-    virtual ~SceneManager() = default;
+    SceneManager();
+    virtual ~SceneManager();
     void init();
 public:
     void update(int32_t delta_time);

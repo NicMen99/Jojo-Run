@@ -13,6 +13,10 @@ Background::Background(const std::string id) :
 
 }
 
+Background::~Background() {
+
+}
+
 void Background::init(GameObjectType type) {
     sf::Vector2u sz = CONFIG.getWindowSize();
 

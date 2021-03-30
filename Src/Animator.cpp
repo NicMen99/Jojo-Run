@@ -39,6 +39,10 @@ Animator::Animator() :
 
 }
 
+Animator::~Animator() {
+
+}
+
 std::shared_ptr<sf::Sprite> Animation::update(int32_t delta_time) {
     if(total_frames() == 0) return nullptr;
     return m_frames.at(m_count++%m_frames.size()).first;

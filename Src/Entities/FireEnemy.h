@@ -11,7 +11,7 @@ class FireEnemy final : public Enemy
 {
 public:
     explicit FireEnemy(const std::string& id);
-    ~FireEnemy() override = default;
+    ~FireEnemy() override;
     void init();
 
 private:

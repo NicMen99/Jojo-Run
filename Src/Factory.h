@@ -10,8 +10,8 @@ enum class GameObjectType;
 
 class Factory {
 public:
-    Factory() = default;
-    virtual ~Factory() = default;
+    Factory();
+    virtual ~Factory();
 
     virtual std::unique_ptr<Entity> createObstacle(GameObjectType type);
     virtual std::unique_ptr<Entity> createEnemy(GameObjectType type);

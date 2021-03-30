@@ -6,6 +6,7 @@
 #include "GameConfig.h"
 #include "GameStats.h"
 #include "ResourceManager.h"
+#include "ScoreManager.h"
 #include "GameOverState.h"
 
 GameOverState* GameOverState::m_instance = nullptr;
@@ -26,7 +27,7 @@ void GameOverState::onEnter() {
     createScreen();
     m_inputManager.init();
     m_inputManager.registerAll();
-    m_score.loadFromFile();
+    SCORE.loadFromFile();
     m_action = Action::UserInput;
 }
 
@@ -91,7 +92,7 @@ void GameOverState::createScreen() {
     m_root->add(message);
 
     auto * score = new TextWidget("ScoreManager");
-    score->setString("YOUR SCORE IS : " + std::to_string(STATS.getInt("SCORE")));
+    score->setString("YOUR SCORE IS : " + std::to_string(STATS.getInt(Stats::Score)));
     score->init(theme);
     score->setPosition({background_size.x / 2 - label_size.x / 2,150});
     m_root->add(score);
@@ -134,7 +135,7 @@ void GameOverState::showScore() {
 
     int count = 0;
     float posy = 10;
-    for(const auto& record : m_score.getScoreRecord()) {
+    for(const auto& record : SCORE.getScoreRecord()) {
 
         count ++;
 
@@ -167,10 +168,9 @@ void GameOverState::showScore() {
 }
 
 void GameOverState::saveScore() {
-    m_score.loadFromFile();
     if(!m_input->getString().empty()) {
-        m_score.addScoreRecord(m_input->getString(), STATS.getInt("SCORE"));
-        m_score.saveToFile();
+        SCORE.setName(m_input->getString());
+        SCORE.saveToFile();
     }
 }
 

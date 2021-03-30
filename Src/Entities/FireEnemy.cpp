@@ -14,6 +14,10 @@ Enemy(GameObjectType::FireEnemy, id) {
 
 }
 
+FireEnemy::~FireEnemy() {
+
+}
+
 void FireEnemy::init() {
     const std::list<Animation::FrameParams> frames = {
             {1, "fireEnemy", {0,0,0,0}, {0,0}, {true, false}}

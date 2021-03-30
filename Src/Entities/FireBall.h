@@ -10,7 +10,7 @@
 class FireBall final: public Bullet{
 public:
     explicit FireBall(std::string id);
-    ~FireBall() override = default;
+    ~FireBall() override;
     void init();
 
 private:

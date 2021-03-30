@@ -16,8 +16,8 @@
 class ResourceManager
 {
 public:
-    ResourceManager()=default;
-    virtual ~ResourceManager()=default;
+    ResourceManager();
+    virtual ~ResourceManager();
 
     std::shared_ptr<sf::Texture> getTexture(const std::string & texture);
     std::shared_ptr<sf::SoundBuffer> getSound(const std::string & sound);
