@@ -1,8 +1,6 @@
 //
 // Created by Niccolo on 07/03/2021.
 //
-#include <map>
-#include <SFML/Window.hpp>
 #include "InputManager.h"
 
 void InputManager::init() {

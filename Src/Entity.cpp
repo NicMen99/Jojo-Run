@@ -5,8 +5,6 @@
 #include <iostream>
 
 #include "Game.h"
-#include "GameStats.h"
-#include "GameConfig.h"
 #include "AnimationManager.h"
 #include "SoundManager.h"
 

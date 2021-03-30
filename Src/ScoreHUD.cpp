@@ -3,8 +3,6 @@
 //
 
 #include "Game.h"
-#include "GameStats.h"
-#include "GameConfig.h"
 #include "Widgets/Widget.h"
 #include "Widgets/TextWidget.h"
 #include "Widgets/ImageWidget.h"

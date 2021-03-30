@@ -4,7 +4,6 @@
 
 #include <cassert>
 #include "Game.h"
-#include "GameConfig.h"
 #include "ResourceManager.h"
 
 

@@ -2,10 +2,8 @@
 // Created by angiolo99 on 29/01/20.
 //
 
-#include "Entity.h"
 #include "Game.h"
-#include "Factory.h"
-#include "SceneManager.h"
+#include "Entity.h"
 #include "AnimationManager.h"
 
 #include "EmeraldEnemy.h"

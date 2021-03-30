@@ -3,8 +3,6 @@
 //
 
 #include "Game.h"
-#include "ResourceManager.h"
-#include "GameStats.h"
 #include "Enemy.h"
 
 Enemy::Enemy(EntityType mtype, const std::string & name) :

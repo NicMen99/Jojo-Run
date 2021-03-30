@@ -3,7 +3,6 @@
 //
 
 #include "Game.h"
-#include "GameConfig.h"
 #include "AnimationManager.h"
 #include "Knife.h"
 

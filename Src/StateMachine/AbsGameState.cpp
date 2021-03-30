@@ -3,11 +3,11 @@
 //
 
 #include "Game.h"
-#include "AbsGameState.h"
 #include "InitState.h"
 #include "MenuState.h"
 #include "PlayState.h"
 #include "GameOverState.h"
+#include "AbsGameState.h"
 
 State AbsGameState::m_currentState = State::None;
 State AbsGameState::m_nextState = State::None;

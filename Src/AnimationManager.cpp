@@ -2,7 +2,6 @@
 // Created by Niccolo on 23/03/2021.
 //
 #include "Game.h"
-#include "ResourceManager.h"
 #include "AnimationManager.h"
 
 void Animation::addFrame(const FrameParams & frame_params) {

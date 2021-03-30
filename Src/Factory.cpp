@@ -4,6 +4,7 @@
 
 #include <iostream>
 
+#include "Game.h"
 #include "Entities/Block.h"
 #include "Entities/Fire.h"
 #include "Entities/EmeraldEnemy.h"
@@ -16,7 +17,6 @@
 #include "Entities/Knife.h"
 #include "Entities/Platform.h"
 #include "Entities/Background.h"
-#include "GameConfig.h"
 
 #include "Factory.h"
 

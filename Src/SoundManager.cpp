@@ -4,7 +4,6 @@
 
 #include <memory>
 #include "Game.h"
-#include "ResourceManager.h"
 #include "SoundManager.h"
 
 SoundManager::SoundManager(){

@@ -4,8 +4,6 @@
 
 #include "Entity.h"
 #include "Game.h"
-#include "Factory.h"
-#include "SceneManager.h"
 #include "AnimationManager.h"
 
 #include "FireEnemy.h"

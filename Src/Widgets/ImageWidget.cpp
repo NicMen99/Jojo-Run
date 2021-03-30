@@ -3,7 +3,6 @@
 //
 
 #include "Game.h"
-#include "ResourceManager.h"
 #include "ImageWidget.h"
 
 ImageWidget::ImageWidget(const std::string & name):

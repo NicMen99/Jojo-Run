@@ -3,10 +3,6 @@
 //
 
 #include "Game.h"
-#include "GameConfig.h"
-#include "GameStats.h"
-#include "ResourceManager.h"
-#include "ScoreManager.h"
 #include "GameOverState.h"
 
 GameOverState* GameOverState::m_instance = nullptr;

@@ -5,10 +5,6 @@
 #include <vector>
 
 #include "Game.h"
-#include "ResourceManager.h"
-#include "GameConfig.h"
-#include "GameStats.h"
-#include "Factory.h"
 #include "Entities/Background.h"
 #include "Entities/Hero.h"
 #include "ScoreHUD.h"

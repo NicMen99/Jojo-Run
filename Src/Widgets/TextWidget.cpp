@@ -3,8 +3,6 @@
 //
 
 #include "Game.h"
-#include "GameStats.h"
-#include "ResourceManager.h"
 #include "TextWidget.h"
 
 TextWidget::TextWidget(const std::string & name):

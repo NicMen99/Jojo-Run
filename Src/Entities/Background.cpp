@@ -3,9 +3,6 @@
 //
 
 #include "Game.h"
-#include "ResourceManager.h"
-#include "GameConfig.h"
-#include <list>
 #include "AnimationManager.h"
 
 #include "Background.h"

@@ -2,14 +2,8 @@
 // Created by angiolo99 on 23/01/20.
 //
 
-#include "Entity.h"
-#include "Factory.h"
 #include "Game.h"
-#include "ResourceManager.h"
-#include "GameConfig.h"
-#include "SceneManager.h"
-#include "GameStats.h"
-#include "InputManager.h"
+#include "Entity.h"
 #include "Entities/Enemy.h"
 #include "Entities/Obstacle.h"
 #include "Entities/Knife.h"

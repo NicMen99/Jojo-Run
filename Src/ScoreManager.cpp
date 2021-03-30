@@ -7,8 +7,6 @@
 #include <algorithm>
 
 #include "Game.h"
-#include "GameStats.h"
-#include "GameConfig.h"
 #include "ScoreManager.h"
 
 void ScoreManager::init() {
