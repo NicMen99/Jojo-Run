@@ -33,20 +33,23 @@ class Game
 {
     static Game* m_instance;
     Game();
+    Game(AbsGameState* fsm, GameConfig* cfg, ResourceManager* resm, Factory* fact, SceneManager* scn, GameStats* stats, ScoreManager* score);
+
 public:
     static Game* instance();
+    static Game* instance(AbsGameState* fsm, GameConfig* cfg, ResourceManager* resm, Factory* fact, SceneManager* scn, GameStats* stats, ScoreManager* score);
     ~Game();
 
 public:
     void init();
     void loop();
 
-    GameConfig & configManager() { return m_gameConfig; }
-    ResourceManager & resourceManager() { return m_resourceManager; }
-    Factory & factory() { return m_factory; }
-    SceneManager & gameScene() { return m_scene; }
-    GameStats & gameStats() { return m_stats; }
-    ScoreManager & gameScore() { return m_score; }
+    GameConfig * configManager() { return m_gameConfig.get(); }
+    ResourceManager * resourceManager() { return m_resourceManager.get(); }
+    Factory * factory() { return m_factory.get(); }
+    SceneManager * gameScene() { return m_scene.get(); }
+    GameStats * gameStats() { return m_stats.get(); }
+    ScoreManager * gameScore() { return m_score.get(); }
     int rand(int max) { std::uniform_int_distribution<int> d(0, max - 1); return d(m_gen);}
 
 private:
@@ -57,13 +60,13 @@ private:
     sf::Time m_framerate = sf::seconds(1.f/60.f);
 
 private:
-    AbsGameState* m_gameMachine;
-    GameConfig& m_gameConfig;
-    ResourceManager& m_resourceManager;
-    Factory& m_factory;
-    SceneManager& m_scene;
-    GameStats& m_stats;
-    ScoreManager& m_score;
+    std::unique_ptr<AbsGameState> m_gameMachine;
+    std::unique_ptr<GameConfig> m_gameConfig;
+    std::unique_ptr<ResourceManager> m_resourceManager;
+    std::unique_ptr<Factory> m_factory;
+    std::unique_ptr<SceneManager> m_scene;
+    std::unique_ptr<GameStats> m_stats;
+    std::unique_ptr<ScoreManager> m_score;
 
     std::random_device m_rd;  //Will be used to obtain a seed for the random number engine
     std::mt19937 m_gen; //Standard mersenne_twister_engine seeded with rd()

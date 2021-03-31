@@ -16,16 +16,16 @@ PlayState* PlayState::instance() {
 }
 
 void PlayState::init() {
-    m_music.openFromFile(CONFIG.getAssetPath("soundTrack"));
+    m_music.openFromFile(CONFIG->getAssetPath("soundTrack"));
 }
 
 void PlayState::onEnter() {
     m_action = Action::Play;
     m_inputManager.init();
     m_inputManager.registerKey(sf::Keyboard::P);
-    STATS.init();
-    SCORE.init();
-    SCENE.init();
+    STATS->init();
+    SCORE->init();
+    SCENE->init();
     createOverlay();
     m_music.setVolume(70.f);
     m_music.play();
@@ -38,9 +38,9 @@ void PlayState::onExit() {
 void PlayState::update(int32_t delta_time) {
     m_inputManager.update();
     if(m_action == Action::Play) {
-        SCENE.update(delta_time);
-        SCORE.update();
-        if(SCENE.levelend()) {
+        SCENE->update(delta_time);
+        SCORE->update();
+        if(SCENE->levelend()) {
             changeState(State::GameOver);
         }
         if(m_inputManager.isKeyJustPressed(sf::Keyboard::P)) {
@@ -57,7 +57,7 @@ void PlayState::update(int32_t delta_time) {
 }
 
 void PlayState::render(sf::RenderWindow& window) {
-    SCENE.render(window);
+    SCENE->render(window);
     if(m_action == Action::Pause) {
         m_root->render(window);
     }
@@ -77,7 +77,7 @@ void PlayState::createOverlay() {
     auto * overlay = new ShapeWidget("Overlay");
     overlay->init(theme);
     overlay->setFillColor(sf::Color(255, 255, 255, 100));
-    overlay->setSize(static_cast<sf::Vector2f>(CONFIG.getWindowSize()));
+    overlay->setSize(static_cast<sf::Vector2f>(CONFIG->getWindowSize()));
     sf::Vector2f overlay_size = overlay->getSize();
     m_root->add(overlay);
 

@@ -34,13 +34,13 @@ void Enemy::event(GameEvent event, Entity *collider) {
         if(collider->getType() == EntityType::Hero) {
             m_state = State::Dying;
             m_dyingTimer.restart();
-            STATS.setInt(Stats::ConsecutiveKilled, 0);
+            STATS->setInt(Stats::ConsecutiveKilled, 0);
         }
         if (collider->getType() == EntityType::Knife) {
             m_state = State::Dead;
             m_dyingTimer.restart();
-            STATS.addInt(Stats::Killed, 1);
-            STATS.addInt(Stats::ConsecutiveKilled, 1);
+            STATS->addInt(Stats::Killed, 1);
+            STATS->addInt(Stats::ConsecutiveKilled, 1);
         }
     }
 }

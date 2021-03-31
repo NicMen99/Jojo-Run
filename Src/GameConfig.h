@@ -33,7 +33,7 @@ public:
     float getMTop() const { return m_top; }
 
     /*Scene settings*/
-private:
+protected:
     /* pixels */
     const sf::Vector2u m_window_size = {1600,1000};
     /* pixels per secondo */
@@ -42,7 +42,7 @@ private:
     const sf::Vector2f m_gravity     = {0.f, 1500.f};
 
     /* Hero settings */
-private:
+protected:
     /* delta pixels per secondo */
     float m_jumpForce = m_gravity.y * 3;
     /* millisecondi */

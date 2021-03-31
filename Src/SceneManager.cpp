@@ -167,41 +167,41 @@ void SceneManager::destroyObjects(std::vector<std::unique_ptr<Entity>> & items) 
 void SceneManager::generateBackground(){
     if(m_background1.size() < 2) {
         if(m_background1.empty()) {
-            auto bg = FACTORY.createBackground(EntityType::Sky);
+            auto bg = FACTORY->createBackground(EntityType::Sky);
             bg->setPosition({0.f, 0.f});
             m_background1.emplace_back(std::move(bg));
         }
-        auto bg = FACTORY.createBackground(EntityType::Sky);
+        auto bg = FACTORY->createBackground(EntityType::Sky);
         bg->setPosition({m_background1.at(0)->getPosition().x + m_background1.at(0)->getBounds().width, 0.f});
         m_background1.emplace_back(std::move(bg));
     }
     if (m_background2.size() < 2) {
         if(m_background2.empty()) {
-            auto bg = FACTORY.createBackground(EntityType::City);
+            auto bg = FACTORY->createBackground(EntityType::City);
             bg->setPosition({0.f, 0.f});
             m_background2.emplace_back(std::move(bg));
         }
-        auto bg = FACTORY.createBackground(EntityType::City);
+        auto bg = FACTORY->createBackground(EntityType::City);
         bg->setPosition({m_background2.at(0)->getPosition().x + m_background2.at(0)->getBounds().width, 0.f});
         m_background2.emplace_back(std::move(bg));
     }
     if (m_background3.size() < 2) {
         if(m_background3.empty()) {
-            auto bg = FACTORY.createBackground(EntityType::SkyScrapers);
+            auto bg = FACTORY->createBackground(EntityType::SkyScrapers);
             bg->setPosition({0.f, 0.f});
             m_background3.emplace_back(std::move(bg));
         }
-        auto bg = FACTORY.createBackground(EntityType::SkyScrapers);
+        auto bg = FACTORY->createBackground(EntityType::SkyScrapers);
         bg->setPosition({m_background3.at(0)->getPosition().x + m_background3.at(0)->getBounds().width, 0.f});
         m_background3.emplace_back(std::move(bg));
     }
     if (m_background4.size() < 2) {
         if(m_background4.empty()) {
-            auto bg = FACTORY.createBackground(EntityType::Bridge);
+            auto bg = FACTORY->createBackground(EntityType::Bridge);
             bg->setPosition({0.f, 0.f});
             m_background4.emplace_back(std::move(bg));
         }
-        auto bg = FACTORY.createBackground(EntityType::Bridge);
+        auto bg = FACTORY->createBackground(EntityType::Bridge);
         bg->setPosition({m_background4.at(0)->getPosition().x + m_background4.at(0)->getBounds().width, 0.f});
         m_background4.emplace_back(std::move(bg));
     }
@@ -230,8 +230,8 @@ void SceneManager::generateMap() {
          * Prima piattaforma
          */
         posx = 0;
-        posy = CONFIG.getMBase();
-        size = CONFIG.getWindowSize().x;
+        posy = CONFIG->getMBase();
+        size = CONFIG->getWindowSize().x;
         std::vector<float> hchoice = {100, 200, 300, 400};
         space = hchoice[RAND(hchoice.size())];
     }
@@ -241,20 +241,20 @@ void SceneManager::generateMap() {
          * Piattaforme successive
          */
         last = m_platforms.back().get();
-        if(CONFIG.getWindowSize().x - (last->getPosition().x + last->getBounds().width) < space)
+        if(CONFIG->getWindowSize().x - (last->getPosition().x + last->getBounds().width) < space)
             return;
 
         std::vector<float> vchoice;
-        if(last->getPosition().y == CONFIG.getMBase()) {
-            vchoice = {CONFIG.getMBase(), CONFIG.getMMiddle()};
-        } else if (last->getPosition().y == CONFIG.getMTop()) {
-            vchoice = {CONFIG.getMTop(), CONFIG.getMMiddle()};
+        if(last->getPosition().y == CONFIG->getMBase()) {
+            vchoice = {CONFIG->getMBase(), CONFIG->getMMiddle()};
+        } else if (last->getPosition().y == CONFIG->getMTop()) {
+            vchoice = {CONFIG->getMTop(), CONFIG->getMMiddle()};
         }
         else {
-            vchoice = {CONFIG.getMTop(), CONFIG.getMMiddle(), CONFIG.getMBase()};
+            vchoice = {CONFIG->getMTop(), CONFIG->getMMiddle(), CONFIG->getMBase()};
         }
         posy = vchoice[RAND(vchoice.size())];
-        posx = CONFIG.getWindowSize().x;
+        posx = CONFIG->getWindowSize().x;
         size = (float)(1 + RAND(2)) * last->getBounds().width;
         std::vector<float> hchoice = {100, 200, 300, 400};
         space = hchoice[RAND(hchoice.size())];
@@ -354,14 +354,14 @@ void SceneManager::manageCollisions() {
 }
 
 Entity * SceneManager::createPlatform(sf::Vector2f position) {
-    auto pl = FACTORY.createPlatform(EntityType::Platform);
+    auto pl = FACTORY->createPlatform(EntityType::Platform);
     pl->setPosition(position);
     m_platforms.emplace_back(std::move(pl));
     return m_platforms.back().get();
 }
 
 void SceneManager::createObstacle(EntityType ot, sf::Vector2f position) {
-    auto bl = FACTORY.createObstacle(ot);
+    auto bl = FACTORY->createObstacle(ot);
     if (ot == EntityType::Wall){
         bl->setPosition(sf::Vector2f(0, -bl->getBounds().height) + position);
     } else {
@@ -371,13 +371,13 @@ void SceneManager::createObstacle(EntityType ot, sf::Vector2f position) {
 }
 
 void SceneManager::createEnemy(EntityType et, sf::Vector2f position) {
-    auto en = FACTORY.createEnemy(et);
+    auto en = FACTORY->createEnemy(et);
     en->setPosition(sf::Vector2f(0, -en->getBounds().height) + position);
     m_enemies.emplace_back(std::move(en));
 }
 
 void SceneManager::createPowerup(EntityType pt, sf::Vector2f position) {
-    auto pu = FACTORY.createPowerUp(pt);
+    auto pu = FACTORY->createPowerUp(pt);
     pu->setPosition(sf::Vector2f(0, -2*pu->getBounds().height) + position);
     m_powerups.emplace_back(std::move(pu));
 }
@@ -385,7 +385,7 @@ void SceneManager::createPowerup(EntityType pt, sf::Vector2f position) {
 void SceneManager::createHero() {
     auto * hero = new Hero();
     hero->init();
-    hero->setPosition(sf::Vector2f(200.f, CONFIG.getMBase() - hero->getBounds().height));
+    hero->setPosition(sf::Vector2f(200.f, CONFIG->getMBase() - hero->getBounds().height));
 
     m_hero = std::unique_ptr<Entity>(hero);
 }

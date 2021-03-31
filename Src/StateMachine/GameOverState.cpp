@@ -23,7 +23,7 @@ void GameOverState::onEnter() {
     createScreen();
     m_inputManager.init();
     m_inputManager.registerAll();
-    SCORE.loadFromFile();
+    SCORE->loadFromFile();
     m_action = Action::UserInput;
 }
 
@@ -76,7 +76,7 @@ void GameOverState::createScreen() {
 
     auto * background = new ImageWidget("Background");
     background->init(theme);
-    background->setTexture("GameOverScreen", CONFIG.getWindowSize());
+    background->setTexture("GameOverScreen", CONFIG->getWindowSize());
     sf::Vector2f background_size = background->getSize();
     m_root->add(background);
 
@@ -88,7 +88,7 @@ void GameOverState::createScreen() {
     m_root->add(message);
 
     auto * score = new TextWidget("ScoreManager");
-    score->setString("YOUR SCORE IS : " + std::to_string(STATS.getInt(Stats::Score)));
+    score->setString("YOUR SCORE IS : " + std::to_string(STATS->getInt(Stats::Score)));
     score->init(theme);
     score->setPosition({background_size.x / 2 - label_size.x / 2,150});
     m_root->add(score);
@@ -119,19 +119,19 @@ void GameOverState::showScore() {
     menu->setString("[ R ] ESTART A NEW GAME\n[ Q ] UIT");
     menu->init(theme);
     sf::Vector2f menu_size = menu->getSize();
-    menu->setPosition({CONFIG.getWindowSize().x / 2.f - menu_size.x / 2.f, CONFIG.getWindowSize().y - 200.0f});
+    menu->setPosition({CONFIG->getWindowSize().x / 2.f - menu_size.x / 2.f, CONFIG->getWindowSize().y - 200.0f});
     m_root->add(menu);
 
     auto * topfive = new ShapeWidget("TopFive");
     topfive->init(theme);
-    topfive->setSize({CONFIG.getWindowSize().x - 200.f, 400.f});
+    topfive->setSize({CONFIG->getWindowSize().x - 200.f, 400.f});
     topfive->setFillColor(sf::Color(255, 255, 0, 64));
     topfive->setPosition({100,400});
     m_root->add(topfive);
 
     int count = 0;
     float posy = 10;
-    for(const auto& record : SCORE.getScoreRecord()) {
+    for(const auto& record : SCORE->getScoreRecord()) {
 
         count ++;
 
@@ -165,8 +165,8 @@ void GameOverState::showScore() {
 
 void GameOverState::saveScore() {
     if(!m_input->getString().empty()) {
-        SCORE.setName(m_input->getString());
-        SCORE.saveToFile();
+        SCORE->setName(m_input->getString());
+        SCORE->saveToFile();
     }
 }
 
