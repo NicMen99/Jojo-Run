@@ -49,7 +49,6 @@ void Hero::update(int32_t delta_time) {
     if(!isStarted()) {
         updateHealth(0);
         updateKnives(0);
-        setStarted(true);
     }
     m_inputManager.update();
     updatePhysics(delta_time);

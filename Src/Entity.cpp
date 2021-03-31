@@ -29,6 +29,7 @@ void Entity::update(int32_t delta_time) {
     setPosition(getPrevPosition());
     move(delta_time);
     m_animationManager->update(delta_time);
+    setStarted(true);
 }
 
 void Entity::render(sf::RenderWindow & window) {

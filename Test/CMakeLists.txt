@@ -132,10 +132,19 @@ target_link_libraries(testrunner
 #
 # Setup
 #
+file(COPY TestAsset DESTINATION ${CMAKE_BINARY_DIR}/Test)
 
 enable_testing()
 include(CTest)
 include(Dart)
 
-add_test(EntityTest , positionAssignement)
+add_test(EntityTest, positionAssignement)
 add_test(EntityTest, positionUpdate)
+add_test(EntityTest, positionUpdate2)
+add_test(EntityTest, previousPosition)
+add_test(EntityTest, startedFlag)
+add_test(EntityTest, DestroyedFlagNoTexture)
+add_test(EntityTest, DestroyedFlag)
+add_test(EntityTest, Bounds)
+
+
