@@ -16,15 +16,35 @@ Game* Game::instance() {
     return m_instance;
 }
 
+Game* Game::instance(AbsGameState* fsm, GameConfig* cfg, ResourceManager* resm, Factory* fact, SceneManager* scn, GameStats* stats, ScoreManager* score) {
+    if(nullptr == m_instance){
+        m_instance = new Game(fsm, cfg, resm, fact, scn, stats, score);
+        m_instance->init();
+    }
+    return m_instance;
+}
+
 Game::Game():
     m_gameMachine(new GameStateMachine(State::Init)),
-    m_gameConfig(*new GameConfig()),
-    m_resourceManager(*new ResourceManager()),
-    m_factory(*new Factory()),
-    m_scene(*new SceneManager()),
-    m_stats(*new GameStats()),
-    m_score(*new ScoreManager())
+    m_gameConfig(new GameConfig()),
+    m_resourceManager(new ResourceManager()),
+    m_factory(new Factory()),
+    m_scene(new SceneManager()),
+    m_stats(new GameStats()),
+    m_score(new ScoreManager())
 {
+}
+
+Game::Game(AbsGameState* fsm, GameConfig* cfg, ResourceManager* resm, Factory* fact, SceneManager* scn, GameStats* stats, ScoreManager* score):
+        m_gameMachine(fsm),
+        m_gameConfig(cfg),
+        m_resourceManager(resm),
+        m_factory(fact),
+        m_scene(scn),
+        m_stats(stats),
+        m_score(score)
+{
+
 }
 
 Game::~Game() = default;
@@ -32,12 +52,12 @@ Game::~Game() = default;
 void Game::init()
 {
     m_gen.seed(m_rd());
-    m_gameConfig.init();
+    m_gameConfig->init();
 }
 
 void Game::loop()
 {
-    m_window.create(sf::VideoMode(CONFIG.getWindowSize().x, CONFIG.getWindowSize().y), "JoJo Run");
+    m_window.create(sf::VideoMode(CONFIG->getWindowSize().x, CONFIG->getWindowSize().y), "JoJo Run");
     m_window.setVerticalSyncEnabled(true);
     m_window.setKeyRepeatEnabled(false);
 

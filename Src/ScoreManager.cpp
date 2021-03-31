@@ -23,33 +23,33 @@ void ScoreManager::update() {
     /*
      *  distanza
      */
-    int distance = STATS.getInt(Stats::Distance);
-    if(distance - m_last_distance > CONFIG.getWindowSize().x) {
+    int distance = STATS->getInt(Stats::Distance);
+    if(distance - m_last_distance > CONFIG->getWindowSize().x) {
         m_last_distance = distance;
         m_score_record.score += 1;
-        STATS.addInt(Stats::Score, 1);
+        STATS->addInt(Stats::Score, 1);
     }
-    STATS.setInt(Stats::Score, m_score_record.score);
+    STATS->setInt(Stats::Score, m_score_record.score);
     if(distance >= m_distance_achiev.second){
-        STATS.setInt(Achievements::Distance, distance/100*100);
+        STATS->setInt(Achievements::Distance, distance/100*100);
         m_distance_achiev = {m_distance_achiev.second, m_distance_achiev.first + m_distance_achiev.second};
     }
 
     /*
      * uccisioni
      */
-    int killed = STATS.getInt(Stats::Killed);
+    int killed = STATS->getInt(Stats::Killed);
     if(killed >= m_killed_achiev.second){
-        STATS.setInt(Achievements::Killed, killed);
+        STATS->setInt(Achievements::Killed, killed);
         m_killed_achiev = {m_killed_achiev.second, m_killed_achiev.first + m_killed_achiev.second};
     }
 
     /*
      * uccisioni consecutive
      */
-    int consecutive_killed = STATS.getInt(Stats::ConsecutiveKilled);
+    int consecutive_killed = STATS->getInt(Stats::ConsecutiveKilled);
     if(consecutive_killed >= m_killed_achiev.second){
-        STATS.setInt(Achievements::Distance, consecutive_killed);
+        STATS->setInt(Achievements::Distance, consecutive_killed);
         m_conseckilled_achiev = {m_conseckilled_achiev.second, m_conseckilled_achiev.first + m_conseckilled_achiev.second};
     }
 

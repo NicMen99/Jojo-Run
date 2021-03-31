@@ -52,7 +52,7 @@ void ScoreHUD::init() {
     score_value->setPosition(sf::Vector2f{score_label->getSize().x, 0});
     score_value->setString("");
     score_label->add(score_value);
-    score_value->observe(&STATS, Stats::Score);
+    score_value->observe(STATS, Stats::Score);
 
     /* hero */
     m_hero_status = new Widget("hero_stat");
@@ -69,7 +69,7 @@ void ScoreHUD::init() {
     healthPoints_value->setPosition(sf::Vector2f{healthPoints_label->getSize().x, 0});
     healthPoints_value->setString("");
     healthPoints_label->add(healthPoints_value);
-    healthPoints_value->observe(&STATS,Stats::Health);
+    healthPoints_value->observe(STATS,Stats::Health);
 
     auto knives_label = new TextWidget("Knives_label");
     knives_label->init(theme);
@@ -82,7 +82,7 @@ void ScoreHUD::init() {
     knives_value->setPosition(sf::Vector2f{knives_label->getSize().x, 0});
     knives_value->setString("");
     knives_label->add(knives_value);
-    knives_value->observe(&STATS,Stats::Knives);
+    knives_value->observe(STATS,Stats::Knives);
 
     /* achievement */
     m_achievements = new Widget("achiemements");
@@ -92,9 +92,9 @@ void ScoreHUD::init() {
     achievement_label->init(theme);
     achievement_label->setPosition({0,0});
     m_achievements->add(achievement_label);
-    observe(&STATS,Achievements::Distance);
-    observe(&STATS, Achievements::Killed);
-    observe(&STATS, Achievements::ConsecutiveKilled);
+    observe(STATS,Achievements::Distance);
+    observe(STATS, Achievements::Killed);
+    observe(STATS, Achievements::ConsecutiveKilled);
 }
 
 void ScoreHUD::update(int32_t delta_time) {

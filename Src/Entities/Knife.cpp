@@ -25,7 +25,7 @@ void Knife::init() {
 
 void Knife::update(int32_t delta_time) {
     Entity::update(delta_time);
-    if(getPosition().x > CONFIG.getWindowSize().x)
+    if(getPosition().x > CONFIG->getWindowSize().x)
         setDestroyed();
 }
 

@@ -53,12 +53,12 @@ void Entity::render(sf::RenderWindow & window) {
 }
 
 void Entity::move(int32_t delta_time) {
-    sf::Vector2f speed = m_speed - CONFIG.getSceneSpeed();
+    sf::Vector2f speed = m_speed - CONFIG->getSceneSpeed();
     sf::Vector2f offset = {speed.x * delta_time / 1000, speed.y * delta_time / 1000};
     setPosition(getPosition() + offset);
     if((getPosition().x + getBounds().width) < 0) {
         if(getGroup() == EntityGroup::Enemy) {
-            STATS.setInt(Stats::ConsecutiveKilled, 0);
+            STATS->setInt(Stats::ConsecutiveKilled, 0);
         }
         setDestroyed();
     }

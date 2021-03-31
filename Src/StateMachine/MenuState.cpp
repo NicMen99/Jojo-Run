@@ -61,7 +61,7 @@ void MenuState::createMenuScreen(){
     auto * overlay = new ShapeWidget("Overlay");
     overlay->init(theme);
     overlay->setFillColor(sf::Color(0, 0, 0, 0));
-    overlay->setSize(static_cast<sf::Vector2f>(CONFIG.getWindowSize()));
+    overlay->setSize(static_cast<sf::Vector2f>(CONFIG->getWindowSize()));
     sf::Vector2f overlay_size = overlay->getSize();
     m_root->add(overlay);
 
