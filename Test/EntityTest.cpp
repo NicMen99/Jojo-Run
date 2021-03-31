@@ -18,7 +18,15 @@ public:
 };
 
 TEST_F(EntityTest , positionAssignement) {
-    auto entity = new Entity(EntityGroup::Hero, EntityType::Hero, "Hero");
+    auto entity = std::unique_ptr<Entity>(new Entity(EntityGroup::Hero, EntityType::Hero, "Hero"));
     entity->setPosition(sf::Vector2f(1,1));
     ASSERT_EQ(entity->getPosition(), sf::Vector2f(1,1));
+}
+
+TEST_F(EntityTest , positionUpdate) {
+    auto entity = std::unique_ptr<Entity>(new Entity(EntityGroup::Hero, EntityType::Hero, "Hero"));
+    entity->setPosition(sf::Vector2f(1, 1));
+    entity->setSpeed(sf::Vector2f(0, 0));
+    entity->update(1000);
+    ASSERT_EQ(entity->getPosition(), sf::Vector2f(1, 1));
 }

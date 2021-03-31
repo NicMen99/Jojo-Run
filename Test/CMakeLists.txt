@@ -138,4 +138,4 @@ include(CTest)
 include(Dart)
 
 add_test(EntityTest , positionAssignement)
-#add_test(.., ..)
+add_test(EntityTest, positionUpdate)
