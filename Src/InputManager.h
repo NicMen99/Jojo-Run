@@ -21,6 +21,10 @@ public:
     void registerAll();
     void unregisterAll();
     sf::Keyboard::Key getKeyJustPressed();
+
+protected:
+    virtual bool keyPressed(sf::Keyboard::Key key) { return sf::Keyboard::isKeyPressed(key); }
+
 private:
     std::map<sf::Keyboard::Key, bool> m_current_status, m_previous_status;
 };

@@ -16,6 +16,10 @@ target_sources(testrunner
         # add test files here
         EntityTest.cpp
         WidgetTest.cpp
+        CollisionTest.cpp
+        SceneTest.cpp
+        InputTest.cpp
+        ResourcesTest.cpp
 )
 
 #

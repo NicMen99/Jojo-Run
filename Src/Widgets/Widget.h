@@ -33,6 +33,7 @@ public:
     void setPosition(const sf::Vector2f & position);
     void setVisible(bool visible) { m_visible = visible; }
     void startTimer(sf::Time time);
+    bool isVisible(Widget* widget) { return m_visible; }
 
     /* observer interface */
 

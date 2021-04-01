@@ -11,7 +11,7 @@ void InputManager::init() {
 void InputManager::update() {
     std::swap(m_current_status, m_previous_status);
     for(auto& key : m_current_status)
-        key.second = sf::Keyboard::isKeyPressed(key.first);
+        key.second = keyPressed(key.first);
 }
 
 void InputManager::registerKey(const sf::Keyboard::Key &key) {
