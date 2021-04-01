@@ -53,6 +53,8 @@ private:
     Widget * m_parent = nullptr;
     std::list<Widget*> m_children;
 
+ /* observer interface */
+
 public:
     void observe(Subject * observed, const std::string & item_name);
 

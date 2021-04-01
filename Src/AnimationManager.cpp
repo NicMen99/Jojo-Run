@@ -52,7 +52,7 @@ void AnimationManager::update(int32_t delta_time) {
     if(m_current_animation != nullptr) {
         std::shared_ptr<sf::Sprite> animation = m_current_animation->update(delta_time);
         if(animation != nullptr)
-            m_current_sprite = m_current_animation->update(delta_time);
+            m_current_sprite = animation;
     }
 }
 

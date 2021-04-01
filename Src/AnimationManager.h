@@ -26,6 +26,7 @@ public:
     void addFrame(const FrameParams & frame_params);
     bool isDone() const { return m_count > total_frames(); }
     std::shared_ptr<sf::Sprite> update(int32_t delta_time);
+    void reset() { m_count = 0; }
 
 private:
     unsigned int m_count = 0;
