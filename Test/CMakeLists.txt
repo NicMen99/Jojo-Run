@@ -15,6 +15,7 @@ target_sources(testrunner
         runner.cpp
         # add test files here
         EntityTest.cpp
+        WidgetTest.cpp
 )
 
 #
@@ -146,5 +147,11 @@ add_test(EntityTest, startedFlag)
 add_test(EntityTest, DestroyedFlagNoTexture)
 add_test(EntityTest, DestroyedFlag)
 add_test(EntityTest, Bounds)
+
+add_test(WidgetTest, EmptyWidget)
+add_test(WidgetTest, AddWidget)
+add_test(WidgetTest, WidgetPosition)
+add_test(WidgetTest, TestObserver)
+
 
 

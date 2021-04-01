@@ -14,9 +14,6 @@ Widget::~Widget() {
     for (auto& widget : m_children)
         delete widget;
     m_children.clear();
-
-    if(m_observed)
-        detach();
 }
 
 Widget * Widget::getParent() const {
