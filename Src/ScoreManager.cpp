@@ -15,7 +15,7 @@ void ScoreManager::init() {
 
     m_distance_achiev = {3000, 5000};
     m_killed_achiev = {3, 5};
-    m_conseckilled_achiev = {3,5};
+    m_conseckilled_achiev = {2,3};
 }
 
 void ScoreManager::update() {
@@ -48,8 +48,8 @@ void ScoreManager::update() {
      * uccisioni consecutive
      */
     int consecutive_killed = STATS->getInt(Stats::ConsecutiveKilled);
-    if(consecutive_killed >= m_killed_achiev.second){
-        STATS->setInt(Achievements::Distance, consecutive_killed);
+    if(consecutive_killed >= m_conseckilled_achiev.second){
+        STATS->setInt(Achievements::ConsecutiveKilled, consecutive_killed);
         m_conseckilled_achiev = {m_conseckilled_achiev.second, m_conseckilled_achiev.first + m_conseckilled_achiev.second};
     }
 
