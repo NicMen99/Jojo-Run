@@ -13,22 +13,22 @@
 
 
 struct Stats {
-    static const char * Time;
-    static const char * Score;
-    static const char * Health;
-    static const char * Knives;
-    static const char * Distance;
-    static const char * Killed;
-    static const char * ConsecutiveKilled;
-    static const char * CleanDistance;
+    static const std::string Time;
+    static const std::string Score;
+    static const std::string Health;
+    static const std::string Knives;
+    static const std::string Distance;
+    static const std::string Killed;
+    static const std::string ConsecutiveKilled;
+    static const std::string CleanDistance;
 };
 
 struct Achievements {
-    static const char * Score;
-    static const char * Distance;
-    static const char * Killed;
-    static const char * ConsecutiveKilled;
-    static const char * CleanDistance;
+    static const std::string Score;
+    static const std::string Distance;
+    static const std::string Killed;
+    static const std::string ConsecutiveKilled;
+    static const std::string CleanDistance;
 };
 
 
