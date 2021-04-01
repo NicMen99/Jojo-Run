@@ -99,7 +99,7 @@
 //                            - The default value of --gtest_death_test_style.
 //                              The legacy default has been "fast" in the open
 //                              source version since 2008. The recommended value
-//                              is "threadsafe", and can be set in
+//                              is "threadsafe", and can be setValue in
 //                              custom/gtest-port.h.
 
 // Platform-indicating macros
@@ -1457,7 +1457,7 @@ class ThreadLocalBase {
   GTEST_DISALLOW_COPY_AND_ASSIGN_(ThreadLocalBase);
 };
 
-// Maps a thread to a set of ThreadLocals that have values instantiated on that
+// Maps a thread to a setValue of ThreadLocals that have values instantiated on that
 // thread and notifies them when the thread exits.  A ThreadLocal instance is
 // expected to persist until all threads it has values on have terminated.
 class GTEST_API_ ThreadLocalRegistry {
@@ -1529,13 +1529,13 @@ class ThreadWithParam : public ThreadWithParamBase {
 //   ThreadLocal<int> tl(100);  // 100 is the default value for each thread.
 //
 //   // Thread 2
-//   tl.set(150);  // Changes the value for thread 2 only.
-//   EXPECT_EQ(150, tl.get());
+//   tl.setValue(150);  // Changes the value for thread 2 only.
+//   EXPECT_EQ(150, tl.getValue());
 //
 //   // Thread 1
-//   EXPECT_EQ(100, tl.get());  // In thread 1, tl has the original value.
-//   tl.set(200);
-//   EXPECT_EQ(200, tl.get());
+//   EXPECT_EQ(100, tl.getValue());  // In thread 1, tl has the original value.
+//   tl.setValue(200);
+//   EXPECT_EQ(200, tl.getValue());
 //
 // The template type argument T must have a public copy constructor.
 // In addition, the default ThreadLocal constructor requires T to have
@@ -1759,8 +1759,8 @@ class GTEST_API_ ThreadLocal {
 
   T* pointer() { return GetOrCreateValue(); }
   const T* pointer() const { return GetOrCreateValue(); }
-  const T& get() const { return *pointer(); }
-  void set(const T& value) { *pointer() = value; }
+  const T& getValue() const { return *pointer(); }
+  void setValue(const T& value) { *pointer() = value; }
 
  private:
   // Holds a value of type T.
@@ -1878,8 +1878,8 @@ class GTEST_API_ ThreadLocal {
   explicit ThreadLocal(const T& value) : value_(value) {}
   T* pointer() { return &value_; }
   const T* pointer() const { return &value_; }
-  const T& get() const { return value_; }
-  void set(const T& value) { value_ = value; }
+  const T& getValue() const { return value_; }
+  void setValue(const T& value) { value_ = value; }
  private:
   T value_;
 };
@@ -2071,7 +2071,7 @@ inline const char* GetEnv(const char* name) {
   static_cast<void>(name);  // To prevent 'unused argument' warning.
   return nullptr;
 #elif defined(__BORLANDC__) || defined(__SunOS_5_8) || defined(__SunOS_5_9)
-  // Environment variables which we programmatically clear will be set to the
+  // Environment variables which we programmatically clear will be setValue to the
   // empty string rather than unset (NULL).  Handle that case.
   const char* const env = getenv(name);
   return (env != nullptr && env[0] != '\0') ? env : nullptr;

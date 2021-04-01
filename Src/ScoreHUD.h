@@ -5,23 +5,41 @@
 #ifndef JOJO_RUN_SCOREHUD_H
 #define JOJO_RUN_SCOREHUD_H
 
+#include <string>
+#include <map>
+#include <list>
+#include <SFML/Graphics.hpp>
+#include "Entity.h"
 #include "Observer.h"
-#include "Game.h"
-#include <fstream>
-#include <iostream>
 
-class Score: public Observer {
+class Widget;
+
+class ScoreHUD: public Entity, Observer {
 public:
-    Score (Game* game);
-    virtual ~Score() {detach();}
+    ScoreHUD ();
+    ~ScoreHUD() override;
 
-    void update() override;
+    void init();
+    void update(int32_t delta_time) override;
+    void render(sf::RenderWindow & window) override;
+
+private:
+    Widget * m_score{};
+    Widget * m_achievements{};
+    Widget * m_hero_status{};
+
+    /**/
+public:
+    void observe(Subject * observed, const std::string & item_name);
+
+private:
+    void data_update(const std::string & item_name, const std::string & item_value) override;
     void attach() override;
     void detach() override;
+    Subject * m_observed = nullptr;
+    std::string m_observed_value;
 
-protected:
-    unsigned int score, health;
-    Game* game;
 };
+
 
 #endif //JOJO_RUN_SCOREHUD_H

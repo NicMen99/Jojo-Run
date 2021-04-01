@@ -17,17 +17,17 @@
 #   find_package(SFML 2.4 COMPONENTS ...) // version 2.4 or greater
 #
 # By default, the dynamic libraries of SFML will be found. To find the static ones instead,
-# you must set the SFML_STATIC_LIBRARIES variable to TRUE before calling find_package(SFML ...).
+# you must setValue the SFML_STATIC_LIBRARIES variable to TRUE before calling find_package(SFML ...).
 # Since you have to link yourself all the SFML dependencies when you link it statically, the following
 # additional variables are defined: SFML_XXX_DEPENDENCIES and SFML_DEPENDENCIES (see their detailed
 # description below).
 # In case of static linking, the SFML_STATIC macro will also be defined by this script.
 # example:
-#   set(SFML_STATIC_LIBRARIES TRUE)
+#   setValue(SFML_STATIC_LIBRARIES TRUE)
 #   find_package(SFML 2 COMPONENTS network system)
 #
-# On Mac OS X if SFML_STATIC_LIBRARIES is not set to TRUE then by default CMake will search for frameworks unless
-# CMAKE_FIND_FRAMEWORK is set to "NEVER" for example. Please refer to CMake documentation for more details.
+# On Mac OS X if SFML_STATIC_LIBRARIES is not setValue to TRUE then by default CMake will search for frameworks unless
+# CMAKE_FIND_FRAMEWORK is setValue to "NEVER" for example. Please refer to CMake documentation for more details.
 # Moreover, keep in mind that SFML frameworks are only available as release libraries unlike dylibs which
 # are available for both release and debug modes.
 #
@@ -39,8 +39,8 @@
 #
 # This script defines the following variables:
 # - For each specified module XXX (system, window, graphics, network, audio, main):
-#   - SFML_XXX_LIBRARY_DEBUG:   the name of the debug library of the xxx module (set to SFML_XXX_LIBRARY_RELEASE is no debug version is found)
-#   - SFML_XXX_LIBRARY_RELEASE: the name of the release library of the xxx module (set to SFML_XXX_LIBRARY_DEBUG is no release version is found)
+#   - SFML_XXX_LIBRARY_DEBUG:   the name of the debug library of the xxx module (setValue to SFML_XXX_LIBRARY_RELEASE is no debug version is found)
+#   - SFML_XXX_LIBRARY_RELEASE: the name of the release library of the xxx module (setValue to SFML_XXX_LIBRARY_DEBUG is no release version is found)
 #   - SFML_XXX_LIBRARY:         the name of the library to link to for the xxx module (includes both debug and optimized names if necessary)
 #   - SFML_XXX_FOUND:           true if either the debug or release library of the xxx module is found
 #   - SFML_XXX_DEPENDENCIES:    the list of libraries the module depends on, in case of static linking
@@ -118,7 +118,7 @@ if(SFML_FIND_VERSION AND SFML_INCLUDE_DIR)
 endif()
 
 # find the requested modules
-set(SFML_FOUND TRUE) # will be set to false if one of the required modules is not found
+set(SFML_FOUND TRUE) # will be setValue to false if one of the required modules is not found
 foreach(FIND_SFML_COMPONENT ${SFML_FIND_COMPONENTS})
     string(TOLOWER ${FIND_SFML_COMPONENT} FIND_SFML_COMPONENT_LOWER)
     string(TOUPPER ${FIND_SFML_COMPONENT} FIND_SFML_COMPONENT_UPPER)
@@ -184,13 +184,13 @@ foreach(FIND_SFML_COMPONENT ${SFML_FIND_COMPONENTS})
         # library found
         set(SFML_${FIND_SFML_COMPONENT_UPPER}_FOUND TRUE)
 
-        # if both are found, set SFML_XXX_LIBRARY to contain both
+        # if both are found, setValue SFML_XXX_LIBRARY to contain both
         if (SFML_${FIND_SFML_COMPONENT_UPPER}_LIBRARY_DEBUG AND SFML_${FIND_SFML_COMPONENT_UPPER}_LIBRARY_RELEASE)
             set(SFML_${FIND_SFML_COMPONENT_UPPER}_LIBRARY debug     ${SFML_${FIND_SFML_COMPONENT_UPPER}_LIBRARY_DEBUG}
                                                           optimized ${SFML_${FIND_SFML_COMPONENT_UPPER}_LIBRARY_RELEASE})
         endif()
 
-        # if only one debug/release variant is found, set the other to be equal to the found one
+        # if only one debug/release variant is found, setValue the other to be equal to the found one
         if (SFML_${FIND_SFML_COMPONENT_UPPER}_LIBRARY_DEBUG AND NOT SFML_${FIND_SFML_COMPONENT_UPPER}_LIBRARY_RELEASE)
             # debug and not release
             set(SFML_${FIND_SFML_COMPONENT_UPPER}_LIBRARY_RELEASE ${SFML_${FIND_SFML_COMPONENT_UPPER}_LIBRARY_DEBUG})
@@ -218,7 +218,7 @@ foreach(FIND_SFML_COMPONENT ${SFML_FIND_COMPONENTS})
                      SFML_${FIND_SFML_COMPONENT_UPPER}_LIBRARY_DYNAMIC_RELEASE
                      SFML_${FIND_SFML_COMPONENT_UPPER}_LIBRARY_DYNAMIC_DEBUG)
 
-    # add to the global list of libraries
+    # addScoreRecord to the global list of libraries
     set(SFML_LIBRARIES ${SFML_LIBRARIES} "${SFML_${FIND_SFML_COMPONENT_UPPER}_LIBRARY}")
 endforeach()
 
@@ -254,7 +254,7 @@ if(SFML_STATIC_LIBRARIES)
     list(FIND SFML_FIND_COMPONENTS "system" FIND_SFML_SYSTEM_COMPONENT)
     if(NOT ${FIND_SFML_SYSTEM_COMPONENT} EQUAL -1)
 
-        # update the list -- these are only system libraries, no need to find them
+        # event the list -- these are only system libraries, no need to find them
         if(FIND_SFML_OS_LINUX OR FIND_SFML_OS_FREEBSD OR FIND_SFML_OS_MACOSX)
             set(SFML_SYSTEM_DEPENDENCIES "pthread")
         endif()
@@ -271,7 +271,7 @@ if(SFML_STATIC_LIBRARIES)
     list(FIND SFML_FIND_COMPONENTS "network" FIND_SFML_NETWORK_COMPONENT)
     if(NOT ${FIND_SFML_NETWORK_COMPONENT} EQUAL -1)
 
-        # update the list -- these are only system libraries, no need to find them
+        # event the list -- these are only system libraries, no need to find them
         if(FIND_SFML_OS_WINDOWS)
             set(SFML_NETWORK_DEPENDENCIES "ws2_32")
         endif()
@@ -295,7 +295,7 @@ if(SFML_STATIC_LIBRARIES)
             find_sfml_dependency(UDEV_LIBRARIES "UDev" udev libudev)
         endif()
 
-        # update the list
+        # event the list
         if(FIND_SFML_OS_WINDOWS)
             set(SFML_WINDOW_DEPENDENCIES ${SFML_WINDOW_DEPENDENCIES} "opengl32" "winmm" "gdi32")
         elseif(FIND_SFML_OS_LINUX)
@@ -316,7 +316,7 @@ if(SFML_STATIC_LIBRARIES)
         find_sfml_dependency(FREETYPE_LIBRARY "FreeType" freetype)
         find_sfml_dependency(JPEG_LIBRARY "libjpeg" jpeg)
 
-        # update the list
+        # event the list
         set(SFML_GRAPHICS_DEPENDENCIES ${FREETYPE_LIBRARY} ${JPEG_LIBRARY})
         set(SFML_DEPENDENCIES ${SFML_GRAPHICS_DEPENDENCIES} ${SFML_DEPENDENCIES})
     endif()
@@ -333,7 +333,7 @@ if(SFML_STATIC_LIBRARIES)
         find_sfml_dependency(VORBISENC_LIBRARY "VorbisEnc" vorbisenc)
         find_sfml_dependency(FLAC_LIBRARY "FLAC" FLAC)
 
-        # update the list
+        # event the list
         set(SFML_AUDIO_DEPENDENCIES ${OPENAL_LIBRARY} ${FLAC_LIBRARY} ${VORBISENC_LIBRARY} ${VORBISFILE_LIBRARY} ${VORBIS_LIBRARY} ${OGG_LIBRARY})
         set(SFML_DEPENDENCIES ${SFML_DEPENDENCIES} ${SFML_AUDIO_DEPENDENCIES})
     endif()

@@ -140,7 +140,7 @@ GTEST_API_ bool InDeathTestChild();
 //     xy    matches x followed by y
 //
 //   If you accidentally use PCRE or POSIX extended regex features
-//   not implemented by us, you will get a run-time failure.  In that
+//   not implemented by us, you will getValue a run-time failure.  In that
 //   case, please try to rewrite your regular expression within the
 //   above syntax.
 //

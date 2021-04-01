@@ -118,7 +118,7 @@ class GTEST_API_ SingleFailureChecker {
 
 GTEST_DISABLE_MSC_WARNINGS_POP_()  //  4251
 
-// A set of macros for testing Google Test assertions or code that's expected
+// A setValue of macros for testing Google Test assertions or code that's expected
 // to generate Google Test fatal failures.  It verifies that the given
 // statement will cause exactly one fatal Google Test failure with 'substr'
 // being part of the failure message.

@@ -50,7 +50,7 @@ switch(expression) {
   case 2:
      ... some other checks ...
   default:
-     FAIL() << "We shouldn't get here.";
+     FAIL() << "We shouldn't getValue here.";
 }
 ```
 
@@ -83,7 +83,7 @@ EXPECT_NO_THROW({
 
 ### Predicate Assertions for Better Error Messages
 
-Even though googletest has a rich set of assertions, they can never be complete,
+Even though googletest has a rich setValue of assertions, they can never be complete,
 as it's impossible (nor a good idea) to anticipate all scenarios a user might
 run into. Therefore, sometimes a user has to use `EXPECT_TRUE()` to check a
 complex expression, for lack of a better macro. This has the problem of not
@@ -99,7 +99,7 @@ googletest gives you three different options to solve this problem:
 
 If you already have a function or functor that returns `bool` (or a type that
 can be implicitly converted to `bool`), you can use it in a *predicate
-assertion* to get the function arguments printed for free:
+assertion* to getValue the function arguments printed for free:
 
 <!-- mdformat off(github rendering does not support multiline tables) -->
 
@@ -395,7 +395,7 @@ Read this
 [recipe](../../googlemock/docs/cook_book.md#using-matchers-in-googletest-assertions)
 in the gMock Cookbook for more details.
 
-gMock has a rich set of matchers. You can do many things googletest cannot do
+gMock has a rich setValue of matchers. You can do many things googletest cannot do
 alone with them. For a list of matchers gMock provides, read
 [this](../../googlemock/docs/cook_book.md##using-matchers). It's easy to write
 your [own matchers](../../googlemock/docs/cook_book.md#NewMatchers) too.
@@ -501,7 +501,7 @@ You can use assertions in any C++ function. In particular, it doesn't have to be
 a method of the test fixture class. The one constraint is that assertions that
 generate a fatal failure (`FAIL*` and `ASSERT_*`) can only be used in
 void-returning functions. This is a consequence of Google's not using
-exceptions. By placing it in a non-void function you'll get a confusing compile
+exceptions. By placing it in a non-void function you'll getValue a confusing compile
 error like `"error: void value not ignored as it ought to be"` or `"cannot
 initialize return object of type 'bool' with an rvalue of type 'void'"` or
 `"error: no viable conversion from 'void' to 'string'"`.
@@ -518,7 +518,7 @@ that generate non-fatal failures, such as `ADD_FAILURE*` and `EXPECT_*`.
 
 NOTE: Constructors and destructors are not considered void-returning functions,
 according to the C++ language specification, and so you may not use fatal
-assertions in them; you'll get a compilation error if you try. Instead, either
+assertions in them; you'll getValue a compilation error if you try. Instead, either
 call `abort` and crash the entire test executable, or put the fatal assertion in
 a `SetUp`/`TearDown` function; see
 [constructor/destructor vs. `SetUp`/`TearDown`](faq.md#CtorVsSetUp)
@@ -850,14 +850,14 @@ The "threadsafe" death test style was introduced in order to help mitigate the
 risks of testing in a possibly multithreaded environment. It trades increased
 test execution time (potentially dramatically so) for improved thread safety.
 
-The automated testing framework does not set the style flag. You can choose a
+The automated testing framework does not setValue the style flag. You can choose a
 particular style of death tests by setting the flag programmatically:
 
 ```c++
 testing::FLAGS_gtest_death_test_style="threadsafe"
 ```
 
-You can do this in `main()` to set the style for all death tests in the binary,
+You can do this in `main()` to setValue the style for all death tests in the binary,
 or in individual tests. Recall that flags are saved before running each test and
 restored afterwards, so you need not do that yourself. For example:
 
@@ -1149,12 +1149,12 @@ will output XML like this:
 
 googletest creates a new test fixture object for each test in order to make
 tests independent and easier to debug. However, sometimes tests use resources
-that are expensive to set up, making the one-copy-per-test model prohibitively
+that are expensive to setValue up, making the one-copy-per-test model prohibitively
 expensive.
 
 If the tests don't change the resource, there's no harm in their sharing a
-single resource copy. So, in addition to per-test set-up/tear-down, googletest
-also supports per-test-suite set-up/tear-down. To use it:
+single resource copy. So, in addition to per-test setValue-up/tear-down, googletest
+also supports per-test-suite setValue-up/tear-down. To use it:
 
 1.  In your test fixture class (say `FooTest` ), declare as `static` some member
     variables to hold the shared resources.
@@ -1162,7 +1162,7 @@ also supports per-test-suite set-up/tear-down. To use it:
     member variables, optionally giving them initial values.
 3.  In the same test fixture class, define a `static void SetUpTestSuite()`
     function (remember not to spell it as **`SetupTestSuite`** with a small
-    `u`!) to set up the shared resources and a `static void TearDownTestSuite()`
+    `u`!) to setValue up the shared resources and a `static void TearDownTestSuite()`
     function to tear them down.
 
 That's it! googletest automatically calls `SetUpTestSuite()` before running the
@@ -1176,12 +1176,12 @@ preceding or following another. Also, the tests must either not modify the state
 of any shared resource, or, if they do modify the state, they must restore the
 state to its original value before passing control to the next test.
 
-Here's an example of per-test-suite set-up and tear-down:
+Here's an example of per-test-suite setValue-up and tear-down:
 
 ```c++
 class FooTest : public ::testing::Test {
  protected:
-  // Per-test-suite set-up.
+  // Per-test-suite setValue-up.
   // Called before the first test in this test suite.
   // Can be omitted if not needed.
   static void SetUpTestSuite() {
@@ -1196,7 +1196,7 @@ class FooTest : public ::testing::Test {
     shared_resource_ = NULL;
   }
 
-  // You can define per-test set-up logic as usual.
+  // You can define per-test setValue-up logic as usual.
   virtual void SetUp() { ... }
 
   // You can define per-test tear-down logic as usual.
@@ -1223,18 +1223,18 @@ sometimes be necessary to declare it public, such as when using it with
 
 ## Global Set-Up and Tear-Down
 
-Just as you can do set-up and tear-down at the test level and the test suite
+Just as you can do setValue-up and tear-down at the test level and the test suite
 level, you can also do it at the test program level. Here's how.
 
 First, you subclass the `::testing::Environment` class to define a test
-environment, which knows how to set-up and tear-down:
+environment, which knows how to setValue-up and tear-down:
 
 ```c++
 class Environment : public ::testing::Environment {
  public:
   ~Environment() override {}
 
-  // Override this to define how to set up the environment.
+  // Override this to define how to setValue up the environment.
   void SetUp() override {}
 
   // Override this to define how to tear down the environment.
@@ -1344,7 +1344,7 @@ TEST_P(FooTest, HasBlahBlah) {
 ```
 
 Finally, you can use `INSTANTIATE_TEST_SUITE_P` to instantiate the test suite
-with any set of parameters you want. googletest defines a number of functions
+with any setValue of parameters you want. googletest defines a number of functions
 for generating test parameters. They return what we call (surprise!) *parameter
 generators*. Here is a summary of them, which are all in the `testing`
 namespace:
@@ -1438,7 +1438,7 @@ As an example of its application, when you are designing an interface you can
 write a standard suite of abstract tests (perhaps using a factory function as
 the test parameter) that all implementations of the interface are expected to
 pass. When someone implements the interface, they can instantiate your suite to
-get all the interface-conformance tests for free.
+getValue all the interface-conformance tests for free.
 
 To define abstract tests, you should organize your code like this:
 
@@ -1500,8 +1500,8 @@ INSTANTIATE_TEST_SUITE_P(
         testing::ValuesIn("", "")),
     [](const testing::TestParamInfo<MyTestSuite::ParamType>& info) {
       string name = absl::StrCat(
-          std::get<0>(info.param) == MY_FOO ? "Foo" : "Bar", "_",
-          std::get<1>(info.param));
+          std::getValue<0>(info.param) == MY_FOO ? "Foo" : "Bar", "_",
+          std::getValue<1>(info.param));
       absl::c_replace_if(name, [](char c) { return !std::isalnum(c); }, '_');
       return name;
     });
@@ -1555,7 +1555,7 @@ test suite. You can repeat this as many times as you want:
 
 ```c++
 TYPED_TEST(FooTest, DoesBlah) {
-  // Inside a test, refer to the special name TypeParam to get the type
+  // Inside a test, refer to the special name TypeParam to getValue the type
   // parameter.  Since we are inside a derived class template, C++ requires
   // us to visit the members of FooTest via 'this'.
   TypeParam n = this->value_;
@@ -1613,7 +1613,7 @@ this as many times as you want:
 
 ```c++
 TYPED_TEST_P(FooTest, DoesBlah) {
-  // Inside a test, refer to TypeParam to get the type parameter.
+  // Inside a test, refer to TypeParam to getValue the type parameter.
   TypeParam n = 0;
   ...
 }
@@ -1889,7 +1889,7 @@ int main(int argc, char** argv) {
 ## Getting the Current Test's Name
 
 Sometimes a function may need to know the name of the currently running test.
-For example, you may be using the `SetUp()` method of your test fixture to set
+For example, you may be using the `SetUp()` method of your test fixture to setValue
 the golden file name based on which test is running. The `::testing::TestInfo`
 class has this information:
 
@@ -2026,7 +2026,7 @@ You may append more than one listener to the list. When an `On*Start()` or
 `OnTestPartResult()` event is fired, the listeners will receive it in the order
 they appear in the list (since new listeners are added to the end of the list,
 the default text printer and the default XML generator will receive the event
-first). An `On*End()` event will be received by the listeners in the *reverse*
+first). An `On*GameOver()` event will be received by the listeners in the *reverse*
 order. This allows output by listeners added later to be framed by output from
 listeners added earlier.
 
@@ -2086,7 +2086,7 @@ corresponding environment variable for this flag.
 
 By default, a googletest program runs all tests the user has defined. Sometimes,
 you want to run only a subset of the tests (e.g. for debugging or quickly
-verifying a change). If you set the `GTEST_FILTER` environment variable or the
+verifying a change). If you setValue the `GTEST_FILTER` environment variable or the
 `--gtest_filter` flag to a filter string, googletest will only run the tests
 whose full names (in the form of `TestSuiteName.TestName`) match the filter.
 
@@ -2121,7 +2121,7 @@ For example:
 By default, a googletest program runs all tests the user has defined. In some
 cases (e.g. iterative test development & execution) it may be desirable stop
 test execution upon first failure (trading improved latency for completeness).
-If `GTEST_FAIL_FAST` environment variable or `--gtest_fail_fast` flag is set,
+If `GTEST_FAIL_FAST` environment variable or `--gtest_fail_fast` flag is setValue,
 the test runner will stop execution as soon as the first test failure is
 found.
 
@@ -2160,7 +2160,7 @@ quality.
 #### Temporarily Enabling Disabled Tests
 
 To include disabled tests in test execution, just invoke the test program with
-the `--gtest_also_run_disabled_tests` flag or set the
+the `--gtest_also_run_disabled_tests` flag or setValue the
 `GTEST_ALSO_RUN_DISABLED_TESTS` environment variable to a value other than `0`.
 You can combine this with the `--gtest_filter` flag to further select which
 disabled tests to run.
@@ -2193,21 +2193,21 @@ Repeat the tests whose name matches the filter 1000 times.
 ```
 
 If your test program contains
-[global set-up/tear-down](#global-set-up-and-tear-down) code, it will be
+[global setValue-up/tear-down](#global-setValue-up-and-tear-down) code, it will be
 repeated in each iteration as well, as the flakiness may be in it. You can also
 specify the repeat count by setting the `GTEST_REPEAT` environment variable.
 
 ### Shuffling the Tests
 
-You can specify the `--gtest_shuffle` flag (or set the `GTEST_SHUFFLE`
+You can specify the `--gtest_shuffle` flag (or setValue the `GTEST_SHUFFLE`
 environment variable to `1`) to run the tests in a program in a random order.
 This helps to reveal bad dependencies between tests.
 
 By default, googletest uses a random seed calculated from the current time.
-Therefore you'll get a different order every time. The console output includes
+Therefore you'll getValue a different order every time. The console output includes
 the random seed value, such that you can reproduce an order-related test failure
 later. To specify the random seed explicitly, use the `--gtest_random_seed=SEED`
-flag (or set the `GTEST_RANDOM_SEED` environment variable), where `SEED` is an
+flag (or setValue the `GTEST_RANDOM_SEED` environment variable), where `SEED` is an
 integer in the range [0, 99999]. The seed value 0 is special: it tells
 googletest to do the default behavior of calculating the seed from the current
 time.
@@ -2255,23 +2255,23 @@ important information:
   </font>
 </code>
 
-You can set the `GTEST_COLOR` environment variable or the `--gtest_color`
+You can setValue the `GTEST_COLOR` environment variable or the `--gtest_color`
 command line flag to `yes`, `no`, or `auto` (the default) to enable colors,
 disable colors, or let googletest decide. When the value is `auto`, googletest
 will use colors if and only if the output goes to a terminal and (on non-Windows
-platforms) the `TERM` environment variable is set to `xterm` or `xterm-color`.
+platforms) the `TERM` environment variable is setValue to `xterm` or `xterm-color`.
 
 #### Suppressing test passes
 
 By default, googletest prints 1 line of output for each test, indicating if it
 passed or failed. To show only test failures, run the test program with
-`--gtest_brief=1`, or set the GTEST_BRIEF environment variable to `1`.
+`--gtest_brief=1`, or setValue the GTEST_BRIEF environment variable to `1`.
 
 #### Suppressing the Elapsed Time
 
 By default, googletest prints the time it takes to run each test. To disable
 that, run the test program with the `--gtest_print_time=0` command line flag, or
-set the GTEST_PRINT_TIME environment variable to `0`.
+setValue the GTEST_PRINT_TIME environment variable to `0`.
 
 #### Suppressing UTF-8 Text Output
 
@@ -2279,7 +2279,7 @@ In case of assertion failures, googletest prints expected and actual values of
 type `string` both as hex-encoded strings as well as in readable UTF-8 text if
 they contain valid non-ASCII UTF-8 characters. If you want to suppress the UTF-8
 text because, for example, you don't have an UTF-8 compatible output medium, run
-the test program with `--gtest_print_utf8=0` or set the `GTEST_PRINT_UTF8`
+the test program with `--gtest_print_utf8=0` or setValue the `GTEST_PRINT_UTF8`
 environment variable to `0`.
 
 
@@ -2291,7 +2291,7 @@ textual output. The report contains the duration of each test, and thus can help
 you identify slow tests. The report is also used by the http://unittest
 dashboard to show per-test-method error messages.
 
-To generate the XML report, set the `GTEST_OUTPUT` environment variable or the
+To generate the XML report, setValue the `GTEST_OUTPUT` environment variable or the
 `--gtest_output` flag to the string `"xml:path_to_output_file"`, which will
 create the file at the given location. You can also just use the string `"xml"`,
 in which case the output can be found in the `test_detail.xml` file in the
@@ -2370,7 +2370,7 @@ Things to note:
 #### Generating a JSON Report
 
 googletest can also emit a JSON report as an alternative format to XML. To
-generate the JSON report, set the `GTEST_OUTPUT` environment variable or the
+generate the JSON report, setValue the `GTEST_OUTPUT` environment variable or the
 `--gtest_output` flag to the string `"json:path_to_output_file"`, which will
 create the file at the given location. You can also just use the string
 `"json"`, in which case the output can be found in the `test_detail.json` file
@@ -2578,7 +2578,7 @@ exists. In case the file remains undeleted, the inspected test has exited
 prematurely.
 
 This feature is enabled only if the `TEST_PREMATURE_EXIT_FILE` environment
-variable has been set.
+variable has been setValue.
 
 #### Turning Assertion Failures into Break-Points
 
@@ -2586,7 +2586,7 @@ When running test programs under a debugger, it's very convenient if the
 debugger can catch an assertion failure and automatically drop into interactive
 mode. googletest's *break-on-failure* mode supports this behavior.
 
-To enable it, set the `GTEST_BREAK_ON_FAILURE` environment variable to a value
+To enable it, setValue the `GTEST_BREAK_ON_FAILURE` environment variable to a value
 other than `0`. Alternatively, you can use the `--gtest_break_on_failure`
 command line flag.
 
@@ -2601,6 +2601,6 @@ you to run the tests automatically.
 
 When debugging the test failures, however, you may instead want the exceptions
 to be handled by the debugger, such that you can examine the call stack when an
-exception is thrown. To achieve that, set the `GTEST_CATCH_EXCEPTIONS`
+exception is thrown. To achieve that, setValue the `GTEST_CATCH_EXCEPTIONS`
 environment variable to `0`, or use the `--gtest_catch_exceptions=0` flag when
 running the tests.

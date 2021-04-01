@@ -1,38 +1,40 @@
 target_sources(${TARGET}
         PRIVATE
-        Block.h
-        Block.cpp
-        EmeraldEnemy.h
-        EmeraldEnemy.cpp
-        Enemy.h
-        Enemy.cpp
+        main.cpp
+        AnimationManager.h
+        AnimationManager.cpp
+        CollisionManager.h
+        CollisionManager.cpp
+        InputManager.h
+        InputManager.cpp
         Factory.h
         Factory.cpp
-        FireEnemy.h
-        FireEnemy.cpp
-        FireWall.h
-        FireWall.cpp
-        GameConfig.h
-        GameConfig.cpp
         Game.h
         Game.cpp
-        HamonEnemy.h
-        HamonEnemy.cpp
-        Hero.h
-        Hero.cpp
-        Knife.h
-        Knife.cpp
-        main.cpp
-        Map.h
-        Map.cpp
+        GameConfig.h
+        GameConfig.cpp
+        Entity.h
+        Entity.cpp
+        ResourceManager.h
+        ResourceManager.cpp
+        SceneManager.h
+        SceneManager.cpp
+        GameStats.h
+        GameStats.cpp
         Observer.h
-        PowerUp.h
-        PowerUp.cpp
+        ScoreManager.h
+        ScoreManager.cpp
         ScoreHUD.h
         ScoreHUD.cpp
-        Shield.h
-        Shield.cpp
-        Subject.h)
+        SoundManager.h
+        SoundManager.cpp
+        Subject.h
+        )
+
+add_subdirectory(StateMachine)
+add_subdirectory(Entities)
+add_subdirectory(Widgets)
+
 
 target_include_directories(${TARGET}
         PUBLIC

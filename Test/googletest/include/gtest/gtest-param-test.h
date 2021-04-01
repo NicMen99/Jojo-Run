@@ -72,7 +72,7 @@ TEST_P(FooTest, HasBlahBlah) {
 }
 
 // Finally, you can use INSTANTIATE_TEST_SUITE_P to instantiate the test
-// case with any set of parameters you want. Google Test defines a number
+// case with any setInt of parameters you want. Google Test defines a number
 // of functions for generating test parameters. They return what we call
 // (surprise!) parameter generators. Here is a summary of them, which
 // are all in the testing namespace:
@@ -135,7 +135,7 @@ INSTANTIATE_TEST_SUITE_P(AnotherInstantiationName, FooTest, ValuesIn(pets));
 // Please also note that generator expressions (including parameters to the
 // generators) are evaluated in InitGoogleTest(), after main() has started.
 // This allows the user on one hand, to adjust generator parameters in order
-// to dynamically determine a set of tests to run and on the other hand,
+// to dynamically determine a setValue of tests to run and on the other hand,
 // give the user a chance to inspect the generated tests with Google Test
 // reflection API before RUN_ALL_TESTS() is executed.
 //
@@ -336,7 +336,7 @@ internal::ValueArray<T...> Values(T... v) {
   return internal::ValueArray<T...>(std::move(v)...);
 }
 
-// Bool() allows generating tests with parameters in a set of (false, true).
+// Bool() allows generating tests with parameters in a setValue of (false, true).
 //
 // Synopsis:
 // Bool()

@@ -12,176 +12,64 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
 
-#include "Map.h"
-#include "Hero.h"
+#include "StateMachine/GameStateMachine.h"
+#include "GameConfig.h"
+#include "GameStats.h"
+#include "ResourceManager.h"
 #include "Factory.h"
+#include "SceneManager.h"
+#include "ScoreManager.h"
 
-class Game: public Subject {
-public:
+#define CONFIG Game::instance()->configManager()
+#define RESOURCE Game::instance()->resourceManager()
+#define FACTORY Game::instance()->factory()
+#define SCENE Game::instance()->gameScene()
+#define STATS Game::instance()->gameStats()
+#define SCORE Game::instance()->gameScore()
+#define RAND Game::instance()->rand
+
+
+class Game
+{
+    static Game* m_instance;
     Game();
+    Game(AbsGameState* fsm, GameConfig* cfg, ResourceManager* resm, Factory* fact, SceneManager* scn, GameStats* stats, ScoreManager* score);
+
+public:
+    static Game* instance();
+    static Game* instance(AbsGameState* fsm, GameConfig* cfg, ResourceManager* resm, Factory* fact, SceneManager* scn, GameStats* stats, ScoreManager* score);
     ~Game();
-    Map *getMap() { return &map;}
 
-    int randomPosY();
-    int randomCreation();
+public:
+    void init();
+    void loop();
 
-    void update();
-    void render();
-
-    const sf::Vector2f &getSpeed() const;
-    bool getIsShieldOn() const;
-    bool getIsCollided() const;
-    bool getIsBlockCollision() const;
-    bool getIsEnemyCollision() const;
-    bool getIsFirewallCollision () const;
-    bool getIsShieldCollision() const;
-    bool getIsKnifeCollision() const;
-    bool getIsKnifeThrownCollision() const;
-    int getMaxY() const;
-    unsigned int getScore() const;
-    int getHealth() const;
-    float getCreationRate() const;
-    void setScore(unsigned int s);
-    void setHealth(int hp);
-    int getBlocksSize() { return static_cast<int>(blocks.size()); };
-    int getEnemySize() { return static_cast<int>(enemies.size()); };
-    int getPowerUpSize() { return static_cast<int>(powerups.size()); };
-    int getKnivesSize() { return static_cast<int>(knives.size()); };
-    int getFireWallsSize() { return static_cast<int>(firewalls.size()); };
-
-    void collision();
-    void notify() override;
-    void unsubscribe(Observer *o) override;
-    void subscribe(Observer *o) override;
+    GameConfig * configManager() { return m_gameConfig.get(); }
+    ResourceManager * resourceManager() { return m_resourceManager.get(); }
+    Factory * factory() { return m_factory.get(); }
+    SceneManager * gameScene() { return m_scene.get(); }
+    GameStats * gameStats() { return m_stats.get(); }
+    ScoreManager * gameScore() { return m_score.get(); }
+    int rand(int max) { std::uniform_int_distribution<int> d(0, max - 1); return d(m_gen);}
 
 private:
-    void createObj();
-    void createEnemy();
-    void moveObject();
-    void deleteObject();
-    void deleteEnemy();
-    void moveHero();
-    void handleTxt();
-    void moveEnemy();
-    void throwKnife();
+    sf::RenderWindow m_window;
+    sf::Event m_event{};
+    sf::Clock m_clock;
+    sf::Time m_accumulator = sf::Time::Zero;
+    sf::Time m_framerate = sf::seconds(1.f/60.f);
 
-    std::ofstream file;
-    std::ofstream bestScoreFileWrite;
-    std::ifstream bestScoreFileRead;
+private:
+    std::unique_ptr<AbsGameState> m_gameMachine;
+    std::unique_ptr<GameConfig> m_gameConfig;
+    std::unique_ptr<ResourceManager> m_resourceManager;
+    std::unique_ptr<Factory> m_factory;
+    std::unique_ptr<SceneManager> m_scene;
+    std::unique_ptr<GameStats> m_stats;
+    std::unique_ptr<ScoreManager> m_score;
 
-    Map map;
-    Hero hero;
-    Factory factory;
-
-    bool isCreated;
-    bool isPUCreated;
-    bool isShieldOn;
-    bool isCollided;
-    bool BlockCollision;
-    bool EnemyCollision;
-    bool FirewallCollision;
-    bool KnifeCollision;
-    bool ShieldPowerupCollision;
-    bool KnivesPowerupCollision;
-
-    int blockX;
-    int maxY;
-    int countCreation;
-    int n;
-    int txtCount;
-
-    unsigned int score;
-    unsigned int bestScore;
-
-    float creationRate;
-    //float oldCreationRate; necessaria?
-    float toll = 0.2;
-
-    double jump = 2.3f;
-    double g = 1;
-
-    const float ground = 63.0f;
-    const float top = 68.0f;
-    const float speedLimit = 9.f;
-    const float creationLimit = 0.4;
-    const float creationPlus = 0.035;
-    const float speedPlus = 0.08;
-    const float gPlus = 0.03;
-    const float gLimit = 3.5;
-    const float jumpLimit = 5.5;
-    const float jumpPlus = 0.08;
-
-    sf::Texture heroTexture1;
-    sf::Texture heroTexture2;
-    sf::Texture heroTextureS1;
-    sf::Texture gameOverTexture;
-    sf::Texture layer1Texture;
-    sf::Texture layer2Texture;
-    sf::Texture layer3Texture;
-    sf::Texture layer4Texture;
-
-    sf::Sprite gameOver;
-    sf::Sprite layer1;
-    sf::Sprite layer2;
-    sf::Sprite layer3;
-    sf::Sprite layer4;
-
-    sf::Text scoreTxt;
-    sf::Text numScore;
-    sf::Text lifeTxt;
-    sf::Text numLife;
-    sf::Text knivesTxt;
-    sf::Text numKnives;
-    sf::Text bestScoreTxt;
-    sf::Text scoreB;
-    sf::Text bestScoreB;
-    sf::Text bestScoreNum;
-
-    sf::Font font;
-
-    std::vector<std::unique_ptr<Block>> blocks;
-    std::vector<std::unique_ptr<Enemy>> enemies;
-    std::vector<std::unique_ptr<FireWall>> firewalls;
-    std::vector<std::unique_ptr<PowerUp>> powerups;
-    std::vector<std::unique_ptr<PowerUp>> knives;
-
-    int collidedblocks;
-    int collidedenemies;
-    int collidedfirewalls;
-    int collidedpowerups;
-    int collidedknives;
-
-    sf::Clock objectClk;
-    sf::Clock enemyClk;
-    sf::Clock controlPU;
-    sf::Clock collisionClk;
-    sf::Clock powerupClk;
-    sf::Clock shieldClk;
-    sf::Clock scoreClk;
-
-    sf::Vector2f speed;
-    sf::Vector2f oldSpeed;
-
-    sf::Music gameMusic;
-
-    sf::Sound gameOverSound;
-    sf::Sound collisionSound;
-    sf::Sound powerUpSound;
-    sf::Sound shieldOnSound;
-    sf::Sound hamonEnemySound;
-    sf::Sound emeraldEnemySound;
-    sf::Sound fireEnemySound;
-
-
-    sf::SoundBuffer gameOverBuffer;
-    sf::SoundBuffer collisionBuffer;
-    sf::SoundBuffer powerUpBuffer;
-    sf::SoundBuffer shieldOnBuffer;
-    sf::SoundBuffer fireEnemyBuffer;
-    sf::SoundBuffer emeraldEnemyBuffer;
-    sf::SoundBuffer hamonEnemyBuffer;
-
-    std::list<Observer*> observers;
+    std::random_device m_rd;  //Will be used to obtain a seed for the random number engine
+    std::mt19937 m_gen; //Standard mersenne_twister_engine seeded with rd()
 };
 
 #endif //JOJO_RUN_GAME_H

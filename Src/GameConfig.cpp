@@ -5,59 +5,58 @@
 #include <iostream>
 #include "GameConfig.h"
 
-GameConfig * GameConfig::_instance = nullptr;
+struct KeyVal{
+    const char * key;
+    const char * value;
+};
 
 
-GameConfig *GameConfig::instance() {
-    if (_instance == nullptr) {
-        _instance = new GameConfig();
+GameConfig::GameConfig() {
+
+}
+
+GameConfig::~GameConfig() {
+
+}
+
+const KeyVal resource_table [] = {
+        { "blockTexture",          "Textures/blockTexture.png"},
+        { "fireWallTexture",       "Textures/fireWallTexture.png"},
+        { "shieldPowerUpTexture",  "Textures/shieldPowerUpTexture.png"},
+        { "knifeTexture",          "Textures/knifeTexture.png"},
+        { "hamonEnemyTexture",     "Textures/hamonEnemyTexture.png"},
+        { "fireEnemy",             "Textures/fireEnemy.png"},
+        { "emeraldEnemyTexture",   "Textures/emeraldEnemyTexture.png"},
+        { "hamonBlockTexture",     "Textures/hamonBlockTexture.png"},
+        { "fireBlockTexture",      "Textures/fireBlockTexture.png"},
+        { "emeraldBlockTexture",   "Textures/emeraldBlockTexture.png"},
+        { "playerTexture",         "Textures/playerTexture.png"},
+        { "playerTextureUp",       "Textures/playerTextureUp.png"},
+        { "playerShieldTexture",   "Textures/playerShieldTexture.png"},
+        { "GameOverScreen",        "Textures/GameOverScreen.png"},
+        { "Fire",                  "Textures/FirewallAnimation.png"},
+
+        { "Background1",           "Map/Background1.png"},
+        { "BG",                    "Map/BG.png"},
+        { "Foreground",            "Map/Foreground.png"},
+        { "Middle",                "Map/Middle.png"},
+        { "Platform1",             "Map/Platform.png"},
+
+        { "soundTrack",            "Music/soundTrack.wav"},
+        { "gameOverSound",         "Music/gameOverSound.wav"},
+        { "collisionSound",        "Music/collisionSound.wav"},
+        { "shieldSound",           "Music/shieldSound.wav"},
+        { "shieldOn",              "Music/shieldOn.wav"},
+        { "fireEnemyShout",        "Music/fireEnemyShout.wav"},
+        { "emeraldEnemyShout",     "Music/emeraldEnemyShout.wav"},
+        { "hamonEnemyShout",       "Music/hamonEnemyShout.wav"},
+
+        { "arcadeclassic",         "Font/ARCADECLASSIC.TTF"},
+        { "gameover",              "Font/GAME_OVER.TTF"}
+};
+
+void GameConfig::init() {
+    for(auto i : resource_table){
+        m_asset_map.insert(std::make_pair(i.key, std::string(m_asset_base_dir) + "/" + i.value));
     }
-    return _instance;
 }
-
-void GameConfig::init(const std::string & base_dir) {
-    //loadConfigFile("jojo.cfg");
-    asset_base_dir = base_dir;
-    asset_map = {
-            std::make_pair("blockTexture",          "Textures/blockTexture.png"),
-            std::make_pair("fireWallTexture",       "Textures/fireWallTexture.png"),
-            std::make_pair("shieldPowerUpTexture",  "Textures/shieldPowerUpTexture.png"),
-            std::make_pair("knifeTexture",          "Textures/knifeTexture.png"),
-            std::make_pair("hamonEnemyTexture",     "Textures/hamonEnemyTexture.png"),
-            std::make_pair("fireEnemy",             "Textures/fireEnemy.png"),
-            std::make_pair("emeraldEnemyTexture",   "Textures/emeraldEnemyTexture.png"),
-            std::make_pair("hamonBlockTexture",     "Textures/hamonBlockTexture.png"),
-            std::make_pair("fireBlockTexture",      "Textures/fireBlockTexture.png"),
-            std::make_pair("emeraldBlockTexture",   "Textures/emeraldBlockTexture.png"),
-            std::make_pair("playerTexture",         "Textures/playerTexture.png"),
-            std::make_pair("playerTextureUp",       "Textures/playerTextureUp.png"),
-            std::make_pair("playerShieldTexture",  "Textures/playerShieldTexture.png"),
-            std::make_pair("GameOverScreen",        "Textures/GameOverScreen.png"),
-
-            std::make_pair("Background1",           "Map/Background1.png"),
-            std::make_pair("BG",                    "Map/BG.png"),
-            std::make_pair("Foreground",            "Map/Foreground.png"),
-            std::make_pair("Middle",                "Map/Middle.png"),
-
-            std::make_pair("soundTrack",            "Music/soundTrack.wav"),
-            std::make_pair("gameOverSound",         "Music/gameOverSound.wav"),
-            std::make_pair("collisionSound",        "Music/collisionSound.wav"),
-            std::make_pair("shieldSound",           "Music/shieldSound.wav"),
-            std::make_pair("shieldOn",              "Music/shieldOn.wav"),
-            std::make_pair("fireEnemyShout",        "Music/fireEnemyShout.wav"),
-            std::make_pair("emeraldEnemyShout",     "Music/emeraldEnemyShout.wav"),
-            std::make_pair("hamonEnemyShout",       "Music/hamonEnemyShout.wav"),
-
-            std::make_pair("arcadeclassic",         "Font/ARCADECLASSIC.TTF")
-    };
-}
-
-std::string GameConfig::getAssetPath(const std::string & asset) {
-    auto it = asset_map.find(asset);
-    std::string path = (it == asset_map.end()) ? "" : asset_base_dir + "/" + it->second;
-    if (path.empty()){
-        std::cout << asset << std::endl;
-    }
-    return path;
-}
-

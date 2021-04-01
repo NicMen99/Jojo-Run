@@ -2,85 +2,125 @@
 // Created by angiolo99 on 23/01/20.
 //
 
-#include "GameConfig.h"
+#include <iostream>
+
+#include "Game.h"
+#include "Entities/Block.h"
+#include "Entities/Fire.h"
+#include "Entities/EmeraldEnemy.h"
+#include "Entities/Emerald.h"
+#include "Entities/FireEnemy.h"
+#include "Entities/FireBall.h"
+#include "Entities/HamonEnemy.h"
+#include "Entities/Shield.h"
+#include "Entities/Weapon.h"
+#include "Entities/Knife.h"
+#include "Entities/Platform.h"
+#include "Entities/Background.h"
+
 #include "Factory.h"
 
-std::unique_ptr<Block> Factory::createBlock(BlockType type) {
-    std::unique_ptr<Block> result = std::unique_ptr<Block>(new Block);
-    if (type == BlockType::MovingBlock)
-        result->setIsMovingBlock(); //necessario?
-    result->setScale(0.70, 0.70);
-    result->setTexture(blockTexture);
-    return result;
-}
-
 Factory::Factory() {
-    blockTexture.loadFromFile(GC->getAssetPath("blockTexture"));
-    fireWallTexture.loadFromFile(GC->getAssetPath("fireWallTexture"));
-    shieldPowerUpTexture.loadFromFile(GC->getAssetPath("shieldPowerUpTexture"));
-    knifeTexture.loadFromFile(GC->getAssetPath("knifeTexture"));
-    hamonEnemyTexture.loadFromFile(GC->getAssetPath("hamonEnemyTexture"));
-    fireEnemyTexture.loadFromFile(GC->getAssetPath("fireEnemy"));
-    emeraldEnemyTexture.loadFromFile(GC->getAssetPath("emeraldEnemyTexture"));
-    hamonBlockTexture.loadFromFile(GC->getAssetPath("hamonBlockTexture"));
-    fireBlockTexture.loadFromFile(GC->getAssetPath("fireBlockTexture"));
-    emeraldBlockTexture.loadFromFile(GC->getAssetPath("emeraldBlockTexture"));
+
 }
 
-std::unique_ptr<FireWall> Factory::createFireWall(FireWallType type) {
-    std::unique_ptr<FireWall> result = std::unique_ptr<FireWall>(new FireWall);
-    if (type == FireWallType::MovingWall)
-        result->setIsMovingFW(true);
-    result->setScale(1, 1);
-    result->setTexture(fireWallTexture);
-    return result;
+Factory::~Factory() {
+
 }
 
-std::unique_ptr<Enemy> Factory::createEnemy(EnemyType type) {
-    if (type == EnemyType::EmeraldEnemy){
-        std::unique_ptr<Enemy> result = std::unique_ptr<Enemy> (new EmeraldEnemy);
-        result->setSpeed(0.5);
-        result->setScale(-1,1);
-        result->setTexture(emeraldEnemyTexture);
-        //result->SpecialAction();
-        return result;
+std::unique_ptr<Entity> Factory::createObstacle(EntityType type) {
+    if(type == EntityType::Block) {
+        auto * obstacle = new Block("Block");
+        obstacle->init();
+        return std::unique_ptr<Entity>(obstacle);
     }
-    else if (type == EnemyType::HamonEnemy){
-        std::unique_ptr<Enemy> result = std::unique_ptr<Enemy> (new HamonEnemy);
-        result->setSpeed(0.5);
-        result->setScale(-1,1);
-        result->setTexture(hamonEnemyTexture);
-        result->SpecialAction();
-        return result;
-    }
-    else if (type == EnemyType::FireEnemy){
-        std::unique_ptr<Enemy> result = std::unique_ptr<Enemy> (new FireEnemy);
-        result->setSpeed(0.5);
-        result->setTexture(fireEnemyTexture);
-        result->setScale(-1,1);
-        //result->SpecialAction();
-        return result;
+    else if (type == EntityType::Wall) {
+        auto * obstacle = new Fire("Fire");
+        obstacle->init();
+        return std::unique_ptr<Entity>(obstacle);
     }
     return nullptr;
 }
 
-std::unique_ptr<PowerUp> Factory::createPowerUp(PowerUpType type) {
-    std::unique_ptr<PowerUp> result = std::unique_ptr<PowerUp>(new PowerUp);
-    result->setIsMovingPu(true);
-    result->setSpeedPux(0.9);
-    if (type == PowerUpType::Shield) {
-        result->setTexture(shieldPowerUpTexture);
-        result->setScale(0.2,0.2);
-        result->setIsShield(true);
-    } else if (type == PowerUpType::Knife) {
-        result->setTexture(knifeTexture);
-        result->setScale(1,1);
-        result->setRotation(45.f);
-        result->setIsKnife(true);
-    } else if (type == PowerUpType::ThrownKnife) {
-        result->setTexture(knifeTexture);
-        result->setScale(1,1);
-        result->setIsThrowable(true);
+std::unique_ptr<Entity> Factory::createEnemy(EntityType type) {
+    if (type == EntityType::EmeraldEnemy){
+        auto * enemy = new EmeraldEnemy("EmeraldEnemy");
+        enemy->init();
+        return std::unique_ptr<Entity>(enemy);
     }
-    return result;
+    else if (type == EntityType::HamonEnemy){
+        auto * enemy =new HamonEnemy("HamonEnemy");
+        enemy->init();
+        return std::unique_ptr<Entity>(enemy);
+    }
+    else if (type == EntityType::FireEnemy){
+        auto * enemy = new FireEnemy("FireEnemy");
+        enemy->init();
+        return std::unique_ptr<Entity>(enemy);
+    }
+    return nullptr;
 }
+
+std::unique_ptr<Entity> Factory::createPowerUp(EntityType type) {
+    if (type == EntityType::Shield) {
+        auto * powerUp = new Shield("Shield");
+        powerUp->init();
+        return std::unique_ptr<Entity>(powerUp);
+    }
+    else if (type == EntityType::Weapon) {
+        auto * powerUp = new Weapon("Weapon");
+        powerUp->init();
+        return std::unique_ptr<Entity>(powerUp);
+    }
+    return nullptr;
+}
+
+std::unique_ptr<Entity> Factory::createBullet(EntityType type) {
+    if (type == EntityType::Knife) {
+        auto * knife = new Knife("Knife");
+        knife -> init();
+        return std::unique_ptr<Entity>(knife);
+    }
+    else if (type == EntityType::EmeraldBullet) {
+        auto * emerald = new Emerald("Emerald");
+        emerald -> init();
+        return std::unique_ptr<Entity>(emerald);
+    }
+    else if (type == EntityType::FireBullet) {
+        auto * fire = new FireBall("FireBall");
+        fire -> init();
+        return std::unique_ptr<Entity>(fire);
+    }
+    return nullptr;
+}
+
+std::unique_ptr<Entity> Factory::createPlatform(EntityType type) {
+    auto * platform = new Platform("Platform");
+    platform->init();
+    return std::unique_ptr<Entity>(platform);
+}
+
+std::unique_ptr<Entity> Factory::createBackground(EntityType type) {
+    if(type == EntityType::Sky) {
+        auto * bg = new Background("Sky");
+        bg->init(EntityType::Sky);
+        return std::unique_ptr<Entity>(bg);
+    }
+    else if(type == EntityType::City) {
+        auto * bg = new Background("City");
+        bg->init(EntityType::City);
+        return std::unique_ptr<Entity>(bg);
+    }
+    else if(type == EntityType::SkyScrapers) {
+        auto * bg = new Background("SkyScrapers");
+        bg->init(EntityType::SkyScrapers);
+        return std::unique_ptr<Entity>(bg);
+    }
+    else if(type == EntityType::Bridge) {
+        auto * bg = new Background("Bridge");
+        bg->init(EntityType::Bridge);
+        return std::unique_ptr<Entity>(bg);
+    }
+    return nullptr;
+}
+
