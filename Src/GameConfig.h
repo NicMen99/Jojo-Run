@@ -41,8 +41,6 @@ protected:
     /* delta pixels per secondo */
     sf::Vector2f m_gravity     = {0.f, 1500.f};
 
-    /* Hero settings */
-protected:
     /* delta pixels per secondo */
     float m_jumpForce = m_gravity.y * 3;
     /* millisecondi */

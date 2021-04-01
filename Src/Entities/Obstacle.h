@@ -14,7 +14,6 @@ public:
             Entity(EntityGroup::Map, mtype, name) { }
     ~Obstacle() override {};
 
-public:
     void setDamage(int damage) { m_damage = damage; }
     int getDamage() const { return m_damage; };
 

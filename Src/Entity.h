@@ -46,22 +46,16 @@ public:
     Entity(EntityGroup mgroup, EntityType mtype, std::string  mName);
     virtual ~Entity();
 
-public:
     virtual void update(int32_t delta_time);
     virtual void render(sf::RenderWindow & window);
     virtual void event(GameEvent event, Entity *collider) {}
 
-protected:
-    virtual void move(int32_t delta_time);
-    virtual void applyImpulse(const sf::Vector2f & acceleration, int32_t delta_time);
-
     //Getter & setter
-public:
+
     EntityGroup getGroup() { return m_group; }
     EntityType getType() { return m_type; }
     const std::string & getName() const { return m_name; };
 
-public:
     sf::Vector2f getPosition() const { return {m_frame.left, m_frame.top}; }
     sf::Vector2f getPrevPosition() const { return {m_prev_frame.left, m_prev_frame.top}; }
     sf::FloatRect getBounds() const { return m_frame; }
@@ -72,7 +66,6 @@ public:
     bool isVisible() const { return m_visible; }
     bool isDestroyed() const { return m_destroyed; }
 
-public:
     void setStarted(bool mStarted) { m_started = mStarted; }
     void setEnabled(bool mEnabled) { m_enabled = mEnabled; }
     void setVisible(bool mVisible) { m_visible = mVisible; }
@@ -82,11 +75,13 @@ public:
     void setSpeed(sf::Vector2f speed) { m_speed = speed; }
     void setSpeed(float speedX, float speedY) { m_speed.x = speedX; m_speed.y = speedY; }
 
-public:
     void addAnimation(const std::string & animation_name, const std::list<FrameParams>& frames);
     void addSound(const std::string & sound_name, const std::string & sound_resource);
 
 protected:
+    virtual void move(int32_t delta_time);
+    virtual void applyImpulse(const sf::Vector2f & acceleration, int32_t delta_time);
+
     void playAnimation(const std::string & animation_name, int repetitions= -1);
     void playSound(const std::string & sound_name, float volume = 100.f);
 

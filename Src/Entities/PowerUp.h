@@ -13,7 +13,6 @@ public:
             Entity(EntityGroup::Powerup, mtype, name) {}
     ~PowerUp() override {};
 
-public:
     void setQuantity(int quantity) { m_quantity = quantity; }
     int getQuantity() const { return m_quantity; };
 

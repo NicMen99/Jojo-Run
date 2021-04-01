@@ -14,7 +14,6 @@ public:
     ~Weapon() override;
     void init();
 
-public:
     void event(GameEvent event, Entity *collider) override;
 
 private:

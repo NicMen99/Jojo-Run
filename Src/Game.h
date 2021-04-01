@@ -29,18 +29,13 @@
 #define RAND Game::instance()->rand
 
 
-class Game
-{
-    static Game* m_instance;
-    Game();
-    Game(AbsGameState* fsm, GameConfig* cfg, ResourceManager* resm, Factory* fact, SceneManager* scn, GameStats* stats, ScoreManager* score);
+class Game {
 
 public:
     static Game* instance();
     static Game* instance(AbsGameState* fsm, GameConfig* cfg, ResourceManager* resm, Factory* fact, SceneManager* scn, GameStats* stats, ScoreManager* score);
     ~Game();
 
-public:
     void init();
     void loop();
 
@@ -53,13 +48,17 @@ public:
     int rand(int max) { std::uniform_int_distribution<int> d(0, max - 1); return d(m_gen);}
 
 private:
+
+    static Game* m_instance;
+    Game();
+    Game(AbsGameState* fsm, GameConfig* cfg, ResourceManager* resm, Factory* fact, SceneManager* scn, GameStats* stats, ScoreManager* score);
+
     sf::RenderWindow m_window;
     sf::Event m_event{};
     sf::Clock m_clock;
     sf::Time m_accumulator = sf::Time::Zero;
     sf::Time m_framerate = sf::seconds(1.f/60.f);
 
-private:
     std::unique_ptr<AbsGameState> m_gameMachine;
     std::unique_ptr<GameConfig> m_gameConfig;
     std::unique_ptr<ResourceManager> m_resourceManager;

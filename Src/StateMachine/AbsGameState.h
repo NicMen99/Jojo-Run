@@ -28,7 +28,6 @@ protected:
     static void switchState(bool forceExec=false);
     static AbsGameState* getCurrentState();
 
-protected:
     virtual void onEnter() {}
     virtual void onExit() {}
 

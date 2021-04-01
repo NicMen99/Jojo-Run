@@ -17,7 +17,7 @@ public:
     SceneManager();
     virtual ~SceneManager();
     void init();
-public:
+
     void update(int32_t delta_time);
     void render(sf::RenderWindow & window);
     bool levelend() const;
@@ -36,7 +36,6 @@ private:
     void createHero();
     void createScoreHUD();
 
-private:
     std::unique_ptr<CollisionManager> m_collisionManager;
     std::vector<std::unique_ptr<Entity>> m_background1;
     std::vector<std::unique_ptr<Entity>> m_background2;
