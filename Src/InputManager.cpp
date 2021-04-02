@@ -33,10 +33,17 @@ bool InputManager::isKeyPressed(const sf::Keyboard::Key &key) {
 bool InputManager::isKeyJustPressed(const sf::Keyboard::Key &key) {
     if(m_current_status.count(key))
         if (!m_previous_status[key] && m_current_status[key])
-        return true;
+            return true;
     return false;
 }
 
+bool InputManager::isKeyReleased(const sf::Keyboard::Key &key) {
+    if(m_current_status.count(key)){
+        if (!m_current_status[key])
+            return true;
+    }
+    return false;
+}
 
 bool InputManager::isKeyJustReleased(const sf::Keyboard::Key &key) {
     if(m_current_status.count(key))
@@ -66,6 +73,3 @@ sf::Keyboard::Key InputManager::getKeyJustPressed() {
     }
     return sf::Keyboard::Unknown;
 }
-
-
-
