@@ -17,7 +17,8 @@ public:
 };
 
 class EntityTest: public ::testing::Test {
-  Game * game;
+private:
+    Game * game;
 
 public:
   EntityTest() {

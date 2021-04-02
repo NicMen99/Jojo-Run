@@ -23,8 +23,7 @@ public:
     sf::Keyboard::Key getKeyJustPressed();
 
 protected:
-    virtual bool keyPressed(sf::Keyboard::Key key) { return sf::Keyboard::isKeyPressed(key); }
-
+    virtual bool keyPressed(sf::Keyboard::Key key) { return sf::Keyboard::isKeyPressed(key); } //test function
 private:
     std::map<sf::Keyboard::Key, bool> m_current_status, m_previous_status;
 };

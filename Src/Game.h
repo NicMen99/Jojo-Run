@@ -51,7 +51,7 @@ private:
 
     static Game* m_instance;
     Game();
-    Game(AbsGameState* fsm, GameConfig* cfg, ResourceManager* resm, Factory* fact, SceneManager* scn, GameStats* stats, ScoreManager* score);
+    Game(AbsGameState* fsm, GameConfig* cfg, ResourceManager* resm, Factory* fact, SceneManager* scn, GameStats* stats, ScoreManager* score); //test function
 
     sf::RenderWindow m_window;
     sf::Event m_event{};
