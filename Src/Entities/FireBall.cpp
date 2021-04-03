@@ -17,10 +17,6 @@ FireBall::~FireBall() {
 }
 
 void FireBall::init() {
-    const std::list<FrameParams> frames = {
-            {1, "fireBlockTexture", {0,0,0,0}, {0,0}, {false, false}}
-    };
-    addAnimation("DEFAULT", frames);
     setSpeed({0.f, 0.f});
     setDamage(50);
 }

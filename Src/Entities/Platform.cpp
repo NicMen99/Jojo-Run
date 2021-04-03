@@ -2,8 +2,6 @@
 // Created by Niccolo on 25/02/2021.
 //
 
-#include "Game.h"
-#include "AnimationManager.h"
 #include "Platform.h"
 
 Platform::Platform(std::string id) :

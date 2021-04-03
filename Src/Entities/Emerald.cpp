@@ -2,8 +2,6 @@
 // Created by Niccolo on 14/03/2021.
 //
 
-#include <list>
-#include "AnimationManager.h"
 #include "Emerald.h"
 
 Emerald::Emerald(const std::string& id) :
@@ -14,10 +12,6 @@ Emerald::~Emerald(){
 }
 
 void Emerald::init() {
-    const std::list<FrameParams> frames = {
-            {1, "emeraldBlockTexture", {0,0,0,0}, {0,0}, {false, false}}
-    };
-    addAnimation("DEFAULT", frames);
     setSpeed({0.f, 0.f});
     setDamage(150);
 }
