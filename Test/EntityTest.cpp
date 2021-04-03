@@ -22,6 +22,7 @@ private:
 
 public:
   EntityTest() {
+      Game::deleteInstance();
       auto state = new GameStateMachine(State::Init);
       auto cfg   = new TestGameConfig();
       auto resm  = new ResourceManager();
@@ -30,7 +31,6 @@ public:
       auto stats = new GameStats();
       auto score = new ScoreManager();
       game = Game::instance(state, cfg, resm, fact, scn, stats, score);
-      game->init();
   }
 };
 
@@ -90,9 +90,9 @@ TEST_F(EntityTest, DestroyedFlagNoTexture){
 TEST_F(EntityTest, DestroyedFlag){
     dynamic_cast<TestGameConfig*>(CONFIG)->setSceneSpeed({0,0});
     auto entity = std::unique_ptr<Entity>(new Entity(EntityGroup::Hero, EntityType::Hero, "Hero"));
-    dynamic_cast<TestGameConfig*>(CONFIG)->setTextureResource("Platform", "Platform.png");
+    dynamic_cast<TestGameConfig*>(CONFIG)->setTextureResource("StonePlatform", "Platform.png");
     const std::list<FrameParams> frames = {
-            {1, "Platform", {0,0,0,0}, {0,0}, {false, false}}
+            {1, "StonePlatform", {0,0,0,0}, {0,0}, {false, false}}
     };
     entity->addAnimation("DEFAULT", frames);
     entity->setPosition(sf::Vector2f(1, 0));
@@ -110,10 +110,10 @@ TEST_F(EntityTest, DestroyedFlag){
 TEST_F(EntityTest, Bounds){
     dynamic_cast<TestGameConfig*>(CONFIG)->setSceneSpeed({100,0});
     auto entity = std::unique_ptr<Entity>(new Entity(EntityGroup::Hero, EntityType::Hero, "Hero"));
-    dynamic_cast<TestGameConfig*>(CONFIG)->setTextureResource("Platform", "Platform.png");
+    dynamic_cast<TestGameConfig*>(CONFIG)->setTextureResource("StonePlatform", "Platform.png");
     const std::list<FrameParams> frames = {
-            {1, "Platform", {0,0,1,1}, {0,0}, {false, false}},
-            {1, "Platform", {0,0,10,10}, {0,0}, {false, false}}
+            {1, "StonePlatform", {0,0,1,1}, {0,0}, {false, false}},
+            {1, "StonePlatform", {0,0,10,10}, {0,0}, {false, false}}
     };
     entity->addAnimation("DEFAULT", frames);
     entity->setPosition(sf::Vector2f(1,1));

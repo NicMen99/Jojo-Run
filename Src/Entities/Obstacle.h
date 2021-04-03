@@ -11,7 +11,7 @@ class Obstacle : public Entity
 {
 public:
     Obstacle(EntityType mtype, const std::string & name) :
-            Entity(EntityGroup::Map, mtype, name) { }
+            Entity(EntityGroup::Obstacle, mtype, name) { }
     ~Obstacle() override {};
 
     void setDamage(int damage) { m_damage = damage; }

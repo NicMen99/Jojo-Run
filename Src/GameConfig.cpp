@@ -40,7 +40,7 @@ const KeyVal resource_table [] = {
         { "BG",                    "Map/BG.png"},
         { "Foreground",            "Map/Foreground.png"},
         { "Middle",                "Map/Middle.png"},
-        { "Platform1",             "Map/Platform.png"},
+        { "PLATFORM",              "Map/Platform.png"},
 
         { "soundTrack",            "Music/soundTrack.wav"},
         { "gameOverSound",         "Music/gameOverSound.wav"},

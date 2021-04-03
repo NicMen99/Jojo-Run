@@ -19,10 +19,12 @@ class FrameParams;
 
 enum class EntityGroup {
     Scene,
-    Map,
+    Platform,
+    Background,
     Bullet,
     Enemy,
     Powerup,
+    Obstacle,
     Hero
 };
 
@@ -31,10 +33,10 @@ enum class EntityType {
     FireEnemy, HamonEnemy, EmeraldEnemy,
     Weapon, Shield,
     Knife, FireBullet, EmeraldBullet,
-    Platform, SPlatform, MPlatform, XPlatform,
+    StonePlatform,
     Hero,
     Hud,
-    Background, Sky, City, SkyScrapers, Bridge
+    Sky, City, SkyScrapers, Bridge
 };
 
 enum class GameEvent {

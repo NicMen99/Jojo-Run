@@ -20,6 +20,7 @@ private:
     Game * game;
 public:
     ResourcesTest(){
+        Game::deleteInstance();
         auto state = new GameStateMachine(State::Init);
         auto cfg   = new TestGameConfig();
         auto resm  = new ResourceManager();
@@ -28,57 +29,49 @@ public:
         auto stats = new GameStats();
         auto score = new ScoreManager();
         game = Game::instance(state, cfg, resm, fact, scn, stats, score);
-        game->init();
+        dynamic_cast<TestGameConfig*>(CONFIG)->setResource("Font", "GAME_OVER.TTF");
+        dynamic_cast<TestGameConfig*>(CONFIG)->setResource("Texture", "Platform.png");
+        dynamic_cast<TestGameConfig*>(CONFIG)->setResource("Sound", "gameOverSound.wav");
     }
-
 };
 
 TEST_F(ResourcesTest, TestExistingFont){
-    dynamic_cast<TestGameConfig*>(CONFIG)->setResource("Font", "GAME_OVER.TTF");
-
     auto res_manager = std::unique_ptr<ResourceManager>(new ResourceManager);
     auto font = res_manager->getFont("Font");
     ASSERT_NE(font.get(), nullptr);
 }
 
 TEST_F(ResourcesTest, TestExistingTexture){
-    dynamic_cast<TestGameConfig*>(CONFIG)->setResource("Texture", "Platform.png");
-
     auto res_manager = std::unique_ptr<ResourceManager>(new ResourceManager);
     auto texture = res_manager->getTexture("Texture");
     ASSERT_NE(texture.get(), nullptr);
 }
 
 TEST_F(ResourcesTest, TestExistingSound){
-    dynamic_cast<TestGameConfig*>(CONFIG)->setResource("Sound", "gameOverSound.wav");
-
     auto res_manager = std::unique_ptr<ResourceManager>(new ResourceManager);
     auto sound = res_manager->getSound("Sound");
     ASSERT_NE(sound.get(), nullptr);
 }
 
 TEST_F(ResourcesTest, TestCachedFont){
-    dynamic_cast<TestGameConfig*>(CONFIG)->setResource("Font", "GAME_OVER.TTF");
-
     auto res_manager = std::unique_ptr<ResourceManager>(new ResourceManager);
+    res_manager->clearFontCache();
     auto font = res_manager->getFont("Font");
     auto font2 = res_manager->getFont("Font");
     ASSERT_EQ(font.get(), font2.get());
 }
 
 TEST_F(ResourcesTest, TestCachedTexture){
-    dynamic_cast<TestGameConfig*>(CONFIG)->setResource("Texture", "Platform.png");
-
     auto res_manager = std::unique_ptr<ResourceManager>(new ResourceManager);
+    res_manager->clearTextureCache();
     auto texture = res_manager->getTexture("Texture");
     auto texture2 = res_manager->getTexture("Texture");
     ASSERT_EQ(texture.get(), texture2.get());
 }
 
 TEST_F(ResourcesTest, TestCachedSound){
-    dynamic_cast<TestGameConfig*>(CONFIG)->setResource("Sound", "gameOverSound.wav");
-
     auto res_manager = std::unique_ptr<ResourceManager>(new ResourceManager);
+    res_manager->clearSoundCache();
     auto sound = res_manager->getSound("Sound");
     auto sound2 = res_manager->getSound("Sound");
     ASSERT_EQ(sound.get(), sound2.get());
@@ -108,11 +101,22 @@ TEST_F(ResourcesTest, TestNonExistingSound){
     ASSERT_EQ(sound.get(), nullptr);
 }
 
-TEST_F(ResourcesTest, WrongResourceType){
-    dynamic_cast<TestGameConfig*>(CONFIG)->setResource("Texture", "Platform.png");
-
+TEST_F(ResourcesTest, WrongResourceTypeSound){
     auto res_manager = std::unique_ptr<ResourceManager>(new ResourceManager);
-    auto texture = res_manager->getSound("Texture");
+    auto texture = res_manager->getSound("Font");
 
+    ASSERT_EQ(texture.get(), nullptr);
+}
+
+TEST_F(ResourcesTest, WrongResourceTypeTexture){
+    auto res_manager = std::unique_ptr<ResourceManager>(new ResourceManager);
+    auto texture = res_manager->getTexture("Sound");
+
+    ASSERT_EQ(texture.get(), nullptr);
+}
+
+TEST_F(ResourcesTest, WrongResourceTypeFont){
+    auto res_manager = std::unique_ptr<ResourceManager>(new ResourceManager);
+    auto texture = res_manager->getFont("Texture");
     ASSERT_EQ(texture.get(), nullptr);
 }

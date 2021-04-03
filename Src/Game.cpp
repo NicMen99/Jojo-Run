@@ -24,6 +24,13 @@ Game* Game::instance(AbsGameState* fsm, GameConfig* cfg, ResourceManager* resm, 
     return m_instance;
 }
 
+void Game::deleteInstance() {
+    if(m_instance!= nullptr){
+        delete m_instance;
+        m_instance= nullptr;
+    }
+}
+
 Game::Game():
     m_gameMachine(new GameStateMachine(State::Init)),
     m_gameConfig(new GameConfig()),
@@ -47,7 +54,9 @@ Game::Game(AbsGameState* fsm, GameConfig* cfg, ResourceManager* resm, Factory* f
 
 }
 
-Game::~Game() = default;
+Game::~Game() {
+    m_instance = nullptr;
+};
 
 void Game::init()
 {

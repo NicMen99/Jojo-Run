@@ -28,9 +28,9 @@ public:
         auto it = m_asset_map.find(name);  return (it == m_asset_map.end()) ? "["+name+"]" : it->second; }
 
     /**/
-    float getMBase() const { return m_base; }
-    float getMMiddle() const { return m_middle; }
-    float getMTop() const { return m_top; }
+    float getBottomLevel() const { return m_base; }
+    float getMiddleLevel() const { return m_middle; }
+    float getTopLevel() const { return m_top; }
 
     /*Scene settings*/
 protected:

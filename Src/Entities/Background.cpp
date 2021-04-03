@@ -8,7 +8,7 @@
 #include "Background.h"
 
 Background::Background(const std::string id) :
-        Entity(EntityGroup::Map, EntityType::Background, id)
+        Entity(EntityGroup::Background, EntityType::SkyScrapers, id)
 {
 
 }

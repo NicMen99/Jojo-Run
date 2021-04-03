@@ -1,6 +1,8 @@
 //
 // Created by Niccolo on 23/03/2021.
 //
+#include <iostream>
+
 #include "Game.h"
 #include "AnimationManager.h"
 

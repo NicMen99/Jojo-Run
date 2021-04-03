@@ -3,6 +3,8 @@
 //
 
 #include <memory>
+#include <iostream>
+
 #include "Game.h"
 #include "SoundManager.h"
 
@@ -21,8 +23,8 @@ void SoundManager::addSound(const std::string & sound_name, const std::string & 
 void SoundManager::playSound(const std::string &sound_name, float volume) {
     std::string sound_resource = m_sound_map[sound_name];
     if(m_active_sound != sound_resource) {
-        std::shared_ptr<sf::SoundBuffer> resource = RESOURCE->getSound(sound_resource);
-        m_sound.setBuffer(*resource);
+        std::shared_ptr<sf::SoundBuffer> sound = RESOURCE->getSound(sound_resource);
+        m_sound.setBuffer(*sound);
         m_active_sound = sound_resource;
     }
     m_sound.setVolume(volume);

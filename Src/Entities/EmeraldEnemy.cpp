@@ -39,7 +39,7 @@ void EmeraldEnemy::update(int32_t delta_time) {
         auto bl = FACTORY->createBullet(EntityType::EmeraldBullet);
         bl->setPosition(sf::Vector2f (getPosition()) - sf::Vector2f(bl->getBounds().width, 0)   );
         bl->setSpeed(sf::Vector2f {bl->getSpeed().x - 1000.f, 0.f});
-        SCENE->addNewEntity(bl);
+        SCENE->addSpawned(bl);
         playSound("EMERALDACTION");
         m_shoot_left -= 1;
     }

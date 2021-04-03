@@ -34,6 +34,7 @@ class Game {
 public:
     static Game* instance();
     static Game* instance(AbsGameState* fsm, GameConfig* cfg, ResourceManager* resm, Factory* fact, SceneManager* scn, GameStats* stats, ScoreManager* score);
+    static void  deleteInstance();
     ~Game();
 
     void init();

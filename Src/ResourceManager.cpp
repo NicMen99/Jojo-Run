@@ -15,6 +15,18 @@ ResourceManager::~ResourceManager() {
 
 }
 
+void ResourceManager::clearTextureCache() {
+    m_texture_map.clear();
+}
+
+void ResourceManager::clearFontCache() {
+    m_font_map.clear();
+}
+
+void ResourceManager::clearSoundCache() {
+    m_sound_map.clear();
+}
+
 std::shared_ptr<sf::Texture> ResourceManager::getTexture(const std::string & texture) {
     auto it = m_texture_map.find(texture);
     if(it != m_texture_map.end()) {
@@ -23,6 +35,7 @@ std::shared_ptr<sf::Texture> ResourceManager::getTexture(const std::string & tex
     std::shared_ptr<sf::Texture> resource = std::make_shared<sf::Texture>();
     bool result = resource->loadFromFile(CONFIG->getAssetPath(texture));
     if(!result) return nullptr;
+    /* mette nella cache */
     m_texture_map[texture] = resource;
     return m_texture_map[texture];
 }

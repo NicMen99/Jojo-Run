@@ -33,10 +33,10 @@ public:
 };
 
 class TestGameConfig : public GameConfig {
-public:
-void setTextureResource(const std::string & name, const std::string & asset_path){
-    m_asset_map.insert(std::make_pair(name, "TestAsset/" + asset_path));
-}
+    public:
+    void setTextureResource(const std::string & name, const std::string & asset_path){
+        m_asset_map.insert(std::make_pair(name, "TestAsset/" + asset_path));
+    }
 };
 
 class TestWidget : public Widget {
@@ -62,6 +62,20 @@ public:
 class WidgetTest : public ::testing::Test{
 public:
     sf::RenderWindow window;
+
+    WidgetTest() {
+        Game::deleteInstance();
+        auto state = new GameStateMachine(State::Init);
+        auto cfg   = new TestGameConfig();
+        auto resm  = new ResourceManager();
+        auto fact  = new Factory();
+        auto scn   = new SceneManager();
+        auto stats = new GameStats();
+        auto score = new ScoreManager();
+        Game* game = Game::instance(state, cfg, resm, fact, scn, stats, score);
+        game->init();
+        dynamic_cast<TestGameConfig*>(CONFIG)->setTextureResource("StonePlatform", "Platform.png");
+    }
 };
 
 TEST_F(WidgetTest, EmptyWidget){
@@ -123,19 +137,9 @@ TEST_F(WidgetTest, SetStringTimer){
 }
 
 TEST_F(WidgetTest, SetImage){
-    auto state = new GameStateMachine(State::Init);
-    auto cfg   = new TestGameConfig();
-    auto resm  = new ResourceManager();
-    auto fact  = new Factory();
-    auto scn   = new SceneManager();
-    auto stats = new GameStats();
-    auto score = new ScoreManager();
-    Game* game = Game::instance(state, cfg, resm, fact, scn, stats, score);
-    game->init();
     auto image_widget = std::unique_ptr<ImageWidget>(new ImageWidget("TEST"));
-    dynamic_cast<TestGameConfig*>(CONFIG)->setTextureResource("Platform", "Platform.png");
     image_widget->setPosition(sf::Vector2f(0,0));
-    image_widget->setTexture("Platform");
+    image_widget->setTexture("StonePlatform");
     image_widget->update(1000);
     ASSERT_EQ(image_widget->getSize(), sf::Vector2f(400,50));
 }

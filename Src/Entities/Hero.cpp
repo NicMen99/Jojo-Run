@@ -108,7 +108,7 @@ void Hero::event(GameEvent event, Entity * entity) {
         /*
          * Collisione con una piattaforma
          */
-        if (entity->getType() == EntityType::Platform) {
+        if (entity->getGroup() == EntityGroup::Platform) {
             sf::Rect<float> collider_rect = entity->getBounds();
             sf::Rect<float> hero_rect = getBounds();
             sf::Vector2f speed = getSpeed();
@@ -140,7 +140,7 @@ void Hero::event(GameEvent event, Entity * entity) {
             /*
              * Collisione con un ostacolo
              */
-        else if (entity->getGroup() == EntityGroup::Map) {
+        else if (entity->getGroup() == EntityGroup::Obstacle) {
             auto *obstacle = dynamic_cast<Obstacle *>(entity);
             int damage = !m_shield ? obstacle->getDamage() : 0;
             updateHealth(-damage);
@@ -220,7 +220,7 @@ void Hero::manageAttack() {
                 auto kf = FACTORY->createBullet(EntityType::Knife);
                 kf->setPosition(sf::Vector2f(getPosition()) + sf::Vector2f(getBounds().width, 0));
                 kf->setSpeed(sf::Vector2f {getSpeed().x + 1000.f, 0.f});
-                SCENE->addNewEntity(kf);
+                SCENE->addSpawned(kf);
                 updateKnives(-1);
             }
             break;

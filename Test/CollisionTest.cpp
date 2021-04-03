@@ -22,6 +22,7 @@ private:
     Game * game;
 public:
     CollisionTest(){
+        Game::deleteInstance();
         auto state = new GameStateMachine(State::Init);
         auto cfg   = new TestGameConfig();
         auto resm  = new ResourceManager();
@@ -31,19 +32,19 @@ public:
         auto score = new ScoreManager();
         game = Game::instance(state, cfg, resm, fact, scn, stats, score);
         game->init();
+        dynamic_cast<TestGameConfig*>(CONFIG)->setSceneSpeed({0,0});
+        dynamic_cast<TestGameConfig*>(CONFIG)->setTextureResource("StonePlatform", "Platform.png");
     }
 
 };
 
 TEST_F(CollisionTest, NoOverlap){
-    dynamic_cast<TestGameConfig*>(CONFIG)->setSceneSpeed({0,0});
 
     auto collision = std::unique_ptr<CollisionManager>(new CollisionManager);
-    auto entity1 = std::unique_ptr<Entity>(new Entity(EntityGroup::Map, EntityType::Platform, "Test1"));
-    auto entity2 = std::unique_ptr<Entity>(new Entity(EntityGroup::Map, EntityType::Platform, "Test2"));
-    dynamic_cast<TestGameConfig*>(CONFIG)->setTextureResource("Platform", "Platform.png");
+    auto entity1 = std::unique_ptr<Entity>(new Entity(EntityGroup::Platform, EntityType::StonePlatform, "Test1"));
+    auto entity2 = std::unique_ptr<Entity>(new Entity(EntityGroup::Platform, EntityType::StonePlatform, "Test2"));
     const std::list<FrameParams> frames = {
-            {1, "Platform", {0,0,10,10}, {0,0}, {false, false}}
+            {1, "StonePlatform", {0,0,10,10}, {0,0}, {false, false}}
     };
     entity1->addAnimation("DEFAULT", frames);
     entity1->setPosition(sf::Vector2f(10,10));
@@ -58,14 +59,11 @@ TEST_F(CollisionTest, NoOverlap){
 }
 
 TEST_F(CollisionTest, AdjacentEntitiesOnX){
-    dynamic_cast<TestGameConfig*>(CONFIG)->setSceneSpeed({0,0});
-
     auto collision = std::unique_ptr<CollisionManager>(new CollisionManager);
-    auto entity1 = std::unique_ptr<Entity>(new Entity(EntityGroup::Map, EntityType::Platform, "Test1"));
-    auto entity2 = std::unique_ptr<Entity>(new Entity(EntityGroup::Map, EntityType::Platform, "Test2"));
-    dynamic_cast<TestGameConfig*>(CONFIG)->setTextureResource("Platform", "Platform.png");
+    auto entity1 = std::unique_ptr<Entity>(new Entity(EntityGroup::Platform, EntityType::StonePlatform, "Test1"));
+    auto entity2 = std::unique_ptr<Entity>(new Entity(EntityGroup::Platform, EntityType::StonePlatform, "Test2"));
     const std::list<FrameParams> frames = {
-            {1, "Platform", {0,0,10,10}, {0,0}, {false, false}}
+            {1, "StonePlatform", {0,0,10,10}, {0,0}, {false, false}}
     };
     entity1->addAnimation("DEFAULT", frames);
     entity1->setPosition(sf::Vector2f(0,0));
@@ -79,14 +77,11 @@ TEST_F(CollisionTest, AdjacentEntitiesOnX){
     ASSERT_EQ(collision->collisionCheck(entity1.get(),entity2.get()), false);}
 
 TEST_F(CollisionTest, AdjacentEntitiesOnY){
-    dynamic_cast<TestGameConfig*>(CONFIG)->setSceneSpeed({0,0});
-
     auto collision = std::unique_ptr<CollisionManager>(new CollisionManager);
-    auto entity1 = std::unique_ptr<Entity>(new Entity(EntityGroup::Map, EntityType::Platform, "Test1"));
-    auto entity2 = std::unique_ptr<Entity>(new Entity(EntityGroup::Map, EntityType::Platform, "Test2"));
-    dynamic_cast<TestGameConfig*>(CONFIG)->setTextureResource("Platform", "Platform.png");
+    auto entity1 = std::unique_ptr<Entity>(new Entity(EntityGroup::Platform, EntityType::StonePlatform, "Test1"));
+    auto entity2 = std::unique_ptr<Entity>(new Entity(EntityGroup::Platform, EntityType::StonePlatform, "Test2"));
     const std::list<FrameParams> frames = {
-            {1, "Platform", {0,0,10,10}, {0,0}, {false, false}}
+            {1, "StonePlatform", {0,0,10,10}, {0,0}, {false, false}}
     };
     entity1->addAnimation("DEFAULT", frames);
     entity1->setPosition(sf::Vector2f(0,0));
@@ -101,14 +96,11 @@ TEST_F(CollisionTest, AdjacentEntitiesOnY){
 }
 
 TEST_F(CollisionTest, OverlapX){
-    dynamic_cast<TestGameConfig*>(CONFIG)->setSceneSpeed({0,0});
-
     auto collision = std::unique_ptr<CollisionManager>(new CollisionManager);
-    auto entity1 = std::unique_ptr<Entity>(new Entity(EntityGroup::Map, EntityType::Platform, "Test1"));
-    auto entity2 = std::unique_ptr<Entity>(new Entity(EntityGroup::Map, EntityType::Platform, "Test2"));
-    dynamic_cast<TestGameConfig*>(CONFIG)->setTextureResource("Platform", "Platform.png");
+    auto entity1 = std::unique_ptr<Entity>(new Entity(EntityGroup::Platform, EntityType::StonePlatform, "Test1"));
+    auto entity2 = std::unique_ptr<Entity>(new Entity(EntityGroup::Platform, EntityType::StonePlatform, "Test2"));
     const std::list<FrameParams> frames = {
-            {1, "Platform", {0,0,10,10}, {0,0}, {false, false}}
+            {1, "StonePlatform", {0,0,10,10}, {0,0}, {false, false}}
     };
     entity1->addAnimation("DEFAULT", frames);
     entity1->setPosition(sf::Vector2f(0,0));
@@ -123,14 +115,11 @@ TEST_F(CollisionTest, OverlapX){
 }
 
 TEST_F(CollisionTest, OverlapY){
-    dynamic_cast<TestGameConfig*>(CONFIG)->setSceneSpeed({0,0});
-
     auto collision = std::unique_ptr<CollisionManager>(new CollisionManager);
-    auto entity1 = std::unique_ptr<Entity>(new Entity(EntityGroup::Map, EntityType::Platform, "Test1"));
-    auto entity2 = std::unique_ptr<Entity>(new Entity(EntityGroup::Map, EntityType::Platform, "Test2"));
-    dynamic_cast<TestGameConfig*>(CONFIG)->setTextureResource("Platform", "Platform.png");
+    auto entity1 = std::unique_ptr<Entity>(new Entity(EntityGroup::Platform, EntityType::StonePlatform, "Test1"));
+    auto entity2 = std::unique_ptr<Entity>(new Entity(EntityGroup::Platform, EntityType::StonePlatform, "Test2"));
     const std::list<FrameParams> frames = {
-            {1, "Platform", {0,0,10,10}, {0,0}, {false, false}}
+            {1, "StonePlatform", {0,0,10,10}, {0,0}, {false, false}}
     };
     entity1->addAnimation("DEFAULT", frames);
     entity1->setPosition(sf::Vector2f(0,0));
@@ -145,14 +134,11 @@ TEST_F(CollisionTest, OverlapY){
 }
 
 TEST_F(CollisionTest, OverlapXY){
-    dynamic_cast<TestGameConfig*>(CONFIG)->setSceneSpeed({0,0});
-
     auto collision = std::unique_ptr<CollisionManager>(new CollisionManager);
-    auto entity1 = std::unique_ptr<Entity>(new Entity(EntityGroup::Map, EntityType::Platform, "Test1"));
-    auto entity2 = std::unique_ptr<Entity>(new Entity(EntityGroup::Map, EntityType::Platform, "Test2"));
-    dynamic_cast<TestGameConfig*>(CONFIG)->setTextureResource("Platform", "Platform.png");
+    auto entity1 = std::unique_ptr<Entity>(new Entity(EntityGroup::Platform, EntityType::StonePlatform, "Test1"));
+    auto entity2 = std::unique_ptr<Entity>(new Entity(EntityGroup::Platform, EntityType::StonePlatform, "Test2"));
     const std::list<FrameParams> frames = {
-            {1, "Platform", {0,0,10,10}, {0,0}, {false, false}}
+            {1, "StonePlatform", {0,0,10,10}, {0,0}, {false, false}}
     };
     entity1->addAnimation("DEFAULT", frames);
     entity1->setPosition(sf::Vector2f(0,0));
@@ -167,8 +153,6 @@ TEST_F(CollisionTest, OverlapXY){
 }
 
 TEST_F(CollisionTest, HeroPlatformCase1){
-    dynamic_cast<TestGameConfig*>(CONFIG)->setSceneSpeed({0,0});
-
     /*
      * Istante attuale : Top Hero sopra Top Piattaforma
      * Istante precedente : Bottom Hero sopra Top Piattaforma
@@ -178,11 +162,10 @@ TEST_F(CollisionTest, HeroPlatformCase1){
      */
 
     auto collision = std::unique_ptr<CollisionManager>(new CollisionManager);
-    auto entity1 = std::unique_ptr<Entity>(new Entity(EntityGroup::Map, EntityType::Platform, "Test2"));
+    auto entity1 = std::unique_ptr<Entity>(new Entity(EntityGroup::Platform, EntityType::StonePlatform, "Test2"));
     auto entity2 = std::unique_ptr<Entity>(new Entity(EntityGroup::Hero, EntityType::Hero, "Test1"));
-    dynamic_cast<TestGameConfig*>(CONFIG)->setTextureResource("Platform", "Platform.png");
     const std::list<FrameParams> frames = {
-            {1, "Platform", {0,0,10,10}, {0,0}, {false, false}}
+            {1, "StonePlatform", {0,0,10,10}, {0,0}, {false, false}}
     };
 
     entity1->addAnimation("DEFAULT", frames);
@@ -200,8 +183,6 @@ TEST_F(CollisionTest, HeroPlatformCase1){
 }
 
 TEST_F(CollisionTest, HeroPlatformCase2){
-    dynamic_cast<TestGameConfig*>(CONFIG)->setSceneSpeed({0,0});
-
     /*
      * Istante attuale : Top Hero sopra Top Piattaforma
      * Istante precedente : Bottom Hero sotto Top Piattaforma
@@ -211,11 +192,10 @@ TEST_F(CollisionTest, HeroPlatformCase2){
      */
 
     auto collision = std::unique_ptr<CollisionManager>(new CollisionManager);
-    auto entity1 = std::unique_ptr<Entity>(new Entity(EntityGroup::Map, EntityType::Platform, "Test2"));
+    auto entity1 = std::unique_ptr<Entity>(new Entity(EntityGroup::Platform, EntityType::StonePlatform, "Test2"));
     auto entity2 = std::unique_ptr<Entity>(new Entity(EntityGroup::Hero, EntityType::Hero, "Test1"));
-    dynamic_cast<TestGameConfig*>(CONFIG)->setTextureResource("Platform", "Platform.png");
     const std::list<FrameParams> frames = {
-            {1, "Platform", {0,0,10,10}, {0,0}, {false, false}}
+            {1, "StonePlatform", {0,0,10,10}, {0,0}, {false, false}}
     };
 
     entity1->addAnimation("DEFAULT", frames);
@@ -233,8 +213,6 @@ TEST_F(CollisionTest, HeroPlatformCase2){
 }
 
 TEST_F(CollisionTest, HeroPlatformCase3){
-    dynamic_cast<TestGameConfig*>(CONFIG)->setSceneSpeed({0,0});
-
     /*
      * Istante attuale : Top Hero sotto Top Piattaforma
      * Istante precedente : Top Hero sotto Bottom Piattaforma
@@ -244,11 +222,10 @@ TEST_F(CollisionTest, HeroPlatformCase3){
      */
 
     auto collision = std::unique_ptr<CollisionManager>(new CollisionManager);
-    auto entity1 = std::unique_ptr<Entity>(new Entity(EntityGroup::Map, EntityType::Platform, "Test2"));
+    auto entity1 = std::unique_ptr<Entity>(new Entity(EntityGroup::Platform, EntityType::StonePlatform, "Test2"));
     auto entity2 = std::unique_ptr<Entity>(new Entity(EntityGroup::Hero, EntityType::Hero, "Test1"));
-    dynamic_cast<TestGameConfig*>(CONFIG)->setTextureResource("Platform", "Platform.png");
     const std::list<FrameParams> frames = {
-            {1, "Platform", {0,0,10,10}, {0,0}, {false, false}}
+            {1, "StonePlatform", {0,0,10,10}, {0,0}, {false, false}}
     };
 
     entity1->addAnimation("DEFAULT", frames);
@@ -266,8 +243,6 @@ TEST_F(CollisionTest, HeroPlatformCase3){
 }
 
 TEST_F(CollisionTest, HeroPlatformCase4){
-    dynamic_cast<TestGameConfig*>(CONFIG)->setSceneSpeed({0,0});
-
     /*
      * Istante attuale : Top Hero sotto Top Piattaforma
      * Istante precedente : Top Hero sopra Bottom Piattaforma
@@ -277,11 +252,10 @@ TEST_F(CollisionTest, HeroPlatformCase4){
      */
 
     auto collision = std::unique_ptr<CollisionManager>(new CollisionManager);
-    auto entity1 = std::unique_ptr<Entity>(new Entity(EntityGroup::Map, EntityType::Platform, "Test2"));
+    auto entity1 = std::unique_ptr<Entity>(new Entity(EntityGroup::Platform, EntityType::StonePlatform, "Test2"));
     auto entity2 = std::unique_ptr<Entity>(new Entity(EntityGroup::Hero, EntityType::Hero, "Test1"));
-    dynamic_cast<TestGameConfig*>(CONFIG)->setTextureResource("Platform", "Platform.png");
     const std::list<FrameParams> frames = {
-            {1, "Platform", {0,0,10,10}, {0,0}, {false, false}}
+            {1, "StonePlatform", {0,0,10,10}, {0,0}, {false, false}}
     };
 
     entity1->addAnimation("DEFAULT", frames);
@@ -299,14 +273,11 @@ TEST_F(CollisionTest, HeroPlatformCase4){
 }
 
 TEST_F(CollisionTest, SinglePixelEntities){
-    dynamic_cast<TestGameConfig*>(CONFIG)->setSceneSpeed({0,0});
-
     auto collision = std::unique_ptr<CollisionManager>(new CollisionManager);
-    auto entity1 = std::unique_ptr<Entity>(new Entity(EntityGroup::Map, EntityType::Platform, "Test1"));
-    auto entity2 = std::unique_ptr<Entity>(new Entity(EntityGroup::Map, EntityType::Platform, "Test2"));
-    dynamic_cast<TestGameConfig*>(CONFIG)->setTextureResource("Platform", "Platform.png");
+    auto entity1 = std::unique_ptr<Entity>(new Entity(EntityGroup::Platform, EntityType::StonePlatform, "Test1"));
+    auto entity2 = std::unique_ptr<Entity>(new Entity(EntityGroup::Platform, EntityType::StonePlatform, "Test2"));
     const std::list<FrameParams> frames = {
-            {1, "Platform", {0,0,1,1}, {0,0}, {false, false}}
+            {1, "StonePlatform", {0,0,1,1}, {0,0}, {false, false}}
     };
     entity1->addAnimation("DEFAULT", frames);
     entity1->setPosition(sf::Vector2f(10,10));

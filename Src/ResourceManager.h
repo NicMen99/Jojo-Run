@@ -18,6 +18,9 @@ class ResourceManager
 public:
     ResourceManager();
     virtual ~ResourceManager();
+    void clearTextureCache();
+    void clearFontCache();
+    void clearSoundCache();
 
     std::shared_ptr<sf::Texture> getTexture(const std::string & texture);
     std::shared_ptr<sf::SoundBuffer> getSound(const std::string & sound);

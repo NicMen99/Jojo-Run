@@ -17,6 +17,7 @@
 #include "Entities/Knife.h"
 #include "Entities/Platform.h"
 #include "Entities/Background.h"
+#include "AnimationManager.h"
 
 #include "Factory.h"
 
@@ -95,8 +96,19 @@ std::unique_ptr<Entity> Factory::createBullet(EntityType type) {
 }
 
 std::unique_ptr<Entity> Factory::createPlatform(EntityType type) {
-    auto * platform = new Platform("Platform");
-    platform->init();
+    Platform * platform;
+    switch(type){
+        case EntityType::StonePlatform:
+        default:
+        {
+            platform = new Platform("PLATFORM");
+            platform->init();
+            const std::list<FrameParams> frames = {
+                    {1, "PLATFORM", {0,0,0,0}, {0,0}, {false, false}}
+            };
+            platform->addAnimation("DEFAULT", frames);
+        }
+    }
     return std::unique_ptr<Entity>(platform);
 }
 
