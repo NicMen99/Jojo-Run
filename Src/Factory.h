@@ -15,8 +15,9 @@ public:
     Factory();
     virtual ~Factory();
 
-    virtual std::unique_ptr<Entity> createObstacle(EntityType type);
+    virtual std::unique_ptr<Entity> createHero();
     virtual std::unique_ptr<Entity> createEnemy(EntityType type);
+    virtual std::unique_ptr<Entity> createObstacle(EntityType type);
     virtual std::unique_ptr<Entity> createPowerUp(EntityType type);
     virtual std::unique_ptr<Entity> createBullet(EntityType type);
     virtual std::unique_ptr<Entity> createPlatform(EntityType type);

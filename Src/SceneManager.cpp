@@ -411,11 +411,8 @@ void SceneManager::createPowerup(EntityType pt, sf::Vector2f position) {
 }
 
 void SceneManager::createHero() {
-    auto * hero = new Hero();
-    hero->init();
-    hero->setPosition(sf::Vector2f(200.f, CONFIG->getBottomLevel() - hero->getBounds().height));
-
-    m_hero = std::unique_ptr<Entity>(hero);
+    m_hero = FACTORY->createHero();
+    m_hero->setPosition(sf::Vector2f(200.f, CONFIG->getBottomLevel() - m_hero->getBounds().height));
 }
 
 void SceneManager::createScoreHUD() {
@@ -423,4 +420,3 @@ void SceneManager::createScoreHUD() {
     hud->init();
     m_scorehud = std::unique_ptr<Entity>(hud);
 }
-

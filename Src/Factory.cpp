@@ -5,6 +5,7 @@
 #include <iostream>
 
 #include "Game.h"
+#include "Entities/Hero.h"
 #include "Entities/Block.h"
 #include "Entities/Fire.h"
 #include "Entities/EmeraldEnemy.h"
@@ -29,6 +30,53 @@ Factory::~Factory() {
 
 }
 
+std::unique_ptr<Entity> Factory::createHero() {
+    auto * hero = new Hero();
+    hero->init();
+    const std::list<FrameParams> frames = {
+        {1, "playerTexture", {0,0,0,0}, {0,0}, {false, false}}
+    };
+    hero->addAnimation("DEFAULT", frames);
+    hero->addSound("COLLISION", "collisionSound");
+    hero->addSound("SHIELD", "shieldSound");
+    hero->addSound("SHIELDON", "shieldOn");
+    return std::unique_ptr<Entity>(hero);
+}
+
+std::unique_ptr<Entity> Factory::createEnemy(EntityType type) {
+    if (type == EntityType::EmeraldEnemy){
+        auto * enemy = new EmeraldEnemy("EmeraldEnemy");
+        enemy->init();
+        const std::list<FrameParams> frames = {
+                {1, "emeraldEnemyTexture", {0,0,0,0}, {0,0}, {true, false}}
+        };
+        enemy->addAnimation("DEFAULT", frames);
+        enemy->addSound("EMERALDACTION", "emeraldEnemyShout");
+        return std::unique_ptr<Entity>(enemy);
+    }
+    else if (type == EntityType::HamonEnemy){
+        auto * enemy =new HamonEnemy("HamonEnemy");
+        enemy->init();
+        const std::list<FrameParams> frames = {
+                {1, "hamonEnemyTexture", {0,0,0,0}, {0,0}, {true, false}}
+        };
+        enemy->addAnimation("DEFAULT", frames);
+        enemy->addSound("HAMONACTION", "hamonEnemyShout");
+        return std::unique_ptr<Entity>(enemy);
+    }
+    else if (type == EntityType::FireEnemy){
+        auto * enemy = new FireEnemy("FireEnemy");
+        enemy->init();
+        const std::list<FrameParams> frames = {
+                {1, "fireEnemy", {0,0,0,0}, {0,0}, {true, false}}
+        };
+        enemy->addAnimation("DEFAULT", frames);
+        enemy->addSound("FIREACTION", "fireEnemyShout");
+        return std::unique_ptr<Entity>(enemy);
+    }
+    return nullptr;
+}
+
 std::unique_ptr<Entity> Factory::createObstacle(EntityType type) {
     if(type == EntityType::Block) {
         auto * obstacle = new Block("Block");
@@ -48,40 +96,6 @@ std::unique_ptr<Entity> Factory::createObstacle(EntityType type) {
         };
         obstacle->addAnimation("DEFAULT", frames);
         return std::unique_ptr<Entity>(obstacle);
-    }
-    return nullptr;
-}
-
-std::unique_ptr<Entity> Factory::createEnemy(EntityType type) {
-    if (type == EntityType::EmeraldEnemy){
-        auto * enemy = new EmeraldEnemy("EmeraldEnemy");
-        enemy->init();
-        const std::list<FrameParams> frames = {
-            {1, "emeraldEnemyTexture", {0,0,0,0}, {0,0}, {true, false}}
-        };
-        enemy->addAnimation("DEFAULT", frames);
-        enemy->addSound("EMERALDACTION", "emeraldEnemyShout");
-        return std::unique_ptr<Entity>(enemy);
-    }
-    else if (type == EntityType::HamonEnemy){
-        auto * enemy =new HamonEnemy("HamonEnemy");
-        enemy->init();
-        const std::list<FrameParams> frames = {
-            {1, "hamonEnemyTexture", {0,0,0,0}, {0,0}, {true, false}}
-        };
-        enemy->addAnimation("DEFAULT", frames);
-        enemy->addSound("HAMONACTION", "hamonEnemyShout");
-        return std::unique_ptr<Entity>(enemy);
-    }
-    else if (type == EntityType::FireEnemy){
-        auto * enemy = new FireEnemy("FireEnemy");
-        enemy->init();
-        const std::list<FrameParams> frames = {
-            {1, "fireEnemy", {0,0,0,0}, {0,0}, {true, false}}
-        };
-        enemy->addAnimation("DEFAULT", frames);
-        enemy->addSound("FIREACTION", "fireEnemyShout");
-        return std::unique_ptr<Entity>(enemy);
     }
     return nullptr;
 }

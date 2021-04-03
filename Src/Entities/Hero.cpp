@@ -24,22 +24,11 @@ Hero::~Hero() {
 
 void Hero::init()
 {
-    const std::list<FrameParams> frames = {
-            {1, "playerTexture", {0,0,0,0}, {0,0}, {false, false}}
-    };
-    addAnimation("DEFAULT", frames);
-
     setSpeed(CONFIG->getSceneSpeed());
-
     updateHealth(300);
     updateKnives(0);
     m_maxhealthpoints = 300;
     m_maxknives = 8;
-
-    addSound("COLLISION", "collisionSound");
-    addSound("SHIELD", "shieldSound");
-    addSound("SHIELDON", "shieldOn");
-
     m_inputManager.init();
     m_inputManager.registerKey(sf::Keyboard::Key::Space);
     m_inputManager.registerKey(sf::Keyboard::Key::K);
