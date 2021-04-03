@@ -34,6 +34,7 @@ void SceneManager::init()
     m_enemies.clear();
     m_powerups.clear();
     m_bullets.clear();
+    m_spawned_objects.clear();
     m_hero.reset();
     m_scorehud.reset();
 
@@ -75,7 +76,7 @@ void SceneManager::update(int32_t delta_time) {
     }
 
     /*
-     * Map Update
+     * Scene Update
      */
     m_hero->update(delta_time);
     for (auto & it : m_background1) {

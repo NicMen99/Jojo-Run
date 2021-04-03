@@ -25,8 +25,8 @@ Hero::~Hero() {
 void Hero::init()
 {
     setSpeed(CONFIG->getSceneSpeed());
-    updateHealth(300);
-    updateKnives(0);
+    m_health = 300;
+    m_knives = 0;
     m_maxhealthpoints = 300;
     m_maxknives = 8;
     m_inputManager.init();
