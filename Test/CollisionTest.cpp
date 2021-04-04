@@ -35,7 +35,6 @@ public:
         dynamic_cast<TestGameConfig*>(CONFIG)->setSceneSpeed({0,0});
         dynamic_cast<TestGameConfig*>(CONFIG)->setTextureResource("StonePlatform", "Platform.png");
     }
-
 };
 
 TEST_F(CollisionTest, NoOverlap){
@@ -55,7 +54,10 @@ TEST_F(CollisionTest, NoOverlap){
     entity2->setPosition(sf::Vector2f(500,500));
     entity2->update(1000);
 
-    ASSERT_EQ(collision->collisionCheck(entity1.get(),entity2.get()), false);
+    CollisionTag tag1, tag2;
+    ASSERT_EQ(collision->collisionCheck(entity1.get(),entity2.get(), tag1, tag2), false);
+    ASSERT_EQ(tag1, CollisionTag::None);
+    ASSERT_EQ(tag2, CollisionTag::None);
 }
 
 TEST_F(CollisionTest, AdjacentEntitiesOnX){
@@ -74,7 +76,11 @@ TEST_F(CollisionTest, AdjacentEntitiesOnX){
     entity2->setPosition(sf::Vector2f(10,0));
     entity2->update(1000);
 
-    ASSERT_EQ(collision->collisionCheck(entity1.get(),entity2.get()), false);}
+    CollisionTag tag1, tag2;
+    ASSERT_EQ(collision->collisionCheck(entity1.get(),entity2.get(), tag1, tag2), false);
+    ASSERT_EQ(tag1, CollisionTag::None);
+    ASSERT_EQ(tag2, CollisionTag::None);
+}
 
 TEST_F(CollisionTest, AdjacentEntitiesOnY){
     auto collision = std::unique_ptr<CollisionManager>(new CollisionManager);
@@ -92,7 +98,10 @@ TEST_F(CollisionTest, AdjacentEntitiesOnY){
     entity2->setPosition(sf::Vector2f(0,10));
     entity2->update(1000);
 
-    ASSERT_EQ(collision->collisionCheck(entity1.get(),entity2.get()), false);
+    CollisionTag tag1, tag2;
+    ASSERT_EQ(collision->collisionCheck(entity1.get(),entity2.get(), tag1, tag2), false);
+    ASSERT_EQ(tag1, CollisionTag::None);
+    ASSERT_EQ(tag2, CollisionTag::None);
 }
 
 TEST_F(CollisionTest, OverlapX){
@@ -111,7 +120,10 @@ TEST_F(CollisionTest, OverlapX){
     entity2->setPosition(sf::Vector2f(3,0));
     entity2->update(1000);
 
-    ASSERT_EQ(collision->collisionCheck(entity1.get(),entity2.get()), true);
+    CollisionTag tag1, tag2;
+    ASSERT_EQ(collision->collisionCheck(entity1.get(),entity2.get(), tag1, tag2), true);
+    ASSERT_EQ(tag1, CollisionTag::Any);
+    ASSERT_EQ(tag2, CollisionTag::Any);
 }
 
 TEST_F(CollisionTest, OverlapY){
@@ -130,7 +142,10 @@ TEST_F(CollisionTest, OverlapY){
     entity2->setPosition(sf::Vector2f(0,3));
     entity2->update(1000);
 
-    ASSERT_EQ(collision->collisionCheck(entity1.get(),entity2.get()), true);
+    CollisionTag tag1, tag2;
+    ASSERT_EQ(collision->collisionCheck(entity1.get(),entity2.get(), tag1, tag2), true);
+    ASSERT_EQ(tag1, CollisionTag::Any);
+    ASSERT_EQ(tag2, CollisionTag::Any);
 }
 
 TEST_F(CollisionTest, OverlapXY){
@@ -149,7 +164,10 @@ TEST_F(CollisionTest, OverlapXY){
     entity2->setPosition(sf::Vector2f(5,5));
     entity2->update(1000);
 
-    ASSERT_EQ(collision->collisionCheck(entity1.get(),entity2.get()), true);
+    CollisionTag tag1, tag2;
+    ASSERT_EQ(collision->collisionCheck(entity1.get(),entity2.get(), tag1, tag2), true);
+    ASSERT_EQ(tag1, CollisionTag::Any);
+    ASSERT_EQ(tag2, CollisionTag::Any);
 }
 
 TEST_F(CollisionTest, HeroPlatformCase1){
@@ -179,7 +197,10 @@ TEST_F(CollisionTest, HeroPlatformCase1){
     entity2->setSpeed(sf::Vector2f(5,1));
     entity2->update(1000);
 
-    ASSERT_EQ(collision->collisionCheck(entity2.get(),entity1.get()), true);
+    CollisionTag tag1, tag2;
+    ASSERT_EQ(collision->collisionCheck(entity2.get(),entity1.get(), tag2, tag1), true);
+    ASSERT_EQ(tag2, CollisionTag::Bottom);
+    ASSERT_EQ(tag1, CollisionTag::Top);
 }
 
 TEST_F(CollisionTest, HeroPlatformCase2){
@@ -209,7 +230,10 @@ TEST_F(CollisionTest, HeroPlatformCase2){
     entity2->setSpeed(sf::Vector2f(10,1));
     entity2->update(1000);
 
-    ASSERT_EQ(collision->collisionCheck(entity2.get(),entity1.get()), false);
+    CollisionTag tag1, tag2;
+    ASSERT_EQ(collision->collisionCheck(entity2.get(),entity1.get(), tag2, tag1), false);
+    ASSERT_EQ(tag2, CollisionTag::None);
+    ASSERT_EQ(tag1, CollisionTag::None);
 }
 
 TEST_F(CollisionTest, HeroPlatformCase3){
@@ -239,7 +263,10 @@ TEST_F(CollisionTest, HeroPlatformCase3){
     entity2->setSpeed(sf::Vector2f(10,-1));
     entity2->update(1000);
 
-    ASSERT_EQ(collision->collisionCheck(entity2.get(),entity1.get()), true);
+    CollisionTag tag1, tag2;
+    ASSERT_EQ(collision->collisionCheck(entity2.get(),entity1.get(), tag2, tag1), true);
+    ASSERT_EQ(tag2, CollisionTag::Top);
+    ASSERT_EQ(tag1, CollisionTag::Bottom);
 }
 
 TEST_F(CollisionTest, HeroPlatformCase4){
@@ -269,7 +296,10 @@ TEST_F(CollisionTest, HeroPlatformCase4){
     entity2->setSpeed(sf::Vector2f(10,-1));
     entity2->update(1000);
 
-    ASSERT_EQ(collision->collisionCheck(entity2.get(),entity1.get()), false);
+    CollisionTag tag1, tag2;
+    ASSERT_EQ(collision->collisionCheck(entity2.get(),entity1.get(), tag2, tag1), false);
+    ASSERT_EQ(tag2, CollisionTag::None);
+    ASSERT_EQ(tag1, CollisionTag::None);
 }
 
 TEST_F(CollisionTest, SinglePixelEntities){
@@ -288,5 +318,8 @@ TEST_F(CollisionTest, SinglePixelEntities){
     entity2->setSpeed(sf::Vector2f(0,0));
     entity2->update(1000);
 
-    ASSERT_EQ(collision->collisionCheck(entity1.get(),entity2.get()), true);
+    CollisionTag tag1, tag2;
+    ASSERT_EQ(collision->collisionCheck(entity1.get(),entity2.get(), tag1, tag2), true);
+    ASSERT_EQ(tag1, CollisionTag::Any);
+    ASSERT_EQ(tag2, CollisionTag::Any);
 }

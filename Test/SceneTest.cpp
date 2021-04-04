@@ -15,7 +15,7 @@ public:
     void clear() {
         m_asset_map.clear();
     }
-    void seResource(const std::string & name, const std::string & asset_path){
+    void setResource(const std::string & name, const std::string & asset_path){
         m_asset_map.insert(std::make_pair(name, "TestAsset/" + asset_path));
     }
 };
@@ -83,27 +83,28 @@ public:
         auto score = new ScoreManager();
         game = Game::instance(state, cfg, resm, fact, scn, stats, score);
         dynamic_cast<TestGameConfig*>(CONFIG)->clear();
-        dynamic_cast<TestGameConfig*>(CONFIG)->seResource("PLATFORM", "Platform.png");
-        dynamic_cast<TestGameConfig*>(CONFIG)->seResource("playerTexture", "Platform.png");
+        dynamic_cast<TestGameConfig*>(CONFIG)->setResource("PLATFORM", "Platform.png");
+        dynamic_cast<TestGameConfig*>(CONFIG)->setResource("PLAYER_RUN", "Texture.png");
+        dynamic_cast<TestGameConfig*>(CONFIG)->setResource("PLAYER_JUMP", "Texture.png");
 
-        dynamic_cast<TestGameConfig*>(CONFIG)->seResource("BG", "Background.png");
-        dynamic_cast<TestGameConfig*>(CONFIG)->seResource("Background1", "Background.png");
-        dynamic_cast<TestGameConfig*>(CONFIG)->seResource("Foreground", "Background.png");
-        dynamic_cast<TestGameConfig*>(CONFIG)->seResource("Middle", "Background.png");
+        dynamic_cast<TestGameConfig*>(CONFIG)->setResource("BG", "Background.png");
+        dynamic_cast<TestGameConfig*>(CONFIG)->setResource("Background1", "Background.png");
+        dynamic_cast<TestGameConfig*>(CONFIG)->setResource("Foreground", "Background.png");
+        dynamic_cast<TestGameConfig*>(CONFIG)->setResource("Middle", "Background.png");
 
-        dynamic_cast<TestGameConfig*>(CONFIG)->seResource("fireEnemyTexture", "Texture.png");
-        dynamic_cast<TestGameConfig*>(CONFIG)->seResource("hamonEnemyTexture", "Texture.png");
-        dynamic_cast<TestGameConfig*>(CONFIG)->seResource("emeraldEnemyTexture", "Texture.png");
+        dynamic_cast<TestGameConfig*>(CONFIG)->setResource("fireEnemyTexture", "Texture.png");
+        dynamic_cast<TestGameConfig*>(CONFIG)->setResource("hamonEnemyTexture", "Texture.png");
+        dynamic_cast<TestGameConfig*>(CONFIG)->setResource("emeraldEnemyTexture", "Texture.png");
 
-        dynamic_cast<TestGameConfig*>(CONFIG)->seResource("blockTexture", "Texture.png");
-        dynamic_cast<TestGameConfig*>(CONFIG)->seResource("hamonBlockTexture", "Texture.png");
-        dynamic_cast<TestGameConfig*>(CONFIG)->seResource("fireBlockTexture", "Texture.png");
-        dynamic_cast<TestGameConfig*>(CONFIG)->seResource("emeraldBlockTexture", "Texture.png");
+        dynamic_cast<TestGameConfig*>(CONFIG)->setResource("blockTexture", "Texture.png");
+        dynamic_cast<TestGameConfig*>(CONFIG)->setResource("hamonBlockTexture", "Texture.png");
+        dynamic_cast<TestGameConfig*>(CONFIG)->setResource("fireBlockTexture", "Texture.png");
+        dynamic_cast<TestGameConfig*>(CONFIG)->setResource("emeraldBlockTexture", "Texture.png");
 
-        dynamic_cast<TestGameConfig*>(CONFIG)->seResource("fireWallTexture", "Texture.png");
-        dynamic_cast<TestGameConfig*>(CONFIG)->seResource("shieldPowerUpTexture", "Texture.png");
-        dynamic_cast<TestGameConfig*>(CONFIG)->seResource("knifeTexture", "Texture.png");
-        dynamic_cast<TestGameConfig*>(CONFIG)->seResource("Fire", "Texture.png");
+        dynamic_cast<TestGameConfig*>(CONFIG)->setResource("fireWallTexture", "Texture.png");
+        dynamic_cast<TestGameConfig*>(CONFIG)->setResource("shieldPowerUpTexture", "Texture.png");
+        dynamic_cast<TestGameConfig*>(CONFIG)->setResource("knifeTexture", "Texture.png");
+        dynamic_cast<TestGameConfig*>(CONFIG)->setResource("Fire", "Texture.png");
     }
 };
 

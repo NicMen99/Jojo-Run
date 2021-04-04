@@ -33,10 +33,38 @@ Factory::~Factory() {
 std::unique_ptr<Entity> Factory::createHero() {
     auto * hero = new Hero();
     hero->init();
-    const std::list<FrameParams> frames = {
-        {1, "playerTexture", {0,0,0,0}, {0,0}, {false, false}}
+    const std::list<FrameParams> run_animation = {
+            {3, "PLAYER_RUN", {0,0,113,87}, {0,0}, {false, false}},
+            {3, "PLAYER_RUN", {118,0,117,87}, {0,0}, {false, false}},
+            {3, "PLAYER_RUN", {241,0,83,87}, {0,0}, {false, false}},
+            {3, "PLAYER_RUN", {331,0,79,87}, {0,0}, {false, false}},
     };
-    hero->addAnimation("DEFAULT", frames);
+    hero->addAnimation("RUN", run_animation);
+    const std::list<FrameParams> jump_animation = {
+            {4, "PLAYER_JUMP", {0,58,67,118}, {0,0}, {false, false}},
+            {4, "PLAYER_JUMP", {74,21,78,130}, {0,0}, {false, false}},
+            {4, "PLAYER_JUMP", {160,20,78,131}, {0,0}, {false, false}},
+            {4, "PLAYER_JUMP", {246,27,77,78}, {0,0}, {false, false}},
+            {4, "PLAYER_JUMP", {330,28,83,71}, {0,0}, {false, false}},
+            {4, "PLAYER_JUMP", {420,31,85,64}, {0,0}, {false, false}},
+    };
+    hero->addAnimation("JUMP", jump_animation);
+    const std::list<FrameParams> fall_animation = {
+            {4, "PLAYER_JUMP", {420,31,85,64}, {0,0}, {false, false}},
+/*
+            {4, "PLAYER_JUMP", {513,16,78,88}, {0,0}, {false, false}},
+            {4, "PLAYER_JUMP", {601,0,60,136}, {0,0}, {false, false}},
+            {4, "PLAYER_JUMP", {673,1,54,148}, {0,0}, {false, false}},
+            {4, "PLAYER_JUMP", {736,1,54,148}, {0,0}, {false, false}},
+*/
+    };
+    hero->addAnimation("FALL", fall_animation);
+    const std::list<FrameParams> fall_animation2 = {
+            {4, "PLAYER_JUMP", {804,98,79,78}, {0,0}, {false, false}},
+            {4, "PLAYER_JUMP", {892,70,81,106}, {0,0}, {false, false}},
+    };
+    hero->addAnimation("FALL2", fall_animation2);
+
     hero->addSound("COLLISION", "collisionSound");
     hero->addSound("SHIELD", "shieldSound");
     hero->addSound("SHIELDON", "shieldOn");

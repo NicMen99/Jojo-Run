@@ -330,20 +330,26 @@ bool SceneManager::generatePowerups(bool random) {
 }
 
 void SceneManager::manageCollisions() {
+    CollisionTag tag1;
+    CollisionTag tag2;
 
     if(m_hero!= nullptr && m_hero->isEnabled()) {
         /*
          * Collisione Eroe Piattaforma
          */
         for (auto & platform : m_platforms) {
-            if(m_collisionManager->collisionCheck(m_hero.get(), platform.get()))
-                m_hero->event(GameEvent::Collision, platform.get());
+            if(m_collisionManager->collisionCheck(m_hero.get(), platform.get(), tag1, tag2)) {
+                GameEvent ev = tag1==CollisionTag::Top ? GameEvent::CollisionTop :
+                               tag1==CollisionTag::Bottom ? GameEvent::CollisionBottom :
+                               GameEvent::Collision;
+                m_hero->event(ev, platform.get());
+            }
         }
         /*
          * Collisione Eroe Nemici
          */
         for (auto & enemy : m_enemies) {
-            if (m_collisionManager->collisionCheck(m_hero.get(), enemy.get())) {
+            if (m_collisionManager->collisionCheck(m_hero.get(), enemy.get(), tag1, tag2)) {
                 m_hero->event(GameEvent::Collision, enemy.get());
                 enemy->event(GameEvent::Collision, m_hero.get());
             }
@@ -352,7 +358,7 @@ void SceneManager::manageCollisions() {
          * Collisione Eroe Ostacoli
          */
         for (auto & obstacle : m_obstacles) {
-            if (m_collisionManager->collisionCheck(m_hero.get(), obstacle.get())) {
+            if (m_collisionManager->collisionCheck(m_hero.get(), obstacle.get(), tag1, tag2)) {
                 m_hero->event(GameEvent::Collision, obstacle.get());
                 obstacle->event(GameEvent::Collision, m_hero.get());
             }
@@ -361,7 +367,7 @@ void SceneManager::manageCollisions() {
          * Collisione Eroe Potenziamenti
          */
         for (auto & powerup : m_powerups) {
-            if (m_collisionManager->collisionCheck(m_hero.get(), powerup.get())) {
+            if (m_collisionManager->collisionCheck(m_hero.get(), powerup.get(), tag1, tag2)) {
                 m_hero->event(GameEvent::Collision, powerup.get());
                 powerup->event(GameEvent::Collision, m_hero.get());
             }
@@ -370,7 +376,7 @@ void SceneManager::manageCollisions() {
          * Collisione Eroe Proiettili
          */
         for (auto & bullet : m_bullets) {
-            if (m_collisionManager->collisionCheck(m_hero.get(), bullet.get())) {
+            if (m_collisionManager->collisionCheck(m_hero.get(), bullet.get(), tag1, tag2)) {
                 m_hero->event(GameEvent::Collision, bullet.get());
                 bullet->event(GameEvent::Collision, m_hero.get());
             }
@@ -380,7 +386,7 @@ void SceneManager::manageCollisions() {
          */
         for (auto & bullet : m_bullets) {
             for(auto & enemy : m_enemies) {
-                if (m_collisionManager->collisionCheck(enemy.get(), bullet.get())) {
+                if (m_collisionManager->collisionCheck(enemy.get(), bullet.get(), tag1, tag2)) {
                     enemy->event(GameEvent::Collision, bullet.get());
                     bullet->event(GameEvent::Collision, enemy.get());
                     m_hero->event(GameEvent::EnemyKilled, enemy.get());

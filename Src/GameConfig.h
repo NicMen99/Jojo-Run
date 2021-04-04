@@ -42,7 +42,7 @@ protected:
     sf::Vector2f m_gravity     = {0.f, 1500.f};
 
     /* delta pixels per secondo */
-    float m_jumpForce = m_gravity.y * 3;
+    float m_jumpForce = m_gravity.y * 1000.f;
     /* millisecondi */
     int m_jumpMaxTime = 250;
     /* pixels per secondo */

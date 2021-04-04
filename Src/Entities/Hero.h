@@ -18,23 +18,19 @@ public:
     void update(int32_t delta_time) override;
 
 private:
-    enum class State {Grounded, Jumping, Falling, Dead};
-
+    enum class State {Init, Grounded, Jumping, Falling, Dead};
 
     void event(GameEvent event, Entity * entity) override;
     void updatePhysics(int32_t delta_time);
     void speedCap();
     void manageAttack();
-
     void updateHealth(int delta);
     void updateKnives(int delta);
+    void changeState(State new_state);
 
-
-    State m_state = State::Falling;
+    State m_state = State::Init;
     InputManager m_inputManager;
-
     sf::Clock m_jumpTimer;
-
     int m_health = 0;
     int m_maxhealthpoints = 300;
     int m_knives = 2;

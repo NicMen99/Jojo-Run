@@ -15,7 +15,7 @@ class AnimationManager;
 class SoundManager;
 class FrameParams;
 
-#define HIT_BOX_DEBUG
+// #define HIT_BOX_DEBUG
 
 enum class EntityGroup {
     Scene,
@@ -40,7 +40,7 @@ enum class EntityType {
 };
 
 enum class GameEvent {
-    Collision, EnemyKilled
+    Collision, CollisionTop, CollisionBottom, EnemyKilled
 };
 
 class Entity {
@@ -84,7 +84,7 @@ protected:
     virtual void move(int32_t delta_time);
     virtual void applyImpulse(const sf::Vector2f & acceleration, int32_t delta_time);
 
-    void playAnimation(const std::string & animation_name, int repetitions= -1);
+    void playAnimation(const std::string & animation_name, bool loop = false);
     void playSound(const std::string & sound_name, float volume = 100.f);
 
 private:

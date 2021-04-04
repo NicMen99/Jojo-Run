@@ -5,22 +5,30 @@
 #include "Entity.h"
 #include "CollisionManager.h"
 
-bool CollisionManager::collisionCheck(Entity *item1, Entity *item2) {
+bool CollisionManager::collisionCheck(Entity *item1, Entity *item2, CollisionTag & tag1, CollisionTag & tag2) {
     /*
      * Se nessuna collisione in atto non fa niente
      */
     auto item1_rect = item1->getBounds();
     auto item2_rect = item2->getBounds();
+    tag1 = CollisionTag::None;
+    tag2 = CollisionTag::None;
     if (!item1->isEnabled() || !item2->isEnabled() || !item1_rect.intersects(item2_rect))
         return false;
 
     if(item1->getType() == EntityType::Hero && item2->getGroup() == EntityGroup::Platform)
-        return checkHeroPlatform(item1, item2);
+        return checkHeroPlatform(item1, item2, tag1, tag2);
 
-    return  item1_rect.intersects(item2_rect);
+    if(item1_rect.intersects(item2_rect)){
+        tag1 = CollisionTag::Any;
+        tag2 = CollisionTag::Any;
+        return true;
+    }
+    return false;
+
 }
 
-bool CollisionManager::checkHeroPlatform(Entity *hero, Entity *platform) {
+bool CollisionManager::checkHeroPlatform(Entity * hero, Entity * platform, CollisionTag & hero_tag, CollisionTag & platform_tag) {
     /*
      * Se una collisione non in atto non fa niente
      */
@@ -43,16 +51,22 @@ bool CollisionManager::checkHeroPlatform(Entity *hero, Entity *platform) {
      *  Istante precedente : Bottom Hero sopra Top Piattaforma
      *  Collisione
      */
-    if (hero_rect.top < platform_rect.top && (hero_prev.top + hero_prev.height) <= platform_prev.top)
+    if (hero_rect.top < platform_rect.top && (hero_prev.top + hero_prev.height) <= platform_prev.top) {
+        hero_tag = CollisionTag::Bottom;
+        platform_tag = CollisionTag::Top;
         return true;
+    }
 
     /*
      * Condizione 2 :
      * Istante attuale : Top Hero sotto Top Piattaforma
      * Istante precedente : Top Hero sotto Bottom Piattaforma
      */
-    if (hero_rect.top > platform_rect.top && hero_prev.top >= (platform_prev.top + platform_prev.height))
+    if (hero_rect.top > platform_rect.top && hero_prev.top >= (platform_prev.top + platform_prev.height)) {
+        hero_tag = CollisionTag::Top;
+        platform_tag = CollisionTag::Bottom;
         return true;
+    }
 
     return false;
 }

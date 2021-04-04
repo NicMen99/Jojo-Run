@@ -2,6 +2,8 @@
 // Created by angiolo99 on 23/01/20.
 //
 
+#include <iostream>
+
 #include "Game.h"
 #include "Entity.h"
 #include "Entities/Enemy.h"
@@ -9,7 +11,6 @@
 #include "Entities/Knife.h"
 #include "Entities/Weapon.h"
 #include "AnimationManager.h"
-
 #include "Hero.h"
 
 Hero::Hero() :
@@ -43,7 +44,6 @@ void Hero::update(int32_t delta_time) {
     updatePhysics(delta_time);
     manageAttack();
     Entity::update(delta_time);
-
     /**/
     m_distance += getSpeed().x * delta_time / 1000;
     STATS->setInt(Stats::Distance, (int)m_distance);
@@ -54,8 +54,7 @@ void Hero::updatePhysics(int32_t delta_time) {
      * Fallen
      */
     if(getPosition().y > (CONFIG->getWindowSize().y)) {
-        m_state = State::Dead;
-        setDestroyed();
+        changeState(State::Dead);
     }
 
     /*
@@ -65,27 +64,30 @@ void Hero::updatePhysics(int32_t delta_time) {
     {
         case State::Grounded:
             if(m_inputManager.isKeyJustPressed(sf::Keyboard::Space)) {
-                sf::Vector2f accel = {CONFIG->getHeroJumpForce() * CONFIG->getGravity().x, -CONFIG->getHeroJumpForce() * CONFIG->getGravity().y};
+                sf::Vector2f accel = {0, -CONFIG->getHeroJumpForce() + CONFIG->getGravity().y};
                 applyImpulse(accel, delta_time);
                 m_jumpTimer.restart();
-                m_state = State::Jumping;
+                changeState(State::Jumping);
             }
-            else
-                m_state = State::Falling;
             break;
         case State::Jumping:
             if(m_inputManager.isKeyPressed(sf::Keyboard::Space) &&
                m_jumpTimer.getElapsedTime() < sf::milliseconds(CONFIG->getHeroJumpMaxTime())) {
-                    sf::Vector2f accel = {CONFIG->getHeroJumpForce() * CONFIG->getGravity().x, -CONFIG->getHeroJumpForce() * CONFIG->getGravity().y};
+                    sf::Vector2f accel = {0, -CONFIG->getHeroJumpForce() + CONFIG->getGravity().y};
                     applyImpulse(accel, delta_time);
             }
             else {
-                m_state = State:: Falling;
+                if(getSpeed().y>=0) {
+                    changeState(State::Falling);
+                }
             }
             break;
         case State::Falling:
             break;
         case State::Dead:
+            setDestroyed();
+            break;
+        case State::Init:
             break;
     }
     applyImpulse(CONFIG->getGravity(), delta_time);
@@ -93,8 +95,7 @@ void Hero::updatePhysics(int32_t delta_time) {
 }
 
 void Hero::event(GameEvent event, Entity * entity) {
-    if(event == GameEvent::Collision) {
-
+    if(event == GameEvent::CollisionTop) {
         /*
          * Collisione con una piattaforma
          */
@@ -102,47 +103,57 @@ void Hero::event(GameEvent event, Entity * entity) {
             sf::Rect<float> collider_rect = entity->getBounds();
             sf::Rect<float> hero_rect = getBounds();
             sf::Vector2f speed = getSpeed();
-            if (speed.y >= 0) {
-                m_state = State::Grounded;
-                speed.y = 0;
-                setPosition(sf::Vector2f(hero_rect.left, collider_rect.top - hero_rect.height));
-            } else if (speed.y < 0.f) {
-                speed.y -= speed.y;
-                setPosition(sf::Vector2f(hero_rect.left, collider_rect.top + collider_rect.height));
-            }
+            speed.y -= speed.y;
+            setPosition(sf::Vector2f(hero_rect.left, collider_rect.top + collider_rect.height));
             setSpeed(speed);
-            /*}*/
         }
+    }
+    else if (event == GameEvent::CollisionBottom) {
+        /*
+         * Collisione con una piattaforma
+         */
+        if (entity->getGroup() == EntityGroup::Platform) {
+            sf::Rect<float> collider_rect = entity->getBounds();
+            sf::Rect<float> hero_rect = getBounds();
+            sf::Vector2f speed = getSpeed();
+            if(m_state==State::Falling || m_state==State::Init)
+                changeState(State::Grounded);
+            speed.y = 0;
+            setPosition(sf::Vector2f(hero_rect.left, collider_rect.top - hero_rect.height));
+            setSpeed(speed);
+        }
+    }
+    else if(event == GameEvent::Collision) {
 
-            /*
-             * Collisione con un nemico
-             */
-        else if (entity->getGroup() == EntityGroup::Enemy) {
+        /*
+         * Collisione con un nemico
+         */
+        if (entity->getGroup() == EntityGroup::Enemy) {
             auto *enemy = dynamic_cast<Enemy *>(entity);
             int damage = !m_shield ? enemy->getDamage() : 0;
             updateHealth(-damage);
-            if (m_health <= 0)
-                m_state = State::Dead;
+            if (m_health <= 0) {
+                changeState(State::Dead);
+            }
             playSound(m_shield ? "SHIELDON" : "COLLISION");
             m_shield = false;
         }
-
-            /*
-             * Collisione con un ostacolo
-             */
+        /*
+         * Collisione con un ostacolo
+         */
         else if (entity->getGroup() == EntityGroup::Obstacle) {
             auto *obstacle = dynamic_cast<Obstacle *>(entity);
             int damage = !m_shield ? obstacle->getDamage() : 0;
             updateHealth(-damage);
-            if (m_health <= 0)
-                m_state = State::Dead;
+            if (m_health <= 0) {
+                changeState(State::Dead);
+            }
             playSound(m_shield ? "SHIELDON" : "COLLISION");
             m_shield = false;
         }
-
-            /*
-             * Collisione con un powerup
-             */
+        /*
+         * Collisione con un powerup
+         */
         else if (entity->getGroup() == EntityGroup::Powerup) {
             if (entity->getType() == EntityType::Weapon) {
                 auto *weapon = dynamic_cast<Weapon *>(entity);
@@ -151,19 +162,21 @@ void Hero::event(GameEvent event, Entity * entity) {
                 m_shield = true;
             }
         }
-            /*
-             * Collisione con proiettile nemico
-             */
+        /*
+         * Collisione con proiettile nemico
+         */
         else if (entity->getGroup() == EntityGroup::Bullet) {
             auto *bullet = dynamic_cast<Bullet *>(entity);
             int damage = !m_shield ? bullet->getDamage() : 0;
             updateHealth(-damage);
-            if (m_health <= 0)
-                m_state = State::Dead;
+            if (m_health <= 0) {
+                changeState(State::Dead);
+            }
             playSound(m_shield ? "SHIELDON" : "COLLISION");
             m_shield = false;
         }
     }
+
     else if (event == GameEvent::EnemyKilled) {
         if(entity->getGroup() == EntityGroup::Enemy) {
             auto * enemy = dynamic_cast<Enemy*>(entity);
@@ -215,10 +228,32 @@ void Hero::manageAttack() {
             }
             break;
         case State::Dead:
+        case State::Init:
             break;
     }
 }
 
+void Hero::changeState(State new_state) {
+    if(new_state != m_state) {
+        switch(new_state) {
+            case State::Grounded:
+// std::cout << "RUN" << std::endl;
+                playAnimation("RUN", true);
+                break;
+            case State::Jumping:
+// std::cout << "JUMP" << std::endl;
+                playAnimation("JUMP");
+                break;
+            case State::Falling:
+// std::cout << "FALL" << std::endl;
+                playAnimation("FALL");
+                break;
+            default:
+                break;
+        }
+    }
+    m_state = new_state;
+}
 
 
 

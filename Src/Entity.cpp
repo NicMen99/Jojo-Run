@@ -76,10 +76,9 @@ void Entity::addAnimation(const std::string & animation_name, const std::list<Fr
     m_frame = frame;
 }
 
-void Entity::playAnimation(const std::string & animation_name, int repetitions) {
-    m_animationManager->play(animation_name, repetitions);
+void Entity::playAnimation(const std::string & animation_name, bool loop) {
+    m_animationManager->play(animation_name, loop);
 }
-
 
 void Entity::addSound(const std::string & sound_name, const std::string & sound_resource) {
     m_soundManager->addSound(sound_name, sound_resource);

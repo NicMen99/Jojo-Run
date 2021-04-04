@@ -20,6 +20,10 @@ GameConfig::~GameConfig() {
 }
 
 const KeyVal resource_table [] = {
+        {"PLATFORM",               "Map/Platform.png"},
+        {"PLAYER_RUN",             "Textures/PlayerRun.png"},
+        {"PLAYER_JUMP",             "Textures/PlayerJump.png"}, //@todo: REINOMINARE
+
         { "blockTexture",          "Textures/blockTexture.png"},
         { "fireWallTexture",       "Textures/fireWallTexture.png"},
         { "shieldPowerUpTexture",  "Textures/shieldPowerUpTexture.png"},
@@ -31,7 +35,6 @@ const KeyVal resource_table [] = {
         { "fireBlockTexture",      "Textures/fireBlockTexture.png"},
         { "emeraldBlockTexture",   "Textures/emeraldBlockTexture.png"},
         { "playerTexture",         "Textures/playerTexture.png"},
-        { "playerTextureUp",       "Textures/playerTextureUp.png"},
         { "playerShieldTexture",   "Textures/playerShieldTexture.png"},
         { "GameOverScreen",        "Textures/GameOverScreen.png"},
         { "Fire",                  "Textures/FirewallAnimation.png"},
@@ -40,7 +43,6 @@ const KeyVal resource_table [] = {
         { "BG",                    "Map/BG.png"},
         { "Foreground",            "Map/Foreground.png"},
         { "Middle",                "Map/Middle.png"},
-        { "PLATFORM",              "Map/Platform.png"},
 
         { "soundTrack",            "Music/soundTrack.wav"},
         { "gameOverSound",         "Music/gameOverSound.wav"},
