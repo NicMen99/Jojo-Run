@@ -5,6 +5,9 @@
 #include "gtest/gtest.h"
 #include "Game.h"
 #include "Widgets/Widget.h"
+#include "Widgets/TextWidget.h"
+#include "Widgets/ImageWidget.h"
+#include "Widgets/ShapeWidget.h"
 
 class TestSubject : public Subject{
 public:
@@ -29,7 +32,15 @@ public:
 
 };
 
+class TestGameConfig : public GameConfig {
+    public:
+    void setTextureResource(const std::string & name, const std::string & asset_path){
+        m_asset_map.insert(std::make_pair(name, "TestAsset/" + asset_path));
+    }
+};
+
 class TestWidget : public Widget {
+private:
     sf::Vector2f m_parent_position;
     std::string m_item_name;
     std::string m_item_value;
@@ -51,6 +62,20 @@ public:
 class WidgetTest : public ::testing::Test{
 public:
     sf::RenderWindow window;
+
+    WidgetTest() {
+        Game::deleteInstance();
+        auto state = new GameStateMachine(State::Init);
+        auto cfg   = new TestGameConfig();
+        auto resm  = new ResourceManager();
+        auto fact  = new Factory();
+        auto scn   = new SceneManager();
+        auto stats = new GameStats();
+        auto score = new ScoreManager();
+        Game* game = Game::instance(state, cfg, resm, fact, scn, stats, score);
+        game->init();
+        dynamic_cast<TestGameConfig*>(CONFIG)->setTextureResource("StonePlatform", "Platform.png");
+    }
 };
 
 TEST_F(WidgetTest, EmptyWidget){
@@ -94,4 +119,34 @@ TEST_F(WidgetTest, TestObserver){
     widget->observe(subject2.get(), "TEST_ITEM");
     ASSERT_EQ(subject->m_item_name, "");
     ASSERT_EQ(subject->m_observer, nullptr);
+}
+
+TEST_F(WidgetTest, SetString){
+    auto text_widget = std::unique_ptr<TextWidget>(new TextWidget("TEST"));
+    text_widget->setString("TEST");
+    ASSERT_EQ(text_widget->getString(), "TEST");
+}
+
+TEST_F(WidgetTest, SetStringTimer){
+    auto text_widget = std::unique_ptr<TextWidget>(new TextWidget("TEST"));
+    text_widget->startTimer(sf::seconds(1));
+    ASSERT_EQ(text_widget->isVisible(text_widget.get()), true);
+    sf::sleep(sf::seconds(1));
+    text_widget->update(1000);
+    ASSERT_EQ(text_widget->isVisible(text_widget.get()), false);
+}
+
+TEST_F(WidgetTest, SetImage){
+    auto image_widget = std::unique_ptr<ImageWidget>(new ImageWidget("TEST"));
+    image_widget->setPosition(sf::Vector2f(0,0));
+    image_widget->setTexture("StonePlatform");
+    image_widget->update(1000);
+    ASSERT_EQ(image_widget->getSize(), sf::Vector2f(400,50));
+}
+
+TEST_F(WidgetTest, SetShape){
+    auto shape_widget = std::unique_ptr<ShapeWidget>(new ShapeWidget("TEST"));
+    shape_widget->setSize(sf::Vector2f(10,10));
+    shape_widget->update(1000);
+    ASSERT_EQ(shape_widget->getSize(), sf::Vector2f(10,10));
 }

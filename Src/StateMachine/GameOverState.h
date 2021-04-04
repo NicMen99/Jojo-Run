@@ -16,13 +16,9 @@
 
 class GameOverState: public AbsGameState{
 
-    enum class Action {UserInput, ShowRecords};
-
-    static GameOverState* m_instance;
 public:
     static GameOverState* instance();
 
-public:
     void init() override;
     void onEnter() override;
     void onExit() override;
@@ -30,12 +26,15 @@ public:
     void render(sf::RenderWindow &window) override;
 
 private:
+    enum class Action {UserInput, ShowRecords};
+
+    static GameOverState* m_instance;
+
     void createScreen();
     void showScore();
     void saveScore();
     void updateInput();
 
-private:
     Action       m_action = Action::UserInput;
     InputManager m_inputManager;
     sf::Music    m_music{};

@@ -102,7 +102,7 @@
 //                              is "threadsafe", and can be setValue in
 //                              custom/gtest-port.h.
 
-// Platform-indicating macros
+// StonePlatform-indicating macros
 // --------------------------
 //
 // Macros indicating the platform on which Google Test is being used

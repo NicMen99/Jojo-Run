@@ -13,7 +13,6 @@ public:
             Entity(EntityGroup::Bullet, mtype, name) {}
     ~Bullet() override {};
 
-public:
     void setDamage(int damage) { m_damage = damage; }
     int getDamage() const { return m_damage; };
 

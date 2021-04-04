@@ -24,22 +24,11 @@ Hero::~Hero() {
 
 void Hero::init()
 {
-    const std::list<FrameParams> frames = {
-            {1, "playerTexture", {0,0,0,0}, {0,0}, {false, false}}
-    };
-    addAnimation("DEFAULT", frames);
-
     setSpeed(CONFIG->getSceneSpeed());
-
-    updateHealth(300);
-    updateKnives(0);
+    m_health = 300;
+    m_knives = 0;
     m_maxhealthpoints = 300;
     m_maxknives = 8;
-
-    addSound("COLLISION", "collisionSound");
-    addSound("SHIELD", "shieldSound");
-    addSound("SHIELDON", "shieldOn");
-
     m_inputManager.init();
     m_inputManager.registerKey(sf::Keyboard::Key::Space);
     m_inputManager.registerKey(sf::Keyboard::Key::K);
@@ -66,6 +55,7 @@ void Hero::updatePhysics(int32_t delta_time) {
      */
     if(getPosition().y > (CONFIG->getWindowSize().y)) {
         m_state = State::Dead;
+        setDestroyed();
     }
 
     /*
@@ -108,7 +98,7 @@ void Hero::event(GameEvent event, Entity * entity) {
         /*
          * Collisione con una piattaforma
          */
-        if (entity->getType() == EntityType::Platform) {
+        if (entity->getGroup() == EntityGroup::Platform) {
             sf::Rect<float> collider_rect = entity->getBounds();
             sf::Rect<float> hero_rect = getBounds();
             sf::Vector2f speed = getSpeed();
@@ -140,7 +130,7 @@ void Hero::event(GameEvent event, Entity * entity) {
             /*
              * Collisione con un ostacolo
              */
-        else if (entity->getGroup() == EntityGroup::Map) {
+        else if (entity->getGroup() == EntityGroup::Obstacle) {
             auto *obstacle = dynamic_cast<Obstacle *>(entity);
             int damage = !m_shield ? obstacle->getDamage() : 0;
             updateHealth(-damage);
@@ -220,7 +210,7 @@ void Hero::manageAttack() {
                 auto kf = FACTORY->createBullet(EntityType::Knife);
                 kf->setPosition(sf::Vector2f(getPosition()) + sf::Vector2f(getBounds().width, 0));
                 kf->setSpeed(sf::Vector2f {getSpeed().x + 1000.f, 0.f});
-                SCENE->addNewEntity(kf);
+                SCENE->addSpawned(kf);
                 updateKnives(-1);
             }
             break;

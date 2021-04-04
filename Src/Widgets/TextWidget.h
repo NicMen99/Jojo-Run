@@ -29,7 +29,6 @@ protected:
 private:
     void data_update(const std::string & item_name, const std::string & item_value) override;
 
-private:
     sf::Text m_text;
 };
 

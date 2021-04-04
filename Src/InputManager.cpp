@@ -11,7 +11,7 @@ void InputManager::init() {
 void InputManager::update() {
     std::swap(m_current_status, m_previous_status);
     for(auto& key : m_current_status)
-        key.second = sf::Keyboard::isKeyPressed(key.first);
+        key.second = keyPressed(key.first);
 }
 
 void InputManager::registerKey(const sf::Keyboard::Key &key) {
@@ -33,10 +33,17 @@ bool InputManager::isKeyPressed(const sf::Keyboard::Key &key) {
 bool InputManager::isKeyJustPressed(const sf::Keyboard::Key &key) {
     if(m_current_status.count(key))
         if (!m_previous_status[key] && m_current_status[key])
-        return true;
+            return true;
     return false;
 }
 
+bool InputManager::isKeyReleased(const sf::Keyboard::Key &key) {
+    if(m_current_status.count(key)){
+        if (!m_current_status[key])
+            return true;
+    }
+    return false;
+}
 
 bool InputManager::isKeyJustReleased(const sf::Keyboard::Key &key) {
     if(m_current_status.count(key))
@@ -66,6 +73,3 @@ sf::Keyboard::Key InputManager::getKeyJustPressed() {
     }
     return sf::Keyboard::Unknown;
 }
-
-
-

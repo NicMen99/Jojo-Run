@@ -25,7 +25,7 @@ const KeyVal resource_table [] = {
         { "shieldPowerUpTexture",  "Textures/shieldPowerUpTexture.png"},
         { "knifeTexture",          "Textures/knifeTexture.png"},
         { "hamonEnemyTexture",     "Textures/hamonEnemyTexture.png"},
-        { "fireEnemy",             "Textures/fireEnemy.png"},
+        { "fireEnemyTexture",      "Textures/fireEnemyTexture.png"},
         { "emeraldEnemyTexture",   "Textures/emeraldEnemyTexture.png"},
         { "hamonBlockTexture",     "Textures/hamonBlockTexture.png"},
         { "fireBlockTexture",      "Textures/fireBlockTexture.png"},
@@ -40,7 +40,7 @@ const KeyVal resource_table [] = {
         { "BG",                    "Map/BG.png"},
         { "Foreground",            "Map/Foreground.png"},
         { "Middle",                "Map/Middle.png"},
-        { "Platform1",             "Map/Platform.png"},
+        { "PLATFORM",              "Map/Platform.png"},
 
         { "soundTrack",            "Music/soundTrack.wav"},
         { "gameOverSound",         "Music/gameOverSound.wav"},

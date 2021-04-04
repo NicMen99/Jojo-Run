@@ -42,7 +42,6 @@ public:
     void addAnimation(const std::string & animation_name, const std::list<FrameParams>& frames);
     void update(int32_t delta_time);
 
-public:
     void play(const std::string & animation_name, int repetitions= -1);
     bool done() const;
     std::shared_ptr<sf::Sprite> getCurrentFrame();
@@ -51,7 +50,6 @@ public:
 private:
     std::shared_ptr<Animation> createAnimation(const std::string & animation_name);
 
-private:
     std::shared_ptr<sf::Sprite> m_current_sprite;
     std::shared_ptr<Animation> m_current_animation;
     std::map<std::string, std::shared_ptr<Animation>> m_animations;

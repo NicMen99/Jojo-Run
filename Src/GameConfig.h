@@ -28,21 +28,19 @@ public:
         auto it = m_asset_map.find(name);  return (it == m_asset_map.end()) ? "["+name+"]" : it->second; }
 
     /**/
-    float getMBase() const { return m_base; }
-    float getMMiddle() const { return m_middle; }
-    float getMTop() const { return m_top; }
+    float getBottomLevel() const { return m_base; }
+    float getMiddleLevel() const { return m_middle; }
+    float getTopLevel() const { return m_top; }
 
     /*Scene settings*/
 protected:
     /* pixels */
     sf::Vector2u m_window_size = {1600,1000};
     /* pixels per secondo */
-    sf::Vector2f m_scene_speed = {450.f, 0.f};
+    sf::Vector2f m_scene_speed = {500.f, 0.f};
     /* delta pixels per secondo */
     sf::Vector2f m_gravity     = {0.f, 1500.f};
 
-    /* Hero settings */
-protected:
     /* delta pixels per secondo */
     float m_jumpForce = m_gravity.y * 3;
     /* millisecondi */

@@ -3,7 +3,6 @@
 //
 
 #include "Game.h"
-#include "AnimationManager.h"
 #include "Knife.h"
 
 Knife::Knife(std::string id) :
@@ -15,10 +14,6 @@ Knife::~Knife() {
 }
 
 void Knife::init() {
-    const std::list<FrameParams> frames = {
-            {1, "knifeTexture", {0,0,0,0}, {0,0}, {false, false}}
-    };
-    addAnimation("DEFAULT", frames);
     setSpeed({0.f, 0.f});
     setDamage(100);
 }

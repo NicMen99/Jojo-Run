@@ -17,26 +17,32 @@ public:
     SceneManager();
     virtual ~SceneManager();
     void init();
-public:
+
     void update(int32_t delta_time);
     void render(sf::RenderWindow & window);
     bool levelend() const;
-    void addNewEntity(std::unique_ptr<Entity> & newObject);
+    void addSpawned(std::unique_ptr<Entity> & newObject);
 
-private:
-    static void destroyObjects(std::vector<std::unique_ptr<Entity>> & items);
+protected:
+    void removeDestroyedObjects();
+    void destroyObjects(std::vector<std::unique_ptr<Entity>> & items);
+    void collectSpawned();
+
     void generateBackground();
-    void generateMap();
+    bool generatePlatforms();
+    bool generateEnemies(bool random=true);
+    bool generateObstacles(bool random=true);
+    bool generatePowerups(bool random=true);
+
     void manageCollisions();
 
-    Entity * createPlatform(sf::Vector2f position);
+    void createPlatform(EntityType platformtype, float size, sf::Vector2f position);
     void createObstacle(EntityType ot, sf::Vector2f position);
     void createEnemy(EntityType et, sf::Vector2f position);
     void createPowerup(EntityType pt, sf::Vector2f position);
     void createHero();
     void createScoreHUD();
 
-private:
     std::unique_ptr<CollisionManager> m_collisionManager;
     std::vector<std::unique_ptr<Entity>> m_background1;
     std::vector<std::unique_ptr<Entity>> m_background2;
@@ -49,8 +55,13 @@ private:
     std::vector<std::unique_ptr<Entity>> m_bullets;
     std::vector<std::unique_ptr<Entity>> m_spawned_objects;
     std::unique_ptr<Entity> m_hero;
-    std::unique_ptr<ScoreHUD> m_scorehud;
+    std::unique_ptr<Entity> m_scorehud;
 
+    sf::FloatRect m_last_platform;
+    float m_platform_space;
+    int m_enemies_count;
+    int m_obstacles_count;
+    int m_powerups_count;
 };
 
 #endif //JOJO_RUN_SCENEMANAGER_H

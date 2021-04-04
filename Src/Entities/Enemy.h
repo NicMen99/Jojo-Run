@@ -11,6 +11,7 @@
 class Bullet;
 
 class Enemy: public Entity {
+private:
     enum State {Alive, Dying, Dead};
 
 public:
@@ -21,11 +22,11 @@ public:
     void update(int32_t delta_time) override;
     void event(GameEvent event, Entity *collider) override;
 
-public:
     void setDamage(int damage) { m_damage = damage; }
     int getDamage() const { return m_damage; };
     void setLifeBonus(int damage) { m_lifebonus = damage; }
     int getLifeBonus() const { return m_lifebonus; };
+
 protected:
     State m_state = State::Alive;
     int m_damage = 0;
