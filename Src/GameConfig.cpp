@@ -25,7 +25,7 @@ const KeyVal resource_table [] = {
         { "shieldPowerUpTexture",  "Textures/shieldPowerUpTexture.png"},
         { "knifeTexture",          "Textures/knifeTexture.png"},
         { "hamonEnemyTexture",     "Textures/hamonEnemyTexture.png"},
-        { "fireEnemy",             "Textures/fireEnemy.png"},
+        { "fireEnemyTexture",      "Textures/fireEnemyTexture.png"},
         { "emeraldEnemyTexture",   "Textures/emeraldEnemyTexture.png"},
         { "hamonBlockTexture",     "Textures/hamonBlockTexture.png"},
         { "fireBlockTexture",      "Textures/fireBlockTexture.png"},

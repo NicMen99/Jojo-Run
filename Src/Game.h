@@ -46,7 +46,7 @@ public:
     SceneManager * gameScene() { return m_scene.get(); }
     GameStats * gameStats() { return m_stats.get(); }
     ScoreManager * gameScore() { return m_score.get(); }
-    int rand(int max) { std::uniform_int_distribution<int> d(0, max - 1); return d(m_gen);}
+    int rand(int max) { return m_dist(m_gen) % max;}
 
 private:
 
@@ -70,6 +70,7 @@ private:
 
     std::random_device m_rd;  //Will be used to obtain a seed for the random number engine
     std::mt19937 m_gen; //Standard mersenne_twister_engine seeded with rd()
+    std::uniform_int_distribution<int> m_dist;
 };
 
 #endif //JOJO_RUN_GAME_H

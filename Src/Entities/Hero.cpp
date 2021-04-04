@@ -55,6 +55,7 @@ void Hero::updatePhysics(int32_t delta_time) {
      */
     if(getPosition().y > (CONFIG->getWindowSize().y)) {
         m_state = State::Dead;
+        setDestroyed();
     }
 
     /*

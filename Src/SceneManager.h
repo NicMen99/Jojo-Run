@@ -30,9 +30,9 @@ protected:
 
     void generateBackground();
     bool generatePlatforms();
-    bool generateEnemies();
-    bool generateObstacles();
-    bool generatePowerups();
+    bool generateEnemies(bool random=true);
+    bool generateObstacles(bool random=true);
+    bool generatePowerups(bool random=true);
 
     void manageCollisions();
 
@@ -58,7 +58,10 @@ protected:
     std::unique_ptr<Entity> m_scorehud;
 
     sf::FloatRect m_last_platform;
-
+    float m_platform_space;
+    int m_enemies_count;
+    int m_obstacles_count;
+    int m_powerups_count;
 };
 
 #endif //JOJO_RUN_SCENEMANAGER_H

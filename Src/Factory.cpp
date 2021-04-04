@@ -68,7 +68,7 @@ std::unique_ptr<Entity> Factory::createEnemy(EntityType type) {
         auto * enemy = new FireEnemy("FireEnemy");
         enemy->init();
         const std::list<FrameParams> frames = {
-                {1, "fireEnemy", {0,0,0,0}, {0,0}, {true, false}}
+                {1, "fireEnemyTexture", {0,0,0,0}, {0,0}, {true, false}}
         };
         enemy->addAnimation("DEFAULT", frames);
         enemy->addSound("FIREACTION", "fireEnemyShout");

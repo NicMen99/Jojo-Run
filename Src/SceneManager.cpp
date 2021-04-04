@@ -2,6 +2,7 @@
 // Created by Niccolo on 27/02/2021.
 //
 
+#include <iostream>
 #include <vector>
 
 #include "Game.h"
@@ -37,6 +38,11 @@ void SceneManager::init()
     m_spawned_objects.clear();
     m_hero.reset();
     m_scorehud.reset();
+
+    m_last_platform = {0, 0, 0, 0};
+    m_enemies_count = 0;
+    m_obstacles_count = 0;
+    m_powerups_count = 0;
 
     createHero();
     createScoreHUD();
@@ -76,9 +82,14 @@ void SceneManager::update(int32_t delta_time) {
     }
 
     /*
+     * Hero
+     */
+    if(m_hero!=nullptr)
+        m_hero->update(delta_time);
+
+    /*
      * Scene Update
      */
-    m_hero->update(delta_time);
     for (auto & it : m_background1) {
         it->update(delta_time);
     }
@@ -115,7 +126,8 @@ void SceneManager::update(int32_t delta_time) {
     /*
      * HUD
      */
-    m_scorehud->update(delta_time);
+    if(m_scorehud!=nullptr)
+        m_scorehud->update(delta_time);
 }
 
 void SceneManager::render(sf::RenderWindow & window) {
@@ -146,12 +158,14 @@ void SceneManager::render(sf::RenderWindow & window) {
     for (auto & it : m_bullets) {
         it->render(window);
     }
-    m_hero->render(window);
-    m_scorehud->render(window);
+    if(m_hero != nullptr)
+        m_hero->render(window);
+    if(m_scorehud != nullptr)
+        m_scorehud->render(window);
 }
 
 bool SceneManager::levelend() const {
-    return dynamic_cast<Hero *>(m_hero.get())->isDead();
+    return m_hero.get() == nullptr;
 }
 
 /**/
@@ -216,7 +230,6 @@ bool SceneManager::generatePlatforms() {
     float posx;
     float posy;
     float size = 0;
-    static float space = 0;
 
     if(m_platforms.empty()){
         /*
@@ -225,7 +238,7 @@ bool SceneManager::generatePlatforms() {
         posx = 0;
         posy = CONFIG->getBottomLevel();
         size = CONFIG->getWindowSize().x;
-        space = 350;
+        m_platform_space = 375;
     }
     else
     {
@@ -233,60 +246,84 @@ bool SceneManager::generatePlatforms() {
          * Piattaforme successive
          */
         Entity * last = m_platforms.back().get();
-        if(CONFIG->getWindowSize().x - (last->getPosition().x + last->getBounds().width) < space)
+        if(CONFIG->getWindowSize().x - (last->getPosition().x + last->getBounds().width) < m_platform_space)
             return false;
 
         /* Posizione x appena fuori dello schermo */
         posx = CONFIG->getWindowSize().x;
 
         /* dimensione */
-        std::vector<float> horizontal_size = {0.5f * CONFIG->getWindowSize().x, 0.8f * CONFIG->getWindowSize().x, (float)CONFIG->getWindowSize().x};
+        std::vector<float> horizontal_size = {
+                0.3f * CONFIG->getWindowSize().x,
+                0.5f * CONFIG->getWindowSize().x,
+                0.7f * CONFIG->getWindowSize().x,
+                (float)CONFIG->getWindowSize().x};
         size = horizontal_size[RAND(horizontal_size.size())];
 
         /* Posizione y uno dei tre livelli */
-        std::vector<float> vertical_position;
-        if(last->getPosition().y == CONFIG->getBottomLevel()) {
-            vertical_position = {CONFIG->getBottomLevel(), CONFIG->getMiddleLevel()};
-        } else if(last->getPosition().y == CONFIG->getTopLevel()) {
-            vertical_position = {CONFIG->getMiddleLevel(), CONFIG->getTopLevel()};
-        } else {
-            vertical_position = {CONFIG->getBottomLevel(), CONFIG->getMiddleLevel(), CONFIG->getTopLevel()};
-        }
+        std::vector<float> vertical_position = {
+                CONFIG->getBottomLevel(),
+                CONFIG->getMiddleLevel(),
+                CONFIG->getTopLevel()};
+        if(last->getPosition().y == CONFIG->getBottomLevel()) { vertical_position.pop_back(); };
         posy = vertical_position[RAND(vertical_position.size())];
 
         /* spazio di salto */
-        std::vector<float> horizontal_spacing = {150, 250, 375, 500};
-        if(last->getPosition().y < posy) {
-            horizontal_size.pop_back();
-        }
-        space = horizontal_spacing[RAND(horizontal_spacing.size())];
+        std::vector<float> horizontal_spacing = {
+                150,
+                250,
+                375,
+                500};
+        if(last->getPosition().y < posy) { horizontal_size.pop_back(); }
+        m_platform_space = horizontal_spacing[RAND(horizontal_spacing.size())];
     }
     createPlatform(EntityType::StonePlatform, size, {posx, posy});
     return true;
 }
 
-bool SceneManager::generateEnemies() {
+bool SceneManager::generateEnemies(bool random) {
+    if(random) {
+        static std::vector<bool> generate = { true, true, false, true, true, true, false, true, true, true, true};
+        if(!generate[RAND(generate.size())])
+            return false;
+    }
     if(m_enemies.empty()) {
-        std::vector<EntityType> echoice = {EntityType::FireEnemy, EntityType::HamonEnemy, EntityType::EmeraldEnemy};
-        createEnemy(echoice[RAND(echoice.size())], sf::Vector2f(m_last_platform.left+m_last_platform.width*3/4, m_last_platform.top));
+        std::vector<EntityType> choice = {EntityType::FireEnemy, EntityType::HamonEnemy, EntityType::EmeraldEnemy};
+        static std::vector<float> pos = {0.3, 0.6};
+        createEnemy(choice[RAND(choice.size())], sf::Vector2f(m_last_platform.left+m_last_platform.width * pos[RAND(pos.size())], m_last_platform.top));
+        m_enemies_count++;
         return true;
     }
     return false;
 }
 
-bool SceneManager::generateObstacles() {
+bool SceneManager::generateObstacles(bool random) {
+    if(random) {
+        static std::vector<bool> generate = {true, true, false, true};
+        if (!generate[RAND(generate.size())])
+            return false;
+    }
     if(m_obstacles.empty()) {
-        std::vector<EntityType> ochoice = {EntityType::Wall, EntityType::Block};
-        createObstacle(ochoice[RAND(ochoice.size())], sf::Vector2f(m_last_platform.left+m_last_platform.width/2, m_last_platform.top));
+        std::vector<EntityType> choice = {EntityType::Wall, EntityType::Block};
+        static std::vector<float> pos = {0.4, 0.6, 0.8};
+        createObstacle(choice[RAND(choice.size())], sf::Vector2f(m_last_platform.left+m_last_platform.width * pos[RAND(pos.size())], m_last_platform.top));
+        m_obstacles_count++;
         return true;
     }
     return false;
 }
 
-bool SceneManager::generatePowerups() {
+bool SceneManager::generatePowerups(bool random) {
+    if(random) {
+        static std::vector<bool> generate = {true, false, true};
+        if (!generate[RAND(generate.size())])
+            return false;
+    }
     if (m_powerups.empty()) {
-        std::vector<EntityType> pchoice = {EntityType::Weapon, EntityType::Shield};
-        createPowerup(pchoice[RAND(pchoice.size())], sf::Vector2f(m_last_platform.left+m_last_platform.width/2, m_last_platform.top));
+        std::vector<EntityType> choice = {EntityType::Weapon, EntityType::Shield, EntityType::Weapon};
+        static std::vector<float> pos = {0.3, 0.6, 0.9};
+        createPowerup(choice[RAND(choice.size())], sf::Vector2f(m_last_platform.left+m_last_platform.width * pos[RAND(pos.size())], m_last_platform.top));
+        m_powerups_count++;
         return true;
     }
     return false;
@@ -294,7 +331,7 @@ bool SceneManager::generatePowerups() {
 
 void SceneManager::manageCollisions() {
 
-    if(m_hero->isEnabled()) {
+    if(m_hero!= nullptr && m_hero->isEnabled()) {
         /*
          * Collisione Eroe Piattaforma
          */
@@ -364,6 +401,10 @@ void SceneManager::removeDestroyedObjects(){
     destroyObjects(m_enemies);
     destroyObjects(m_powerups);
     destroyObjects(m_bullets);
+    if(m_hero->isDestroyed())
+        m_hero.reset();
+    if(m_scorehud->isDestroyed())
+        m_scorehud.reset();
 }
 
 void SceneManager::destroyObjects(std::vector<std::unique_ptr<Entity>> & items) {

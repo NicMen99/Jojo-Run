@@ -61,6 +61,7 @@ Game::~Game() {
 void Game::init()
 {
     m_gen.seed(m_rd());
+    m_dist = std::uniform_int_distribution<int>(0,65535);
     m_gameConfig->init();
 }
 

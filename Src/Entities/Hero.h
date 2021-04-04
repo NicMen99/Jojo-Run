@@ -17,8 +17,6 @@ public:
     void init();
     void update(int32_t delta_time) override;
 
-    bool isDead() { return m_state == State::Dead; }
-
 private:
     enum class State {Grounded, Jumping, Falling, Dead};
 
