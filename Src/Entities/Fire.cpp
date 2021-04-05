@@ -19,3 +19,11 @@ void Fire::init() {
 
 void Fire::event(GameEvent event, Entity *collider) {
 }
+
+void Fire::update(int32_t delta_time) {
+    if(!isStarted()) {
+        playAnimation("DEFAULT", true);
+        setStarted(true);
+    }
+    Entity::update(delta_time);
+}

@@ -67,7 +67,7 @@ void PlayState::createOverlay() {
     delete m_root;
 
     WidgetTheme theme;
-    theme.font_name = "gameover";
+    theme.font_name = "GAMEOVER";
     theme.font_size = 100;
     theme.font_color = sf::Color::White;
     theme.font_outline_thinckness = 2;

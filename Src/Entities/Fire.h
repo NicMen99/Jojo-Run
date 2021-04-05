@@ -15,6 +15,10 @@ public:
     void init();
 
     void event(GameEvent event, Entity *collider) override;
+
+private:
+    void update(int32_t delta_time);
+
 };
 
 #endif //JOJO_RUN_FIRE_H
