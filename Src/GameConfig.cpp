@@ -20,11 +20,18 @@ GameConfig::~GameConfig() {
 }
 
 const KeyVal resource_table [] = {
+        /* Textures */
         {"PLATFORM",               "Map/Platform.png"},
         {"PLAYER_RUN",             "Textures/PlayerRun.png"},
         {"PLAYER_RUN_SHIELD",      "Textures/PlayerRunShield.png"},
-        {"PLAYER_JUMP",            "Textures/PlayerJump.png"}, //@todo: REINOMINARE
+        {"PLAYER_JUMP",            "Textures/PlayerJump.png"},
+        { "SPLASHSCREEN",        "Textures/GameOverScreen.png"},
+        { "GAMEOVERSCREEN",        "Textures/GameOverScreen.png"},
 
+        /* Fonts */
+        { "GAMEOVER",              "Font/GAME_OVER.TTF"},
+
+        /**/
         { "blockTexture",          "Textures/blockTexture.png"},
         { "fireWallTexture",       "Textures/fireWallTexture.png"},
         { "shieldPowerUpTexture",  "Textures/shieldPowerUpTexture.png"},
@@ -37,7 +44,6 @@ const KeyVal resource_table [] = {
         { "emeraldBlockTexture",   "Textures/emeraldBlockTexture.png"},
         { "playerTexture",         "Textures/playerTexture.png"},
         { "playerShieldTexture",   "Textures/playerShieldTexture.png"},
-        { "GameOverScreen",        "Textures/GameOverScreen.png"},
         { "Fire",                  "Textures/FirewallAnimation.png"},
 
         { "Background1",           "Map/Background1.png"},
@@ -55,7 +61,6 @@ const KeyVal resource_table [] = {
         { "hamonEnemyShout",       "Music/hamonEnemyShout.wav"},
 
         { "arcadeclassic",         "Font/ARCADECLASSIC.TTF"},
-        { "gameover",              "Font/GAME_OVER.TTF"}
 };
 
 void GameConfig::init() {

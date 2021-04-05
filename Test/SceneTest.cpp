@@ -65,6 +65,7 @@ public:
     sf::FloatRect get_last_platform() { return m_last_platform; }
     void set_last_platform(sf::FloatRect last_platform) { m_last_platform = last_platform; }
     float get_platform_space() { return m_platform_space; }
+    void set_platforms_count(int count) { m_platforms_count = count; };
 };
 
 
@@ -85,7 +86,9 @@ public:
         dynamic_cast<TestGameConfig*>(CONFIG)->clear();
         dynamic_cast<TestGameConfig*>(CONFIG)->setResource("PLATFORM", "Platform.png");
         dynamic_cast<TestGameConfig*>(CONFIG)->setResource("PLAYER_RUN", "Texture.png");
+        dynamic_cast<TestGameConfig*>(CONFIG)->setResource("PLAYER_RUN_SHIELD", "Texture.png");
         dynamic_cast<TestGameConfig*>(CONFIG)->setResource("PLAYER_JUMP", "Texture.png");
+        dynamic_cast<TestGameConfig*>(CONFIG)->setResource("GAMEOVER", "Font.ttf");
 
         dynamic_cast<TestGameConfig*>(CONFIG)->setResource("BG", "Background.png");
         dynamic_cast<TestGameConfig*>(CONFIG)->setResource("Background1", "Background.png");
@@ -241,6 +244,7 @@ TEST_F(SceneTest, TestGenerateEnemies) {
     auto scene = dynamic_cast<TestSceneManager*>(SCENE);
     auto & enemies = scene->get_enemies();
     scene->init();
+    scene->set_platforms_count(2);
     scene->set_last_platform({100,CONFIG->getBottomLevel(),0.5f * CONFIG->getWindowSize().x,50});
     scene->generateEnemies(false);
     ASSERT_EQ(enemies.size(), 1);
@@ -257,6 +261,7 @@ TEST_F(SceneTest, TestGenerateObstacles) {
     auto scene = dynamic_cast<TestSceneManager*>(SCENE);
     auto & obstacles = scene->get_obstacles();
     scene->init();
+    scene->set_platforms_count(2);
     scene->set_last_platform({100,CONFIG->getBottomLevel(),0.5f * CONFIG->getWindowSize().x,50});
     scene->generateObstacles(false);
     ASSERT_EQ(obstacles.size(), 1);
@@ -273,6 +278,7 @@ TEST_F(SceneTest, TestGeneratePowerups) {
     auto scene = dynamic_cast<TestSceneManager*>(SCENE);
     auto & powerups = scene->get_powerups();
     scene->init();
+    scene->set_platforms_count(2);
     scene->set_last_platform({100, CONFIG->getBottomLevel(),0.5f * CONFIG->getWindowSize().x,50});
     scene->generatePowerups(false);
     ASSERT_EQ(powerups.size(), 1);

@@ -38,3 +38,5 @@ void EmeraldEnemy::update(int32_t delta_time) {
     }
 }
 
+
+

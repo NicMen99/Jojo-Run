@@ -21,8 +21,10 @@ void Block::init() {
 }
 
 void Block::event(GameEvent event, Entity *collider) {
-    if(collider->getType() == EntityType::Hero) {
-        setDestroyed();
+    if(event == GameEvent::Collision) {
+        if(collider->getType() == EntityType::Hero) {
+            setDestroyed();
+        }
     }
 }
 

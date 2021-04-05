@@ -58,9 +58,7 @@ void Entity::move(int32_t delta_time) {
     sf::Vector2f offset = {speed.x * delta_time / 1000, speed.y * delta_time / 1000};
     setPosition(getPosition() + offset);
     if((getPosition().x + getBounds().width) < 0) {
-        if(getGroup() == EntityGroup::Enemy) {
-            STATS->setInt(Stats::ConsecutiveKilled, 0);
-        }
+        event(GameEvent::OutOfBound, nullptr);
         setDestroyed();
     }
 }
@@ -76,12 +74,16 @@ void Entity::addAnimation(const std::string & animation_name, const std::list<Fr
     m_frame = frame;
 }
 
+void Entity::addSound(const std::string & sound_name, const std::string & sound_resource) {
+    m_soundManager->addSound(sound_name, sound_resource);
+}
+
 void Entity::playAnimation(const std::string & animation_name, bool loop) {
     m_animationManager->play(animation_name, loop);
 }
 
-void Entity::addSound(const std::string & sound_name, const std::string & sound_resource) {
-    m_soundManager->addSound(sound_name, sound_resource);
+bool Entity::animationCompleted() {
+    return m_animationManager->done();
 }
 
 void Entity::playSound(const std::string & sound_name, float volume) {

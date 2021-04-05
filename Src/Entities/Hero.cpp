@@ -54,7 +54,9 @@ void Hero::updatePhysics(int32_t delta_time) {
      * Fallen
      */
     if(getPosition().y > (CONFIG->getWindowSize().y)) {
-        changeState(State::Dead);
+        m_state = State::Dead;
+        setEnabled(false);
+        setDestroyed();
     }
 
     /*
@@ -88,7 +90,6 @@ void Hero::updatePhysics(int32_t delta_time) {
         case State::Falling:
             break;
         case State::Dead:
-            setDestroyed();
             break;
         case State::Init:
             break;
@@ -136,32 +137,36 @@ void Hero::event(GameEvent event, Entity * entity) {
         int damage = 0;
         if (entity->getGroup() == EntityGroup::Enemy) {
             auto *enemy = dynamic_cast<Enemy *>(entity);
-            damage = !m_shield ? enemy->getDamage() : 0;
+            damage = enemy->getDamage();
         }
         /*
          * Collisione con un ostacolo
          */
         else if (entity->getGroup() == EntityGroup::Obstacle) {
             auto *obstacle = dynamic_cast<Obstacle *>(entity);
-            damage = !m_shield ? obstacle->getDamage() : 0;
+            damage = obstacle->getDamage();
         }
         /*
          * Collisione con proiettile nemico
          */
         else if (entity->getGroup() == EntityGroup::Bullet) {
             auto *bullet = dynamic_cast<Bullet *>(entity);
-            damage = !m_shield ? bullet->getDamage() : 0;
+            damage = bullet->getDamage();
         }
-        updateHealth(-damage);
-        if (m_health <= 0) {
-            changeState(State::Dead);
-        }
-        playSound(m_shield ? "SHIELDON" : "COLLISION");
+
+        playSound("COLLISION");
         if(m_shield) {
             if(m_state==State::Grounded) {
                 playAnimation("RUN", true);
             }
             m_shield = false;
+        }
+        else {
+            updateHealth(-damage);
+            if (m_health <= 0) {
+                applyImpulse({-CONFIG->getGravity().y*10, -CONFIG->getHeroJumpForce()}, 10);
+                changeState(State::Dead);
+            }
         }
     }
 
@@ -176,6 +181,7 @@ void Hero::event(GameEvent event, Entity * entity) {
             } else if (entity->getType() == EntityType::Shield) {
                 if(m_state==State::Grounded) {
                     playAnimation("SRUN", true);
+                    playSound("SHIELDON");
                 }
                 m_shield = true;
             }
@@ -260,6 +266,10 @@ void Hero::changeState(State new_state) {
             case State::Falling:
 // std::cout << "FALL" << std::endl;
                 playAnimation("FALL");
+                break;
+            case State::Dead:
+                setEnabled(false);
+                playAnimation("DIE");
                 break;
             default:
                 break;

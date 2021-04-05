@@ -67,7 +67,7 @@ void GameOverState::createScreen() {
     delete m_root;
 
     WidgetTheme theme;
-    theme.font_name = "gameover";
+    theme.font_name = "GAMEOVER";
     theme.font_size = 100;
     theme.font_color = sf::Color::White;
     theme.font_outline_thinckness = 2;
@@ -76,7 +76,7 @@ void GameOverState::createScreen() {
 
     auto * background = new ImageWidget("Background");
     background->init(theme);
-    background->setTexture("GameOverScreen", CONFIG->getWindowSize());
+    background->setTexture("GAMEOVERSCREEN", CONFIG->getWindowSize());
     sf::Vector2f background_size = background->getSize();
     m_root->add(background);
 
@@ -110,7 +110,7 @@ void GameOverState::createScreen() {
 void GameOverState::showScore() {
 
     WidgetTheme theme;
-    theme.font_name = "gameover";
+    theme.font_name = "GAMEOVER";
     theme.font_size = 100;
     theme.font_color = sf::Color::White;
     theme.font_outline_thinckness = 2;

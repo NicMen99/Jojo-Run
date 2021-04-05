@@ -19,28 +19,63 @@ void Enemy::init(const std::string &texture_name, sf::Vector2f scale, sf::Vector
 }
 
 void Enemy::update(int32_t delta_time) {
+    updatePhysics(delta_time);
     Entity::update(delta_time);
-    if(m_state == State::Dying) {
-        setEnabled(false);
-        if(m_dyingTimer.getElapsedTime() > sf::milliseconds(100))
-            m_state = State::Dead;
-    }
-    else if(m_state == State::Dead)
-        setDestroyed();
 }
 
 void Enemy::event(GameEvent event, Entity *collider) {
-    if(m_state == State::Alive) {
+    /*
+     * Platform collision
+     */
+    if (event == GameEvent::CollisionBottom) {
+        sf::Rect<float> collider_rect = collider->getBounds();
+        sf::Rect<float> enemy_rect = getBounds();
+        sf::Vector2f speed = getSpeed();
+        speed.y = 0;
+        setPosition(sf::Vector2f(enemy_rect.left, collider_rect.top - enemy_rect.height));
+        setSpeed(speed);
+    }
+    else if (event == GameEvent::Collision) {
         if(collider->getType() == EntityType::Hero) {
-            m_state = State::Dying;
-            m_dyingTimer.restart();
+            m_state = State::Dead;
             STATS->setInt(Stats::ConsecutiveKilled, 0);
+            applyImpulse({CONFIG->getGravity().y*50, -CONFIG->getEnemyJumpForce()}, 10);
+            setEnabled(false);
         }
         if (collider->getType() == EntityType::Knife) {
             m_state = State::Dead;
-            m_dyingTimer.restart();
             STATS->addInt(Stats::Killed, 1);
             STATS->addInt(Stats::ConsecutiveKilled, 1);
+            applyImpulse({CONFIG->getGravity().y*10, -CONFIG->getEnemyJumpForce()}, 10);
+            setEnabled(false);
         }
+    }
+    else if (event == GameEvent::OutOfBound) {
+        STATS->setInt(Stats::ConsecutiveKilled, 0);
+    }
+}
+
+void Enemy::updatePhysics(int32_t delta_time) {
+    /*
+     * Fallen
+     */
+    if(getPosition().y > (CONFIG->getWindowSize().y)) {
+        m_state = State::Dead;
+        setEnabled(false);
+        setDestroyed();
+    }
+    applyImpulse(CONFIG->getGravity(), delta_time);
+    speedCap();
+}
+
+void Enemy::speedCap() {
+    sf::Vector2f speed = getSpeed();
+    if(speed.y > CONFIG->getEnemyFallSpeedLimit()) {
+        speed.y = CONFIG->getEnemyFallSpeedLimit();
+        setSpeed(speed);
+    }
+    else if(speed.y < CONFIG->getEnemyJumpSpeedLimit()){
+        speed.y = CONFIG->getEnemyJumpSpeedLimit();
+        setSpeed(speed);
     }
 }

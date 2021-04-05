@@ -63,11 +63,17 @@ std::unique_ptr<Entity> Factory::createHero() {
             {4, "PLAYER_JUMP", {804,98,79,78}, {0,0}, {false, false}},
             {4, "PLAYER_JUMP", {892,70,81,106}, {0,0}, {false, false}},
     };
+    static const std::list<FrameParams> die_animation = {
+            {30, "PLAYER_JUMP", {601,0,60,136}, {0,0}, {false, false}},
+            {30, "PLAYER_JUMP", {673,1,54,148}, {0,0}, {false, false}},
+            {30, "PLAYER_JUMP", {736,1,54,148}, {0,0}, {false, false}},
+    };
     hero->addAnimation("RUN", run_animation);
     hero->addAnimation("SRUN", shield_run_animation);
     hero->addAnimation("JUMP", jump_animation);
     hero->addAnimation("FALL", fall_animation);
     hero->addAnimation("FALL2", fall_animation2);
+    hero->addAnimation("DIE", die_animation);
     hero->addSound("COLLISION", "collisionSound");
     hero->addSound("SHIELD", "shieldSound");
     hero->addSound("SHIELDON", "shieldOn");

@@ -19,6 +19,9 @@ bool CollisionManager::collisionCheck(Entity *item1, Entity *item2, CollisionTag
     if(item1->getType() == EntityType::Hero && item2->getGroup() == EntityGroup::Platform)
         return checkHeroPlatform(item1, item2, tag1, tag2);
 
+    if(item1->getGroup() == EntityGroup::Enemy && item2->getGroup() == EntityGroup::Platform)
+        return checkEnemyPlatform(item1, item2, tag1, tag2);
+
     if(item1_rect.intersects(item2_rect)){
         tag1 = CollisionTag::Any;
         tag2 = CollisionTag::Any;
@@ -71,6 +74,32 @@ bool CollisionManager::checkHeroPlatform(Entity * hero, Entity * platform, Colli
     return false;
 }
 
+bool CollisionManager::checkEnemyPlatform(Entity *enemy, Entity *platform, CollisionTag &enemy_tag, CollisionTag &platform_tag) {
+    /*
+     * Se una collisione non in atto non fa niente
+     */
+    auto platform_rect = platform->getBounds();
+    auto enemy_rect = enemy->getBounds();
+    if (!enemy->isEnabled() || !platform->isEnabled() || !enemy_rect.intersects(platform_rect))
+        return false;
+
+    /*
+     * Se una collisione precende già in atto non fa niente
+     */
+    auto enemy_prev = enemy->getPrevBounds();
+    auto platform_prev = platform->getPrevBounds();
+    if (enemy_prev.intersects(platform_prev))
+        return false;
+
+    if (enemy_rect.top < platform_rect.top && (enemy_prev.top + enemy_prev.height) <= platform_prev.top) {
+        enemy_tag = CollisionTag::Bottom;
+        platform_tag = CollisionTag::Top;
+        return true;
+    }
+
+    return false;
+}
+
 std::shared_ptr<sf::FloatRect> CollisionManager::intersectionRect(Entity *hero, Entity *platform) {
     auto new_rect = std::make_shared<sf::FloatRect> (0,0,0,0);
     new_rect->top = std::max(hero->getBounds().top, platform->getBounds().top);
@@ -79,3 +108,4 @@ std::shared_ptr<sf::FloatRect> CollisionManager::intersectionRect(Entity *hero, 
     new_rect->width = std::min(hero->getBounds().left + hero->getBounds().width, platform->getBounds().left + platform->getBounds().width) - new_rect->left;
     return new_rect;
 }
+
