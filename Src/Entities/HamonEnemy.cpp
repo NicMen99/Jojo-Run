@@ -18,9 +18,9 @@ void HamonEnemy::init() {
 }
 
 void HamonEnemy::update(int32_t delta_time) {
-    Enemy::update(delta_time);
     if(!isStarted()) {
         setStarted(true);
     }
+    Enemy::update(delta_time);
 }
 

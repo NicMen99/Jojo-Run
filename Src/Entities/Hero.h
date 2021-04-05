@@ -37,6 +37,7 @@ private:
     int m_maxknives = 8;
     bool m_shield = false;
     float m_distance = 0;
+    float m_clean_distance = 0;
 };
 
 #endif //JOJO_RUN_HERO_H

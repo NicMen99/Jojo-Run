@@ -30,7 +30,9 @@ public:
 
     Widget* add(Widget* widget);
     Widget* findObjectByName(const std::string & name);
-    void setPosition(const sf::Vector2f & position);
+    void setPosition(const sf::Vector2f & position) { m_position = position; }
+    void setPosition(float posx, float posy) { m_position = {posx, posy}; }
+    sf::Vector2f getPosition() { return m_position; }
     void setVisible(bool visible) { m_visible = visible; }
     void startTimer(sf::Time time);
     bool isVisible(Widget* widget) { return m_visible; }
@@ -44,7 +46,6 @@ protected:
     virtual void _render(sf::RenderWindow & window, const sf::Vector2f & parent_position) {}
     void setParent(Widget *);
     Widget * getParent() const;
-    sf::Vector2f getPosition() { return m_position; }
 
     sf::Clock m_clock;
     sf::Time m_time = sf::seconds(0);

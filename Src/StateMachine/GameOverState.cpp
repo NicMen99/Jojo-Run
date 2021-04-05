@@ -129,6 +129,7 @@ void GameOverState::showScore() {
     topfive->setPosition({100,400});
     m_root->add(topfive);
 
+
     int count = 0;
     float posy = 10;
     for(const auto& record : SCORE->getScoreRecord()) {
@@ -149,15 +150,50 @@ void GameOverState::showScore() {
         if(record.added) name->setFillColor(sf::Color::Red);
         topfive->add(name);
 
-        auto * score = new TextWidget("ScoreManager");
+        auto * score = new TextWidget("Score");
         score->init(theme);
         score->setString(std::to_string(record.score));
-        score->setPosition({600, posy});
+        score->setPosition({550, posy});
         if(record.added) score->setFillColor(sf::Color::Red);
         topfive->add(score);
 
+        auto * distance = new TextWidget("Distance");
+        distance->init(theme);
+        distance->setString(std::to_string(record.distance));
+        distance->setPosition({700, posy});
+        if(record.added) score->setFillColor(sf::Color::Red);
+        topfive->add(distance);
+
+        auto * clean_distance = new TextWidget("CleanDistance");
+        clean_distance->init(theme);
+        clean_distance->setString(std::to_string(record.clean_distance));
+        clean_distance->setPosition({900, posy});
+        if(record.added) score->setFillColor(sf::Color::Red);
+        topfive->add(clean_distance);
+
+        auto * killed = new TextWidget("Killed");
+        killed->init(theme);
+        killed->setString(std::to_string(record.killed));
+        killed->setPosition({1050, posy});
+        if(record.added) score->setFillColor(sf::Color::Red);
+        topfive->add(killed);
+
+        auto * consec_killed = new TextWidget("ConsecutiveKilled");
+        consec_killed->init(theme);
+        consec_killed->setString(std::to_string(record.consec_killed));
+        consec_killed->setPosition({1150, posy});
+        if(record.added) score->setFillColor(sf::Color::Red);
+        topfive->add(consec_killed);
+
+        auto * time = new TextWidget("Time");
+        time->init(theme);
+        time->setString(std::to_string(record.time));
+        time->setPosition({1150, posy});
+        if(record.added) score->setFillColor(sf::Color::Red);
+        topfive->add(time);
+
         posy += 10 + name->getSize().y;
-        if(count >= 5)
+        if(count >= 7)
             break;
     }
 

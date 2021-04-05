@@ -38,6 +38,7 @@ void Enemy::event(GameEvent event, Entity *collider) {
     else if (event == GameEvent::Collision) {
         if(collider->getType() == EntityType::Hero) {
             m_state = State::Dead;
+            STATS->addInt(Stats::Killed, 1);
             STATS->setInt(Stats::ConsecutiveKilled, 0);
             applyImpulse({CONFIG->getGravity().y*50, -CONFIG->getEnemyJumpForce()}, 10);
             setEnabled(false);

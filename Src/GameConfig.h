@@ -40,7 +40,7 @@ protected:
     /* pixels */
     sf::Vector2u m_window_size = {1600,1000};
     /* pixels per secondo */
-    sf::Vector2f m_scene_speed = {500.f, 0.f};
+    sf::Vector2f m_scene_speed = {600.f, 0.f};
     /* delta pixels per secondo */
     sf::Vector2f m_gravity     = {0.f, 1500.f};
 

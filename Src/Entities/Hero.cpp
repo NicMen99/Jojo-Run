@@ -38,8 +38,10 @@ void Hero::init()
 void Hero::update(int32_t delta_time) {
     if(!isStarted()) {
         updateHealth(0);
-        updateKnives(0);
+        updateKnives(2);
         setStarted(true);
+        m_distance = 0;
+        m_clean_distance = 0;
     }
     m_inputManager.update();
     updatePhysics(delta_time);
@@ -47,7 +49,9 @@ void Hero::update(int32_t delta_time) {
     Entity::update(delta_time);
     /**/
     m_distance += getSpeed().x * delta_time / 1000;
+    m_clean_distance += getSpeed().x * delta_time / 1000;
     STATS->setInt(Stats::Distance, (int)m_distance);
+    STATS->setInt(Stats::CleanDistance, (int)m_clean_distance);
 }
 
 void Hero::updatePhysics(int32_t delta_time) {
@@ -154,6 +158,8 @@ void Hero::event(GameEvent event, Entity * entity) {
             auto *bullet = dynamic_cast<Bullet *>(entity);
             damage = bullet->getDamage();
         }
+        else
+            return;
 
         playSound("COLLISION");
         if(m_shield) {
@@ -163,6 +169,7 @@ void Hero::event(GameEvent event, Entity * entity) {
             m_shield = false;
         }
         else {
+            if(damage>0) m_clean_distance = 0;
             updateHealth(-damage);
             if (m_health <= 0) {
                 applyImpulse({-CONFIG->getGravity().y*10, -CONFIG->getHeroJumpForce()}, 10);
@@ -217,6 +224,8 @@ void Hero::updateHealth(int delta) {
     if(m_health > m_maxhealthpoints) {
         m_health = m_maxhealthpoints;
     }
+    if(m_health < 0)
+        m_health = 0;
     STATS->setInt(Stats::Health, m_health);
 }
 

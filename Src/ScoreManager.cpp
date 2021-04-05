@@ -10,49 +10,63 @@
 #include "ScoreManager.h"
 
 void ScoreManager::init() {
-    m_score_record.nickname = "";
-    m_score_record.score = 0;
+    m_score_record.clear();
 
-    m_distance_achiev = {3000, 5000};
+    m_score_bonus = 0;
+    m_distance_achiev = {10000, 20000};
+    m_clean_distance_achiev = {3000, 5000};
     m_killed_achiev = {3, 5};
-    m_conseckilled_achiev = {2,3};
+    m_consecutive_killed_achiev = {2, 3};
 }
 
 void ScoreManager::update() {
 
     /*
-     *  distanza
+     * distanza
      */
-    int distance = STATS->getInt(Stats::Distance);
-    if(distance - m_last_distance > CONFIG->getWindowSize().x) {
-        m_last_distance = distance;
-        m_score_record.score += 1;
-        STATS->addInt(Stats::Score, 1);
+    m_score_record.distance = STATS->getInt(Stats::Distance);
+    /*
+     * bonus distanza
+     */
+    if(m_score_record.distance >= m_distance_achiev.second) {
+        m_distance_achiev = {m_distance_achiev.second, 2 * m_distance_achiev.second - m_distance_achiev.first };
+        STATS->setInt(Achievements::Distance, m_distance_achiev.first);
+        m_score_bonus += m_distance_achiev.first / 100;
     }
+    /*
+     * bonus distanza senza danni
+     */
+    if(STATS->getInt(Stats::CleanDistance) > m_score_record.clean_distance)
+        m_score_record.clean_distance = STATS->getInt(Stats::CleanDistance);
+    if(m_score_record.clean_distance >= m_clean_distance_achiev.second) {
+        m_clean_distance_achiev = {m_clean_distance_achiev.second, m_clean_distance_achiev.second + m_clean_distance_achiev.first};
+        STATS->setInt(Achievements::CleanDistance, m_score_record.clean_distance);
+        m_score_bonus += m_clean_distance_achiev.first / 100;
+    }
+
+    /*
+     * bonus uccisioni
+     */
+    m_score_record.killed = STATS->getInt(Stats::Killed);
+    if(m_score_record.killed >= m_killed_achiev.second) {
+        m_killed_achiev = {m_killed_achiev.second, 2 * m_killed_achiev.second - m_killed_achiev.first};
+        STATS->setInt(Achievements::Killed, m_killed_achiev.first);
+        m_score_bonus += m_killed_achiev.first * 10;
+    }
+
+    /*
+     * bonus uccisioni consecutive
+     */
+    if(STATS->getInt(Stats::ConsecutiveKilled) > m_score_record.consec_killed)
+        m_score_record.consec_killed = STATS->getInt(Stats::ConsecutiveKilled);
+    if(m_score_record.consec_killed >= m_consecutive_killed_achiev.second){
+        m_consecutive_killed_achiev = {m_consecutive_killed_achiev.second, m_consecutive_killed_achiev.first + m_consecutive_killed_achiev.second};
+        STATS->setInt(Achievements::ConsecutiveKilled, m_consecutive_killed_achiev.first);
+        m_score_bonus += m_consecutive_killed_achiev.second * 100;
+    }
+
+    m_score_record.score = m_score_record.distance / m_distance_unit + m_score_bonus;
     STATS->setInt(Stats::Score, m_score_record.score);
-    if(distance >= m_distance_achiev.second){
-        STATS->setInt(Achievements::Distance, distance/100*100);
-        m_distance_achiev = {m_distance_achiev.second, m_distance_achiev.first + m_distance_achiev.second};
-    }
-
-    /*
-     * uccisioni
-     */
-    int killed = STATS->getInt(Stats::Killed);
-    if(killed >= m_killed_achiev.second){
-        STATS->setInt(Achievements::Killed, killed);
-        m_killed_achiev = {m_killed_achiev.second, m_killed_achiev.first + m_killed_achiev.second};
-    }
-
-    /*
-     * uccisioni consecutive
-     */
-    int consecutive_killed = STATS->getInt(Stats::ConsecutiveKilled);
-    if(consecutive_killed >= m_conseckilled_achiev.second){
-        STATS->setInt(Achievements::ConsecutiveKilled, consecutive_killed);
-        m_conseckilled_achiev = {m_conseckilled_achiev.second, m_conseckilled_achiev.first + m_conseckilled_achiev.second};
-    }
-
 }
 
 void ScoreManager::loadFromFile() {
@@ -71,7 +85,13 @@ void ScoreManager::loadFromFile() {
         record.added = false;
         if (!(iss >> tmp //discard first field
                   >> record.nickname
-                  >> record.score)) {
+                  >> record.score
+                  >> record.distance
+                  >> record.clean_distance
+                  >> record.killed
+                  >> record.consec_killed
+                  >> record.time
+                  )) {
             continue;
         }
         m_records.emplace_back(record);
@@ -98,6 +118,16 @@ void ScoreManager::saveToFile() {
                 << record.nickname
                 << " "
                 << record.score
+                << " "
+                << record.distance
+                << " "
+                << record.clean_distance
+                << " "
+                << record.killed
+                << " "
+                << record.consec_killed
+                << " "
+                << record.time
                 << std::endl;
     }
 }

@@ -86,7 +86,7 @@ void ScoreHUD::init() {
 
     /* achievement */
     m_achievements = new Widget("achiemements");
-    m_achievements->setPosition({400, 30});
+    m_achievements->setPosition({0, 30});
 
     auto achievement_label = new TextWidget("achievement_message");
     achievement_label->init(theme);
@@ -113,17 +113,23 @@ void ScoreHUD::render(sf::RenderWindow &window) {
 
 void ScoreHUD::data_update(const std::string & item_name, const std::string & item_value){
     TextWidget* widget = dynamic_cast<TextWidget*>(m_achievements->findObjectByName("achievement_message"));
-
+    std::string curmsg = widget->getString();
+    if(!curmsg.empty()) curmsg += "\n";
     if(item_name == Achievements::Distance) {
-        widget->setString("MILE RUNNER:  " + item_value + " METERS RUN");
+        widget->setString(curmsg + "MILE RUNNER:  " + item_value + " METERS RUN");
     }
-    if(item_name == Achievements::Killed) {
-        widget->setString("KILLING SPREE:  KILLED " + item_value + " ENEMIES");
+    else if(item_name == Achievements::CleanDistance) {
+        widget->setString(curmsg + "COMBO RUN:  " + item_value + " CLEAN METERS RUN");
     }
-    if(item_name == Achievements::ConsecutiveKilled) {
-        widget->setString("COMBO:  KILLED " + item_value + " CONSECUTIVE KILLS");
+    else if(item_name == Achievements::Killed) {
+        widget->setString(curmsg + "KILLING SPREE:  KILLED " + item_value + " ENEMIES");
+    }
+    else if(item_name == Achievements::ConsecutiveKilled) {
+        widget->setString(curmsg + "COMBO KILL:  " + item_value + " CONSECUTIVE KILLS");
     }
 
+    widget->setFillColor(sf::Color::Green);
+    widget->setPosition((CONFIG->getWindowSize().x - widget->getSize().x)/2, widget->getPosition().y);
     widget->startTimer(sf::seconds(3));
 }
 

@@ -16,6 +16,21 @@ private:
         bool        added;
         std::string nickname;
         int         score;
+        int         distance;
+        int         clean_distance;
+        int         killed;
+        int         consec_killed;
+        int         time;
+        void clear() {
+            added=false;
+            nickname="";
+            score=0;
+            distance=0;
+            clean_distance=0;
+            killed=0;
+            consec_killed=0;
+            time=0;
+        }
     };
 
     void sort();
@@ -24,10 +39,12 @@ private:
     std::vector<Record> m_records;
     Record m_score_record;
 
-    int m_last_distance = 0;
+    static const int m_distance_unit = 100;
+    int m_score_bonus = 0;
     std::pair<int, int> m_distance_achiev = {0, 0};
+    std::pair<int, int> m_clean_distance_achiev = {0, 0};
     std::pair<int, int> m_killed_achiev = {0, 0};
-    std::pair<int, int> m_conseckilled_achiev = {0, 0};
+    std::pair<int, int> m_consecutive_killed_achiev = {0, 0};
 
     /* achievement management */
 public:

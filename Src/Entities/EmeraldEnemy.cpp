@@ -22,7 +22,6 @@ void EmeraldEnemy::init() {
 }
 
 void EmeraldEnemy::update(int32_t delta_time) {
-    Enemy::update(delta_time);
     if(!isStarted()) {
         m_shootTimer.restart();
         m_shootTime = sf::milliseconds(RAND(3000));
@@ -36,6 +35,7 @@ void EmeraldEnemy::update(int32_t delta_time) {
         playSound("EMERALDACTION");
         m_shoot_left -= 1;
     }
+    Enemy::update(delta_time);
 }
 
 
