@@ -368,8 +368,8 @@ void SceneManager::manageCollisions() {
          */
         for (auto & powerup : m_powerups) {
             if (m_collisionManager->collisionCheck(m_hero.get(), powerup.get(), tag1, tag2)) {
-                m_hero->event(GameEvent::Collision, powerup.get());
-                powerup->event(GameEvent::Collision, m_hero.get());
+                m_hero->event(GameEvent::Collection, powerup.get());
+                powerup->event(GameEvent::Collection, m_hero.get());
             }
         }
         /*

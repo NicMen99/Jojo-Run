@@ -22,7 +22,8 @@ GameConfig::~GameConfig() {
 const KeyVal resource_table [] = {
         {"PLATFORM",               "Map/Platform.png"},
         {"PLAYER_RUN",             "Textures/PlayerRun.png"},
-        {"PLAYER_JUMP",             "Textures/PlayerJump.png"}, //@todo: REINOMINARE
+        {"PLAYER_RUN_SHIELD",      "Textures/PlayerRunShield.png"},
+        {"PLAYER_JUMP",            "Textures/PlayerJump.png"}, //@todo: REINOMINARE
 
         { "blockTexture",          "Textures/blockTexture.png"},
         { "fireWallTexture",       "Textures/fireWallTexture.png"},

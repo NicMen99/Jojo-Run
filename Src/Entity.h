@@ -40,7 +40,7 @@ enum class EntityType {
 };
 
 enum class GameEvent {
-    Collision, CollisionTop, CollisionBottom, EnemyKilled
+    Collision, CollisionTop, CollisionBottom, Collection, EnemyKilled
 };
 
 class Entity {
