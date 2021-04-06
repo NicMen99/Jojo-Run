@@ -188,7 +188,7 @@ void GameOverState::showScore() {
         auto * time = new TextWidget("Time");
         time->init(theme);
         time->setString(std::to_string(record.time));
-        time->setPosition({1150, posy});
+        time->setPosition({1250, posy});
         if(record.added) score->setFillColor(sf::Color::Red);
         topfive->add(time);
 
