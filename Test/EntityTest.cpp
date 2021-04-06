@@ -69,13 +69,6 @@ TEST_F(EntityTest , previousPosition) {
     ASSERT_EQ(entity->getPosition(), sf::Vector2f(201,201));
 }
 
-TEST_F(EntityTest, StartedFlag){
-    auto entity = std::unique_ptr<Entity>(new Entity(EntityGroup::Hero, EntityType::Hero, "Hero"));
-    ASSERT_EQ(entity->isStarted(), false);
-    entity->update(1);
-    ASSERT_EQ(entity->isStarted(), true);
-}
-
 TEST_F(EntityTest, DestroyedFlagNoTexture){
     dynamic_cast<TestGameConfig*>(CONFIG)->setSceneSpeed({0,0});
     auto entity = std::unique_ptr<Entity>(new Entity(EntityGroup::Hero, EntityType::Hero, "Hero"));

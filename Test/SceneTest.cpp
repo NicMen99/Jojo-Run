@@ -88,16 +88,24 @@ public:
         dynamic_cast<TestGameConfig*>(CONFIG)->setResource("PLAYER_RUN", "Texture.png");
         dynamic_cast<TestGameConfig*>(CONFIG)->setResource("PLAYER_RUN_SHIELD", "Texture.png");
         dynamic_cast<TestGameConfig*>(CONFIG)->setResource("PLAYER_JUMP", "Texture.png");
-        dynamic_cast<TestGameConfig*>(CONFIG)->setResource("GAMEOVER", "Font.ttf");
+        dynamic_cast<TestGameConfig*>(CONFIG)->setResource("PLAYER_DEATH", "Texture.png");
+
+        dynamic_cast<TestGameConfig*>(CONFIG)->setResource("EMERALD_ENEMY_IDLE", "Texture.png");
+        dynamic_cast<TestGameConfig*>(CONFIG)->setResource("EMERALD_ENEMY_DEATH", "Texture.png");
+        dynamic_cast<TestGameConfig*>(CONFIG)->setResource("HAMON_ENEMY_IDLE", "Texture.png");
+        dynamic_cast<TestGameConfig*>(CONFIG)->setResource("HAMON_ENEMY_DEATH", "Texture.png");
+        dynamic_cast<TestGameConfig*>(CONFIG)->setResource("FIRE_ENEMY_IDLE", "Texture.png");
+        dynamic_cast<TestGameConfig*>(CONFIG)->setResource("FIRE_ENEMY_DEATH", "Texture.png");
+
+        dynamic_cast<TestGameConfig*>(CONFIG)->setResource("SPLASH_SCREEN", "Texture.png");
+        dynamic_cast<TestGameConfig*>(CONFIG)->setResource("GAME_OVER_SCREEN", "Texture.png");
+
+        dynamic_cast<TestGameConfig*>(CONFIG)->setResource("GAME_OVER_FONT", "Font.ttf");
 
         dynamic_cast<TestGameConfig*>(CONFIG)->setResource("BG", "Background.png");
         dynamic_cast<TestGameConfig*>(CONFIG)->setResource("Background1", "Background.png");
         dynamic_cast<TestGameConfig*>(CONFIG)->setResource("Foreground", "Background.png");
         dynamic_cast<TestGameConfig*>(CONFIG)->setResource("Middle", "Background.png");
-
-        dynamic_cast<TestGameConfig*>(CONFIG)->setResource("fireEnemyTexture", "Texture.png");
-        dynamic_cast<TestGameConfig*>(CONFIG)->setResource("hamonEnemyTexture", "Texture.png");
-        dynamic_cast<TestGameConfig*>(CONFIG)->setResource("emeraldEnemyTexture", "Texture.png");
 
         dynamic_cast<TestGameConfig*>(CONFIG)->setResource("blockTexture", "Texture.png");
         dynamic_cast<TestGameConfig*>(CONFIG)->setResource("hamonBlockTexture", "Texture.png");
