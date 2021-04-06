@@ -22,23 +22,35 @@ GameConfig::~GameConfig() {
 const KeyVal resource_table [] = {
         /* Textures */
         {"PLATFORM",               "Map/Platform.png"},
+
         {"PLAYER_RUN",             "Textures/PlayerRun.png"},
         {"PLAYER_RUN_SHIELD",      "Textures/PlayerRunShield.png"},
         {"PLAYER_JUMP",            "Textures/PlayerJump.png"},
-        { "SPLASHSCREEN",        "Textures/GameOverScreen.png"},
-        { "GAMEOVERSCREEN",        "Textures/GameOverScreen.png"},
+        {"PLAYER_DEATH",           "Textures/PlayerDeath.png"},
+
+        {"EMERALD_ENEMY_IDLE",     "Textures/emeraldEnemyTexture.png"},     //@TODO rigirare, rinominare
+        {"EMERALD_ENEMY_DEATH",    "Textures/EmeraldEnemyDeath.png"},
+
+        {"HAMON_ENEMY_IDLE",       "Textures/hamonEnemyTexture.png"},     //@TODO rigirare, rinominare
+        {"HAMON_ENEMY_DEATH",      "Textures/HamonEnemyDeath.png"},
+
+        {"FIRE_ENEMY_IDLE",        "Textures/FireEnemyIdle.png"},     //@TODO rigirare, rinominare
+        {"FIRE_ENEMY_DEATH",       "Textures/FireEnemyDeath.png"},
+
+        { "SPLASH_SCREEN",         "Textures/GameOverScreen.png"},
+        { "GAME_OVER_SCREEN",      "Textures/GameOverScreen.png"},
 
         /* Fonts */
-        { "GAMEOVER",              "Font/GAME_OVER.TTF"},
+        { "GAME_OVER_FONT",        "Font/GAME_OVER.TTF"},
+
+        /* Sounds */
 
         /**/
         { "blockTexture",          "Textures/blockTexture.png"},
         { "fireWallTexture",       "Textures/fireWallTexture.png"},
         { "shieldPowerUpTexture",  "Textures/shieldPowerUpTexture.png"},
         { "knifeTexture",          "Textures/knifeTexture.png"},
-        { "hamonEnemyTexture",     "Textures/hamonEnemyTexture.png"},
         { "fireEnemyTexture",      "Textures/fireEnemyTexture.png"},
-        { "emeraldEnemyTexture",   "Textures/emeraldEnemyTexture.png"},
         { "hamonBlockTexture",     "Textures/hamonBlockTexture.png"},
         { "fireBlockTexture",      "Textures/fireBlockTexture.png"},
         { "emeraldBlockTexture",   "Textures/emeraldBlockTexture.png"},
@@ -59,8 +71,6 @@ const KeyVal resource_table [] = {
         { "fireEnemyShout",        "Music/fireEnemyShout.wav"},
         { "emeraldEnemyShout",     "Music/emeraldEnemyShout.wav"},
         { "hamonEnemyShout",       "Music/hamonEnemyShout.wav"},
-
-        { "arcadeclassic",         "Font/ARCADECLASSIC.TTF"},
 };
 
 void GameConfig::init() {

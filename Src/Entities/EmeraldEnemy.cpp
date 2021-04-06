@@ -25,6 +25,7 @@ void EmeraldEnemy::update(int32_t delta_time) {
     if(!isStarted()) {
         m_shootTimer.restart();
         m_shootTime = sf::milliseconds(RAND(3000));
+        changeState(State::Idle);
         setStarted(true);
     }
     if(m_shoot_left > 0 && m_shootTimer.getElapsedTime() >= m_shootTime) {
@@ -36,6 +37,26 @@ void EmeraldEnemy::update(int32_t delta_time) {
         m_shoot_left -= 1;
     }
     Enemy::update(delta_time);
+}
+
+void EmeraldEnemy::changeState(Enemy::State new_state) {
+    if(new_state != m_state) {
+        switch(new_state) {
+            case State::Idle:
+                playAnimation("IDLE");
+                break;
+            case State::Attack:
+                playAnimation("THROW");
+                break;
+            case State::Dead:
+                playAnimation("DEATH");
+                setEnabled(false);
+                break;
+            default:
+                break;
+        }
+    }
+    m_state = new_state;
 }
 
 

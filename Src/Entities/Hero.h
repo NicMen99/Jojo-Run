@@ -18,7 +18,7 @@ public:
     void update(int32_t delta_time) override;
 
 private:
-    enum class State {Init, Grounded, Jumping, Falling, Dead};
+    enum class State {Init, Grounded, Jumping, Falling, Attack, Dead};
 
     void event(GameEvent event, Entity * entity) override;
     void updatePhysics(int32_t delta_time);

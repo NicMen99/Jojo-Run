@@ -155,6 +155,9 @@ void Hero::event(GameEvent event, Entity * entity) {
          * Collisione con proiettile nemico
          */
         else if (entity->getGroup() == EntityGroup::Bullet) {
+            #ifdef GAMEDEBUG
+            assert(entity->getType() != EntityType::Knife);
+            #endif
             auto *bullet = dynamic_cast<Bullet *>(entity);
             damage = bullet->getDamage();
         }
@@ -245,7 +248,8 @@ void Hero::manageAttack() {
         case State::Falling:
             if(m_inputManager.isKeyJustPressed(sf::Keyboard::K)){
                 auto kf = FACTORY->createBullet(EntityType::Knife);
-                kf->setPosition(sf::Vector2f(getPosition()) + sf::Vector2f(getBounds().width, 0));
+                /* I frame sono a larghezza variabile, posizione di spawn un frame avanti */
+                kf->setPosition(sf::Vector2f(getPosition()) + sf::Vector2f(getBounds().width * 2, 0));
                 kf->setSpeed(sf::Vector2f {getSpeed().x + 1000.f, 0.f});
                 SCENE->addSpawned(kf);
                 updateKnives(-1);
@@ -278,8 +282,8 @@ void Hero::changeState(State new_state) {
                 playAnimation("FALL");
                 break;
             case State::Dead:
+                playAnimation("DEATH");
                 setEnabled(false);
-                playAnimation("DIE");
                 break;
             default:
                 break;

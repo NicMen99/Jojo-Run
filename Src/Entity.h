@@ -15,8 +15,6 @@ class AnimationManager;
 class SoundManager;
 class FrameParams;
 
-#define HIT_BOX_DEBUG
-
 enum class EntityGroup {
     Scene,
     Platform,

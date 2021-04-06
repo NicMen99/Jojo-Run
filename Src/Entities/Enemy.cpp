@@ -37,14 +37,14 @@ void Enemy::event(GameEvent event, Entity *collider) {
     }
     else if (event == GameEvent::Collision) {
         if(collider->getType() == EntityType::Hero) {
-            m_state = State::Dead;
+            changeState(State::Dead);
             STATS->addInt(Stats::Killed, 1);
             STATS->setInt(Stats::ConsecutiveKilled, 0);
             applyImpulse({CONFIG->getGravity().y*50, -CONFIG->getEnemyJumpForce()}, 10);
             setEnabled(false);
         }
         if (collider->getType() == EntityType::Knife) {
-            m_state = State::Dead;
+            changeState(State::Dead);
             STATS->addInt(Stats::Killed, 1);
             STATS->addInt(Stats::ConsecutiveKilled, 1);
             applyImpulse({CONFIG->getGravity().y*10, -CONFIG->getEnemyJumpForce()}, 10);
@@ -61,7 +61,7 @@ void Enemy::updatePhysics(int32_t delta_time) {
      * Fallen
      */
     if(getPosition().y > (CONFIG->getWindowSize().y)) {
-        m_state = State::Dead;
+        changeState(State::Dead);
         setEnabled(false);
         setDestroyed();
     }

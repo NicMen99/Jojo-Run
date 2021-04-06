@@ -17,7 +17,6 @@ FireBall::~FireBall() {
 }
 
 void FireBall::init() {
-    setSpeed({0.f, 0.f});
     setDamage(50);
 }
 

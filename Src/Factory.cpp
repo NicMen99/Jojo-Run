@@ -63,17 +63,21 @@ std::unique_ptr<Entity> Factory::createHero() {
             {4, "PLAYER_JUMP", {804,98,79,78}, {0,0}, {false, false}},
             {4, "PLAYER_JUMP", {892,70,81,106}, {0,0}, {false, false}},
     };
-    static const std::list<FrameParams> die_animation = {
-            {30, "PLAYER_JUMP", {601,0,60,136}, {0,0}, {false, false}},
-            {30, "PLAYER_JUMP", {673,1,54,148}, {0,0}, {false, false}},
-            {30, "PLAYER_JUMP", {736,1,54,148}, {0,0}, {false, false}},
+    static const std::list<FrameParams> death_animation = {
+            {7, "PLAYER_DEATH", {0,0,126,122}, {0,0}, {false, false}},
+            {7, "PLAYER_DEATH", {129,0,129,122}, {0,0}, {false, false}},
+            {7, "PLAYER_DEATH", {264,0,137,122}, {0,0}, {false, false}},
+            {7, "PLAYER_DEATH", {403,0,135,122}, {0,0}, {false, false}},
+            {7, "PLAYER_DEATH", {544,0,129,122}, {0,0}, {false, false}},
+            {7, "PLAYER_DEATH", {682,0,93,122}, {0,0}, {false, false}},
+            {7, "PLAYER_DEATH", {781,0,101,122}, {0,0}, {false, false}},
     };
     hero->addAnimation("RUN", run_animation);
     hero->addAnimation("SRUN", shield_run_animation);
     hero->addAnimation("JUMP", jump_animation);
     hero->addAnimation("FALL", fall_animation);
     hero->addAnimation("FALL2", fall_animation2);
-    hero->addAnimation("DIE", die_animation);
+    hero->addAnimation("DEATH", death_animation);
     hero->addSound("COLLISION", "collisionSound");
     hero->addSound("SHIELD", "shieldSound");
     hero->addSound("SHIELDON", "shieldOn");
@@ -84,30 +88,55 @@ std::unique_ptr<Entity> Factory::createEnemy(EntityType type) {
     if (type == EntityType::EmeraldEnemy){
         auto * enemy = new EmeraldEnemy("EmeraldEnemy");
         enemy->init();
-        const std::list<FrameParams> frames = {
-                {1, "emeraldEnemyTexture", {0,0,0,0}, {0,0}, {true, false}}
+        const std::list<FrameParams> idle = {
+                {1, "EMERALD_ENEMY_IDLE", {0,0,0,0}, {0,0}, {true, false}}
         };
-        enemy->addAnimation("DEFAULT", frames);
+        const std::list<FrameParams> death = {
+                {7, "EMERALD_ENEMY_DEATH", {0,0,97,91}, {0,0}, {false, false}},
+                {7, "EMERALD_ENEMY_DEATH", {161,0,113,91}, {0,0}, {false, false}},
+                {7, "EMERALD_ENEMY_DEATH", {327,0,141,91}, {0,0}, {false, false}},
+                {7, "EMERALD_ENEMY_DEATH", {504,0,143,91}, {0,0}, {false, false}},
+                {7, "EMERALD_ENEMY_DEATH", {670,0,151,91}, {0,0}, {false, false}}
+        };
+        enemy->addAnimation("IDLE", idle);
+        enemy->addAnimation("DEATH", death);
         enemy->addSound("EMERALDACTION", "emeraldEnemyShout");
         return std::unique_ptr<Entity>(enemy);
     }
     else if (type == EntityType::HamonEnemy){
         auto * enemy =new HamonEnemy("HamonEnemy");
         enemy->init();
-        const std::list<FrameParams> frames = {
-                {1, "hamonEnemyTexture", {0,0,0,0}, {0,0}, {true, false}}
+        const std::list<FrameParams> idle = {
+                {1, "HAMON_ENEMY_IDLE", {0,0,0,0}, {0,0}, {true, false}}
         };
-        enemy->addAnimation("DEFAULT", frames);
+        const std::list<FrameParams> death = {
+                {7, "HAMON_ENEMY_DEATH", {562,0,75,107}, {0,0}, {false, false}},
+                {7, "HAMON_ENEMY_DEATH", {442,0,111,107}, {0,0}, {false, false}},
+                {7, "HAMON_ENEMY_DEATH", {285,0,149,107}, {0,0}, {false, false}},
+                {7, "HAMON_ENEMY_DEATH", {142,0,133,107}, {0,0}, {false, false}},
+                {7, "HAMON_ENEMY_DEATH", {0,0,133,107}, {0,0}, {false, false}}
+        };
+        enemy->addAnimation("IDLE", idle);
+        enemy->addAnimation("DEATH", death);
         enemy->addSound("HAMONACTION", "hamonEnemyShout");
         return std::unique_ptr<Entity>(enemy);
     }
     else if (type == EntityType::FireEnemy){
         auto * enemy = new FireEnemy("FireEnemy");
         enemy->init();
-        const std::list<FrameParams> frames = {
-                {1, "fireEnemyTexture", {0,0,0,0}, {0,0}, {true, false}}
+        const std::list<FrameParams> idle = {
+                {1, "FIRE_ENEMY_IDLE", {0,0,133,116}, {0,0}, {false, false}}
         };
-        enemy->addAnimation("DEFAULT", frames);
+        const std::list<FrameParams> death = {
+                {7, "FIRE_ENEMY_DEATH", {0,0,83,120}, {0,0}, {false, false}},
+                {7, "FIRE_ENEMY_DEATH", {213,0,92,120}, {0,0}, {false, false}},
+                {7, "FIRE_ENEMY_DEATH", {420,0,105,120}, {0,0}, {false, false}},
+                {7, "FIRE_ENEMY_DEATH", {589,0,142,120}, {0,0}, {false, false}},
+                {7, "FIRE_ENEMY_DEATH", {855,0,142,120}, {0,0}, {false, false}},
+                {7, "FIRE_ENEMY_DEATH", {1094,0,98,120}, {0,0}, {false, false}}
+        };
+        enemy->addAnimation("DEFAULT", idle);
+        enemy->addAnimation("DEATH", death);
         enemy->addSound("FIREACTION", "fireEnemyShout");
         return std::unique_ptr<Entity>(enemy);
     }

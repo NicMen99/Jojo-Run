@@ -16,7 +16,7 @@ public:
 
 private:
     void update(int32_t delta_time) override;
-
+    void changeState(Enemy::State new_state) override;
 };
 
 #endif //JOJO_RUN_HAMONENEMY_H

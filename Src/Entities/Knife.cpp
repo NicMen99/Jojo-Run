@@ -14,7 +14,6 @@ Knife::~Knife() {
 }
 
 void Knife::init() {
-    setSpeed({0.f, 0.f});
     setDamage(100);
 }
 

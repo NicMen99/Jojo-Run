@@ -5,8 +5,12 @@
 #ifndef JOJO_RUN_GAME_H
 #define JOJO_RUN_GAME_H
 
+#define GAMEDEBUG
+
+#include <cassert>
 #include <list>
 #include <string>
+#include <iostream>
 #include <fstream>
 #include <random>
 #include <SFML/Graphics.hpp>

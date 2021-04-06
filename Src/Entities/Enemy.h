@@ -11,8 +11,8 @@
 class Bullet;
 
 class Enemy: public Entity {
-private:
-    enum State {StandBy, Fire, Jump, Dead};
+protected:
+    enum State {Init, Idle, Attack, Jump, Dead};
 
 public:
     Enemy(EntityType mtype, const std::string & name);
@@ -29,8 +29,9 @@ protected:
     void event(GameEvent event, Entity *collider) override;
     void updatePhysics(int32_t delta_time);
     void speedCap();
+    virtual void changeState(State){}
 
-    State m_state = State::StandBy;
+    State m_state = State::Init;
     int m_damage = 0;
     int m_lifebonus = 0;
 

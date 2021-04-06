@@ -38,3 +38,22 @@ void FireEnemy::update(int32_t delta_time) {
     Enemy::update(delta_time);
 }
 
+void FireEnemy::changeState(Enemy::State new_state) {
+    if(new_state != m_state) {
+        switch(new_state) {
+            case State::Idle:
+                playAnimation("IDLE");
+                break;
+            case State::Attack:
+                playAnimation("THROW");
+                break;
+            case State::Dead:
+                playAnimation("DEATH");
+                setEnabled(false);
+                break;
+            default:
+                break;
+        }
+    }
+    m_state = new_state;
+}

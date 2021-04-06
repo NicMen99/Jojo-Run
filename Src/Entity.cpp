@@ -1,9 +1,6 @@
 //
 // Created by Niccolo on 25/02/2021.
 //
-#include <cassert>
-#include <iostream>
-
 #include "Game.h"
 #include "AnimationManager.h"
 #include "SoundManager.h"
@@ -39,7 +36,7 @@ void Entity::render(sf::RenderWindow & window) {
     window.draw(*frame);
 
     /**/
-#ifdef HIT_BOX_DEBUG
+#ifdef GAMEDEBUG
     m_frame = getBounds();
     sf::RectangleShape hitbox;
     hitbox.setPosition(m_frame.left, m_frame.top);
