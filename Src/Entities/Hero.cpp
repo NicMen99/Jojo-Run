@@ -42,6 +42,7 @@ void Hero::update(int32_t delta_time) {
         setStarted(true);
         m_distance = 0;
         m_clean_distance = 0;
+        m_lifeTime.restart();
     }
     m_inputManager.update();
     updatePhysics(delta_time);
@@ -62,6 +63,7 @@ void Hero::updatePhysics(int32_t delta_time) {
         m_state = State::Dead;
         setEnabled(false);
         setDestroyed();
+        STATS->setInt(Stats::Time, (int)m_lifeTime.getElapsedTime().asSeconds());
     }
 
     /*
@@ -275,7 +277,6 @@ void Hero::changeState(State new_state) {
     if(new_state != m_state) {
         switch(new_state) {
             case State::Grounded:
-// std::cout << "RUN" << std::endl;
                 if(!m_shield) {
                     playAnimation("RUN", true);
                 }
@@ -284,11 +285,9 @@ void Hero::changeState(State new_state) {
                 }
                 break;
             case State::Jumping:
-// std::cout << "JUMP" << std::endl;
                 playAnimation("JUMP");
                 break;
             case State::Falling:
-// std::cout << "FALL" << std::endl;
                 playAnimation("FALL");
                 break;
             case State::Dead:

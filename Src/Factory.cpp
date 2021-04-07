@@ -34,16 +34,16 @@ std::unique_ptr<Entity> Factory::createHero() {
     auto * hero = new Hero();
     hero->init();
     static const std::list<FrameParams> run_animation = {
-            {4, "PLAYER_RUN", {0,0,113,87}, {0,0}, {false, false}},
-            {4, "PLAYER_RUN", {118,0,117,87}, {0,0}, {false, false}},
-            {4, "PLAYER_RUN", {241,0,83,87}, {0,0}, {false, false}},
-            {4, "PLAYER_RUN", {331,0,79,87}, {0,0}, {false, false}},
+            {4, "PLAYER_RUN", {0,0,113,95}, {0,0}, {false, false}},
+            {4, "PLAYER_RUN", {118,0,117,95}, {0,0}, {false, false}},
+            {4, "PLAYER_RUN", {241,0,83,95}, {0,0}, {false, false}},
+            {4, "PLAYER_RUN", {331,0,79,95}, {0,0}, {false, false}},
     };
     static const std::list<FrameParams> shield_run_animation = {
-            {4, "PLAYER_RUN_SHIELD", {0,0,113,87}, {0,0}, {false, false}},
-            {4, "PLAYER_RUN_SHIELD", {118,0,117,87}, {0,0}, {false, false}},
-            {4, "PLAYER_RUN_SHIELD", {241,0,83,87}, {0,0}, {false, false}},
-            {4, "PLAYER_RUN_SHIELD", {331,0,79,87}, {0,0}, {false, false}},
+            {4, "PLAYER_RUN_SHIELD", {0,0,113,95}, {0,0}, {false, false}},
+            {4, "PLAYER_RUN_SHIELD", {118,0,117,95}, {0,0}, {false, false}},
+            {4, "PLAYER_RUN_SHIELD", {241,0,83,95}, {0,0}, {false, false}},
+            {4, "PLAYER_RUN_SHIELD", {331,0,79,95}, {0,0}, {false, false}},
     };
     static const std::list<FrameParams> jump_animation = {
             {4, "PLAYER_JUMP", {0,58,67,118}, {0,0}, {false, false}},
@@ -51,6 +51,11 @@ std::unique_ptr<Entity> Factory::createHero() {
             {4, "PLAYER_JUMP", {160,20,78,131}, {0,0}, {false, false}},
             {4, "PLAYER_JUMP", {246,27,77,78}, {0,0}, {false, false}},
             {4, "PLAYER_JUMP", {330,28,83,71}, {0,0}, {false, false}},
+    };
+    static const std::list<FrameParams> attack_animation = {
+            {4, "PLAYER_ATTACK", {0,0,173,93}, {0,0}, {false, false}},
+            {4, "PLAYER_ATTACK", {194,0,173,93}, {0,0}, {false, false}},
+            {4, "PLAYER_ATTACK", {379,0,122,93}, {0,0}, {false, false}},
     };
     static const std::list<FrameParams> fall_animation = {
             {4, "PLAYER_JUMP", {420,31,85,64}, {0,0}, {false, false}},
@@ -76,7 +81,8 @@ std::unique_ptr<Entity> Factory::createHero() {
     hero->addAnimation("SRUN", shield_run_animation);
     hero->addAnimation("JUMP", jump_animation);
     hero->addAnimation("FALL", fall_animation);
-    hero->addAnimation("FALL2", fall_animation2);
+    hero->addAnimation("FALL2", fall_animation2);   // not used
+    hero->addAnimation("ATTACK", attack_animation);
     hero->addAnimation("DEATH", death_animation);
     hero->addSound("COLLISION", "collisionSound");
     hero->addSound("SHIELD", "shieldSound");
@@ -88,46 +94,57 @@ std::unique_ptr<Entity> Factory::createEnemy(EntityType type) {
     if (type == EntityType::EmeraldEnemy){
         auto * enemy = new EmeraldEnemy("EmeraldEnemy");
         enemy->init();
-        const std::list<FrameParams> idle = {
-                {1, "EMERALD_ENEMY_IDLE", {0,0,0,0}, {0,0}, {true, false}}
+        const std::list<FrameParams> idle_animation = {
+                {1, "EMERALD_ENEMY_IDLE", {0,0,0,0}, {0,0}, {false, false}}
         };
-        const std::list<FrameParams> death = {
+        const std::list<FrameParams> death_animation = {
                 {7, "EMERALD_ENEMY_DEATH", {0,0,97,91}, {0,0}, {false, false}},
                 {7, "EMERALD_ENEMY_DEATH", {161,0,113,91}, {0,0}, {false, false}},
                 {7, "EMERALD_ENEMY_DEATH", {327,0,141,91}, {0,0}, {false, false}},
                 {7, "EMERALD_ENEMY_DEATH", {504,0,143,91}, {0,0}, {false, false}},
                 {7, "EMERALD_ENEMY_DEATH", {670,0,151,91}, {0,0}, {false, false}}
         };
-        enemy->addAnimation("IDLE", idle);
-        enemy->addAnimation("DEATH", death);
+        enemy->addAnimation("IDLE", idle_animation);
+        enemy->addAnimation("DEATH", death_animation);
         enemy->addSound("EMERALDACTION", "emeraldEnemyShout");
         return std::unique_ptr<Entity>(enemy);
     }
     else if (type == EntityType::HamonEnemy){
         auto * enemy =new HamonEnemy("HamonEnemy");
         enemy->init();
-        const std::list<FrameParams> idle = {
-                {1, "HAMON_ENEMY_IDLE", {0,0,0,0}, {0,0}, {true, false}}
+        const std::list<FrameParams> idle_animation = {
+                {1, "HAMON_ENEMY_IDLE", {0,0,0,0}, {0,0}, {false, false}}
         };
-        const std::list<FrameParams> death = {
+        const std::list<FrameParams> attack_animation = {
+                {2, "HAMON_ENEMY_ATTACK", {562, 0, 84, 112}, {0,0}, {false, false}},
+                {2, "HAMON_ENEMY_ATTACK", {468, 0, 84, 112}, {0,0}, {false, false}},
+                {2, "HAMON_ENEMY_ATTACK", {348, 0, 74, 101}, {0,0}, {false, false}},
+                {2, "HAMON_ENEMY_ATTACK", {300, 0, 76, 107}, {0,0}, {false, false}},
+                {2, "HAMON_ENEMY_ATTACK", {224,0, 68,107}, {0,0}, {false, false}},
+                {2, "HAMON_ENEMY_ATTACK", {144,0, 70, 105}, {0,0}, {false, false}},
+                {2, "HAMON_ENEMY_ATTACK", {73, 0, 60, 107}, {0,0}, {false, false}},
+                {2, "HAMON_ENEMY_ATTACK", {0,0, 63, 92}, {0,0}, {false, false}}
+        };
+        const std::list<FrameParams> death_animation = {
                 {7, "HAMON_ENEMY_DEATH", {562,0,75,107}, {0,0}, {false, false}},
                 {7, "HAMON_ENEMY_DEATH", {442,0,111,107}, {0,0}, {false, false}},
                 {7, "HAMON_ENEMY_DEATH", {285,0,149,107}, {0,0}, {false, false}},
                 {7, "HAMON_ENEMY_DEATH", {142,0,133,107}, {0,0}, {false, false}},
                 {7, "HAMON_ENEMY_DEATH", {0,0,133,107}, {0,0}, {false, false}}
         };
-        enemy->addAnimation("IDLE", idle);
-        enemy->addAnimation("DEATH", death);
+        enemy->addAnimation("IDLE", idle_animation);
+        enemy->addAnimation("ATTACK", attack_animation);
+        enemy->addAnimation("DEATH", death_animation);
         enemy->addSound("HAMONACTION", "hamonEnemyShout");
         return std::unique_ptr<Entity>(enemy);
     }
     else if (type == EntityType::FireEnemy){
         auto * enemy = new FireEnemy("FireEnemy");
         enemy->init();
-        const std::list<FrameParams> idle = {
+        const std::list<FrameParams> idle_animation = {
                 {1, "FIRE_ENEMY_IDLE", {0,0,133,116}, {0,0}, {false, false}}
         };
-        const std::list<FrameParams> attack = {
+        const std::list<FrameParams> attack_animation = {
                 {2, "FIRE_ENEMY_ATTACK", {0,0,106,116}, {0,0}, {false, false}},
                 {2, "FIRE_ENEMY_ATTACK", {188,0,133,116}, {0,0}, {false, false}},
                 {2, "FIRE_ENEMY_ATTACK", {401,0,135,116}, {0,0}, {false, false}},
@@ -135,7 +152,7 @@ std::unique_ptr<Entity> Factory::createEnemy(EntityType type) {
                 {2, "FIRE_ENEMY_ATTACK", {864,0,108,120}, {0,0}, {false, false}},
                 {2, "FIRE_ENEMY_ATTACK", {1077,0,108,116}, {0,0}, {false, false}}
         };
-        const std::list<FrameParams> death = {
+        const std::list<FrameParams> death_animation = {
                 {7, "FIRE_ENEMY_DEATH", {0,0,83,120}, {0,0}, {false, false}},
                 {7, "FIRE_ENEMY_DEATH", {213,0,92,120}, {0,0}, {false, false}},
                 {7, "FIRE_ENEMY_DEATH", {420,0,105,120}, {0,0}, {false, false}},
@@ -143,9 +160,9 @@ std::unique_ptr<Entity> Factory::createEnemy(EntityType type) {
                 {7, "FIRE_ENEMY_DEATH", {855,0,142,120}, {0,0}, {false, false}},
                 {7, "FIRE_ENEMY_DEATH", {1094,0,98,120}, {0,0}, {false, false}}
         };
-        enemy->addAnimation("IDLE", idle);
-        enemy->addAnimation("ATTACK", attack);
-        enemy->addAnimation("DEATH", death);
+        enemy->addAnimation("IDLE", idle_animation);
+        enemy->addAnimation("ATTACK", attack_animation);
+        enemy->addAnimation("DEATH", death_animation);
         enemy->addSound("FIREACTION", "fireEnemyShout");
         return std::unique_ptr<Entity>(enemy);
     }

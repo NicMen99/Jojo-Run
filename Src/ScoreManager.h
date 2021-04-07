@@ -10,10 +10,10 @@
 #include <vector>
 
 class ScoreManager {
-private:
-
+public:
     struct Record {
-        bool        added;
+        int         added;
+        int         rank;
         std::string nickname;
         int         score;
         int         distance;
@@ -23,6 +23,7 @@ private:
         int         time;
         void clear() {
             added=false;
+            rank=0;
             nickname="";
             score=0;
             distance=0;
@@ -33,8 +34,19 @@ private:
         }
     };
 
-    void sort();
+    /* achievement management */
+    void init();
+    void update();
 
+    /* Record file management */
+    void loadFromFile();
+    void setName(const std::string & nickname);
+    void saveToFile();
+    std::vector<Record> getScoreRecords() { return m_records; }
+    Record getScore() { return m_score_record; }
+
+private:
+    void sort();
     const std::string m_fileName = "ScoreManager.txt";
     std::vector<Record> m_records;
     Record m_score_record;
@@ -45,17 +57,6 @@ private:
     std::pair<int, int> m_clean_distance_achiev = {0, 0};
     std::pair<int, int> m_killed_achiev = {0, 0};
     std::pair<int, int> m_consecutive_killed_achiev = {0, 0};
-
-    /* achievement management */
-public:
-    void init();
-    void update();
-
-    /* Record file management */
-    void loadFromFile();
-    void setName(const std::string & nickname);
-    void saveToFile();
-    std::vector<Record> getScoreRecord();
 };
 
 

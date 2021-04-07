@@ -24,6 +24,7 @@ void ScoreManager::update() {
     /*
      * distanza
      */
+    m_score_record.time = STATS->getInt(Stats::Time);
     m_score_record.distance = STATS->getInt(Stats::Distance);
     /*
      * bonus distanza
@@ -84,6 +85,7 @@ void ScoreManager::loadFromFile() {
         ScoreManager::Record record;
         record.added = false;
         if (!(iss >> tmp //discard first field
+                  >> record.rank
                   >> record.nickname
                   >> record.score
                   >> record.distance
@@ -103,17 +105,18 @@ void ScoreManager::setName(const std::string & nickname) {
     m_score_record.nickname = nickname;
     m_score_record.added = true;
     m_records.emplace_back(m_score_record);
+    sort();
 }
 
 void ScoreManager::saveToFile() {
-    sort();
-
     std::ofstream outfile(m_fileName);
     if(!outfile.is_open())
         return;
 
     for(const auto& record : m_records) {
         outfile << (record.added ? "*": "-")
+                << " "
+                << record.rank
                 << " "
                 << record.nickname
                 << " "
@@ -132,11 +135,13 @@ void ScoreManager::saveToFile() {
     }
 }
 
-std::vector<ScoreManager::Record> ScoreManager::getScoreRecord() {
-    return m_records;
-}
-
 void ScoreManager::sort() {
     std::sort(m_records.begin(), m_records.end(),
               [](Record const &l, Record const &r) { return l.score > r.score; });
+    int rank = 0;
+    for(auto& record : m_records) {
+        record.rank = ++rank;
+        if(record.added)
+            m_score_record.rank = rank;
+    }
 }

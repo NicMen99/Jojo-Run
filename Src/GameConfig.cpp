@@ -26,12 +26,14 @@ const KeyVal resource_table [] = {
         {"PLAYER_RUN",             "Textures/PlayerRun.png"},
         {"PLAYER_RUN_SHIELD",      "Textures/PlayerRunShield.png"},
         {"PLAYER_JUMP",            "Textures/PlayerJump.png"},
+        {"PLAYER_ATTACK",          "Textures/PlayerAttack.png"},
         {"PLAYER_DEATH",           "Textures/PlayerDeath.png"},
 
-        {"EMERALD_ENEMY_IDLE",     "Textures/emeraldEnemyTexture.png"},     //@TODO rigirare, rinominare
+        {"EMERALD_ENEMY_IDLE",     "Textures/EmeraldEnemyIdle.png"},     //@TODO rigirare, rinominare
         {"EMERALD_ENEMY_DEATH",    "Textures/EmeraldEnemyDeath.png"},
 
-        {"HAMON_ENEMY_IDLE",       "Textures/hamonEnemyTexture.png"},     //@TODO rigirare, rinominare
+        {"HAMON_ENEMY_IDLE",       "Textures/HamonEnemyIdle.png"},     //@TODO rigirare, rinominare
+        {"HAMON_ENEMY_ATTACK",     "Textures/HamonEnemyAttack.png"},
         {"HAMON_ENEMY_DEATH",      "Textures/HamonEnemyDeath.png"},
 
         {"FIRE_ENEMY_IDLE",        "Textures/FireEnemyIdle.png"},

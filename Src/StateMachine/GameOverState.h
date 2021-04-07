@@ -6,13 +6,12 @@
 #define JOJO_RUN_GAMEOVERSTATE_H
 
 #include <SFML/Audio.hpp>
-
 #include "Widgets/ImageWidget.h"
 #include "Widgets/TextWidget.h"
 #include "Widgets/ShapeWidget.h"
 #include "InputManager.h"
-
 #include "StateMachine/AbsGameState.h"
+
 
 class GameOverState: public AbsGameState{
 
@@ -32,6 +31,7 @@ private:
 
     void createScreen();
     void showScore();
+    void showRow(const std::vector<std::string>& values, const std::vector<int>& columns);
     void saveScore();
     void updateInput();
 

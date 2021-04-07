@@ -61,7 +61,7 @@ void GameOverState::render(sf::RenderWindow &window) {
 }
 
 /**/
-
+static const int MAX_NAME_SIZE = 16;
 void GameOverState::createScreen() {
 
     delete m_root;
@@ -84,25 +84,20 @@ void GameOverState::createScreen() {
     message->setString("G A M E   O V E R");
     message->init(theme);
     sf::Vector2f label_size = message->getSize();
-    message->setPosition({background_size.x / 2 - label_size.x / 2, 50});
+    message->setPosition({background_size.x / 2 - label_size.x / 2, 0});
+    message->setFillColor(sf::Color::Red);
     m_root->add(message);
-
-    auto * score = new TextWidget("ScoreManager");
-    score->setString("YOUR SCORE IS : " + std::to_string(STATS->getInt(Stats::Score)));
-    score->init(theme);
-    score->setPosition({background_size.x / 2 - label_size.x / 2,150});
-    m_root->add(score);
 
     auto * input_label = new TextWidget("Input");
     input_label->setString("ENTER YOUR NICKNAME : " );
     input_label->init(theme);
-    input_label->setPosition({background_size.x / 2 - input_label->getSize().x / 2, 200});
     m_root->add(input_label);
 
-    auto * input_value = new TextWidget("Value");
-    input_value->setString("");
+    auto * input_value = new TextWidget("Nickname");
+    input_value->setString(std::string().append(1+MAX_NAME_SIZE, '_'));
     input_value->init(theme);
     input_value->setPosition({input_label->getSize().x, 0});
+    input_label->setPosition({(background_size.x - input_label->getSize().x - input_value->getSize().x) / 2, 120});
     input_label->add(input_value);
     m_input = input_value;
 }
@@ -115,89 +110,98 @@ void GameOverState::showScore() {
     theme.font_color = sf::Color::White;
     theme.font_outline_thinckness = 2;
 
+    ScoreManager::Record score_record = SCORE->getScore();
+    if(!score_record.nickname.empty()) {
+        auto * score = new TextWidget("ScoreRecap");
+        score->init(theme);
+        std::string message;
+        if(score_record.rank>10) {
+            message = "WELL DONE   [" + score_record.nickname +
+                      "]   YOUR RANK IS   " + std::to_string(score_record.rank) +
+                      "   YOUR SCORE IS   " + std::to_string(score_record.score) +
+                      "   YOU RUN FOR   " + std::to_string(score_record.distance) + "mt" +
+                      "   YOU KILLED   " + std::to_string(score_record.killed) + " ENEMIES" +
+                      "   YOU PLAYED FOR   " + std::to_string(score_record.time / 60) + "m : " +
+                                               std::to_string(score_record.time % 60) + "s";
+        }
+        else {
+            message = "CONGRATULATIONS   [" + score_record.nickname + "]   YOU ARE IN THE TOP TEN !!!";
+        }
+        score->setString(message);
+        score->setCharacterSize(70);
+        score->setFillColor(sf::Color::Green);
+        score->setPosition({CONFIG->getWindowSize().x / 2.f - score->getSize().x / 2.f, 220});
+        m_root->add(score);
+    }
+
     auto * menu = new TextWidget("Menu");
-    menu->setString("[ R ] ESTART A NEW GAME\n[ Q ] UIT");
     menu->init(theme);
+    menu->setString("[ R ] ESTART A NEW GAME\n[ Q ] UIT");
     sf::Vector2f menu_size = menu->getSize();
     menu->setPosition({CONFIG->getWindowSize().x / 2.f - menu_size.x / 2.f, CONFIG->getWindowSize().y - 200.0f});
     m_root->add(menu);
 
-    auto * topfive = new ShapeWidget("TopFive");
-    topfive->init(theme);
-    topfive->setSize({CONFIG->getWindowSize().x - 200.f, 400.f});
-    topfive->setFillColor(sf::Color(255, 255, 0, 64));
-    topfive->setPosition({100,400});
-    m_root->add(topfive);
+    auto * toprank = new ShapeWidget("TopN");
+    toprank->init(theme);
+    toprank->setSize({CONFIG->getWindowSize().x - 200.f, 450.f});
+    toprank->setFillColor(sf::Color(255, 255, 0, 64));
+    toprank->setPosition({100, 350});
+    m_root->add(toprank);
 
-
-    int count = 0;
-    float posy = 10;
-    for(const auto& record : SCORE->getScoreRecord()) {
-
-        count ++;
-
-        auto * rank = new TextWidget("Rank");
+    const std::vector<std::pair<float, std::string>> & hcolumns = {
+            { 10.f,   "RANK"            },
+            { 100.f,  "NICKNAME"        },
+            { 550.f,  "SCORE"           },
+            { 700.f,  "DISTANCE"        },
+            { 850.f,  "CLEAN\nDISTANCE" },
+            { 1030.f, "KILLED"          },
+            { 1130.f, "KILLED\nCOMBO"   },
+            { 1250.f, "TIME"            }
+    };
+    float posy = -30.f;
+    for(const auto& column : hcolumns) {
+        auto * rank = new TextWidget("");
         rank->init(theme);
-        rank->setString(std::to_string(count));
-        rank->setPosition({10, posy});
-        if(record.added) rank->setFillColor(sf::Color::Red);
-        topfive->add(rank);
-
-        auto * name = new TextWidget("Name");
-        name->init(theme);
-        name->setString(record.nickname);
-        name->setPosition({100, posy});
-        if(record.added) name->setFillColor(sf::Color::Red);
-        topfive->add(name);
-
-        auto * score = new TextWidget("Score");
-        score->init(theme);
-        score->setString(std::to_string(record.score));
-        score->setPosition({550, posy});
-        if(record.added) score->setFillColor(sf::Color::Red);
-        topfive->add(score);
-
-        auto * distance = new TextWidget("Distance");
-        distance->init(theme);
-        distance->setString(std::to_string(record.distance));
-        distance->setPosition({700, posy});
-        if(record.added) score->setFillColor(sf::Color::Red);
-        topfive->add(distance);
-
-        auto * clean_distance = new TextWidget("CleanDistance");
-        clean_distance->init(theme);
-        clean_distance->setString(std::to_string(record.clean_distance));
-        clean_distance->setPosition({900, posy});
-        if(record.added) score->setFillColor(sf::Color::Red);
-        topfive->add(clean_distance);
-
-        auto * killed = new TextWidget("Killed");
-        killed->init(theme);
-        killed->setString(std::to_string(record.killed));
-        killed->setPosition({1050, posy});
-        if(record.added) score->setFillColor(sf::Color::Red);
-        topfive->add(killed);
-
-        auto * consec_killed = new TextWidget("ConsecutiveKilled");
-        consec_killed->init(theme);
-        consec_killed->setString(std::to_string(record.consec_killed));
-        consec_killed->setPosition({1150, posy});
-        if(record.added) score->setFillColor(sf::Color::Red);
-        topfive->add(consec_killed);
-
-        auto * time = new TextWidget("Time");
-        time->init(theme);
-        time->setString(std::to_string(record.time));
-        time->setPosition({1250, posy});
-        if(record.added) score->setFillColor(sf::Color::Red);
-        topfive->add(time);
-
-        posy += 10 + name->getSize().y;
-        if(count >= 7)
-            break;
+        rank->setCharacterSize(50);
+        rank->setString(column.second);
+        rank->setPosition({column.first, posy});
+        rank->setFillColor(sf::Color::Blue);
+        toprank->add(rank);
     }
 
+    posy = 0.f;
+    float posy_delta = 0.f;
+    for(const auto& record : SCORE->getScoreRecords()) {
+        const std::vector<std::pair<float, std::string>> & columns = {
+                { 10.f,   std::to_string(record.rank)           },
+                { 100.f,  record.nickname                       },
+                { 550.f,  std::to_string(record.score)          },
+                { 700.f,  std::to_string(record.distance)       },
+                { 850.f,  std::to_string(record.clean_distance) },
+                { 1030.f, std::to_string(record.killed)         },
+                { 1130.f, std::to_string(record.consec_killed)  },
+                { 1250.f, std::to_string(record.time/60)+"m : "+std::to_string(record.time%60)+"s"           }
+                };
+        for(const auto& column : columns) {
+            auto * rank = new TextWidget("");
+            rank->init(theme);
+            rank->setString(column.second);
+            rank->setPosition({column.first, posy});
+            if(record.added) rank->setFillColor(sf::Color::Red);
+            toprank->add(rank);
+            posy_delta = rank->getSize().y;
+        }
+        posy += posy_delta + 5.f;
+        if(record.rank >= 10)
+            break;
+    }
 }
+
+void GameOverState::showRow(const std::vector<std::string> &values, const std::vector<int> &columns) {
+
+}
+
+
 
 void GameOverState::saveScore() {
     if(!m_input->getString().empty()) {
@@ -206,22 +210,24 @@ void GameOverState::saveScore() {
     }
 }
 
-static const int MAX_NAME_SIZE = 16;
 void GameOverState::updateInput() {
     sf::Keyboard::Key key = m_inputManager.getKeyJustPressed();
     if(key >= sf::Keyboard::A && key <= sf::Keyboard::Z) {
-        std::string input_value = m_input->getString();
-        if(input_value.size() < MAX_NAME_SIZE) {
-            m_input->setString(input_value + static_cast<char>('A' + key - sf::Keyboard::A));
+        if( m_input->getString().size() > MAX_NAME_SIZE)
+            m_input->setString("");
+        if( m_input->getString().size() < MAX_NAME_SIZE) {
+            m_input->setString( m_input->getString() + static_cast<char>('A' + key - sf::Keyboard::A));
         }
     }
     else if (key >= sf::Keyboard::Num0 && key <= sf::Keyboard::Num9) {
-        std::string input_value = m_input->getString();
-        if(input_value.size() < MAX_NAME_SIZE) {
-            m_input->setString(input_value + static_cast<char>('0' + key - sf::Keyboard::Num0));
+        if( m_input->getString().size() > MAX_NAME_SIZE)
+            m_input->setString("");
+        if( m_input->getString().size() < MAX_NAME_SIZE) {
+            m_input->setString( m_input->getString() + static_cast<char>('0' + key - sf::Keyboard::Num0));
         }
     }
     else if (key == sf::Keyboard::BackSpace || key == sf::Keyboard::Escape) {
         m_input->setString("");
     }
 }
+
