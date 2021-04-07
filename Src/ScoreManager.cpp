@@ -13,7 +13,7 @@ void ScoreManager::init() {
     m_score_record.clear();
 
     m_score_bonus = 0;
-    m_distance_achiev = {10000, 20000};
+    m_distance_achiev = {5000, 10000};
     m_clean_distance_achiev = {3000, 5000};
     m_killed_achiev = {3, 5};
     m_consecutive_killed_achiev = {2, 3};

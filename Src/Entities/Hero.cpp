@@ -143,6 +143,13 @@ void Hero::event(GameEvent event, Entity * entity) {
         if (entity->getGroup() == EntityGroup::Enemy) {
             auto *enemy = dynamic_cast<Enemy *>(entity);
             damage = enemy->getDamage();
+            if(State::Falling == m_state) {
+                damage /= 3;
+                setSpeed(getSpeed().x, -getSpeed().y/2);
+            }
+            else {
+                applyImpulse({0, -CONFIG->getHeroJumpForce()/40}, 10);
+            }
         }
         /*
          * Collisione con un ostacolo
@@ -160,6 +167,8 @@ void Hero::event(GameEvent event, Entity * entity) {
             #endif
             auto *bullet = dynamic_cast<Bullet *>(entity);
             damage = bullet->getDamage();
+            if(!m_shield)
+                applyImpulse({0, -CONFIG->getHeroJumpForce()/50}, 10);
         }
         else
             return;
@@ -172,7 +181,8 @@ void Hero::event(GameEvent event, Entity * entity) {
             m_shield = false;
         }
         else {
-            if(damage>0) m_clean_distance = 0;
+            if(damage>0)
+                m_clean_distance = 0;
             updateHealth(-damage);
             if (m_health <= 0) {
                 applyImpulse({-CONFIG->getGravity().y*10, -CONFIG->getHeroJumpForce()}, 10);
@@ -250,7 +260,7 @@ void Hero::manageAttack() {
                 auto kf = FACTORY->createBullet(EntityType::Knife);
                 /* I frame sono a larghezza variabile, posizione di spawn un frame avanti */
                 kf->setPosition(sf::Vector2f(getPosition()) + sf::Vector2f(getBounds().width * 2, 0));
-                kf->setSpeed(sf::Vector2f {getSpeed().x + 1000.f, 0.f});
+                kf->setSpeed(sf::Vector2f {getSpeed().x + CONFIG->getKnifeSpeed(), 0.f});
                 SCENE->addSpawned(kf);
                 updateKnives(-1);
             }

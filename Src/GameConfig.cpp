@@ -34,7 +34,8 @@ const KeyVal resource_table [] = {
         {"HAMON_ENEMY_IDLE",       "Textures/hamonEnemyTexture.png"},     //@TODO rigirare, rinominare
         {"HAMON_ENEMY_DEATH",      "Textures/HamonEnemyDeath.png"},
 
-        {"FIRE_ENEMY_IDLE",        "Textures/FireEnemyIdle.png"},     //@TODO rigirare, rinominare
+        {"FIRE_ENEMY_IDLE",        "Textures/FireEnemyIdle.png"},
+        {"FIRE_ENEMY_ATTACK",      "Textures/FireEnemyAttack.png"},
         {"FIRE_ENEMY_DEATH",       "Textures/FireEnemyDeath.png"},
 
         { "SPLASH_SCREEN",         "Textures/GameOverScreen.png"},

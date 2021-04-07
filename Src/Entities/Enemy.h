@@ -12,7 +12,7 @@ class Bullet;
 
 class Enemy: public Entity {
 protected:
-    enum State {Init, Idle, Attack, Jump, Dead};
+    enum State {Init, Idle, Attack, Dead};
 
 public:
     Enemy(EntityType mtype, const std::string & name);

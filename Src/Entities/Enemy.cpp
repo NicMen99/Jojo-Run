@@ -40,14 +40,14 @@ void Enemy::event(GameEvent event, Entity *collider) {
             changeState(State::Dead);
             STATS->addInt(Stats::Killed, 1);
             STATS->setInt(Stats::ConsecutiveKilled, 0);
-            applyImpulse({CONFIG->getGravity().y*50, -CONFIG->getEnemyJumpForce()}, 10);
+            applyImpulse({CONFIG->getGravity().y*50, -CONFIG->getEnemyHitForce()}, 10);
             setEnabled(false);
         }
         if (collider->getType() == EntityType::Knife) {
             changeState(State::Dead);
             STATS->addInt(Stats::Killed, 1);
             STATS->addInt(Stats::ConsecutiveKilled, 1);
-            applyImpulse({CONFIG->getGravity().y*10, -CONFIG->getEnemyJumpForce()}, 10);
+            applyImpulse({CONFIG->getGravity().y*10, -CONFIG->getEnemyHitForce()}, 10);
             setEnabled(false);
         }
     }

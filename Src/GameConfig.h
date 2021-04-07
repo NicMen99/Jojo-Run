@@ -23,10 +23,12 @@ public:
     int getHeroJumpMaxTime() const { return m_hero_jumpMaxTime; }
     float getHeroJumpSpeedLimit() const { return m_hero_jumpSpeedLimit; }
     float getHeroFallSpeedLimit() const { return m_hero_fallingSpeedLimit; }
-    float getEnemyJumpForce() const { return m_enemy_jumpForce; }
+    float getEnemyHitForce() const { return m_enemy_hitForce; }
     float getEnemyJumpSpeedLimit() const { return m_enemy_jumpSpeedLimit; }
     float getEnemyFallSpeedLimit() const { return m_enemy_fallingSpeedLimit; }
-
+    float getKnifeSpeed() const { return m_knife_speed; }
+    float getFireBulletSpeed() const { return m_fire_bullet_speed; }
+    float getEmeraldBulletSpeed() const { return m_emerald_bullet_speed; }
     std::string getAssetPath(const std::string & name) const {
         auto it = m_asset_map.find(name);  return (it == m_asset_map.end()) ? "["+name+"]" : it->second; }
 
@@ -45,15 +47,18 @@ protected:
     sf::Vector2f m_gravity     = {0.f, 1500.f};
 
     /* delta pixels per secondo */
-    float m_hero_jumpForce = m_gravity.y * 1000.f;
-    float m_enemy_jumpForce = m_gravity.y * 500.f;
+    float m_hero_jumpForce = m_gravity.y * 8.f;
+    float m_enemy_hitForce = m_gravity.y * 500.f;
     /* millisecondi */
-    int m_hero_jumpMaxTime = 250;
+    int m_hero_jumpMaxTime = 400;
     /* pixels per secondo */
     float m_hero_jumpSpeedLimit = -750.f;
     float m_hero_fallingSpeedLimit = 1500.f;
     float m_enemy_jumpSpeedLimit = -500.f;
     float m_enemy_fallingSpeedLimit = 1000.f;
+    float m_knife_speed = 1000.f;
+    float m_fire_bullet_speed = 1200.f;
+    float m_emerald_bullet_speed = 800.f;
 
     /* assets */
     const char * m_asset_base_dir = "Assets";

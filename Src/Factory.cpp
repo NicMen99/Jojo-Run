@@ -127,6 +127,14 @@ std::unique_ptr<Entity> Factory::createEnemy(EntityType type) {
         const std::list<FrameParams> idle = {
                 {1, "FIRE_ENEMY_IDLE", {0,0,133,116}, {0,0}, {false, false}}
         };
+        const std::list<FrameParams> attack = {
+                {2, "FIRE_ENEMY_ATTACK", {0,0,106,116}, {0,0}, {false, false}},
+                {2, "FIRE_ENEMY_ATTACK", {188,0,133,116}, {0,0}, {false, false}},
+                {2, "FIRE_ENEMY_ATTACK", {401,0,135,116}, {0,0}, {false, false}},
+                {2, "FIRE_ENEMY_ATTACK", {641,0,116,117}, {0,0}, {false, false}},
+                {2, "FIRE_ENEMY_ATTACK", {864,0,108,120}, {0,0}, {false, false}},
+                {2, "FIRE_ENEMY_ATTACK", {1077,0,108,116}, {0,0}, {false, false}}
+        };
         const std::list<FrameParams> death = {
                 {7, "FIRE_ENEMY_DEATH", {0,0,83,120}, {0,0}, {false, false}},
                 {7, "FIRE_ENEMY_DEATH", {213,0,92,120}, {0,0}, {false, false}},
@@ -135,7 +143,8 @@ std::unique_ptr<Entity> Factory::createEnemy(EntityType type) {
                 {7, "FIRE_ENEMY_DEATH", {855,0,142,120}, {0,0}, {false, false}},
                 {7, "FIRE_ENEMY_DEATH", {1094,0,98,120}, {0,0}, {false, false}}
         };
-        enemy->addAnimation("DEFAULT", idle);
+        enemy->addAnimation("IDLE", idle);
+        enemy->addAnimation("ATTACK", attack);
         enemy->addAnimation("DEATH", death);
         enemy->addSound("FIREACTION", "fireEnemyShout");
         return std::unique_ptr<Entity>(enemy);
