@@ -17,7 +17,7 @@ Block::~Block(){
 
 void Block::init() {
     setSpeed({0.f, 0.f});
-    setDamage(70);
+    setDamage(2);
 }
 
 void Block::update(int32_t delta_time) {
@@ -26,13 +26,5 @@ void Block::update(int32_t delta_time) {
         setStarted(true);
     }
     Entity::update(delta_time);
-}
-
-void Block::event(GameEvent event, Entity *collider) {
-    if(event == GameEvent::Collision) {
-        if(collider->getType() == EntityType::Hero) {
-            setDestroyed();
-        }
-    }
 }
 

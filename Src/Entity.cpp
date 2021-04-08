@@ -85,4 +85,3 @@ bool Entity::animationCompleted() {
 void Entity::playSound(const std::string & sound_name, float volume) {
     m_soundManager->playSound(sound_name, volume);
 }
-

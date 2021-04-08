@@ -33,6 +33,7 @@ public:
         auto it = m_asset_map.find(name);  return (it == m_asset_map.end()) ? "["+name+"]" : it->second; }
 
     /**/
+    float getLevelDeltaH() const { return m_levelDelta_y; }
     float getBottomLevel() const { return m_base; }
     float getMiddleLevel() const { return m_middle; }
     float getTopLevel() const { return m_top; }

@@ -44,6 +44,14 @@ const KeyVal resource_table [] = {
         {"LIGHTING",               "Textures/LightingBlock.png"},
         {"FIRE",                   "Textures/FirewallBlock.png"},
 
+        {"FIRE_BULLET",            "Textures/FireBullet.png"},
+        {"KNIFE_BULLET",           "Textures/KnifeBullet.png"},
+
+        {"SHIELD_PWUP",            "Textures/ShieldPowerup.png"},
+        {"WEAPON_PWUP",            "Textures/WeaponPowerup.png"},
+
+
+        { "PLAYER_ICON",           "Textures/PlayerIcon.png"},
         { "SPLASH_SCREEN",         "Textures/SplashScreen.png"},
         { "GAME_OVER_SCREEN",      "Textures/GameOverScreen.png"},
 
@@ -53,11 +61,6 @@ const KeyVal resource_table [] = {
         /* Sounds */
 
         /**/
-        { "shieldPowerUpTexture",  "Textures/shieldPowerUpTexture.png"},
-        { "knifeTexture",          "Textures/knifeTexture.png"},
-        { "fireEnemyTexture",      "Textures/fireEnemyTexture.png"},
-        { "hamonBlockTexture",     "Textures/hamonBlockTexture.png"},
-        { "fireBlockTexture",      "Textures/fireBlockTexture.png"},
         { "emeraldBlockTexture",   "Textures/emeraldBlockTexture.png"},
 
         { "Background1",           "Map/Background1.png"},

@@ -182,10 +182,10 @@ std::unique_ptr<Entity> Factory::createObstacle(EntityType type) {
         auto * obstacle = new Block("Block");
         obstacle->init();
         const std::list<FrameParams> frames = {
-            {8, "LIGHTING", {0, 0, 60, 47}, {0,0}, {false, false}},
-            {2, "LIGHTING", {88, 0, 60, 47}, {0,0}, {false, false}},
-            {8, "LIGHTING", {176, 0, 60 ,47}, {0,0}, {false, false}},
-            {2, "LIGHTING", {264, 0, 60 ,47}, {0,0}, {false, false}}
+            {12, "LIGHTING", {0, 0, 60, 47},   {80, 80}, {false, false}},
+            {6,  "LIGHTING", {88, 0, 60, 47},  {80, 80}, {false, false}},
+            {12, "LIGHTING", {176, 0, 60 ,47}, {80, 80}, {false, false}},
+            {6,  "LIGHTING", {264, 0, 60 ,47}, {80, 80}, {false, false}}
         };
         obstacle->addAnimation("DEFAULT", frames);
         return std::unique_ptr<Entity>(obstacle);
@@ -194,8 +194,8 @@ std::unique_ptr<Entity> Factory::createObstacle(EntityType type) {
         auto * obstacle = new Fire("Fire");
         obstacle->init();
         const std::list<FrameParams> frames = {
-            {8, "FIRE", {0,0,32,32}, {64,64}, {false, false}},
-            {8, "FIRE", {32,0,32,32}, {64,64}, {false, false}}
+            {8, "FIRE", {0,0,32,32},  {80, 80}, {false, false}},
+            {8, "FIRE", {32,0,32,32}, {80, 80}, {false, false}}
         };
         obstacle->addAnimation("DEFAULT", frames);
         return std::unique_ptr<Entity>(obstacle);
@@ -208,7 +208,7 @@ std::unique_ptr<Entity> Factory::createPowerUp(EntityType type) {
         auto * powerUp = new Shield("Shield");
         powerUp->init();
         const std::list<FrameParams> frames = {
-                {1, "shieldPowerUpTexture", {0,0,0,0}, {39,77}, {true, false}}
+                {1, "SHIELD_PWUP", {0,0,0,0}, {39,77}, {true, false}}
         };
         powerUp->addAnimation("DEFAULT", frames);
         return std::unique_ptr<Entity>(powerUp);
@@ -217,7 +217,7 @@ std::unique_ptr<Entity> Factory::createPowerUp(EntityType type) {
         auto * powerUp = new Weapon("Weapon");
         powerUp->init();
         const std::list<FrameParams> frames = {
-                {1, "knifeTexture", {0,0,0,0}, {0,0}, {false, false}}
+                {1, "WEAPON_PWUP", {0,0,0,0}, {0,0}, {false, false}}
         };
         powerUp->addAnimation("DEFAULT", frames);
         return std::unique_ptr<Entity>(powerUp);
@@ -230,7 +230,30 @@ std::unique_ptr<Entity> Factory::createBullet(EntityType type) {
         auto * knife = new Knife("Knife");
         knife -> init();
         const std::list<FrameParams> frames = {
-            {1, "knifeTexture", {0,0,0,0}, {0,0}, {false, false}}
+                {1, "KNIFE_BULLET", {0, 0, 52, 45}, {0,0}, {false, false}},
+                {1, "KNIFE_BULLET", {58,0, 52, 45}, {0,0}, {false, false}},
+                {1, "KNIFE_BULLET", {115, 0,  47 ,45}, {0,0}, {false, false}},
+                {1, "KNIFE_BULLET", {168, 0, 37, 45}, {0,0}, {false, false}},
+                {1, "KNIFE_BULLET", {211, 0,  27, 45}, {0,0}, {false, false}},
+                {1, "KNIFE_BULLET", {244, 0, 17, 45}, {0,0}, {false, false}},
+                {1, "KNIFE_BULLET", {268, 0, 6, 45}, {0,0}, {false, false}},
+                {1, "KNIFE_BULLET", {280, 0, 16, 45}, {0,0}, {false, false}},
+                {1, "KNIFE_BULLET", {301, 0, 26, 45}, {0,0}, {false, false}},
+                {1, "KNIFE_BULLET", {332, 0, 37, 45}, {0,0}, {false, false}},
+                {1, "KNIFE_BULLET", {376, 0, 45, 45}, {0,0}, {false, false}},
+                {1, "KNIFE_BULLET", {427, 0, 52, 45}, {0,0}, {false, false}},
+                {1, "KNIFE_BULLET", {487, 0, 52, 45}, {0,0}, {false, false}},
+                {1, "KNIFE_BULLET", {545, 0, 52, 45}, {0,0}, {false, false}},
+                {1, "KNIFE_BULLET", {602, 0, 47, 45}, {0,0}, {false, false}},
+                {1, "KNIFE_BULLET", {655, 0,  37, 45}, {0,0}, {false, false}},
+                {1, "KNIFE_BULLET", {697, 0,  27, 45}, {0,0}, {false, false}},
+                {1, "KNIFE_BULLET", {729, 0,  17, 45}, {0,0}, {false, false}},
+                {1, "KNIFE_BULLET", {753, 0, 6, 45}, {0,0}, {false, false}},
+                {1, "KNIFE_BULLET", {766, 0, 16, 45}, {0,0}, {false, false}},
+                {1, "KNIFE_BULLET", {787, 0, 26, 45}, {0,0}, {false, false}},
+                {1, "KNIFE_BULLET", {819, 0, 37, 45}, {0,0}, {false, false}},
+                {1, "KNIFE_BULLET", {862, 0, 45, 45}, {0,0}, {false, false}},
+                {1, "KNIFE_BULLET", {912, 0,  53, 45}, {0,0}, {false, false}}
         };
         knife->addAnimation("DEFAULT", frames);
         return std::unique_ptr<Entity>(knife);
@@ -245,10 +268,12 @@ std::unique_ptr<Entity> Factory::createBullet(EntityType type) {
         return std::unique_ptr<Entity>(emerald);
     }
     else if (type == EntityType::FireBullet) {
-        auto * fire = new FireBall("FireBall");
+        auto * fire = new FireBall("FireBullet");
         fire -> init();
         const std::list<FrameParams> frames = {
-            {1, "fireBlockTexture", {0,0,0,0}, {0,0}, {false, false}}
+                {1, "FIRE_BULLET", {0,0, 139,99}, {64,64}, {false, false}},
+                {1, "FIRE_BULLET", {158, 0, 139, 99}, {64,64}, {false, false}},
+                {1, "FIRE_BULLET", {316, 0, 139, 99}, {64,64}, {false, false}}
         };
         fire->addAnimation("DEFAULT", frames);
         return std::unique_ptr<Entity>(fire);

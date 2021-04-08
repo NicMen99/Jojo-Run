@@ -474,7 +474,7 @@ void SceneManager::createEnemy(EntityType et, sf::Vector2f position) {
 
 void SceneManager::createPowerup(EntityType pt, sf::Vector2f position) {
     auto pu = FACTORY->createPowerUp(pt);
-    pu->setPosition(sf::Vector2f(0, -2*pu->getBounds().height) + position);
+    pu->setPosition(sf::Vector2f(0, -CONFIG->getLevelDeltaH()*2/3) + position);
     m_powerups.emplace_back(std::move(pu));
 }
 

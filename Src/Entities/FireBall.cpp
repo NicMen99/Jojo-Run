@@ -21,14 +21,17 @@ void FireBall::init() {
 }
 
 void FireBall::update(int32_t delta_time) {
+    if(!isStarted()) {
+        playAnimation("DEFAULT", true);
+        setStarted(true);
+    }
     Entity::update(delta_time);
-    if(getPosition().x < 0)
-        setDestroyed();
 }
 
 void FireBall::event(GameEvent event, Entity *collider) {
-    Entity::event(GameEvent::Collision, collider);
-    if (collider->getType() == EntityType::Hero)
-        setDestroyed();
+    if(GameEvent::Collision == event ) {
+        if (collider->getType() == EntityType::Hero)
+            setDestroyed();
+    }
 }
 
