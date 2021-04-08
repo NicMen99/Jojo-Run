@@ -5,7 +5,7 @@
 #ifndef JOJO_RUN_GAME_H
 #define JOJO_RUN_GAME_H
 
-// #define GAMEDEBUG
+#define GAMEDEBUG
 
 #include <cassert>
 #include <list>

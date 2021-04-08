@@ -17,7 +17,7 @@ public:
     void event(GameEvent event, Entity *collider) override;
 
 private:
-    void update(int32_t delta_time);
+    void update(int32_t delta_time) override;
 
 };
 

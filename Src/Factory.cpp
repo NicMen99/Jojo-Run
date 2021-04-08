@@ -97,6 +97,13 @@ std::unique_ptr<Entity> Factory::createEnemy(EntityType type) {
         const std::list<FrameParams> idle_animation = {
                 {1, "EMERALD_ENEMY_IDLE", {0,0,0,0}, {0,0}, {false, false}}
         };
+        const std::list<FrameParams> attack_animation = {
+                {2, "EMERALD_ENEMY_ATTACK", {159, 0, 104, 113}, {0,0}, {false, false}},
+                {2, "EMERALD_ENEMY_ATTACK", {319,0, 124,113}, {0,0}, {false, false}},
+                {2, "EMERALD_ENEMY_ATTACK", {481,0,  138,113}, {0,0}, {false, false}},
+                {2, "EMERALD_ENEMY_ATTACK", {656, 0, 138,113}, {0,0}, {false, false}},
+                {2, "EMERALD_ENEMY_ATTACK", {831, 0, 138, 113}, {0,0}, {false, false}}
+        };
         const std::list<FrameParams> death_animation = {
                 {7, "EMERALD_ENEMY_DEATH", {0,0,97,91}, {0,0}, {false, false}},
                 {7, "EMERALD_ENEMY_DEATH", {161,0,113,91}, {0,0}, {false, false}},
@@ -105,6 +112,7 @@ std::unique_ptr<Entity> Factory::createEnemy(EntityType type) {
                 {7, "EMERALD_ENEMY_DEATH", {670,0,151,91}, {0,0}, {false, false}}
         };
         enemy->addAnimation("IDLE", idle_animation);
+        enemy->addAnimation("ATTACK", attack_animation);
         enemy->addAnimation("DEATH", death_animation);
         enemy->addSound("EMERALDACTION", "emeraldEnemyShout");
         return std::unique_ptr<Entity>(enemy);
@@ -174,7 +182,10 @@ std::unique_ptr<Entity> Factory::createObstacle(EntityType type) {
         auto * obstacle = new Block("Block");
         obstacle->init();
         const std::list<FrameParams> frames = {
-            {1, "blockTexture", {0,0,0,0}, {0,0}, {false, false}}
+            {8, "LIGHTING", {0, 0, 60, 47}, {0,0}, {false, false}},
+            {2, "LIGHTING", {88, 0, 60, 47}, {0,0}, {false, false}},
+            {8, "LIGHTING", {176, 0, 60 ,47}, {0,0}, {false, false}},
+            {2, "LIGHTING", {264, 0, 60 ,47}, {0,0}, {false, false}}
         };
         obstacle->addAnimation("DEFAULT", frames);
         return std::unique_ptr<Entity>(obstacle);
@@ -183,8 +194,8 @@ std::unique_ptr<Entity> Factory::createObstacle(EntityType type) {
         auto * obstacle = new Fire("Fire");
         obstacle->init();
         const std::list<FrameParams> frames = {
-            {8, "Fire", {0,0,32,32}, {64,64}, {false, false}},
-            {8, "Fire", {32,0,32,32}, {64,64}, {false, false}}
+            {8, "FIRE", {0,0,32,32}, {64,64}, {false, false}},
+            {8, "FIRE", {32,0,32,32}, {64,64}, {false, false}}
         };
         obstacle->addAnimation("DEFAULT", frames);
         return std::unique_ptr<Entity>(obstacle);

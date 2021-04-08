@@ -114,21 +114,22 @@ void GameOverState::showScore() {
     if(!score_record.nickname.empty()) {
         auto * score = new TextWidget("ScoreRecap");
         score->init(theme);
-        std::string message;
         if(score_record.rank>10) {
-            message = "WELL DONE   [" + score_record.nickname +
-                      "]   YOUR RANK IS   " + std::to_string(score_record.rank) +
+            std::string message = "WELL DONE   " + score_record.nickname +
+                      "   YOUR RANK IS   " + std::to_string(score_record.rank) +
                       "   YOUR SCORE IS   " + std::to_string(score_record.score) +
                       "   YOU RUN FOR   " + std::to_string(score_record.distance) + "mt" +
                       "   YOU KILLED   " + std::to_string(score_record.killed) + " ENEMIES" +
                       "   YOU PLAYED FOR   " + std::to_string(score_record.time / 60) + "m : " +
                                                std::to_string(score_record.time % 60) + "s";
+            score->setString(message);
+            score->setCharacterSize(55);
         }
         else {
-            message = "CONGRATULATIONS   [" + score_record.nickname + "]   YOU ARE IN THE TOP TEN !!!";
+            std::string message = "CONGRATULATIONS   " + score_record.nickname + "   YOU ARE IN THE TOP TEN ! ! !";
+            score->setString(message);
+            score->setCharacterSize(75);
         }
-        score->setString(message);
-        score->setCharacterSize(70);
         score->setFillColor(sf::Color::Green);
         score->setPosition({CONFIG->getWindowSize().x / 2.f - score->getSize().x / 2.f, 220});
         m_root->add(score);

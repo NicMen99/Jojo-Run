@@ -38,7 +38,7 @@ void ScoreHUD::init() {
 
     auto score_icon = new ImageWidget("icon");
     score_icon->setPosition({0, 0});
-    score_icon->setTexture("blockTexture");
+    score_icon->setTexture("shieldPowerUpTexture");
     m_score->add(score_icon);
 
     auto score_label = new TextWidget("label");

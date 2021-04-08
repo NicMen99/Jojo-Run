@@ -30,6 +30,7 @@ const KeyVal resource_table [] = {
         {"PLAYER_DEATH",           "Textures/PlayerDeath.png"},
 
         {"EMERALD_ENEMY_IDLE",     "Textures/EmeraldEnemyIdle.png"},     //@TODO rigirare, rinominare
+        {"EMERALD_ENEMY_ATTACK",   "Textures/EmeraldEnemyAttack.png"},
         {"EMERALD_ENEMY_DEATH",    "Textures/EmeraldEnemyDeath.png"},
 
         {"HAMON_ENEMY_IDLE",       "Textures/HamonEnemyIdle.png"},     //@TODO rigirare, rinominare
@@ -40,7 +41,10 @@ const KeyVal resource_table [] = {
         {"FIRE_ENEMY_ATTACK",      "Textures/FireEnemyAttack.png"},
         {"FIRE_ENEMY_DEATH",       "Textures/FireEnemyDeath.png"},
 
-        { "SPLASH_SCREEN",         "Textures/GameOverScreen.png"},
+        {"LIGHTING",               "Textures/LightingBlock.png"},
+        {"FIRE",                   "Textures/FirewallBlock.png"},
+
+        { "SPLASH_SCREEN",         "Textures/SplashScreen.png"},
         { "GAME_OVER_SCREEN",      "Textures/GameOverScreen.png"},
 
         /* Fonts */
@@ -49,17 +53,12 @@ const KeyVal resource_table [] = {
         /* Sounds */
 
         /**/
-        { "blockTexture",          "Textures/blockTexture.png"},
-        { "fireWallTexture",       "Textures/fireWallTexture.png"},
         { "shieldPowerUpTexture",  "Textures/shieldPowerUpTexture.png"},
         { "knifeTexture",          "Textures/knifeTexture.png"},
         { "fireEnemyTexture",      "Textures/fireEnemyTexture.png"},
         { "hamonBlockTexture",     "Textures/hamonBlockTexture.png"},
         { "fireBlockTexture",      "Textures/fireBlockTexture.png"},
         { "emeraldBlockTexture",   "Textures/emeraldBlockTexture.png"},
-        { "playerTexture",         "Textures/playerTexture.png"},
-        { "playerShieldTexture",   "Textures/playerShieldTexture.png"},
-        { "Fire",                  "Textures/FirewallAnimation.png"},
 
         { "Background1",           "Map/Background1.png"},
         { "BG",                    "Map/BG.png"},
