@@ -16,6 +16,7 @@ public:
 
 private:
     void update(int32_t delta_time) override;
+    void event(GameEvent event, Entity *collider) override;
 };
 
 #endif //JOJO_RUN_BLOCK_H

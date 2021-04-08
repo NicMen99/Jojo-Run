@@ -20,7 +20,7 @@ public:
     void setOutlineColor(const sf::Color & color) { m_text.setOutlineColor(color); }
     void setString(const std::string & text) { m_text.setString(text); }
     std::string getString() const { return m_text.getString(); }
-    sf::Vector2f getSize();
+    sf::Vector2f getSize() const override;
 
 protected:
     void _update(int32_t delta_time) override;

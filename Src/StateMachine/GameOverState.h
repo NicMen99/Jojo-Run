@@ -31,7 +31,6 @@ private:
 
     void createScreen();
     void showScore();
-    void showRow(const std::vector<std::string>& values, const std::vector<int>& columns);
     void saveScore();
     void updateInput();
 
@@ -39,7 +38,8 @@ private:
     InputManager m_inputManager;
     sf::Music    m_music{};
     Widget *     m_root = nullptr;
-    TextWidget * m_input = nullptr;
+    TextWidget * m_input_label = nullptr;
+    TextWidget * m_input_value = nullptr;
 };
 
 

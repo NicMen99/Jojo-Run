@@ -38,7 +38,7 @@ void TextWidget::setFont(const std::string & font_name) {
     m_text.setFont(*RESOURCE->getFont(font_name));
 }
 
-sf::Vector2f TextWidget::getSize() {
+sf::Vector2f TextWidget::getSize() const {
     sf::FloatRect size = m_text.getGlobalBounds();
     return sf::Vector2f{size.width, size.height};
 }

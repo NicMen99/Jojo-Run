@@ -36,7 +36,8 @@ std::shared_ptr<sf::Texture> ResourceManager::getTexture(const std::string & tex
 #ifdef GAMEDEBUG
     assert(result);
 #endif
-    if(!result) return nullptr;
+    if(!result)
+        return nullptr;
     /* mette nella cache */
     m_texture_map[texture] = resource;
     return m_texture_map[texture];
@@ -52,7 +53,8 @@ std::shared_ptr<sf::SoundBuffer> ResourceManager::getSound(const std::string & s
 #ifdef GAMEDEBUG
     assert(result);
 #endif
-    if(!result) return nullptr;
+    if(!result)
+        return nullptr;
     /* mette nella cache */
     m_sound_map[sound] = resource;
     return m_sound_map[sound];
@@ -68,7 +70,8 @@ std::shared_ptr<sf::Font> ResourceManager::getFont(const std::string & font) {
 #ifdef GAMEDEBUG
     assert(result);
 #endif
-    if(!result) return nullptr;
+    if(!result)
+        return nullptr;
     /* mette nella cache */
     m_font_map[font] = resource;
     return m_font_map[font];

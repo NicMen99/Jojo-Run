@@ -44,6 +44,7 @@ const KeyVal resource_table [] = {
         {"LIGHTING",               "Textures/LightingBlock.png"},
         {"FIRE",                   "Textures/FirewallBlock.png"},
 
+        {"EMERALD_BULLET",         "Textures/emeraldBlockTexture.png"},
         {"FIRE_BULLET",            "Textures/FireBullet.png"},
         {"KNIFE_BULLET",           "Textures/KnifeBullet.png"},
 
@@ -59,23 +60,25 @@ const KeyVal resource_table [] = {
         { "GAME_OVER_FONT",        "Font/GAME_OVER.TTF"},
 
         /* Sounds */
+        { "SOUND_TRACK",           "Music/SoundTrack.wav"},
+        { "PLAYER_ATTACK_SOUND",   "Music/PlayerAttackSound.wav"},
+        { "PLAYER_DEATH_SOUND",    "Music/PlayerDeathSound.wav"},
+        { "PLAYER_HIT_SOUND",      "Music/PlayerHitSound.wav"},
+        { "PLAYER_SHIELD_HIT_SOUND", "Music/PlayerShieldHitSound.wav"},
+        { "PLAYER_SHIELD_PICK_SOUND","Music/PlayerShieldPickSound.wav"},
+        { "EMERALD_ATTACK_SOUND",  "Music/EmeraldAttackSound.wav"},
+        { "EMERALD_DEATH_SOUND",   "Music/EmeraldDeathSound.wav"},
+        { "HAMON_ATTACK_SOUND",    "Music/HamonAttackSound.wav"},
+        { "HAMON_DEATH_SOUND",     "Music/HamonDeathSound.wav"},
+        { "FIRE_ATTACK_SOUND",     "Music/FireAttackSound.wav"},
+        { "FIRE_DEATH_SOUND",      "Music/FireDeathSound.wav"},
 
         /**/
-        { "emeraldBlockTexture",   "Textures/emeraldBlockTexture.png"},
-
         { "Background1",           "Map/Background1.png"},
         { "BG",                    "Map/BG.png"},
         { "Foreground",            "Map/Foreground.png"},
         { "Middle",                "Map/Middle.png"},
 
-        { "soundTrack",            "Music/soundTrack.wav"},
-        { "gameOverSound",         "Music/gameOverSound.wav"},
-        { "collisionSound",        "Music/collisionSound.wav"},
-        { "shieldSound",           "Music/shieldSound.wav"},
-        { "shieldOn",              "Music/shieldOn.wav"},
-        { "fireEnemyShout",        "Music/fireEnemyShout.wav"},
-        { "emeraldEnemyShout",     "Music/emeraldEnemyShout.wav"},
-        { "hamonEnemyShout",       "Music/hamonEnemyShout.wav"},
 };
 
 void GameConfig::init() {

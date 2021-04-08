@@ -42,7 +42,6 @@ void EmeraldEnemy::update(int32_t delta_time) {
             bl->setPosition(sf::Vector2f (getPosition()) - sf::Vector2f(bl->getBounds().width/2, 0));
             bl->setSpeed(sf::Vector2f {getSpeed().x - CONFIG->getEmeraldBulletSpeed(), 0.f});
             SCENE->addSpawned(bl);
-            playSound("EMERALDACTION");
             m_shoot_left--;
             m_shootTimer.restart();
             m_shootTime = sf::milliseconds(100);
@@ -60,9 +59,11 @@ void EmeraldEnemy::changeState(Enemy::State new_state) {
                 break;
             case State::Attack:
                 playAnimation("ATTACK");
+                playSound("ATTACK");
                 break;
             case State::Dead:
                 playAnimation("DEATH");
+                playSound("DEATH");
                 setEnabled(false);
                 break;
             default:

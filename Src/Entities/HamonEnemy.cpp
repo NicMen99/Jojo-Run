@@ -55,9 +55,11 @@ void HamonEnemy::changeState(Enemy::State new_state) {
                 break;
             case State::Attack:
                 playAnimation("ATTACK");
+                playSound("ATTACK");
                 break;
             case State::Dead:
                 playAnimation("DEATH");
+                playSound("DEATH");
                 setEnabled(false);
                 break;
             default:

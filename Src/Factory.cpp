@@ -78,15 +78,17 @@ std::unique_ptr<Entity> Factory::createHero() {
             {7, "PLAYER_DEATH", {781,0,101,122}, {0,0}, {false, false}},
     };
     hero->addAnimation("RUN", run_animation);
-    hero->addAnimation("SRUN", shield_run_animation);
+    hero->addAnimation("SHIELD_RUN", shield_run_animation);
     hero->addAnimation("JUMP", jump_animation);
     hero->addAnimation("FALL", fall_animation);
     hero->addAnimation("FALL2", fall_animation2);   // not used
     hero->addAnimation("ATTACK", attack_animation);
     hero->addAnimation("DEATH", death_animation);
-    hero->addSound("COLLISION", "collisionSound");
-    hero->addSound("SHIELD", "shieldSound");
-    hero->addSound("SHIELDON", "shieldOn");
+    hero->addSound("ATTACK", "PLAYER_ATTACK_SOUND");
+    hero->addSound("DEATH", "PLAYER_DEATH_SOUND");
+    hero->addSound("HIT", "PLAYER_HIT_SOUND");
+    hero->addSound("SHIELD_HIT", "PLAYER_SHIELD_HIT_SOUND");
+    hero->addSound("SHIELD_PICK", "PLAYER_SHIELD_PICK_SOUND");
     return std::unique_ptr<Entity>(hero);
 }
 
@@ -114,7 +116,8 @@ std::unique_ptr<Entity> Factory::createEnemy(EntityType type) {
         enemy->addAnimation("IDLE", idle_animation);
         enemy->addAnimation("ATTACK", attack_animation);
         enemy->addAnimation("DEATH", death_animation);
-        enemy->addSound("EMERALDACTION", "emeraldEnemyShout");
+        enemy->addSound("ATTACK", "EMERALD_ATTACK_SOUND");
+        enemy->addSound("DEATH", "EMERALD_DEATH_SOUND");
         return std::unique_ptr<Entity>(enemy);
     }
     else if (type == EntityType::HamonEnemy){
@@ -143,7 +146,8 @@ std::unique_ptr<Entity> Factory::createEnemy(EntityType type) {
         enemy->addAnimation("IDLE", idle_animation);
         enemy->addAnimation("ATTACK", attack_animation);
         enemy->addAnimation("DEATH", death_animation);
-        enemy->addSound("HAMONACTION", "hamonEnemyShout");
+        enemy->addSound("ATTACK", "HAMON_ATTACK_SOUND");
+        enemy->addSound("DEATH", "HAMON_DEATH_SOUND");
         return std::unique_ptr<Entity>(enemy);
     }
     else if (type == EntityType::FireEnemy){
@@ -171,7 +175,8 @@ std::unique_ptr<Entity> Factory::createEnemy(EntityType type) {
         enemy->addAnimation("IDLE", idle_animation);
         enemy->addAnimation("ATTACK", attack_animation);
         enemy->addAnimation("DEATH", death_animation);
-        enemy->addSound("FIREACTION", "fireEnemyShout");
+        enemy->addSound("ATTACK", "FIRE_ATTACK_SOUND");
+        enemy->addSound("DEATH", "FIRE_DEATH_SOUND");
         return std::unique_ptr<Entity>(enemy);
     }
     return nullptr;
@@ -262,7 +267,7 @@ std::unique_ptr<Entity> Factory::createBullet(EntityType type) {
         auto * emerald = new Emerald("Emerald");
         emerald -> init();
         const std::list<FrameParams> frames = {
-            {1, "emeraldBlockTexture", {0,0,0,0}, {0,0}, {false, false}}
+            {1, "EMERALD_BULLET", {0,0,0,0}, {0,0}, {false, false}}
         };
         emerald->addAnimation("DEFAULT", frames);
         return std::unique_ptr<Entity>(emerald);

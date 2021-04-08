@@ -28,7 +28,7 @@ public:
 private:
     void createOverlay();
 
-    enum Action {Play, Pause};
+    enum Action {Play, Pause, End};
 
     static PlayState* m_instance;
 
@@ -36,6 +36,7 @@ private:
     InputManager m_inputManager;
     sf::Music    m_music{};
     Widget *     m_root = nullptr;
+    sf::Clock    m_timer;
 };
 
 

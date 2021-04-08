@@ -16,7 +16,7 @@ PlayState* PlayState::instance() {
 }
 
 void PlayState::init() {
-    m_music.openFromFile(CONFIG->getAssetPath("soundTrack"));
+    m_music.openFromFile(CONFIG->getAssetPath("SOUND_TRACK"));
 }
 
 void PlayState::onEnter() {
@@ -41,7 +41,9 @@ void PlayState::update(int32_t delta_time) {
         SCENE->update(delta_time);
         SCORE->update();
         if(SCENE->levelend()) {
-            changeState(State::GameOver);
+            m_action = Action::End;
+            m_timer.restart();
+            m_music.stop();
         }
         if(m_inputManager.isKeyJustPressed(sf::Keyboard::P)) {
             m_music.setVolume(30.f);
@@ -53,6 +55,10 @@ void PlayState::update(int32_t delta_time) {
             m_music.setVolume(70.f);
             m_action = Action::Play;
         }
+    }
+    else if (m_action == Action::End) {
+        if(m_timer.getElapsedTime() > sf::seconds(1))
+            changeState(State::GameOver);
     }
 }
 

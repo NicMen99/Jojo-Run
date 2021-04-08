@@ -71,7 +71,8 @@ void MenuState::createMenuScreen(){
 
     auto * background = new ImageWidget("Background");
     background->init(theme);
-    background->setTexture("SPLASH_SCREEN", CONFIG->getWindowSize());
+    background->setTexture("SPLASH_SCREEN", {280,170});
+    background->setPosition((CONFIG->getWindowSize().x-280.f)/2, 100);
     sf::Vector2f background_size = background->getSize();
     m_root->add(background);
 
@@ -79,7 +80,7 @@ void MenuState::createMenuScreen(){
     mitem1->init(theme);
     mitem1->setString("[ 1 ]       ");
     mitem1->setFillColor(sf::Color::Red);
-    mitem1->setPosition({CONFIG->getWindowSize().x/2.f - 200.f, CONFIG->getWindowSize().y * 0.35f});
+    mitem1->setPosition({CONFIG->getWindowSize().x/2.f - 150.f, CONFIG->getWindowSize().y * 0.35f});
     m_root->add(mitem1);
 
     auto * mlabel1 = new TextWidget("MenuLabel1");
@@ -92,7 +93,7 @@ void MenuState::createMenuScreen(){
     mitem2->init(theme);
     mitem2->setString("[ 2 ]       ");
     mitem2->setFillColor(sf::Color::Red);
-    mitem2->setPosition({CONFIG->getWindowSize().x/2.f - 200.f, CONFIG->getWindowSize().y * 0.4f});
+    mitem2->setPosition({CONFIG->getWindowSize().x/2.f - 150.f, CONFIG->getWindowSize().y * 0.4f});
     m_root->add(mitem2);
 
     auto * mlabel2 = new TextWidget("MenuLabel2");
@@ -120,6 +121,20 @@ void MenuState::createCreditScreen() {
     sf::Vector2f overlay_size = background->getSize();
     m_root->add(background);
 
-
-
+    std::vector<std::string> lines = {
+        "Sviluppatori",
+        "angiolo.giandonati@stud.unifi.it",
+        "niccolo.menghini@stud.unifi.it",
+    };
+    float posy = 100;
+    for(const auto& line : lines) {
+        auto * rank = new TextWidget("");
+        rank->init(theme);
+        rank->setCharacterSize(100);
+        rank->setString(line);
+        rank->setPosition((CONFIG->getWindowSize().x-rank->getSize().x)/2, posy);
+        rank->setFillColor(sf::Color::Yellow);
+        m_root->add(rank);
+        posy += rank->getSize().y + 10.f;
+    }
 }

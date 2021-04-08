@@ -27,6 +27,8 @@ void SoundManager::playSound(const std::string &sound_name, float volume) {
         m_sound.setBuffer(*sound);
         m_active_sound = sound_resource;
     }
+    if(m_sound.getStatus() == sf::Sound::Playing)
+        return;
     m_sound.setVolume(volume);
     m_sound.play();
 }

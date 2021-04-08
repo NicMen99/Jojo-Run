@@ -17,13 +17,17 @@ void Fire::init() {
     setDamage(1);
 }
 
-void Fire::event(GameEvent event, Entity *collider) {
-}
-
 void Fire::update(int32_t delta_time) {
     if(!isStarted()) {
         playAnimation("DEFAULT", true);
         setStarted(true);
     }
     Entity::update(delta_time);
+}
+
+void Fire::event(GameEvent event, Entity *collider) {
+    if(GameEvent::Collision == event ) {
+        if (collider->getType() == EntityType::Hero)
+            setEnabled(false);
+    }
 }

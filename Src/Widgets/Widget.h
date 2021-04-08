@@ -36,6 +36,7 @@ public:
     void setVisible(bool visible) { m_visible = visible; }
     void startTimer(sf::Time time);
     bool isVisible(Widget* widget) { return m_visible; }
+    virtual sf::Vector2f getSize() const { return {0,0}; };
 
     /* observer interface */
 

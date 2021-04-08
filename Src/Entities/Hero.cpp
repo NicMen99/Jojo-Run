@@ -59,7 +59,11 @@ void Hero::updatePhysics(int32_t delta_time) {
     /*
      * Fallen
      */
-    if(getPosition().y > (CONFIG->getWindowSize().y)) {
+    if(getPosition().y > (CONFIG->getBottomLevel())) {
+        playAnimation("FALL");
+        playSound("DEATH");
+    }
+    if(getPosition().y > (3.f * CONFIG->getWindowSize().y)) {
         m_state = State::Dead;
         setEnabled(false);
         setDestroyed();
@@ -175,14 +179,15 @@ void Hero::event(GameEvent event, Entity * entity) {
         else
             return;
 
-        playSound("COLLISION");
         if(m_shield) {
+            playSound("SHIELD_HIT");
             if(m_state==State::Grounded) {
                 playAnimation("RUN", true);
             }
             m_shield = false;
         }
         else {
+            playSound("HIT");
             if(damage>0)
                 m_clean_distance = 0;
             updateHealth(-damage);
@@ -202,9 +207,9 @@ void Hero::event(GameEvent event, Entity * entity) {
                 auto *weapon = dynamic_cast<Weapon *>(entity);
                 updateKnives(weapon->getQuantity());
             } else if (entity->getType() == EntityType::Shield) {
+                playSound("SHIELD_PICK");
                 if(m_state==State::Grounded) {
-                    playAnimation("SRUN", true);
-                    playSound("SHIELDON");
+                    playAnimation("SHIELD_RUN", true);
                 }
                 m_shield = true;
             }
@@ -265,6 +270,7 @@ void Hero::manageAttack() {
                 kf->setSpeed(sf::Vector2f {getSpeed().x + CONFIG->getKnifeSpeed(), 0.f});
                 SCENE->addSpawned(kf);
                 updateKnives(-1);
+                playSound("ATTACK");
             }
             break;
         case State::Dead:
@@ -281,7 +287,7 @@ void Hero::changeState(State new_state) {
                     playAnimation("RUN", true);
                 }
                 else {
-                    playAnimation("SRUN", true);
+                    playAnimation("SHIELD_RUN", true);
                 }
                 break;
             case State::Jumping:
@@ -292,6 +298,7 @@ void Hero::changeState(State new_state) {
                 break;
             case State::Dead:
                 playAnimation("DEATH");
+                playSound("DEATH");
                 setEnabled(false);
                 break;
             default:
