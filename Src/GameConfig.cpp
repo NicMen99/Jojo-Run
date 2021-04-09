@@ -73,6 +73,9 @@ const KeyVal resource_table [] = {
         { "FIRE_ATTACK_SOUND",     "Music/FireAttackSound.wav"},
         { "FIRE_DEATH_SOUND",      "Music/FireDeathSound.wav"},
 
+        /* CONFIG */
+        { "CREDITS",                "Config/Credits.txt"},
+
         /**/
         { "Background1",           "Map/Background1.png"},
         { "BG",                    "Map/BG.png"},

@@ -121,18 +121,18 @@ void MenuState::createCreditScreen() {
     sf::Vector2f overlay_size = background->getSize();
     m_root->add(background);
 
-    std::vector<std::string> lines = {
-        "Sviluppatori",
-        "angiolo.giandonati@stud.unifi.it",
-        "niccolo.menghini@stud.unifi.it",
-    };
+    std::ifstream infile(CONFIG->getAssetPath("CREDITS"));
+    if(!infile.is_open())
+        return;
+
+    std::string line;
     float posy = 100;
-    for(const auto& line : lines) {
-        auto * rank = new TextWidget("");
+    while (std::getline(infile, line)) {
+        auto *rank = new TextWidget("");
         rank->init(theme);
         rank->setCharacterSize(100);
         rank->setString(line);
-        rank->setPosition((CONFIG->getWindowSize().x-rank->getSize().x)/2, posy);
+        rank->setPosition((CONFIG->getWindowSize().x - rank->getSize().x) / 2, posy);
         rank->setFillColor(sf::Color::Yellow);
         m_root->add(rank);
         posy += rank->getSize().y + 10.f;
