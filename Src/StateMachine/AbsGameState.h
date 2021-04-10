@@ -6,6 +6,7 @@
 #define JOJO_RUN_ABSGAMESTATE_H
 
 #include <SFML/Graphics.hpp>
+#include "SoundManager.h"
 class Game;
 
 enum class State{
@@ -27,9 +28,10 @@ protected:
     static void changeState(State nextState);
     static void switchState(bool forceExec=false);
     static AbsGameState* getCurrentState();
-
     virtual void onEnter() {}
     virtual void onExit() {}
+
+    SoundManager m_soundManager;
 
 private:
     static State m_currentState;

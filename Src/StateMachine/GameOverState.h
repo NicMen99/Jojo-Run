@@ -36,7 +36,6 @@ private:
 
     Action       m_action = Action::UserInput;
     InputManager m_inputManager;
-    sf::Music    m_music{};
     Widget *     m_root = nullptr;
     TextWidget * m_input_label = nullptr;
     TextWidget * m_input_value = nullptr;

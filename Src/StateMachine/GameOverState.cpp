@@ -16,19 +16,20 @@ GameOverState* GameOverState::instance() {
 }
 
 void GameOverState::init() {
-    m_music.openFromFile(CONFIG->getAssetPath("SOUND_TRACK"));
 }
 
 void GameOverState::onEnter() {
     createScreen();
     m_inputManager.init();
     m_inputManager.registerAll();
+    m_soundManager.clear();
+    m_soundManager.addSound("TICK", "KEYBOARD_TICK_SOUND");
     SCORE->loadFromFile();
     m_action = Action::UserInput;
 }
 
 void GameOverState::onExit() {
-    m_music.stop();
+    m_soundManager.stopMusic();
 }
 
 void GameOverState::update(int32_t delta_time) {
@@ -37,9 +38,9 @@ void GameOverState::update(int32_t delta_time) {
 
     if(m_action == Action::ShowRecords) {
         if(m_inputManager.isKeyJustPressed(sf::Keyboard::Q)) {
-            exit(0);
+            _exit(0);
         }
-        else if(m_inputManager.isKeyJustPressed(sf::Keyboard::R)) {
+        else if(m_inputManager.isKeyJustPressed(sf::Keyboard::N)) {
             changeState(State::Play);
         }
     }
@@ -102,9 +103,7 @@ void GameOverState::createScreen() {
 }
 
 void GameOverState::showScore() {
-    m_music.setVolume(50);
-    m_music.setPitch(1.1);
-    m_music.play();
+    m_soundManager.playMusic("SOUND_TRACK", 50, 1.1);
 
     WidgetTheme theme;
     theme.font_name = "RETRO_GAMING_FONT";
@@ -141,12 +140,31 @@ void GameOverState::showScore() {
         m_input_label->setPosition((CONFIG->getWindowSize().x - m_input_label->getSize().x)/2, m_input_label->getPosition().y);
     }
 
-    auto * menu = new TextWidget("Menu");
-    menu->init(theme);
-    menu->setString("[ R ] ESTART A NEW GAME\n[ Q ] UIT");
-    sf::Vector2f menu_size = menu->getSize();
-    menu->setPosition({CONFIG->getWindowSize().x / 2.f - menu_size.x / 2.f, CONFIG->getWindowSize().y - 100.0f});
-    m_root->add(menu);
+    auto * mitem1 = new TextWidget("MenuItem1");
+    mitem1->init(theme);
+    mitem1->setString("[ N ]       ");
+    mitem1->setFillColor(sf::Color::Red);
+    mitem1->setPosition({CONFIG->getWindowSize().x/2.f - 200.f, CONFIG->getWindowSize().y * 0.85f});
+    m_root->add(mitem1);
+
+    auto * mlabel1 = new TextWidget("MenuLabel1");
+    mlabel1->init(theme);
+    mlabel1->setString("N E W    G A M E");
+    mlabel1->setPosition({mitem1->getSize().x, 0});
+    mitem1->add(mlabel1);
+
+    auto * mitem2 = new TextWidget("MenuItem2");
+    mitem2->init(theme);
+    mitem2->setString("[ Q ]       ");
+    mitem2->setFillColor(sf::Color::Red);
+    mitem2->setPosition({CONFIG->getWindowSize().x/2.f - 200.f, CONFIG->getWindowSize().y * 0.9f});
+    m_root->add(mitem2);
+
+    auto * mlabel2 = new TextWidget("MenuLabel2");
+    mlabel2->init(theme);
+    mlabel2->setString("Q U I T");
+    mlabel2->setPosition({mitem2->getSize().x, 0});
+    mitem2->add(mlabel2);
 
     auto * toprank = new ShapeWidget("TopN");
     toprank->init(theme);
@@ -169,10 +187,10 @@ void GameOverState::showScore() {
     for(const auto& column : hcolumns) {
         auto * rank = new TextWidget("");
         rank->init(theme);
-        rank->setCharacterSize(16);
+        rank->setCharacterSize(18);
         rank->setString(column.second);
         rank->setPosition({column.first, posy});
-        rank->setFillColor(sf::Color::Cyan);
+        rank->setFillColor(sf::Color::White);
         toprank->add(rank);
     }
 
@@ -220,15 +238,18 @@ void GameOverState::updateInput() {
         return;
     if(key >= sf::Keyboard::A && key <= sf::Keyboard::Z) {
         if( m_input_value->getString().size() < MAX_NAME_SIZE) {
+            m_soundManager.playSound("TICK");
             m_input_value->setString(m_input_value->getString() + static_cast<char>('A' + key - sf::Keyboard::A));
         }
     }
     else if (key >= sf::Keyboard::Num0 && key <= sf::Keyboard::Num9) {
         if( m_input_value->getString().size() < MAX_NAME_SIZE) {
+            m_soundManager.playSound("TICK");
             m_input_value->setString(m_input_value->getString() + static_cast<char>('0' + key - sf::Keyboard::Num0));
         }
     }
     else if (key == sf::Keyboard::BackSpace || key == sf::Keyboard::Escape) {
+        m_soundManager.playSound("TICK");
         m_input_value->setString("");
     }
     m_input_label->setPosition((CONFIG->getWindowSize().x - m_input_label->getSize().x - m_input_value->getSize().x)/2, m_input_label->getPosition().y);

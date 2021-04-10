@@ -79,7 +79,9 @@ void Game::loop()
 
         sf::Time elapsedTime = m_clock.restart();
         if(elapsedTime > sf::milliseconds(100)) {
+#ifdef GAMEDEBUG
             std::cout << elapsedTime.asMilliseconds() << std::endl;
+#endif
             elapsedTime = sf::milliseconds(100);
         }
         m_accumulator += elapsedTime;

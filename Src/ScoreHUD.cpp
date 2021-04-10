@@ -8,11 +8,6 @@
 #include "Widgets/ImageWidget.h"
 #include "ScoreHUD.h"
 
-
-const char * font_name = "arcadeclassic";
-const unsigned int font_size = 40;
-
-
 ScoreHUD::ScoreHUD() :
         Entity(EntityGroup::Scene, EntityType::Hud, "HUD")
 {
@@ -23,22 +18,27 @@ ScoreHUD::ScoreHUD() :
 ScoreHUD::~ScoreHUD() {
     delete m_score;
     delete m_hero_status;
+    delete m_achievements;
 }
 
 void ScoreHUD::init() {
 
+    m_soundManager.clear();
+    m_soundManager.addSound("ACHIEVEMENT", "ACHIEVEMENT_SOUND");
+
     WidgetTheme theme;
     theme.font_name = "RETRO_GAMING_FONT";
-    theme.font_size = 32;
+    theme.font_size = 28;
     theme.font_color = sf::Color::White;
 
     /* score */
+    delete m_score;
     m_score = new Widget("score");
     m_score->setPosition({30,30});
 
     auto score_icon = new ImageWidget("icon");
     score_icon->setPosition({0, 0});
-    score_icon->setTexture("PLAYER_ICON", {128, 128});
+    score_icon->setTexture("PLAYER_ICON", {64, 64});
     m_score->add(score_icon);
 
     auto score_label = new TextWidget("label");
@@ -51,23 +51,26 @@ void ScoreHUD::init() {
     score_value->init(theme);
     score_value->setPosition(sf::Vector2f{score_label->getSize().x, 0});
     score_value->setString("");
+    score_value->setFillColor(sf::Color::Yellow);
     score_label->add(score_value);
     score_value->observe(STATS, Stats::Score);
 
     /* hero */
+    delete m_hero_status;
     m_hero_status = new Widget("hero_stat");
-    m_hero_status->setPosition({1350,30});
+    m_hero_status->setPosition({1300,30});
 
     auto healthPoints_label = new TextWidget("HealthPoints_label");
     healthPoints_label->init(theme);
     healthPoints_label->setPosition({0,0});
-    healthPoints_label->setString("HP  ");
+    healthPoints_label->setString("HEALTH  ");
     m_hero_status->add(healthPoints_label);
 
     auto healthPoints_value = new TextWidget("HealthPoints_value");
     healthPoints_value->init(theme);
     healthPoints_value->setPosition(sf::Vector2f{healthPoints_label->getSize().x, 0});
     healthPoints_value->setString("");
+    healthPoints_value->setFillColor(sf::Color::Green);
     healthPoints_label->add(healthPoints_value);
     healthPoints_value->observe(STATS,Stats::Health);
 
@@ -81,10 +84,12 @@ void ScoreHUD::init() {
     knives_value->init(theme);
     knives_value->setPosition(sf::Vector2f{knives_label->getSize().x, 0});
     knives_value->setString("");
+    knives_value->setFillColor(sf::Color::Red);
     knives_label->add(knives_value);
     knives_value->observe(STATS,Stats::Knives);
 
     /* achievement */
+    delete m_achievements;
     m_achievements = new Widget("achiemements");
     m_achievements->setPosition({0, 30});
 
@@ -117,15 +122,19 @@ void ScoreHUD::data_update(const std::string & item_name, const std::string & it
     if(!curmsg.empty()) curmsg += "\n";
     if(item_name == Achievements::Distance) {
         widget->setString(curmsg + "MILE RUNNER:  " + item_value + " METERS RUN");
+        m_soundManager.playSound("ACHIEVEMENT");
     }
     else if(item_name == Achievements::CleanDistance) {
         widget->setString(curmsg + "COMBO RUN:  " + item_value + " CLEAN METERS RUN");
+        m_soundManager.playSound("ACHIEVEMENT");
     }
     else if(item_name == Achievements::Killed) {
         widget->setString(curmsg + "KILLING SPREE:  KILLED " + item_value + " ENEMIES");
+        m_soundManager.playSound("ACHIEVEMENT");
     }
     else if(item_name == Achievements::ConsecutiveKilled) {
         widget->setString(curmsg + "COMBO KILL:  " + item_value + " CONSECUTIVE KILLS");
+        m_soundManager.playSound("ACHIEVEMENT");
     }
 
     widget->setFillColor(sf::Color::Green);

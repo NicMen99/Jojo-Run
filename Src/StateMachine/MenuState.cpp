@@ -25,29 +25,33 @@ void MenuState::onEnter() {
     m_inputManager.registerKey(sf::Keyboard::Num1);
     m_inputManager.registerKey(sf::Keyboard::Num2);
     m_inputManager.registerKey(sf::Keyboard::Escape);
+    m_soundManager.clear();
+    m_soundManager.addSound("SELECT", "KEYBOARD_TICK_SOUND");
     createMenuScreen();
-    // m_music.setVolume(70.f);
-    // m_music.play();
 }
 
 void MenuState::onExit() {
-    // m_music.stop();
 }
 
 void MenuState::update(int32_t delta_time) {
     m_inputManager.update();
     if(m_action == Action::MainMenu) {
-        if(m_inputManager.isKeyJustPressed(sf::Keyboard::Num1))
+        if(m_inputManager.isKeyJustPressed(sf::Keyboard::Num1)) {
+            m_soundManager.playSound("SELECT");
             changeState(State::Play);
+        }
         else if(m_inputManager.isKeyJustPressed(sf::Keyboard::Num2)) {
+            m_soundManager.playSound("SELECT");
             m_action = Action::Credits;
             createCreditScreen();
         }
-        else if(m_inputManager.isKeyJustPressed(sf::Keyboard::Escape))
-            exit(0);
+        else if(m_inputManager.isKeyJustPressed(sf::Keyboard::Escape)) {
+            _exit(0);
+        }
     }
     else if (m_action == Action::Credits) {
         if(m_inputManager.isKeyJustPressed(sf::Keyboard::Escape)) {
+            m_soundManager.playSound("SELECT");
             m_action = Action::MainMenu;
             createMenuScreen();
         }
@@ -73,7 +77,6 @@ void MenuState::createMenuScreen(){
     background->init(theme);
     background->setTexture("SPLASH_SCREEN", {280,170});
     background->setPosition((CONFIG->getWindowSize().x-280.f)/2, 100);
-    sf::Vector2f background_size = background->getSize();
     m_root->add(background);
 
     auto * mitem1 = new TextWidget("MenuItem1");
@@ -108,7 +111,7 @@ void MenuState::createCreditScreen() {
 
     WidgetTheme theme;
     theme.font_name = "RETRO_GAMING_FONT";
-    theme.font_size = 32;
+    theme.font_size = 24;
     theme.font_color = sf::Color::White;
     theme.font_outline_thinckness = 2;
 
@@ -118,7 +121,6 @@ void MenuState::createCreditScreen() {
     background->init(theme);
     background->setFillColor(sf::Color(0, 0, 0, 0));
     background->setSize(static_cast<sf::Vector2f>(CONFIG->getWindowSize()));
-    sf::Vector2f overlay_size = background->getSize();
     m_root->add(background);
 
     std::ifstream infile(CONFIG->getAssetPath("CREDITS"));
@@ -134,6 +136,6 @@ void MenuState::createCreditScreen() {
         rank->setPosition((CONFIG->getWindowSize().x - rank->getSize().x) / 2, posy);
         rank->setFillColor(sf::Color::Yellow);
         m_root->add(rank);
-        posy += rank->getSize().y + 10.f;
+        posy += rank->getSize().y + 5.f;
     }
 }

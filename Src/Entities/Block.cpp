@@ -27,7 +27,7 @@ void Block::update(int32_t delta_time) {
 }
 
 void Block::event(GameEvent event, Entity *collider) {
-    if(GameEvent::Collision == event ) {
+    if(GameEvent::Collision == event) {
         if (collider->getType() == EntityType::Hero)
             setEnabled(false);
     }

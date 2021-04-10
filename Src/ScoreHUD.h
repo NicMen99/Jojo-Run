@@ -30,12 +30,13 @@ private:
     Widget * m_achievements{};
     Widget * m_hero_status{};
 
+    SoundManager m_soundManager;
+
     void data_update(const std::string & item_name, const std::string & item_value) override;
     void attach() override;
     void detach() override;
     Subject * m_observed = nullptr;
     std::string m_observed_value;
-
 };
 
 

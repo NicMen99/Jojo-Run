@@ -17,7 +17,7 @@ void Weapon::init() {
 }
 
 void Weapon::event(GameEvent event, Entity *collider) {
-    if (event == GameEvent::Collision) {
+    if (event == GameEvent::Collection) {
         setDestroyed();
     }
     else if (event == GameEvent::OutOfBound) {

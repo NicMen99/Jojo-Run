@@ -25,7 +25,7 @@ void Enemy::event(GameEvent event, Entity *collider) {
     /*
      * Platform collision
      */
-    if (event == GameEvent::CollisionBottom) {
+    if (GameEvent::CollisionBottom == event) {
         sf::Rect<float> collider_rect = collider->getBounds();
         sf::Rect<float> enemy_rect = getBounds();
         sf::Vector2f speed = getSpeed();
@@ -33,7 +33,7 @@ void Enemy::event(GameEvent event, Entity *collider) {
         setPosition(sf::Vector2f(enemy_rect.left, collider_rect.top - enemy_rect.height));
         setSpeed(speed);
     }
-    else if (event == GameEvent::Collision) {
+    else if (GameEvent::Collision == event) {
         if(collider->getType() == EntityType::Hero) {
             changeState(State::Dead);
             STATS->addInt(Stats::Killed, 1);
@@ -49,7 +49,7 @@ void Enemy::event(GameEvent event, Entity *collider) {
             setEnabled(false);
         }
     }
-    else if (event == GameEvent::OutOfBound) {
+    else if (GameEvent::OutOfBound == event) {
         STATS->setInt(Stats::ConsecutiveKilled, 0);
         setDestroyed();
     }
@@ -59,7 +59,7 @@ void Enemy::updatePhysics(int32_t delta_time) {
     /*
      * Fallen
      */
-    if(getPosition().y > (CONFIG->getWindowSize().y)) {
+    if(getPosition().y > (float)CONFIG->getWindowSize().y) {
         changeState(State::Dead);
         setEnabled(false);
         setDestroyed();

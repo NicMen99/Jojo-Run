@@ -27,8 +27,11 @@ void Knife::update(int32_t delta_time) {
 }
 
 void Knife::event(GameEvent event, Entity *collider) {
-    if(GameEvent::Collision == event ) {
+    if(event == GameEvent::Collision) {
         if (collider->getType() != EntityType::Hero)
             setDestroyed();
+    }
+    else if (event == GameEvent::OutOfBound) {
+        setDestroyed();
     }
 }

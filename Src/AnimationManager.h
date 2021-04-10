@@ -43,6 +43,8 @@ public:
     AnimationManager();
     virtual ~AnimationManager();
 
+    void clear();
+
     bool isCurrentAnimation(const std::string & animation_name);
     void addAnimation(const std::string & animation_name, const std::list<FrameParams>& frames);
     void update(int32_t delta_time);
@@ -50,11 +52,9 @@ public:
     void play(const std::string & animation_name, bool loop=false);
     bool done() const;
     std::shared_ptr<sf::Sprite> getCurrentFrame();
-    std::shared_ptr<sf::Sprite> getCurrentFrame() const;
 
 private:
     std::shared_ptr<Animation> createAnimation(const std::string & animation_name);
-
     std::shared_ptr<sf::Sprite> m_current_sprite;
     std::shared_ptr<Animation> m_current_animation;
     std::map<std::string, std::shared_ptr<Animation>> m_animations;

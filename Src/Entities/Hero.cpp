@@ -91,9 +91,9 @@ void Hero::updatePhysics(int32_t delta_time) {
                 if(!isDestroyed()) {
                     setDestroyed();
                     STATS->setInt(Stats::Time, (int)m_lifeTime.getElapsedTime().asSeconds());
-                    #ifdef GAMEDEBUG
+#ifdef GAMEDEBUG
                     std::cout << "Time:" << STATS->getInt(Stats::Time) << std::endl;
-                    #endif
+#endif
                 }
             }
             break;
@@ -106,7 +106,7 @@ void Hero::updatePhysics(int32_t delta_time) {
 
 void Hero::event(GameEvent event, Entity * entity) {
 
-    if (event == GameEvent::CollisionBottom) {
+    if (GameEvent::CollisionBottom == event) {
         /*
          * Atterraggio su piattaforma
          */
@@ -122,7 +122,7 @@ void Hero::event(GameEvent event, Entity * entity) {
         }
     }
 
-    else if(event == GameEvent::CollisionTop) {
+    else if(GameEvent::CollisionTop == event) {
         /*
          * impatto con piattaforma
          */
@@ -136,7 +136,7 @@ void Hero::event(GameEvent event, Entity * entity) {
         }
     }
 
-    else if(event == GameEvent::Collision) {
+    else if(GameEvent::Collision == event) {
         /*
          * Collisione con un nemico
          */
@@ -163,9 +163,9 @@ void Hero::event(GameEvent event, Entity * entity) {
          * Collisione con proiettile nemico
          */
         else if (entity->getGroup() == EntityGroup::Bullet) {
-            #ifdef GAMEDEBUG
+#ifdef GAMEDEBUG
             assert(entity->getType() != EntityType::Knife);
-            #endif
+#endif
             auto *bullet = dynamic_cast<Bullet *>(entity);
             damage = bullet->getDamage();
             if(!m_shield)
@@ -193,7 +193,7 @@ void Hero::event(GameEvent event, Entity * entity) {
         }
     }
 
-    else if(event == GameEvent::Collection) {
+    else if(GameEvent::Collection == event) {
         /*
          * Potenziamento raccolto
          */
@@ -211,7 +211,7 @@ void Hero::event(GameEvent event, Entity * entity) {
         }
     }
 
-    else if (event == GameEvent::EnemyKilled) {
+    else if (GameEvent::EnemyKilled == event) {
         /*
          * Nemico ucciso con proiettile
          */

@@ -35,7 +35,6 @@ private:
 
     Action       m_action = Action::MainMenu;
     InputManager m_inputManager;
-    sf::Music    m_music{};
     Widget *     m_root = nullptr;
 };
 

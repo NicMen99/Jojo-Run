@@ -53,6 +53,13 @@ AnimationManager::~AnimationManager() {
 
 }
 
+void AnimationManager::clear() {
+    m_current_sprite = std::make_shared<sf::Sprite>();
+    m_current_animation = nullptr;
+    m_animations.clear();
+}
+
+
 std::shared_ptr<sf::Sprite> Animation::update(int32_t delta_time) {
     if (total_frames() == 0) return nullptr;
     return m_loop ?
@@ -91,10 +98,6 @@ bool AnimationManager::done() const {
 }
 
 std::shared_ptr<sf::Sprite> AnimationManager::getCurrentFrame() {
-    return m_current_sprite;
-}
-
-std::shared_ptr<sf::Sprite> AnimationManager::getCurrentFrame() const {
     return m_current_sprite;
 }
 

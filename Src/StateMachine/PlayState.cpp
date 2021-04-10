@@ -16,23 +16,23 @@ PlayState* PlayState::instance() {
 }
 
 void PlayState::init() {
-    m_music.openFromFile(CONFIG->getAssetPath("SOUND_TRACK"));
 }
 
 void PlayState::onEnter() {
     m_action = Action::Play;
     m_inputManager.init();
     m_inputManager.registerKey(sf::Keyboard::P);
+    m_soundManager.clear();
+    m_soundManager.addSound("TICK", "KEYBOARD_TICK_SOUND");
+    m_soundManager.playMusic("SOUND_TRACK", 70.f);
     STATS->init();
     SCORE->init();
     SCENE->init();
     createOverlay();
-    m_music.setVolume(70.f);
-    m_music.play();
 }
 
 void PlayState::onExit() {
-    m_music.stop();
+    m_soundManager.stopMusic();
 }
 
 void PlayState::update(int32_t delta_time) {
@@ -43,16 +43,17 @@ void PlayState::update(int32_t delta_time) {
         if(SCENE->levelend()) {
             m_action = Action::End;
             m_timer.restart();
-            m_music.stop();
+            m_soundManager.stopMusic();
         }
         if(m_inputManager.isKeyJustPressed(sf::Keyboard::P)) {
-            m_music.setVolume(30.f);
+            m_soundManager.setVolume(30.f);
             m_action = Action::Pause;
         }
     }
     else if (m_action == Action::Pause) {
         if(m_inputManager.isKeyJustPressed(sf::Keyboard::P)) {
-            m_music.setVolume(70.f);
+            m_soundManager.playSound("TICK");
+            m_soundManager.setVolume(70.f);
             m_action = Action::Play;
         }
     }

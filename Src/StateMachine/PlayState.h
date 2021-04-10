@@ -34,7 +34,6 @@ private:
 
     Action       m_action = Action::Play;
     InputManager m_inputManager;
-    sf::Music    m_music{};
     Widget *     m_root = nullptr;
     sf::Clock    m_timer;
 };

@@ -13,11 +13,10 @@ Shield::~Shield() {
 
 void Shield::init() {
     setSpeed({0.f, 0.f});
-    //setQuantity(100);
 }
 
 void Shield::event(GameEvent event, Entity *collider) {
-    if (event == GameEvent::Collision) {
+    if (event == GameEvent::Collection) {
         setDestroyed();
     }
     else if (event == GameEvent::OutOfBound) {
