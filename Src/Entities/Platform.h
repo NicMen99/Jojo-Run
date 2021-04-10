@@ -12,7 +12,7 @@ class Platform : public Entity {
 public:
     explicit Platform(std::string id);
     ~Platform() override;
-    void init();
+    void init(EntityType type);
 
 private:
     void event(GameEvent event, Entity *collider) override;

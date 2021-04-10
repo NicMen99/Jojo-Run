@@ -5,14 +5,16 @@
 #include "Platform.h"
 
 Platform::Platform(std::string id) :
-    Entity(EntityGroup::Platform, EntityType::StonePlatform, std::move(id)) {
+    Entity(EntityGroup::Platform, EntityType::Platform, std::move(id)) {
 }
 
 Platform::~Platform() {
 }
 
-void Platform::init() {
-    setSpeed(0, 0);
+void Platform::init(EntityType type) {
+    if(EntityType::StonePlatform == type) {
+        setSpeed(0, 0);
+    }
 }
 
 void Platform::event(GameEvent event, Entity *collider) {

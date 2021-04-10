@@ -6,7 +6,7 @@
 #include "Background.h"
 
 Background::Background(const std::string id) :
-        Entity(EntityGroup::Background, EntityType::SkyScrapers, id) {
+        Entity(EntityGroup::Scene, EntityType::Background, id) {
 }
 
 Background::~Background() {

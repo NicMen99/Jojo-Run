@@ -291,7 +291,7 @@ std::unique_ptr<Entity> Factory::createBullet(EntityType type) {
 std::unique_ptr<Entity> Factory::createPlatform(EntityType type) {
     if(type == EntityType::StonePlatform) {
         auto * pl = new Platform("PLATFORM");
-        pl->init();
+        pl->init(EntityType::StonePlatform);
         const std::list<FrameParams> frames = {
             {1, "PLATFORM", {0,0,0,0}, {0,0}, {false, false}}
         };
