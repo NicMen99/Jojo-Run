@@ -111,7 +111,7 @@ void GameOverState::showScore() {
     theme.font_color = sf::Color::White;
     theme.font_outline_thinckness = 2;
 
-    ScoreManager::Record score_record = SCORE->getScore();
+    ScoreManager::Record score_record = SCORE->getRecord();
     if(!score_record.nickname.empty()) {
         std::string message;
         if (score_record.rank>10) {

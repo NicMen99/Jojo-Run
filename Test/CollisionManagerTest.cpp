@@ -7,28 +7,28 @@
 #include "Game.h"
 #include "AnimationManager.h"
 #include "CollisionManager.h"
-#include "TestGameConfig.h"
+#include "Mock/MockGameConfig.h"
 
-class CollisionTest : public ::testing::Test{
+class CollisionManagerTest : public ::testing::Test{
 private:
     Game * game;
 public:
-    CollisionTest(){
+    CollisionManagerTest(){
         Game::deleteInstance();
         auto state = new GameStateMachine(State::Init);
-        auto cfg   = new TestGameConfig();
+        auto cfg   = new MockGameConfig();
         auto resm  = new ResourceManager();
         auto fact  = new Factory();
         auto scn   = new SceneManager();
         auto stats = new GameStats();
         auto score = new ScoreManager();
         game = Game::instance(state, cfg, resm, fact, scn, stats, score);
-        dynamic_cast<TestGameConfig*>(CONFIG)->setSceneSpeed({0,0});
-        dynamic_cast<TestGameConfig*>(CONFIG)->setMapResource("TestPlatform", "Platform.png");
+        dynamic_cast<MockGameConfig*>(CONFIG)->setSceneSpeed({0,0});
+        dynamic_cast<MockGameConfig*>(CONFIG)->setMapResource("TestPlatform", "Platform.png");
     }
 };
 
-TEST_F(CollisionTest, NoOverlap) {
+TEST_F(CollisionManagerTest, NoOverlap) {
     auto collision = std::unique_ptr<CollisionManager>(new CollisionManager);
     auto entity1 = std::unique_ptr<Entity>(new Entity(EntityGroup::Platform, EntityType::StonePlatform, "Test1"));
     auto entity2 = std::unique_ptr<Entity>(new Entity(EntityGroup::Platform, EntityType::StonePlatform, "Test2"));
@@ -50,7 +50,7 @@ TEST_F(CollisionTest, NoOverlap) {
     ASSERT_EQ(tag2, CollisionTag::None);
 }
 
-TEST_F(CollisionTest, AdjacentEntitiesOnX){
+TEST_F(CollisionManagerTest, AdjacentEntitiesOnX){
     auto collision = std::unique_ptr<CollisionManager>(new CollisionManager);
     auto entity1 = std::unique_ptr<Entity>(new Entity(EntityGroup::Platform, EntityType::StonePlatform, "Test1"));
     auto entity2 = std::unique_ptr<Entity>(new Entity(EntityGroup::Platform, EntityType::StonePlatform, "Test2"));
@@ -72,7 +72,7 @@ TEST_F(CollisionTest, AdjacentEntitiesOnX){
     ASSERT_EQ(tag2, CollisionTag::None);
 }
 
-TEST_F(CollisionTest, AdjacentEntitiesOnY){
+TEST_F(CollisionManagerTest, AdjacentEntitiesOnY){
     auto collision = std::unique_ptr<CollisionManager>(new CollisionManager);
     auto entity1 = std::unique_ptr<Entity>(new Entity(EntityGroup::Platform, EntityType::StonePlatform, "Test1"));
     auto entity2 = std::unique_ptr<Entity>(new Entity(EntityGroup::Platform, EntityType::StonePlatform, "Test2"));
@@ -94,7 +94,7 @@ TEST_F(CollisionTest, AdjacentEntitiesOnY){
     ASSERT_EQ(tag2, CollisionTag::None);
 }
 
-TEST_F(CollisionTest, OverlapX){
+TEST_F(CollisionManagerTest, OverlapX){
     auto collision = std::unique_ptr<CollisionManager>(new CollisionManager);
     auto entity1 = std::unique_ptr<Entity>(new Entity(EntityGroup::Platform, EntityType::StonePlatform, "Test1"));
     auto entity2 = std::unique_ptr<Entity>(new Entity(EntityGroup::Platform, EntityType::StonePlatform, "Test2"));
@@ -116,7 +116,7 @@ TEST_F(CollisionTest, OverlapX){
     ASSERT_EQ(tag2, CollisionTag::Any);
 }
 
-TEST_F(CollisionTest, OverlapY){
+TEST_F(CollisionManagerTest, OverlapY){
     auto collision = std::unique_ptr<CollisionManager>(new CollisionManager);
     auto entity1 = std::unique_ptr<Entity>(new Entity(EntityGroup::Platform, EntityType::StonePlatform, "Test1"));
     auto entity2 = std::unique_ptr<Entity>(new Entity(EntityGroup::Platform, EntityType::StonePlatform, "Test2"));
@@ -138,7 +138,7 @@ TEST_F(CollisionTest, OverlapY){
     ASSERT_EQ(tag2, CollisionTag::Any);
 }
 
-TEST_F(CollisionTest, OverlapXY){
+TEST_F(CollisionManagerTest, OverlapXY){
     auto collision = std::unique_ptr<CollisionManager>(new CollisionManager);
     auto entity1 = std::unique_ptr<Entity>(new Entity(EntityGroup::Platform, EntityType::StonePlatform, "Test1"));
     auto entity2 = std::unique_ptr<Entity>(new Entity(EntityGroup::Platform, EntityType::StonePlatform, "Test2"));
@@ -160,7 +160,7 @@ TEST_F(CollisionTest, OverlapXY){
     ASSERT_EQ(tag2, CollisionTag::Any);
 }
 
-TEST_F(CollisionTest, HeroPlatformCase1){
+TEST_F(CollisionManagerTest, HeroPlatformCase1){
     /*
      * Istante attuale : Top Hero sopra Top Piattaforma
      * Istante precedente : Bottom Hero sopra Top Piattaforma
@@ -193,7 +193,7 @@ TEST_F(CollisionTest, HeroPlatformCase1){
     ASSERT_EQ(tag1, CollisionTag::Top);
 }
 
-TEST_F(CollisionTest, HeroPlatformCase2){
+TEST_F(CollisionManagerTest, HeroPlatformCase2){
     /*
      * Istante attuale : Top Hero sopra Top Piattaforma
      * Istante precedente : Bottom Hero sotto Top Piattaforma
@@ -226,7 +226,7 @@ TEST_F(CollisionTest, HeroPlatformCase2){
     ASSERT_EQ(tag1, CollisionTag::None);
 }
 
-TEST_F(CollisionTest, HeroPlatformCase3){
+TEST_F(CollisionManagerTest, HeroPlatformCase3){
     /*
      * Istante attuale : Top Hero sotto Top Piattaforma
      * Istante precedente : Top Hero sotto Bottom Piattaforma
@@ -259,7 +259,7 @@ TEST_F(CollisionTest, HeroPlatformCase3){
     ASSERT_EQ(tag1, CollisionTag::Bottom);
 }
 
-TEST_F(CollisionTest, HeroPlatformCase4){
+TEST_F(CollisionManagerTest, HeroPlatformCase4){
     /*
      * Istante attuale : Top Hero sotto Top Piattaforma
      * Istante precedente : Top Hero sopra Bottom Piattaforma
@@ -292,7 +292,7 @@ TEST_F(CollisionTest, HeroPlatformCase4){
     ASSERT_EQ(tag1, CollisionTag::None);
 }
 
-TEST_F(CollisionTest, SinglePixelEntities){
+TEST_F(CollisionManagerTest, SinglePixelEntities){
     auto collision = std::unique_ptr<CollisionManager>(new CollisionManager);
     auto entity1 = std::unique_ptr<Entity>(new Entity(EntityGroup::Platform, EntityType::StonePlatform, "Test1"));
     auto entity2 = std::unique_ptr<Entity>(new Entity(EntityGroup::Platform, EntityType::StonePlatform, "Test2"));

@@ -5,23 +5,21 @@
 #include "Game.h"
 #include "Entity.h"
 #include "CollisionManager.h"
-#include "ScoreHUD.h"
-#include "Entities/Hero.h"
-#include "TestGameConfig.h"
-#include "TestSceneManager.h"
+#include "Mock/MockGameConfig.h"
+#include "Mock/MockSceneManager.h"
 
 
-class SceneTest : public ::testing::Test {
+class SceneManagerTest : public ::testing::Test {
 private:
     Game * game;
 public:
-    SceneTest() {
+    SceneManagerTest() {
         Game::deleteInstance();
         auto state = new GameStateMachine(State::Init);
-        auto cfg   = new TestGameConfig();
+        auto cfg   = new MockGameConfig();
         auto resm  = new ResourceManager();
         auto fact  = new Factory();
-        auto scn   = new TestSceneManager();
+        auto scn   = new MockSceneManager();
         auto stats = new GameStats();
         auto score = new ScoreManager();
         game = Game::instance(state, cfg, resm, fact, scn, stats, score);
@@ -29,8 +27,8 @@ public:
     }
 };
 
-TEST_F(SceneTest, TestInit) {
-    auto scene = dynamic_cast<TestSceneManager*>(SCENE);
+TEST_F(SceneManagerTest, TestInit) {
+    auto scene = dynamic_cast<MockSceneManager*>(SCENE);
     scene->init();
     Entity * hero = scene->get_hero().get();
     Entity * score = scene->get_scorehud().get();
@@ -48,8 +46,8 @@ TEST_F(SceneTest, TestInit) {
     ASSERT_EQ(scene->get_spawned_objects().size(), 0);
 }
 
-TEST_F(SceneTest, TestReInit) {
-    auto scene = dynamic_cast<TestSceneManager*>(SCENE);
+TEST_F(SceneManagerTest, TestReInit) {
+    auto scene = dynamic_cast<MockSceneManager*>(SCENE);
     scene->init();
     Entity * hero = scene->get_hero().get();
     Entity * score = scene->get_scorehud().get();
@@ -84,8 +82,8 @@ TEST_F(SceneTest, TestReInit) {
     ASSERT_EQ(scene->get_spawned_objects().size(), 0);
 }
 
-TEST_F(SceneTest, TestGenerateBackgrounds) {
-    auto scene = dynamic_cast<TestSceneManager*>(SCENE);
+TEST_F(SceneManagerTest, TestGenerateBackgrounds) {
+    auto scene = dynamic_cast<MockSceneManager*>(SCENE);
     scene->init();
     scene->generateBackground();
     ASSERT_EQ(scene->get_background1().size(), 2);
@@ -102,8 +100,8 @@ TEST_F(SceneTest, TestGenerateBackgrounds) {
     ASSERT_GT(bounds.left + bounds.width, CONFIG->getWindowSize().x);
 }
 
-TEST_F(SceneTest, TestGenerateBackgrounds2){
-    auto scene = dynamic_cast<TestSceneManager*>(SCENE);
+TEST_F(SceneManagerTest, TestGenerateBackgrounds2){
+    auto scene = dynamic_cast<MockSceneManager*>(SCENE);
     scene->init();
     scene->generateBackground();
     scene->get_background1().erase(scene->get_background1().begin());
@@ -112,8 +110,8 @@ TEST_F(SceneTest, TestGenerateBackgrounds2){
     ASSERT_EQ(scene->get_background1().size(), count+1);
 }
 
-TEST_F(SceneTest, TestGeneratePlatforms) {
-    auto scene = dynamic_cast<TestSceneManager*>(SCENE);
+TEST_F(SceneManagerTest, TestGeneratePlatforms) {
+    auto scene = dynamic_cast<MockSceneManager*>(SCENE);
     scene->init();
     bool result = scene->generatePlatforms();
     auto & platforms = scene->get_platforms();
@@ -133,8 +131,8 @@ TEST_F(SceneTest, TestGeneratePlatforms) {
     }
 }
 
-TEST_F(SceneTest, TestGeneratePlatforms1) {
-    auto scene = dynamic_cast<TestSceneManager*>(SCENE);
+TEST_F(SceneManagerTest, TestGeneratePlatforms1) {
+    auto scene = dynamic_cast<MockSceneManager*>(SCENE);
     scene->init();
     scene->generatePlatforms();
     for(int i=0; i<10; i++) {
@@ -158,8 +156,8 @@ TEST_F(SceneTest, TestGeneratePlatforms1) {
     }
 }
 
-TEST_F(SceneTest, TestGenerateEnemies) {
-    auto scene = dynamic_cast<TestSceneManager*>(SCENE);
+TEST_F(SceneManagerTest, TestGenerateEnemies) {
+    auto scene = dynamic_cast<MockSceneManager*>(SCENE);
     auto & enemies = scene->get_enemies();
     scene->init();
     scene->set_platforms_count(2);
@@ -175,8 +173,8 @@ TEST_F(SceneTest, TestGenerateEnemies) {
     ASSERT_EQ(enemies.size(), 1);
 }
 
-TEST_F(SceneTest, TestGenerateObstacles) {
-    auto scene = dynamic_cast<TestSceneManager*>(SCENE);
+TEST_F(SceneManagerTest, TestGenerateObstacles) {
+    auto scene = dynamic_cast<MockSceneManager*>(SCENE);
     auto & obstacles = scene->get_obstacles();
     scene->init();
     scene->set_platforms_count(2);
@@ -192,8 +190,8 @@ TEST_F(SceneTest, TestGenerateObstacles) {
     ASSERT_EQ(obstacles.size(), 1);
 }
 
-TEST_F(SceneTest, TestGeneratePowerups) {
-    auto scene = dynamic_cast<TestSceneManager*>(SCENE);
+TEST_F(SceneManagerTest, TestGeneratePowerups) {
+    auto scene = dynamic_cast<MockSceneManager*>(SCENE);
     auto & powerups = scene->get_powerups();
     scene->init();
     scene->set_platforms_count(2);
@@ -209,8 +207,8 @@ TEST_F(SceneTest, TestGeneratePowerups) {
     ASSERT_EQ(powerups.size(), 1);
 }
 
-TEST_F(SceneTest, TestSpawned) {
-    auto scene = dynamic_cast<TestSceneManager*>(SCENE);
+TEST_F(SceneManagerTest, TestSpawned) {
+    auto scene = dynamic_cast<MockSceneManager*>(SCENE);
     auto & spawned = scene->get_spawned_objects();
     scene->init();
     auto bullet = FACTORY->createBullet(EntityType::Knife);
@@ -228,8 +226,8 @@ TEST_F(SceneTest, TestSpawned) {
     ASSERT_EQ(spawned.size(), 0);
 }
 
-TEST_F(SceneTest, TestDestroy) {
-    auto scene = dynamic_cast<TestSceneManager *>(SCENE);
+TEST_F(SceneManagerTest, TestDestroy) {
+    auto scene = dynamic_cast<MockSceneManager *>(SCENE);
     scene->init();
     scene->createEnemy(EntityType::FireEnemy, {0,0});
     scene->createEnemy(EntityType::FireEnemy, {0,0});
@@ -259,8 +257,8 @@ TEST_F(SceneTest, TestDestroy) {
     ASSERT_EQ(scene->get_hero().get(), nullptr);
 }
 
-TEST_F(SceneTest, TestLevelEnd) {
-    auto scene = dynamic_cast<TestSceneManager *>(SCENE);
+TEST_F(SceneManagerTest, TestLevelEnd) {
+    auto scene = dynamic_cast<MockSceneManager *>(SCENE);
     scene->init();
     scene->createHero();
     ASSERT_EQ(scene->levelend(), false);

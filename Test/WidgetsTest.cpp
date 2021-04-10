@@ -4,7 +4,7 @@
 
 #include "gtest/gtest.h"
 #include "Game.h"
-#include "TestGameConfig.h"
+#include "Mock/MockGameConfig.h"
 #include "Widgets/Widget.h"
 #include "Widgets/TextWidget.h"
 #include "Widgets/ImageWidget.h"
@@ -53,37 +53,37 @@ public:
     }
 };
 
-class WidgetTest : public ::testing::Test{
+class WidgetsTest : public ::testing::Test{
 public:
     sf::RenderWindow window;
 
-    WidgetTest() {
+    WidgetsTest() {
         Game::deleteInstance();
         auto state = new GameStateMachine(State::Init);
-        auto cfg   = new TestGameConfig();
+        auto cfg   = new MockGameConfig();
         auto resm  = new ResourceManager();
         auto fact  = new Factory();
         auto scn   = new SceneManager();
         auto stats = new GameStats();
         auto score = new ScoreManager();
         Game* game = Game::instance(state, cfg, resm, fact, scn, stats, score);
-        dynamic_cast<TestGameConfig*>(CONFIG)->setTextureResource("Texture", "Texture.png");
+        dynamic_cast<MockGameConfig*>(CONFIG)->setTextureResource("Texture", "Texture.png");
     }
 };
 
-TEST_F(WidgetTest, EmptyWidget){
+TEST_F(WidgetsTest, EmptyWidget){
     auto widget = std::unique_ptr<Widget>(new Widget("TEST"));
     ASSERT_EQ(widget->findObjectByName("TEST"), widget.get());
 }
 
-TEST_F(WidgetTest, AddWidget){
+TEST_F(WidgetsTest, AddWidget){
     auto widget = std::unique_ptr<Widget>(new Widget("TEST"));
     auto child_widget = new Widget("TEST_CHILD");
     widget->add(child_widget);
     ASSERT_EQ(widget->findObjectByName("TEST_CHILD"), child_widget);
 }
 
-TEST_F(WidgetTest, WidgetPosition){
+TEST_F(WidgetsTest, WidgetPosition){
     auto widget = std::unique_ptr<TestWidget>(new TestWidget("TEST"));
     widget->setPosition(sf::Vector2f(10,10));
     auto widget_2 = new TestWidget("TEST_2");
@@ -99,7 +99,7 @@ TEST_F(WidgetTest, WidgetPosition){
     ASSERT_EQ(widget_3->getOffset(), sf::Vector2f(30,30));
 }
 
-TEST_F(WidgetTest, TestObserver){
+TEST_F(WidgetsTest, TestObserver){
     auto widget = std::unique_ptr<TestWidget>(new TestWidget("TEST"));
     auto subject = std::unique_ptr<TestSubject>(new TestSubject);
     auto subject2 = std::unique_ptr<TestSubject>(new TestSubject);
@@ -114,13 +114,13 @@ TEST_F(WidgetTest, TestObserver){
     ASSERT_EQ(subject->m_observer, nullptr);
 }
 
-TEST_F(WidgetTest, SetString){
+TEST_F(WidgetsTest, SetString){
     auto text_widget = std::unique_ptr<TextWidget>(new TextWidget("TEST"));
     text_widget->setString("TEST");
     ASSERT_EQ(text_widget->getString(), "TEST");
 }
 
-TEST_F(WidgetTest, SetStringTimer){
+TEST_F(WidgetsTest, SetStringTimer){
     auto text_widget = std::unique_ptr<TextWidget>(new TextWidget("TEST"));
     text_widget->startTimer(sf::seconds(1));
     ASSERT_EQ(text_widget->isVisible(text_widget.get()), true);
@@ -129,7 +129,7 @@ TEST_F(WidgetTest, SetStringTimer){
     ASSERT_EQ(text_widget->isVisible(text_widget.get()), false);
 }
 
-TEST_F(WidgetTest, SetImage){
+TEST_F(WidgetsTest, SetImage){
     auto image_widget = std::unique_ptr<ImageWidget>(new ImageWidget("TEST"));
     image_widget->setPosition(sf::Vector2f(0,0));
     image_widget->setTexture("Texture");
@@ -137,7 +137,7 @@ TEST_F(WidgetTest, SetImage){
     ASSERT_EQ(image_widget->getSize(), sf::Vector2f(400,50));
 }
 
-TEST_F(WidgetTest, SetShape){
+TEST_F(WidgetsTest, SetShape){
     auto shape_widget = std::unique_ptr<ShapeWidget>(new ShapeWidget("TEST"));
     shape_widget->setSize(sf::Vector2f(10,10));
     shape_widget->update(1000);

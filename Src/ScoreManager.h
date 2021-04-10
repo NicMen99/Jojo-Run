@@ -43,15 +43,20 @@ public:
     void setName(const std::string & nickname);
     void saveToFile();
     std::vector<Record> getScoreRecords() { return m_records; }
-    Record getScore() { return m_score_record; }
+    Record getRecord() { return m_score_record; }
 
 private:
     void sort();
-    const std::string m_fileName = "ScoreManager.txt";
+    const std::string m_fileName = "Score.txt";
     std::vector<Record> m_records;
     Record m_score_record;
 
     static const int m_distance_unit = 100;
+    static const int m_distance_bonus_factor = 200;
+    static const int m_clean_distance_bonus_factor = 50;
+    static const int m_killed_factor = 10;
+    static const int m_killed_bonus_factor = 20;
+    static const int m_consecutive_killed_bonus_factor = 50;
     int m_score_bonus = 0;
     std::pair<int, int> m_distance_achiev = {0, 0};
     std::pair<int, int> m_clean_distance_achiev = {0, 0};

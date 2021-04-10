@@ -2,12 +2,12 @@
 // Created by Niccolo on 10/04/2021.
 //
 
-#ifndef JOJO_RUN_TESTSCENEMANAGER_H
-#define JOJO_RUN_TESTSCENEMANAGER_H
+#ifndef JOJO_RUN_MOCKSCENEMANAGER_H
+#define JOJO_RUN_MOCKSCENEMANAGER_H
 
 #include "Game.h"
 
-class TestSceneManager : public SceneManager {
+class MockSceneManager : public SceneManager {
 public:
     void clearAll();
     std::unique_ptr<Entity>& get_hero();
@@ -40,4 +40,4 @@ public:
     void set_platforms_count(int count);
 };
 
-#endif //JOJO_RUN_TESTSCENEMANAGER_H
+#endif //JOJO_RUN_MOCKSCENEMANAGER_H

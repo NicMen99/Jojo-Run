@@ -13,17 +13,18 @@ add_executable(testrunner "" )
 target_sources(testrunner
         PUBLIC
         runner.cpp
-        TestGameConfig.h
-        TestGameConfig.cpp
-        TestSceneManager.h
-        TestSceneManager.cpp
+        Mock/MockGameConfig.h
+        Mock/MockGameConfig.cpp
+        Mock/MockSceneManager.h
+        Mock/MockSceneManager.cpp
         # add test files here
+        CollisionManagerTest.cpp
         EntityTest.cpp
-        WidgetTest.cpp
-        CollisionTest.cpp
-        SceneTest.cpp
-        InputTest.cpp
-        ResourcesTest.cpp
+        InputManagerTest.cpp
+        ResourcesManagerTest.cpp
+        SceneManagerTest.cpp
+        ScoreManagerTest.cpp
+        WidgetsTest.cpp
 )
 
 #

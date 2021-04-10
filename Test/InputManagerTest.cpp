@@ -22,18 +22,18 @@ public:
 };
 
 
-class InputTest : public ::testing::Test {
+class InputManagerTest : public ::testing::Test {
 
 };
 
-TEST_F(InputTest, KeyPressed){
+TEST_F(InputManagerTest, KeyPressed){
     auto input = std::unique_ptr<TestInputManager>(new TestInputManager);
     input->setKeyPressed(sf::Keyboard::K);
     input->update();
     ASSERT_EQ(input->keyPressed(sf::Keyboard::K), true);
 }
 
-TEST_F(InputTest, KeyJustPressed){
+TEST_F(InputManagerTest, KeyJustPressed){
     auto input = std::unique_ptr<TestInputManager>(new TestInputManager);
     input->registerKey(sf::Keyboard::K);
     input->setKeyPressed(sf::Keyboard::K);
@@ -45,7 +45,7 @@ TEST_F(InputTest, KeyJustPressed){
     ASSERT_EQ(input->isKeyJustPressed(sf::Keyboard::K), false);
 }
 
-TEST_F(InputTest, KeyReleased){
+TEST_F(InputManagerTest, KeyReleased){
     auto input = std::unique_ptr<TestInputManager>(new TestInputManager);
     input->setKeyPressed(sf::Keyboard::K);
     input->update();
@@ -56,7 +56,7 @@ TEST_F(InputTest, KeyReleased){
     ASSERT_EQ(input->keyPressed(sf::Keyboard::K), false);
 }
 
-TEST_F(InputTest, KeyJustReleased){
+TEST_F(InputManagerTest, KeyJustReleased){
     auto input = std::unique_ptr<TestInputManager>(new TestInputManager);
     input->registerKey(sf::Keyboard::K);
     input->setKeyPressed(sf::Keyboard::K);

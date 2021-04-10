@@ -15,7 +15,7 @@ void ScoreManager::init() {
     m_score_bonus = 0;
     m_distance_achiev = {5000, 10000};
     m_clean_distance_achiev = {3000, 5000};
-    m_killed_achiev = {3, 5};
+    m_killed_achiev = {0, 5};
     m_consecutive_killed_achiev = {2, 3};
 }
 
@@ -32,7 +32,7 @@ void ScoreManager::update() {
     if(m_score_record.distance >= m_distance_achiev.second) {
         m_distance_achiev = {m_distance_achiev.second, 2 * m_distance_achiev.second - m_distance_achiev.first };
         STATS->setInt(Achievements::Distance, m_distance_achiev.first);
-        m_score_bonus += m_distance_achiev.first / 100;
+        m_score_bonus += m_distance_achiev.first / m_distance_bonus_factor;
     }
     /*
      * bonus distanza senza danni
@@ -41,8 +41,8 @@ void ScoreManager::update() {
         m_score_record.clean_distance = STATS->getInt(Stats::CleanDistance);
     if(m_score_record.clean_distance >= m_clean_distance_achiev.second) {
         m_clean_distance_achiev = {m_clean_distance_achiev.second, m_clean_distance_achiev.second + m_clean_distance_achiev.first};
-        STATS->setInt(Achievements::CleanDistance, m_score_record.clean_distance);
-        m_score_bonus += m_clean_distance_achiev.first / 100;
+        STATS->setInt(Achievements::CleanDistance, m_clean_distance_achiev.first);
+        m_score_bonus += m_clean_distance_achiev.first / m_clean_distance_bonus_factor;
     }
 
     /*
@@ -52,7 +52,7 @@ void ScoreManager::update() {
     if(m_score_record.killed >= m_killed_achiev.second) {
         m_killed_achiev = {m_killed_achiev.second, 2 * m_killed_achiev.second - m_killed_achiev.first};
         STATS->setInt(Achievements::Killed, m_killed_achiev.first);
-        m_score_bonus += m_killed_achiev.first * 10;
+        m_score_bonus += m_killed_achiev.first * m_killed_bonus_factor;
     }
 
     /*
@@ -63,10 +63,12 @@ void ScoreManager::update() {
     if(m_score_record.consec_killed >= m_consecutive_killed_achiev.second){
         m_consecutive_killed_achiev = {m_consecutive_killed_achiev.second, m_consecutive_killed_achiev.first + m_consecutive_killed_achiev.second};
         STATS->setInt(Achievements::ConsecutiveKilled, m_consecutive_killed_achiev.first);
-        m_score_bonus += m_consecutive_killed_achiev.second * 100;
+        m_score_bonus += m_consecutive_killed_achiev.first * m_consecutive_killed_bonus_factor;
     }
 
-    m_score_record.score = m_score_record.distance / m_distance_unit + m_score_bonus;
+    m_score_record.score = m_score_record.distance / m_distance_unit +
+                           m_score_record.killed * m_killed_factor +
+                           m_score_bonus;
     STATS->setInt(Stats::Score, m_score_record.score);
 }
 

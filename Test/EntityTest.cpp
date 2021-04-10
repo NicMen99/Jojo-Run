@@ -6,7 +6,7 @@
 #include "Game.h"
 #include "AnimationManager.h"
 #include "Entity.h"
-#include "TestGameConfig.h"
+#include "Mock/MockGameConfig.h"
 
 
 class EntityTest: public ::testing::Test {
@@ -17,7 +17,7 @@ public:
   EntityTest() {
       Game::deleteInstance();
       auto state = new GameStateMachine(State::Init);
-      auto cfg   = new TestGameConfig();
+      auto cfg   = new MockGameConfig();
       auto resm  = new ResourceManager();
       auto fact  = new Factory();
       auto scn   = new SceneManager();
@@ -34,7 +34,7 @@ TEST_F(EntityTest , positionAssignement) {
 }
 
 TEST_F(EntityTest , positionUpdate) {
-    dynamic_cast<TestGameConfig*>(CONFIG)->setSceneSpeed({0,0});
+    dynamic_cast<MockGameConfig*>(CONFIG)->setSceneSpeed({0,0});
     auto entity = std::unique_ptr<Entity>(new Entity(EntityGroup::Hero, EntityType::Hero, "Hero"));
     entity->setPosition(sf::Vector2f(1, 1));
     entity->setSpeed({0,0});
@@ -43,7 +43,7 @@ TEST_F(EntityTest , positionUpdate) {
 }
 
 TEST_F(EntityTest , positionUpdate2) {
-    dynamic_cast<TestGameConfig*>(CONFIG)->setSceneSpeed({0,0});
+    dynamic_cast<MockGameConfig*>(CONFIG)->setSceneSpeed({0,0});
     auto entity = std::unique_ptr<Entity>(new Entity(EntityGroup::Hero, EntityType::Hero, "Hero"));
     entity->setPosition(sf::Vector2f(1, 1));
     entity->setSpeed({1,1});
@@ -52,7 +52,7 @@ TEST_F(EntityTest , positionUpdate2) {
 }
 
 TEST_F(EntityTest , previousPosition) {
-    dynamic_cast<TestGameConfig*>(CONFIG)->setSceneSpeed({0,0});
+    dynamic_cast<MockGameConfig*>(CONFIG)->setSceneSpeed({0,0});
     auto entity = std::unique_ptr<Entity>(new Entity(EntityGroup::Hero, EntityType::Hero, "Hero"));
     entity->setPosition(sf::Vector2f(1, 1));
     entity->setSpeed({100,100});
@@ -63,7 +63,7 @@ TEST_F(EntityTest , previousPosition) {
 }
 
 TEST_F(EntityTest, DestroyedFlagNoTexture){
-    dynamic_cast<TestGameConfig*>(CONFIG)->setSceneSpeed({0,0});
+    dynamic_cast<MockGameConfig*>(CONFIG)->setSceneSpeed({0,0});
     auto entity = std::unique_ptr<Entity>(new Entity(EntityGroup::Hero, EntityType::Hero, "Hero"));
     entity->setSpeed({-1,0});
     entity->setPosition(sf::Vector2f(1, 0));
@@ -74,9 +74,9 @@ TEST_F(EntityTest, DestroyedFlagNoTexture){
 }
 
 TEST_F(EntityTest, DestroyedFlag){
-    dynamic_cast<TestGameConfig*>(CONFIG)->setSceneSpeed({0,0});
+    dynamic_cast<MockGameConfig*>(CONFIG)->setSceneSpeed({0,0});
     auto entity = std::unique_ptr<Entity>(new Entity(EntityGroup::Hero, EntityType::Hero, "Hero"));
-    dynamic_cast<TestGameConfig*>(CONFIG)->setTextureResource("Texture", "Texture.png");
+    dynamic_cast<MockGameConfig*>(CONFIG)->setTextureResource("Texture", "Texture.png");
     const std::list<FrameParams> frames = {
             {1, "Texture", {0,0,0,0}, {0,0}, {false, false}}
     };
@@ -94,9 +94,9 @@ TEST_F(EntityTest, DestroyedFlag){
 }
 
 TEST_F(EntityTest, Bounds){
-    dynamic_cast<TestGameConfig*>(CONFIG)->setSceneSpeed({100,0});
+    dynamic_cast<MockGameConfig*>(CONFIG)->setSceneSpeed({100,0});
     auto entity = std::unique_ptr<Entity>(new Entity(EntityGroup::Hero, EntityType::Hero, "Hero"));
-    dynamic_cast<TestGameConfig*>(CONFIG)->setTextureResource("Texture", "Texture.png");
+    dynamic_cast<MockGameConfig*>(CONFIG)->setTextureResource("Texture", "Texture.png");
     const std::list<FrameParams> frames = {
             {1, "Texture", {0,0,1,1}, {0,0}, {false, false}},
             {1, "Texture", {0,0,10,10}, {0,0}, {false, false}}
