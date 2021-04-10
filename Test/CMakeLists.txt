@@ -19,7 +19,7 @@ target_sources(testrunner
         Mock/MockSceneManager.cpp
         # add test files here
         CollisionManagerTest.cpp
-        EntityTest.cpp
+        EntitiesTest.cpp
         InputManagerTest.cpp
         ResourcesManagerTest.cpp
         SceneManagerTest.cpp

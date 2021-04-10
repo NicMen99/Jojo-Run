@@ -134,7 +134,10 @@ TEST_F(WidgetsTest, SetImage){
     image_widget->setPosition(sf::Vector2f(0,0));
     image_widget->setTexture("Texture");
     image_widget->update(1000);
-    ASSERT_EQ(image_widget->getSize(), sf::Vector2f(400,50));
+    ASSERT_EQ(image_widget->getSize(), sf::Vector2f(100,100));
+    image_widget->setTexture("Texture", {300, 300});
+    image_widget->update(1000);
+    ASSERT_EQ(image_widget->getSize(), sf::Vector2f(300,300));
 }
 
 TEST_F(WidgetsTest, SetShape){
