@@ -5,10 +5,10 @@
 #include "Emerald.h"
 
 Emerald::Emerald(const std::string& id) :
-    Bullet(EntityType::EmeraldBullet, id) {}
+    Bullet(EntityType::EmeraldBullet, id) {
+}
 
-Emerald::~Emerald(){
-
+Emerald::~Emerald() {
 }
 
 void Emerald::init() {
@@ -25,6 +25,9 @@ void Emerald::event(GameEvent event, Entity *collider) {
     if(GameEvent::Collision == event ) {
         if (collider->getType() == EntityType::Hero)
             setDestroyed();
+    }
+    else if(GameEvent::OutOfBound == event) {
+        setDestroyed();
     }
 }
 

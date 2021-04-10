@@ -8,12 +8,10 @@
 #include "Game.h"
 #include "SoundManager.h"
 
-SoundManager::SoundManager(){
-
+SoundManager::SoundManager() {
 }
 
-SoundManager::~SoundManager(){
-
+SoundManager::~SoundManager() {
 }
 
 void SoundManager::addSound(const std::string & sound_name, const std::string & sound_resource) {

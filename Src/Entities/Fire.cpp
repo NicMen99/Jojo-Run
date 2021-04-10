@@ -9,7 +9,6 @@ Fire::Fire(const std::string& id) :
 }
 
 Fire::~Fire() {
-
 }
 
 void Fire::init() {
@@ -29,5 +28,8 @@ void Fire::event(GameEvent event, Entity *collider) {
     if(GameEvent::Collision == event ) {
         if (collider->getType() == EntityType::Hero)
             setEnabled(false);
+    }
+    else if (event == GameEvent::OutOfBound) {
+        setDestroyed();
     }
 }

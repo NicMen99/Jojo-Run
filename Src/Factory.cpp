@@ -267,7 +267,9 @@ std::unique_ptr<Entity> Factory::createBullet(EntityType type) {
         auto * emerald = new Emerald("Emerald");
         emerald -> init();
         const std::list<FrameParams> frames = {
-            {1, "EMERALD_BULLET", {0,0,0,0}, {0,0}, {false, false}}
+                {1, "EMERALD_BULLET", {0,0, 139,99}, {64,64}, {false, false}},
+                {1, "EMERALD_BULLET", {158, 0, 139, 99}, {64,64}, {false, false}},
+                {1, "EMERALD_BULLET", {316, 0, 139, 99}, {64,64}, {false, false}}
         };
         emerald->addAnimation("DEFAULT", frames);
         return std::unique_ptr<Entity>(emerald);

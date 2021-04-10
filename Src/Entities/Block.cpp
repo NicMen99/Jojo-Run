@@ -8,11 +8,9 @@
 
 Block::Block(const std::string& id) :
     Obstacle(EntityType::Block, id) {
-
 }
 
-Block::~Block(){
-
+Block::~Block() {
 }
 
 void Block::init() {
@@ -32,5 +30,8 @@ void Block::event(GameEvent event, Entity *collider) {
     if(GameEvent::Collision == event ) {
         if (collider->getType() == EntityType::Hero)
             setEnabled(false);
+    }
+    else if(GameEvent::OutOfBound == event) {
+        setDestroyed();
     }
 }

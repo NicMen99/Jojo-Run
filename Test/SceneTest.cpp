@@ -7,66 +7,8 @@
 #include "CollisionManager.h"
 #include "ScoreHUD.h"
 #include "Entities/Hero.h"
-
-class TestGameConfig : public GameConfig {
-public:
-    TestGameConfig() {
-    }
-    void clear() {
-        m_asset_map.clear();
-    }
-    void setResource(const std::string & name, const std::string & asset_path){
-        m_asset_map.insert(std::make_pair(name, "TestAsset/" + asset_path));
-    }
-};
-
-
-class TestSceneManager : public SceneManager {
-public:
-    void clearAll() {
-        m_collisionManager.reset();
-        m_background1.clear();
-        m_background2.clear();
-        m_background3.clear();
-        m_background4.clear();
-        m_platforms.clear();
-        m_obstacles.clear();
-        m_enemies.clear();
-        m_powerups.clear();
-        m_bullets.clear();
-        m_spawned_objects.clear();
-        m_hero.reset();
-        m_scorehud.reset();
-    }
-    std::unique_ptr<Entity>& get_hero() { return m_hero; }
-    std::unique_ptr<Entity>& get_scorehud() { return m_scorehud; }
-    std::vector<std::unique_ptr<Entity>>& get_background1() { return m_background1; }
-    std::vector<std::unique_ptr<Entity>>& get_background2() { return m_background2; }
-    std::vector<std::unique_ptr<Entity>>& get_background3() { return m_background3; }
-    std::vector<std::unique_ptr<Entity>>& get_background4() { return m_background4; }
-    std::vector<std::unique_ptr<Entity>>& get_platforms() { return m_platforms; }
-    std::vector<std::unique_ptr<Entity>>& get_obstacles() { return m_obstacles; }
-    std::vector<std::unique_ptr<Entity>>& get_enemies() { return m_enemies; }
-    std::vector<std::unique_ptr<Entity>>& get_powerups() { return m_powerups; }
-    std::vector<std::unique_ptr<Entity>>& get_bullets() { return m_bullets; }
-    std::vector<std::unique_ptr<Entity>>& get_spawned_objects() { return m_spawned_objects; }
-    void generateBackground() { return SceneManager::generateBackground(); }
-    bool generatePlatforms() { return SceneManager::generatePlatforms(); }
-    bool generateEnemies(bool gen) { return SceneManager::generateEnemies(gen); }
-    bool generateObstacles(bool gen) { return SceneManager::generateObstacles(gen); }
-    bool generatePowerups(bool gen) { return SceneManager::generatePowerups(gen); }
-    void addSpawned(std::unique_ptr<Entity> & newObject) { SceneManager::addSpawned(newObject); }
-    void collectSpawned() { SceneManager::collectSpawned(); }
-    void createEnemy(EntityType typ, sf::Vector2f pos) { SceneManager::createEnemy(typ, pos); }
-    void createObstacle(EntityType typ, sf::Vector2f pos) { SceneManager::createObstacle(typ, pos); }
-    void createPowerup(EntityType typ, sf::Vector2f pos) { SceneManager::createPowerup(typ, pos); }
-    void createHero() { SceneManager::createHero(); }
-    void removeDestroyedObjects() { SceneManager::removeDestroyedObjects(); }
-    sf::FloatRect get_last_platform() { return m_last_platform; }
-    void set_last_platform(sf::FloatRect last_platform) { m_last_platform = last_platform; }
-    float get_platform_space() { return m_platform_space; }
-    void set_platforms_count(int count) { m_platforms_count = count; };
-};
+#include "TestGameConfig.h"
+#include "TestSceneManager.h"
 
 
 class SceneTest : public ::testing::Test {
@@ -83,39 +25,7 @@ public:
         auto stats = new GameStats();
         auto score = new ScoreManager();
         game = Game::instance(state, cfg, resm, fact, scn, stats, score);
-        dynamic_cast<TestGameConfig*>(CONFIG)->clear();
-        dynamic_cast<TestGameConfig*>(CONFIG)->setResource("PLATFORM", "Platform.png");
-        dynamic_cast<TestGameConfig*>(CONFIG)->setResource("PLAYER_RUN", "Texture.png");
-        dynamic_cast<TestGameConfig*>(CONFIG)->setResource("PLAYER_RUN_SHIELD", "Texture.png");
-        dynamic_cast<TestGameConfig*>(CONFIG)->setResource("PLAYER_JUMP", "Texture.png");
-        dynamic_cast<TestGameConfig*>(CONFIG)->setResource("PLAYER_DEATH", "Texture.png");
-
-        dynamic_cast<TestGameConfig*>(CONFIG)->setResource("EMERALD_ENEMY_IDLE", "Texture.png");
-        dynamic_cast<TestGameConfig*>(CONFIG)->setResource("EMERALD_ENEMY_DEATH", "Texture.png");
-        dynamic_cast<TestGameConfig*>(CONFIG)->setResource("HAMON_ENEMY_IDLE", "Texture.png");
-        dynamic_cast<TestGameConfig*>(CONFIG)->setResource("HAMON_ENEMY_DEATH", "Texture.png");
-        dynamic_cast<TestGameConfig*>(CONFIG)->setResource("FIRE_ENEMY_IDLE", "Texture.png");
-        dynamic_cast<TestGameConfig*>(CONFIG)->setResource("FIRE_ENEMY_DEATH", "Texture.png");
-
-        dynamic_cast<TestGameConfig*>(CONFIG)->setResource("SPLASH_SCREEN", "Texture.png");
-        dynamic_cast<TestGameConfig*>(CONFIG)->setResource("GAME_OVER_SCREEN", "Texture.png");
-
-        dynamic_cast<TestGameConfig*>(CONFIG)->setResource("GAME_OVER_FONT", "Font.ttf");
-
-        dynamic_cast<TestGameConfig*>(CONFIG)->setResource("BG", "Background.png");
-        dynamic_cast<TestGameConfig*>(CONFIG)->setResource("Background1", "Background.png");
-        dynamic_cast<TestGameConfig*>(CONFIG)->setResource("Foreground", "Background.png");
-        dynamic_cast<TestGameConfig*>(CONFIG)->setResource("Middle", "Background.png");
-
-        dynamic_cast<TestGameConfig*>(CONFIG)->setResource("blockTexture", "Texture.png");
-        dynamic_cast<TestGameConfig*>(CONFIG)->setResource("hamonBlockTexture", "Texture.png");
-        dynamic_cast<TestGameConfig*>(CONFIG)->setResource("fireBlockTexture", "Texture.png");
-        dynamic_cast<TestGameConfig*>(CONFIG)->setResource("emeraldBlockTexture", "Texture.png");
-
-        dynamic_cast<TestGameConfig*>(CONFIG)->setResource("fireWallTexture", "Texture.png");
-        dynamic_cast<TestGameConfig*>(CONFIG)->setResource("shieldPowerUpTexture", "Texture.png");
-        dynamic_cast<TestGameConfig*>(CONFIG)->setResource("knifeTexture", "Texture.png");
-        dynamic_cast<TestGameConfig*>(CONFIG)->setResource("Fire", "Texture.png");
+        cfg->init();
     }
 };
 
@@ -211,7 +121,7 @@ TEST_F(SceneTest, TestGeneratePlatforms) {
     ASSERT_GT(platforms.size(), 0);
     ASSERT_EQ(scene->get_last_platform().left, 0);
     ASSERT_EQ(scene->get_last_platform().top, CONFIG->getBottomLevel());
-    ASSERT_LE(scene->get_last_platform().left + scene->get_last_platform().width, CONFIG->getWindowSize().x);
+    ASSERT_GE(scene->get_last_platform().left + scene->get_last_platform().width, CONFIG->getWindowSize().x);
     ASSERT_TRUE(scene->get_platform_space() == 150 ||
                         scene->get_platform_space() == 250 ||
                         scene->get_platform_space() == 375 ||

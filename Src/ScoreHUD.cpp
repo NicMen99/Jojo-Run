@@ -28,8 +28,8 @@ ScoreHUD::~ScoreHUD() {
 void ScoreHUD::init() {
 
     WidgetTheme theme;
-    theme.font_name = "GAME_OVER_FONT";
-    theme.font_size = 100;
+    theme.font_name = "RETRO_GAMING_FONT";
+    theme.font_size = 32;
     theme.font_color = sf::Color::White;
 
     /* score */

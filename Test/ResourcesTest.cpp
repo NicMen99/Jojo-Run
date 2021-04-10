@@ -4,16 +4,9 @@
 
 #include "gtest/gtest.h"
 #include "Game.h"
-#include "GameConfig.h"
 #include "ResourceManager.h"
+#include "TestGameConfig.h"
 
-
-class TestGameConfig : public GameConfig {
-public:
-    void setResource(const std::string & name, const std::string & asset_path){
-        m_asset_map.insert(std::make_pair(name, "TestAsset/" + asset_path));
-    }
-};
 
 class ResourcesTest : public ::testing::Test{
 private:
@@ -29,9 +22,9 @@ public:
         auto stats = new GameStats();
         auto score = new ScoreManager();
         game = Game::instance(state, cfg, resm, fact, scn, stats, score);
-        dynamic_cast<TestGameConfig*>(CONFIG)->setResource("Font", "Font.ttf");
-        dynamic_cast<TestGameConfig*>(CONFIG)->setResource("Texture", "Platform.png");
-        dynamic_cast<TestGameConfig*>(CONFIG)->setResource("Sound", "Sound.wav");
+        dynamic_cast<TestGameConfig*>(CONFIG)->setFontResource("Font", "Font.ttf");
+        dynamic_cast<TestGameConfig*>(CONFIG)->setMapResource("Texture", "StonePlatform.png");
+        dynamic_cast<TestGameConfig*>(CONFIG)->setSoundResource("Sound", "Sound.wav");
     }
 };
 
@@ -78,7 +71,7 @@ TEST_F(ResourcesTest, TestCachedSound){
 }
 
 TEST_F(ResourcesTest, TestNonExistingFont){
-    dynamic_cast<TestGameConfig*>(CONFIG)->setResource("Font", "Font.ttf");
+    dynamic_cast<TestGameConfig*>(CONFIG)->setFontResource("Font", "Font.ttf");
 
     auto res_manager = std::unique_ptr<ResourceManager>(new ResourceManager);
     auto font = res_manager->getFont("Font1");
@@ -86,7 +79,7 @@ TEST_F(ResourcesTest, TestNonExistingFont){
 }
 
 TEST_F(ResourcesTest, TestNonExistingTexture){
-    dynamic_cast<TestGameConfig*>(CONFIG)->setResource("Texture", "Platform.png");
+    dynamic_cast<TestGameConfig*>(CONFIG)->setMapResource("Texture", "StonePlatform.png");
 
     auto res_manager = std::unique_ptr<ResourceManager>(new ResourceManager);
     auto texture = res_manager->getTexture("Texture1");
@@ -94,7 +87,7 @@ TEST_F(ResourcesTest, TestNonExistingTexture){
 }
 
 TEST_F(ResourcesTest, TestNonExistingSound){
-    dynamic_cast<TestGameConfig*>(CONFIG)->setResource("Sound", "Sound.wav");
+    dynamic_cast<TestGameConfig*>(CONFIG)->setSoundResource("Sound", "Sound.wav");
 
     auto res_manager = std::unique_ptr<ResourceManager>(new ResourceManager);
     auto sound = res_manager->getSound("Sound1");

@@ -10,7 +10,6 @@ HamonEnemy::HamonEnemy(const std::string& id) :
 }
 
 HamonEnemy::~HamonEnemy() {
-
 }
 
 void HamonEnemy::init() {

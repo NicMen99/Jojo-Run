@@ -5,12 +5,10 @@
 #include "Shield.h"
 
 Shield::Shield(std::string id) :
-    PowerUp(EntityType::Shield, id)
-{
+    PowerUp(EntityType::Shield, id) {
 }
 
 Shield::~Shield() {
-
 }
 
 void Shield::init() {
@@ -19,5 +17,10 @@ void Shield::init() {
 }
 
 void Shield::event(GameEvent event, Entity *collider) {
-    setDestroyed();
+    if (event == GameEvent::Collision) {
+        setDestroyed();
+    }
+    else if (event == GameEvent::OutOfBound) {
+        setDestroyed();
+    }
 }

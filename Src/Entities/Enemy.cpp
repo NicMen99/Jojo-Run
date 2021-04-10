@@ -7,11 +7,9 @@
 
 Enemy::Enemy(EntityType mtype, const std::string & name) :
         Entity(EntityGroup::Enemy, mtype, name) {
-
 }
 
 Enemy::~Enemy() {
-
 }
 
 void Enemy::init(const std::string &texture_name, sf::Vector2f scale, sf::Vector2f speed, int damage)
@@ -53,6 +51,7 @@ void Enemy::event(GameEvent event, Entity *collider) {
     }
     else if (event == GameEvent::OutOfBound) {
         STATS->setInt(Stats::ConsecutiveKilled, 0);
+        setDestroyed();
     }
 }
 

@@ -1,0 +1,19 @@
+gioco sviluppato da
+
+Angiolo Giandonati <angiolo.giandonati@stud.unifi.it>
+Niccolò Menghini  <niccolo.menghini@stud.unifi.it>
+
+per esame I anno etc etc
+
+basato sulle librerie SFML
+email
+
+JOJO è un marchio registrato di BANDAI NAMCO Entrateinment
+
+le risorse tratte liberamente da internet
+sono rielaborate ed utilizzate nel software
+al fine di conseguimento dell'esame
+
+sono pertanto da considerarsi come impiegate
+ ad uso esclusivamente personale
+

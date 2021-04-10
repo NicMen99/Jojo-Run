@@ -56,7 +56,7 @@ void PlayState::update(int32_t delta_time) {
             m_action = Action::Play;
         }
     }
-    else if (m_action == Action::End) {
+    else /*if (m_action == Action::End)*/ {
         if(m_timer.getElapsedTime() > sf::seconds(1))
             changeState(State::GameOver);
     }
@@ -73,8 +73,8 @@ void PlayState::createOverlay() {
     delete m_root;
 
     WidgetTheme theme;
-    theme.font_name = "GAME_OVER_FONT";
-    theme.font_size = 100;
+    theme.font_name = "RETRO_GAMING_FONT";
+    theme.font_size = 32;
     theme.font_color = sf::Color::White;
     theme.font_outline_thinckness = 2;
 

@@ -55,7 +55,6 @@ void Entity::move(int32_t delta_time) {
     setPosition(getPosition() + offset);
     if((getPosition().x + getBounds().width) < 0) {
         event(GameEvent::OutOfBound, nullptr);
-        setDestroyed();
     }
 }
 

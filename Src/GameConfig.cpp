@@ -21,67 +21,69 @@ GameConfig::~GameConfig() {
 
 const KeyVal resource_table [] = {
         /* Textures */
-        {"PLATFORM",               "Map/Platform.png"},
+        {"PLATFORM",                    "Map/StonePlatform.png"},
 
-        {"PLAYER_RUN",             "Textures/PlayerRun.png"},
-        {"PLAYER_RUN_SHIELD",      "Textures/PlayerRunShield.png"},
-        {"PLAYER_JUMP",            "Textures/PlayerJump.png"},
-        {"PLAYER_ATTACK",          "Textures/PlayerAttack.png"},
-        {"PLAYER_DEATH",           "Textures/PlayerDeath.png"},
+        {"PLAYER_RUN",                  "Textures/PlayerRun.png"},
+        {"PLAYER_RUN_SHIELD",           "Textures/PlayerRunShield.png"},
+        {"PLAYER_JUMP",                 "Textures/PlayerJump.png"},
+        {"PLAYER_ATTACK",               "Textures/PlayerAttack.png"},
+        {"PLAYER_DEATH",                "Textures/PlayerDeath.png"},
 
-        {"EMERALD_ENEMY_IDLE",     "Textures/EmeraldEnemyIdle.png"},     //@TODO rigirare, rinominare
-        {"EMERALD_ENEMY_ATTACK",   "Textures/EmeraldEnemyAttack.png"},
-        {"EMERALD_ENEMY_DEATH",    "Textures/EmeraldEnemyDeath.png"},
+        {"EMERALD_ENEMY_IDLE",          "Textures/EmeraldEnemyIdle.png"},
+        {"EMERALD_ENEMY_ATTACK",        "Textures/EmeraldEnemyAttack.png"},
+        {"EMERALD_ENEMY_DEATH",         "Textures/EmeraldEnemyDeath.png"},
 
-        {"HAMON_ENEMY_IDLE",       "Textures/HamonEnemyIdle.png"},     //@TODO rigirare, rinominare
-        {"HAMON_ENEMY_ATTACK",     "Textures/HamonEnemyAttack.png"},
-        {"HAMON_ENEMY_DEATH",      "Textures/HamonEnemyDeath.png"},
+        {"HAMON_ENEMY_IDLE",            "Textures/HamonEnemyIdle.png"},
+        {"HAMON_ENEMY_ATTACK",          "Textures/HamonEnemyAttack.png"},
+        {"HAMON_ENEMY_DEATH",           "Textures/HamonEnemyDeath.png"},
 
-        {"FIRE_ENEMY_IDLE",        "Textures/FireEnemyIdle.png"},
-        {"FIRE_ENEMY_ATTACK",      "Textures/FireEnemyAttack.png"},
-        {"FIRE_ENEMY_DEATH",       "Textures/FireEnemyDeath.png"},
+        {"FIRE_ENEMY_IDLE",             "Textures/FireEnemyIdle.png"},
+        {"FIRE_ENEMY_ATTACK",           "Textures/FireEnemyAttack.png"},
+        {"FIRE_ENEMY_DEATH",            "Textures/FireEnemyDeath.png"},
 
-        {"LIGHTING",               "Textures/LightingBlock.png"},
-        {"FIRE",                   "Textures/FirewallBlock.png"},
+        {"LIGHTING",                    "Textures/LightingBlock.png"},
+        {"FIRE",                        "Textures/FirewallBlock.png"},
 
-        {"EMERALD_BULLET",         "Textures/emeraldBlockTexture.png"},
-        {"FIRE_BULLET",            "Textures/FireBullet.png"},
-        {"KNIFE_BULLET",           "Textures/KnifeBullet.png"},
+        {"EMERALD_BULLET",              "Textures/EmeraldBullet.png"},
+        {"FIRE_BULLET",                 "Textures/FireBullet.png"},
+        {"KNIFE_BULLET",                "Textures/KnifeBullet.png"},
 
-        {"SHIELD_PWUP",            "Textures/ShieldPowerup.png"},
-        {"WEAPON_PWUP",            "Textures/WeaponPowerup.png"},
+        {"SHIELD_PWUP",                 "Textures/ShieldPowerup.png"},
+        {"WEAPON_PWUP",                 "Textures/WeaponPowerup.png"},
 
-
-        { "PLAYER_ICON",           "Textures/PlayerIcon.png"},
-        { "SPLASH_SCREEN",         "Textures/SplashScreen.png"},
-        { "GAME_OVER_SCREEN",      "Textures/GameOverScreen.png"},
+        { "PLAYER_ICON",                "Textures/PlayerIcon.png"},
+        { "SPLASH_SCREEN",              "Textures/SplashScreen.png"},
+        { "GAME_OVER_SCREEN",           "Textures/GameOverScreen.png"},
 
         /* Fonts */
-        { "GAME_OVER_FONT",        "Font/GAME_OVER.TTF"},
+        { "GAME_OVER_FONT",             "Font/GAME_OVER.TTF"},
+        { "RETRO_GAMING_FONT",          "Font/RetroGaming.ttf"},
 
         /* Sounds */
-        { "SOUND_TRACK",           "Music/SoundTrack.wav"},
-        { "PLAYER_ATTACK_SOUND",   "Music/PlayerAttackSound.wav"},
-        { "PLAYER_DEATH_SOUND",    "Music/PlayerDeathSound.wav"},
-        { "PLAYER_HIT_SOUND",      "Music/PlayerHitSound.wav"},
-        { "PLAYER_SHIELD_HIT_SOUND", "Music/PlayerShieldHitSound.wav"},
-        { "PLAYER_SHIELD_PICK_SOUND","Music/PlayerShieldPickSound.wav"},
-        { "EMERALD_ATTACK_SOUND",  "Music/EmeraldAttackSound.wav"},
-        { "EMERALD_DEATH_SOUND",   "Music/EmeraldDeathSound.wav"},
-        { "HAMON_ATTACK_SOUND",    "Music/HamonAttackSound.wav"},
-        { "HAMON_DEATH_SOUND",     "Music/HamonDeathSound.wav"},
-        { "FIRE_ATTACK_SOUND",     "Music/FireAttackSound.wav"},
-        { "FIRE_DEATH_SOUND",      "Music/FireDeathSound.wav"},
+        { "SOUND_TRACK",                "Music/SoundTrack.wav"},
+        { "PLAYER_ATTACK_SOUND",        "Music/PlayerAttackSound.wav"},
+        { "PLAYER_DEATH_SOUND",         "Music/PlayerDeathSound.wav"},
+        { "PLAYER_HIT_SOUND",           "Music/PlayerHitSound.wav"},
+        { "PLAYER_SHIELD_HIT_SOUND",    "Music/PlayerShieldHitSound.wav"},
+        { "PLAYER_SHIELD_PICK_SOUND",   "Music/PlayerShieldPickSound.wav"},
+        { "EMERALD_ATTACK_SOUND",       "Music/EmeraldAttackSound.wav"},
+        { "EMERALD_DEATH_SOUND",        "Music/EmeraldDeathSound.wav"},
+        { "HAMON_ATTACK_SOUND",         "Music/HamonAttackSound.wav"},
+        { "HAMON_DEATH_SOUND",          "Music/HamonDeathSound.wav"},
+        { "FIRE_ATTACK_SOUND",          "Music/FireAttackSound.wav"},
+        { "FIRE_DEATH_SOUND",           "Music/FireDeathSound.wav"},
+        { "KEYBOARD_TICK_SOUND",        "Music/KeyboardTick.wav"},
+        { "ACHIEVEMENT_SOUND",          "Music/AchievementBell.wav"},
+
 
         /* CONFIG */
-        { "CREDITS",                "Config/Credits.txt"},
+        { "CREDITS",                    "Config/Credits.txt"},
 
         /**/
-        { "Background1",           "Map/Background1.png"},
-        { "BG",                    "Map/BG.png"},
-        { "Foreground",            "Map/Foreground.png"},
-        { "Middle",                "Map/Middle.png"},
-
+        { "Background1",                "Map/Background1.png"},
+        { "BG",                         "Map/BG.png"},
+        { "Foreground",                 "Map/Foreground.png"},
+        { "Middle",                     "Map/Middle.png"},
 };
 
 void GameConfig::init() {

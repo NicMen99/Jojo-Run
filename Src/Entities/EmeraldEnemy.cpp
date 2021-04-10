@@ -7,13 +7,10 @@
 #include "EmeraldEnemy.h"
 
 EmeraldEnemy::EmeraldEnemy(const std::string& id) :
-    Enemy(EntityType::EmeraldEnemy, id)
-{
-
+    Enemy(EntityType::EmeraldEnemy, id) {
 }
 
-EmeraldEnemy::~EmeraldEnemy(){
-
+EmeraldEnemy::~EmeraldEnemy() {
 }
 
 void EmeraldEnemy::init() {

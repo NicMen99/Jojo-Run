@@ -14,13 +14,10 @@
 #include "Hero.h"
 
 Hero::Hero() :
-        Entity(EntityGroup::Hero, EntityType::Hero, "Hero")
-{
-
+        Entity(EntityGroup::Hero, EntityType::Hero, "Hero") {
 }
 
 Hero::~Hero() {
-
 }
 
 void Hero::init()
@@ -57,20 +54,6 @@ void Hero::update(int32_t delta_time) {
 
 void Hero::updatePhysics(int32_t delta_time) {
     /*
-     * Fallen
-     */
-    if(getPosition().y > (CONFIG->getBottomLevel())) {
-        playAnimation("FALL");
-        playSound("DEATH");
-    }
-    if(getPosition().y > (3.f * CONFIG->getWindowSize().y)) {
-        m_state = State::Dead;
-        setEnabled(false);
-        setDestroyed();
-        STATS->setInt(Stats::Time, (int)m_lifeTime.getElapsedTime().asSeconds());
-    }
-
-    /*
      * Manage jump action
      */
     switch(m_state)
@@ -99,8 +82,20 @@ void Hero::updatePhysics(int32_t delta_time) {
             }
             break;
         case State::Falling:
+            if(getPosition().y > (CONFIG->getBottomLevel())) {
+                changeState(State::Dead);
+            }
             break;
         case State::Dead:
+            if(getPosition().y > (3.f * CONFIG->getWindowSize().y)) {
+                if(!isDestroyed()) {
+                    setDestroyed();
+                    STATS->setInt(Stats::Time, (int)m_lifeTime.getElapsedTime().asSeconds());
+                    #ifdef GAMEDEBUG
+                    std::cout << "Time:" << STATS->getInt(Stats::Time) << std::endl;
+                    #endif
+                }
+            }
             break;
         case State::Init:
             break;
@@ -300,8 +295,6 @@ void Hero::changeState(State new_state) {
                 playAnimation("DEATH");
                 playSound("DEATH");
                 setEnabled(false);
-                break;
-            default:
                 break;
         }
     }

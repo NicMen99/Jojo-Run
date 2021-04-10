@@ -5,13 +5,10 @@
 #include "Weapon.h"
 
 Weapon::Weapon(std::string id) :
-    PowerUp(EntityType::Weapon, "Weapons")
-{
-
+    PowerUp(EntityType::Weapon, "Weapons") {
 }
 
 Weapon::~Weapon() {
-
 }
 
 void Weapon::init() {
@@ -20,5 +17,10 @@ void Weapon::init() {
 }
 
 void Weapon::event(GameEvent event, Entity *collider) {
-    setDestroyed();
+    if (event == GameEvent::Collision) {
+        setDestroyed();
+    }
+    else if (event == GameEvent::OutOfBound) {
+        setDestroyed();
+    }
 }

@@ -8,12 +8,10 @@
 
 
 FireEnemy::FireEnemy(const std::string& id) :
-Enemy(EntityType::FireEnemy, id) {
-
+    Enemy(EntityType::FireEnemy, id) {
 }
 
 FireEnemy::~FireEnemy() {
-
 }
 
 void FireEnemy::init() {

@@ -10,7 +10,6 @@ Knife::Knife(std::string id) :
 }
 
 Knife::~Knife() {
-
 }
 
 void Knife::init() {

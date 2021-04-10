@@ -4,6 +4,7 @@
 
 #include "gtest/gtest.h"
 #include "Game.h"
+#include "TestGameConfig.h"
 #include "Widgets/Widget.h"
 #include "Widgets/TextWidget.h"
 #include "Widgets/ImageWidget.h"
@@ -30,13 +31,6 @@ public:
         m_observer->data_update(m_item_name, item_value);
     }
 
-};
-
-class TestGameConfig : public GameConfig {
-    public:
-    void setTextureResource(const std::string & name, const std::string & asset_path){
-        m_asset_map.insert(std::make_pair(name, "TestAsset/" + asset_path));
-    }
 };
 
 class TestWidget : public Widget {
@@ -73,8 +67,7 @@ public:
         auto stats = new GameStats();
         auto score = new ScoreManager();
         Game* game = Game::instance(state, cfg, resm, fact, scn, stats, score);
-        game->init();
-        dynamic_cast<TestGameConfig*>(CONFIG)->setTextureResource("StonePlatform", "Platform.png");
+        dynamic_cast<TestGameConfig*>(CONFIG)->setTextureResource("Texture", "Texture.png");
     }
 };
 
@@ -139,7 +132,7 @@ TEST_F(WidgetTest, SetStringTimer){
 TEST_F(WidgetTest, SetImage){
     auto image_widget = std::unique_ptr<ImageWidget>(new ImageWidget("TEST"));
     image_widget->setPosition(sf::Vector2f(0,0));
-    image_widget->setTexture("StonePlatform");
+    image_widget->setTexture("Texture");
     image_widget->update(1000);
     ASSERT_EQ(image_widget->getSize(), sf::Vector2f(400,50));
 }

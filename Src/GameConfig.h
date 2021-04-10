@@ -14,7 +14,7 @@ class GameConfig {
 public:
     GameConfig();
     virtual ~GameConfig();
-    void init();
+    virtual void init();
 
     const sf::Vector2u & getWindowSize() const { return m_window_size; }
     const sf::Vector2f & getSceneSpeed() const { return m_scene_speed; }
@@ -59,7 +59,7 @@ protected:
     float m_enemy_fallingSpeedLimit = 1000.f;
     float m_knife_speed = 1000.f;
     float m_fire_bullet_speed = 1200.f;
-    float m_emerald_bullet_speed = 800.f;
+    float m_emerald_bullet_speed = 1500.f;
 
     /* assets */
     const char * m_asset_base_dir = "Assets";

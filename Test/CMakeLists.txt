@@ -13,6 +13,10 @@ add_executable(testrunner "" )
 target_sources(testrunner
         PUBLIC
         runner.cpp
+        TestGameConfig.h
+        TestGameConfig.cpp
+        TestSceneManager.h
+        TestSceneManager.cpp
         # add test files here
         EntityTest.cpp
         WidgetTest.cpp
@@ -137,7 +141,7 @@ target_link_libraries(testrunner
 #
 # Setup
 #
-file(COPY TestAsset DESTINATION ${CMAKE_BINARY_DIR}/Test)
+file(COPY TestAssets DESTINATION ${CMAKE_BINARY_DIR}/Test)
 
 enable_testing()
 include(CTest)

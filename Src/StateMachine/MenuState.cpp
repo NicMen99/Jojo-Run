@@ -62,8 +62,8 @@ void MenuState::createMenuScreen(){
     delete m_root;
 
     WidgetTheme theme;
-    theme.font_name = "GAME_OVER_FONT";
-    theme.font_size = 100;
+    theme.font_name = "RETRO_GAMING_FONT";
+    theme.font_size = 32;
     theme.font_color = sf::Color::White;
     theme.font_outline_thinckness = 2;
 
@@ -107,8 +107,8 @@ void MenuState::createCreditScreen() {
     delete m_root;
 
     WidgetTheme theme;
-    theme.font_name = "GAME_OVER_FONT";
-    theme.font_size = 100;
+    theme.font_name = "RETRO_GAMING_FONT";
+    theme.font_size = 32;
     theme.font_color = sf::Color::White;
     theme.font_outline_thinckness = 2;
 
@@ -130,7 +130,6 @@ void MenuState::createCreditScreen() {
     while (std::getline(infile, line)) {
         auto *rank = new TextWidget("");
         rank->init(theme);
-        rank->setCharacterSize(100);
         rank->setString(line);
         rank->setPosition((CONFIG->getWindowSize().x - rank->getSize().x) / 2, posy);
         rank->setFillColor(sf::Color::Yellow);
