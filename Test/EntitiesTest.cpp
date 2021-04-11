@@ -259,6 +259,58 @@ TEST_F(EntitiesTest, HeroBulletCollision) {
     ASSERT_EQ(STATS->getInt(Stats::Health), health);
 }
 
+TEST_F(EntitiesTest, HeroPowerupCollision) {
+    dynamic_cast<MockGameConfig*>(CONFIG)->setGravity({0, 0});
+    auto hero = FACTORY->createHero();
+    float posx = CONFIG->getHeroPosX();
+    float posy = CONFIG->getBottomLevel();
+    hero->setPosition(posx, posx);
+    hero->setSpeed(0,0);
+    hero->update(100);
+    auto powerup = FACTORY->createPowerUp(EntityType::Weapon);
+    powerup->setPosition(posx + hero->getBounds().width - 1, posy);
+    powerup->update(100);
+    int knives = STATS->getInt(Stats::Knives);
+    ASSERT_EQ(knives, 2);
+    hero->event(GameEvent::Collection, powerup.get());
+    knives += powerup->getGain();
+    ASSERT_EQ(STATS->getInt(Stats::Knives), knives);
+}
+
+TEST_F(EntitiesTest, HeroPlatformCollision1) {
+    dynamic_cast<MockGameConfig*>(CONFIG)->setGravity({0, 0});
+    auto hero = FACTORY->createHero();
+    float posx = CONFIG->getHeroPosX();
+    float posy = CONFIG->getBottomLevel() - hero->getBounds().height;
+    hero->setPosition(posx, posx);
+    hero->setSpeed(0,0);
+    hero->update(100);
+    auto platform = FACTORY->createPlatform(EntityType::StonePlatform);
+    platform->setPosition(0, posy + hero->getBounds().height - 5);
+    platform->update(100);
+    hero->event(GameEvent::CollisionBottom, platform.get());
+    sf::Vector2f pos = hero->getPosition();
+    ASSERT_EQ(pos, sf::Vector2f(posx, posy-5));
+}
+
+TEST_F(EntitiesTest, HeroPlatformCollision2) {
+    dynamic_cast<MockGameConfig*>(CONFIG)->setGravity({0, 0});
+    auto platform = FACTORY->createPlatform(EntityType::StonePlatform);
+    platform->setPosition(0, CONFIG->getMiddleLevel());
+    platform->update(100);
+    auto hero = FACTORY->createHero();
+    float posx = CONFIG->getHeroPosX();
+    float posy = CONFIG->getMiddleLevel() + platform->getBounds().height -5;
+    hero->setPosition(posx, posx);
+    hero->update(100);
+    hero->setSpeed(0, -20);
+    hero->event(GameEvent::CollisionTop, platform.get());
+    sf::Vector2f pos = hero->getPosition();
+    ASSERT_EQ(pos, sf::Vector2f(posx, posy+5));
+    sf::Vector2f speed = hero->getSpeed();
+    ASSERT_EQ(speed, sf::Vector2f(0, 0));
+}
+
 /* Enemies */
 
 TEST_F(EntitiesTest, EmeraldEnemyCreation) {
@@ -291,6 +343,68 @@ TEST_F(EntitiesTest, FireEnemyCreation) {
     ASSERT_EQ(enemy->isVisible(), true);
 }
 
+TEST_F(EntitiesTest, EnemyFallDown) {
+    dynamic_cast<MockGameConfig*>(CONFIG)->setGravity({0,1000});
+    auto enemy = FACTORY->createEnemy(EntityType::FireEnemy);
+    float posx = 500;
+    float posy = CONFIG->getBottomLevel();
+    enemy->setPosition(posx, posx);
+    while(posy<CONFIG->getWindowSize().y) {
+        ASSERT_FALSE(enemy->isDestroyed());
+        enemy->update(100);
+        posy = enemy->getPosition().y;
+    }
+    enemy->update(100);
+    ASSERT_TRUE(enemy->isDestroyed());
+}
+
+TEST_F(EntitiesTest, EnemyPlatformCollision1) {
+    dynamic_cast<MockGameConfig*>(CONFIG)->setGravity({0, 0});
+    auto enemy = FACTORY->createEnemy(EntityType::HamonEnemy);
+    float posx = CONFIG->getHeroPosX();
+    float posy = CONFIG->getBottomLevel() - enemy->getBounds().height;
+    enemy->setPosition(posx, posx);
+    enemy->setSpeed(0,0);
+    enemy->update(100);
+    auto platform = FACTORY->createPlatform(EntityType::StonePlatform);
+    platform->setPosition(0, posy + enemy->getBounds().height - 5);
+    platform->update(100);
+    enemy->event(GameEvent::CollisionBottom, platform.get());
+    sf::Vector2f pos = enemy->getPosition();
+    ASSERT_EQ(pos, sf::Vector2f(posx, posy-5));
+}
+
+TEST_F(EntitiesTest, EnemyBulletCollision) {
+    dynamic_cast<MockGameConfig*>(CONFIG)->setGravity({0, 0});
+    auto enemy = FACTORY->createEnemy(EntityType::EmeraldEnemy);
+    float posx = CONFIG->getHeroPosX();
+    float posy = CONFIG->getBottomLevel();
+    enemy->setPosition(posx, posx);
+    enemy->setSpeed(0,0);
+    enemy->update(100);
+    auto bullet = FACTORY->createBullet(EntityType::Knife);
+    bullet->setPosition(posx + enemy->getBounds().width - 1, posy);
+    bullet->update(100);
+    enemy->event(GameEvent::Collision, bullet.get());
+    ASSERT_FALSE(enemy->isEnabled());
+}
+
+TEST_F(EntitiesTest, EnemyHeroCollision) {
+    dynamic_cast<MockGameConfig*>(CONFIG)->setGravity({0, 0});
+    auto hero = FACTORY->createHero();
+    float posx = CONFIG->getHeroPosX();
+    float posy = CONFIG->getBottomLevel();
+    hero->setPosition(posx, posx);
+    hero->setSpeed(0,0);
+    hero->update(100);
+    auto enemy = FACTORY->createEnemy(EntityType::EmeraldEnemy);
+    enemy->setPosition(posx + hero->getBounds().width - 1, posy);
+    enemy->update(100);
+    ASSERT_EQ(enemy->isEnabled(), true);
+    enemy->event(GameEvent::Collision, hero.get());
+    ASSERT_EQ(enemy->isEnabled(), false);
+}
+
 /* Bullets */
 
 TEST_F(EntitiesTest, FireBulletCreation) {
@@ -321,6 +435,21 @@ TEST_F(EntitiesTest, KnifeCreation) {
     ASSERT_EQ(bullet->isDestroyed(), false);
     ASSERT_EQ(bullet->isEnabled(), true);
     ASSERT_EQ(bullet->isVisible(), true);
+}
+
+TEST_F(EntitiesTest, BulletHeroCollision) {
+    dynamic_cast<MockGameConfig*>(CONFIG)->setGravity({0, 0});
+    auto hero = FACTORY->createHero();
+    float posx = CONFIG->getHeroPosX();
+    float posy = CONFIG->getBottomLevel();
+    hero->setPosition(posx, posx);
+    hero->setSpeed(0,0);
+    hero->update(100);
+    auto bullet = FACTORY->createBullet(EntityType::FireBullet);
+    bullet->setPosition(posx + hero->getBounds().width - 1, posy);
+    bullet->update(100);
+    bullet->event(GameEvent::Collision, hero.get());
+    ASSERT_EQ(bullet->isDestroyed(), true);
 }
 
 /* Obstacles */
@@ -366,6 +495,22 @@ TEST_F(EntitiesTest, ShieldCreation) {
     ASSERT_EQ(powerup->isEnabled(), true);
     ASSERT_EQ(powerup->isVisible(), true);
 }
+
+TEST_F(EntitiesTest, PowerupHeroCollision) {
+    dynamic_cast<MockGameConfig*>(CONFIG)->setGravity({0, 0});
+    auto hero = FACTORY->createHero();
+    float posx = CONFIG->getHeroPosX();
+    float posy = CONFIG->getBottomLevel();
+    hero->setPosition(posx, posx);
+    hero->setSpeed(0,0);
+    hero->update(100);
+    auto powerup = FACTORY->createPowerUp(EntityType::Weapon);
+    powerup->setPosition(posx + hero->getBounds().width - 1, posy);
+    powerup->update(100);
+    powerup->event(GameEvent::Collection, hero.get());
+    ASSERT_EQ(powerup->isDestroyed(), true);
+}
+
 
 /* Maps */
 

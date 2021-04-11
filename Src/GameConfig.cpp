@@ -75,7 +75,6 @@ const KeyVal resource_table [] = {
         { "KEYBOARD_TICK_SOUND",        "Music/KeyboardTick.wav"},
         { "ACHIEVEMENT_SOUND",          "Music/AchievementBell.wav"},
 
-
         /* CONFIG */
         { "CREDITS",                    "Config/Credits.txt"},
 

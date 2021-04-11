@@ -113,3 +113,48 @@ TEST_F(ResourceManagerTest, WrongResourceTypeFont){
     auto texture = res_manager->getFont("Texture");
     ASSERT_EQ(texture.get(), nullptr);
 }
+
+TEST_F(ResourceManagerTest, LoadAllResources) {
+    auto res_manager = std::unique_ptr<ResourceManager>(new ResourceManager);
+    ASSERT_NE(RESOURCE->getTexture("PLATFORM"), nullptr);
+    ASSERT_NE(RESOURCE->getTexture("PLAYER_RUN"), nullptr);
+    ASSERT_NE(RESOURCE->getTexture("PLAYER_RUN_SHIELD"), nullptr);
+    ASSERT_NE(RESOURCE->getTexture("PLAYER_JUMP"), nullptr);
+    ASSERT_NE(RESOURCE->getTexture("PLAYER_ATTACK"), nullptr);
+    ASSERT_NE(RESOURCE->getTexture("PLAYER_DEATH"), nullptr);
+    ASSERT_NE(RESOURCE->getTexture("EMERALD_ENEMY_IDLE"), nullptr);
+    ASSERT_NE(RESOURCE->getTexture("EMERALD_ENEMY_ATTACK"), nullptr);
+    ASSERT_NE(RESOURCE->getTexture("EMERALD_ENEMY_DEATH"), nullptr);
+    ASSERT_NE(RESOURCE->getTexture("HAMON_ENEMY_IDLE"), nullptr);
+    ASSERT_NE(RESOURCE->getTexture("HAMON_ENEMY_ATTACK"), nullptr);
+    ASSERT_NE(RESOURCE->getTexture("HAMON_ENEMY_DEATH"), nullptr);
+    ASSERT_NE(RESOURCE->getTexture("FIRE_ENEMY_IDLE"), nullptr);
+    ASSERT_NE(RESOURCE->getTexture("FIRE_ENEMY_ATTACK"), nullptr);
+    ASSERT_NE(RESOURCE->getTexture("FIRE_ENEMY_DEATH"), nullptr);
+    ASSERT_NE(RESOURCE->getTexture("LIGHTING"), nullptr);
+    ASSERT_NE(RESOURCE->getTexture("FIRE"), nullptr);
+    ASSERT_NE(RESOURCE->getTexture("EMERALD_BULLET"), nullptr);
+    ASSERT_NE(RESOURCE->getTexture("FIRE_BULLET"), nullptr);
+    ASSERT_NE(RESOURCE->getTexture("KNIFE_BULLET"), nullptr);
+    ASSERT_NE(RESOURCE->getTexture("SHIELD_PWUP"), nullptr);
+    ASSERT_NE(RESOURCE->getTexture("WEAPON_PWUP"), nullptr);
+    ASSERT_NE(RESOURCE->getTexture("PLAYER_ICON"), nullptr);
+    ASSERT_NE(RESOURCE->getTexture("SPLASH_SCREEN"), nullptr);
+    ASSERT_NE(RESOURCE->getTexture("GAME_OVER_SCREEN"), nullptr);
+    ASSERT_NE(RESOURCE->getFont("GAME_OVER_FONT"), nullptr);
+    ASSERT_NE(RESOURCE->getFont("RETRO_GAMING_FONT"), nullptr);
+    ASSERT_NE(RESOURCE->getSound("SOUND_TRACK"), nullptr);
+    ASSERT_NE(RESOURCE->getSound("PLAYER_ATTACK_SOUND"), nullptr);
+    ASSERT_NE(RESOURCE->getSound("PLAYER_DEATH_SOUND"), nullptr);
+    ASSERT_NE(RESOURCE->getSound("PLAYER_HIT_SOUND"), nullptr);
+    ASSERT_NE(RESOURCE->getSound("PLAYER_SHIELD_HIT_SOUND"), nullptr);
+    ASSERT_NE(RESOURCE->getSound("PLAYER_SHIELD_PICK_SOUND"), nullptr);
+    ASSERT_NE(RESOURCE->getSound("EMERALD_ATTACK_SOUND"), nullptr);
+    ASSERT_NE(RESOURCE->getSound("EMERALD_DEATH_SOUND"), nullptr);
+    ASSERT_NE(RESOURCE->getSound("HAMON_ATTACK_SOUND"), nullptr);
+    ASSERT_NE(RESOURCE->getSound("HAMON_DEATH_SOUND"), nullptr);
+    ASSERT_NE(RESOURCE->getSound("FIRE_ATTACK_SOUND"), nullptr);
+    ASSERT_NE(RESOURCE->getSound("FIRE_DEATH_SOUND"), nullptr);
+    ASSERT_NE(RESOURCE->getSound("KEYBOARD_TICK_SOUND"), nullptr);
+}
+
