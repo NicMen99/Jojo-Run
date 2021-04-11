@@ -20,9 +20,9 @@ public:
     void init(const std::string & texture_name, sf::Vector2f scale, sf::Vector2f speed, int damage);
 
     void setDamage(int damage) { m_damage = damage; }
-    int getDamage() const { return m_damage; };
+    int getDamage() const override { return m_damage; };
     void setLifeBonus(int damage) { m_lifebonus = damage; }
-    int getLifeBonus() const { return m_lifebonus; };
+    int getGain() const override { return m_lifebonus; };
 
 protected:
     void update(int32_t delta_time) override;

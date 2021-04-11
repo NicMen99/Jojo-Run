@@ -23,10 +23,10 @@ Hero::~Hero() {
 void Hero::init()
 {
     setSpeed(CONFIG->getSceneSpeed());
-    m_health = 300;
+    m_health = CONFIG->getHeroMaxHealth();
+    m_maxhealthpoints = CONFIG->getHeroMaxHealth();
     m_knives = 0;
-    m_maxhealthpoints = 300;
-    m_maxknives = 8;
+    m_maxknives = CONFIG->getHeroMaxKnives();
     m_inputManager.init();
     m_inputManager.registerKey(sf::Keyboard::Key::Space);
     m_inputManager.registerKey(sf::Keyboard::Key::K);
@@ -36,18 +36,18 @@ void Hero::update(int32_t delta_time) {
     if(!isStarted()) {
         updateHealth(0);
         updateKnives(2);
-        setStarted(true);
         m_distance = 0;
         m_clean_distance = 0;
         m_lifeTime.restart();
+        setStarted(true);
     }
     m_inputManager.update();
     updatePhysics(delta_time);
     manageAttack();
     Entity::update(delta_time);
     /**/
-    m_distance += getSpeed().x * delta_time / 1000;
-    m_clean_distance += getSpeed().x * delta_time / 1000;
+    m_distance += getSpeed().x * (float)delta_time / 1000;
+    m_clean_distance += getSpeed().x * (float)delta_time / 1000;
     STATS->setInt(Stats::Distance, (int)m_distance);
     STATS->setInt(Stats::CleanDistance, (int)m_clean_distance);
 }
@@ -87,7 +87,7 @@ void Hero::updatePhysics(int32_t delta_time) {
             }
             break;
         case State::Dead:
-            if(getPosition().y > (3.f * CONFIG->getWindowSize().y)) {
+            if(getPosition().y > CONFIG->getHeroMaxPosY()) {
                 if(!isDestroyed()) {
                     setDestroyed();
                     STATS->setInt(Stats::Time, (int)m_lifeTime.getElapsedTime().asSeconds());
@@ -98,6 +98,15 @@ void Hero::updatePhysics(int32_t delta_time) {
             }
             break;
         case State::Init:
+            if(getSpeed().y>0) {
+                changeState(State::Falling);
+            }
+            else if(getSpeed().y == 0) {
+                changeState(State::Grounded);
+            }
+            else if(getSpeed().y < 0) {
+                changeState(State::Jumping);
+            }
             break;
     }
     applyImpulse(CONFIG->getGravity(), delta_time);
@@ -142,8 +151,7 @@ void Hero::event(GameEvent event, Entity * entity) {
          */
         int damage = 0;
         if (entity->getGroup() == EntityGroup::Enemy) {
-            auto *enemy = dynamic_cast<Enemy *>(entity);
-            damage = enemy->getDamage();
+            damage = entity->getDamage();
             if(State::Falling == m_state) {
                 damage /= 3;
                 setSpeed(getSpeed().x, -getSpeed().y/2);
@@ -156,8 +164,7 @@ void Hero::event(GameEvent event, Entity * entity) {
          * Collisione con un ostacolo
          */
         else if (entity->getGroup() == EntityGroup::Obstacle) {
-            auto *obstacle = dynamic_cast<Obstacle *>(entity);
-            damage = obstacle->getDamage();
+            damage = entity->getDamage();
         }
         /*
          * Collisione con proiettile nemico
@@ -166,8 +173,7 @@ void Hero::event(GameEvent event, Entity * entity) {
 #ifdef GAMEDEBUG
             assert(entity->getType() != EntityType::Knife);
 #endif
-            auto *bullet = dynamic_cast<Bullet *>(entity);
-            damage = bullet->getDamage();
+            damage = entity->getDamage();
             if(!m_shield)
                 applyImpulse({0, -CONFIG->getHeroJumpForce()/50}, 10);
         }
@@ -199,8 +205,7 @@ void Hero::event(GameEvent event, Entity * entity) {
          */
         if (entity->getGroup() == EntityGroup::Powerup) {
             if (entity->getType() == EntityType::Weapon) {
-                auto *weapon = dynamic_cast<Weapon *>(entity);
-                updateKnives(weapon->getQuantity());
+                updateKnives(entity->getGain());
             } else if (entity->getType() == EntityType::Shield) {
                 playSound("SHIELD_PICK");
                 if(m_state==State::Grounded) {
@@ -216,8 +221,7 @@ void Hero::event(GameEvent event, Entity * entity) {
          * Nemico ucciso con proiettile
          */
         if(entity->getGroup() == EntityGroup::Enemy) {
-            auto * enemy = dynamic_cast<Enemy*>(entity);
-            updateHealth(enemy->getLifeBonus());
+            updateHealth(entity->getGain());
         }
     }
 }

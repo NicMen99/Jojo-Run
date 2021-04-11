@@ -51,7 +51,7 @@ void Entity::render(sf::RenderWindow & window) {
 
 void Entity::move(int32_t delta_time) {
     sf::Vector2f speed = m_speed - CONFIG->getSceneSpeed();
-    sf::Vector2f offset = {speed.x * delta_time / 1000, speed.y * delta_time / 1000};
+    sf::Vector2f offset = {speed.x * (float)delta_time / 1000, speed.y * (float)delta_time / 1000};
     setPosition(getPosition() + offset);
     if((getPosition().x + getBounds().width) < 0) {
         event(GameEvent::OutOfBound, nullptr);
@@ -59,7 +59,7 @@ void Entity::move(int32_t delta_time) {
 }
 
 void Entity::applyImpulse(const sf::Vector2f & acceleration, int32_t delta_time) {
-    m_speed += {acceleration.x * delta_time / 1000, acceleration.y * delta_time / 1000};
+    m_speed += {acceleration.x * (float)delta_time / 1000, acceleration.y * (float)delta_time / 1000};
 }
 
 void Entity::addAnimation(const std::string & animation_name, const std::list<FrameParams>& frames) {

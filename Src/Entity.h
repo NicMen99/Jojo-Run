@@ -60,6 +60,8 @@ public:
     sf::FloatRect getBounds() const { return m_frame; }
     sf::FloatRect getPrevBounds() const { return m_prev_frame; }
     sf::Vector2f getSpeed() const {return m_speed;}
+    virtual int getGain() const { return 0; };
+    virtual int getDamage() const { return 0; };
     bool isStarted() const { return m_started; }
     bool isEnabled() const { return m_enabled; }
     bool isVisible() const { return m_visible; }

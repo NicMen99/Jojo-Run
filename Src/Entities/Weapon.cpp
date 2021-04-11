@@ -13,7 +13,7 @@ Weapon::~Weapon() {
 
 void Weapon::init() {
     setSpeed({0.f, 0.f});
-    setQuantity(2);
+    setGain(2);
 }
 
 void Weapon::event(GameEvent event, Entity *collider) {

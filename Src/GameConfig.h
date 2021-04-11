@@ -19,6 +19,10 @@ public:
     const sf::Vector2u & getWindowSize() const { return m_window_size; }
     const sf::Vector2f & getSceneSpeed() const { return m_scene_speed; }
     const sf::Vector2f & getGravity() const { return m_gravity; }
+    int getHeroMaxHealth() const { return m_hero_health_max; }
+    int getHeroMaxKnives() const { return m_hero_knives_max; }
+    int getHeroPosX() const { return m_hero_xpos; }
+    int getHeroMaxPosY() const { return m_hero_max_ypos; }
     float getHeroJumpForce() const { return m_hero_jumpForce; }
     int getHeroJumpMaxTime() const { return m_hero_jumpMaxTime; }
     float getHeroJumpSpeedLimit() const { return m_hero_jumpSpeedLimit; }
@@ -47,6 +51,8 @@ protected:
     /* delta pixels per secondo */
     sf::Vector2f m_gravity     = {0.f, 1500.f};
 
+    int m_hero_health_max = 300;
+    int m_hero_knives_max = 8;
     /* delta pixels per secondo */
     float m_hero_jumpForce = m_gravity.y * 8.f;
     float m_enemy_hitForce = m_gravity.y * 500.f;
@@ -65,8 +71,10 @@ protected:
     const char * m_asset_base_dir = "Assets";
     std::map<std::string, std::string> m_asset_map;
 
+    int m_hero_xpos                  = 200;
+    int m_hero_max_ypos              = m_window_size.y * 3;
     float m_levelDelta_y             = 300.f;
-    float m_base                     = m_window_size.y-100.f;
+    float m_base                     = (float)m_window_size.y-100.f;
     float m_middle                   = m_base - m_levelDelta_y;
     float m_top                      = m_middle - m_levelDelta_y;
 };

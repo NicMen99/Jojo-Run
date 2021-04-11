@@ -157,6 +157,108 @@ TEST_F(EntitiesTest, HeroCreation) {
     ASSERT_EQ(hero->isVisible(), true);
 }
 
+TEST_F(EntitiesTest, HeroFirstUpdate) {
+    dynamic_cast<MockGameConfig*>(CONFIG)->setGravity({0,1000});
+    auto hero = FACTORY->createHero();
+    float base = CONFIG->getBottomLevel();
+    hero->setPosition(100, base);
+    hero->update(100);
+    ASSERT_EQ(hero->getSpeed(), sf::Vector2f(0, 100));
+    ASSERT_EQ(hero->getPosition(), sf::Vector2f(100, base+10));
+    ASSERT_TRUE(hero->isStarted());
+}
+
+TEST_F(EntitiesTest, HeroGravity) {
+    dynamic_cast<MockGameConfig*>(CONFIG)->setGravity({0,1000});
+    auto hero = FACTORY->createHero();
+    float posx = CONFIG->getHeroPosX();
+    float posy = CONFIG->getBottomLevel();
+    hero->setPosition(posx, posx);
+    hero->update(100);
+    ASSERT_EQ(hero->getSpeed(), sf::Vector2f(0, 100));
+    ASSERT_EQ(hero->getPosition(), sf::Vector2f(posx, posx + 10));
+    hero->update(500);
+    ASSERT_EQ(hero->getSpeed(), sf::Vector2f(0, 600));
+    ASSERT_EQ(hero->getPosition(), sf::Vector2f(posx, posx + 10 + 300));
+    hero->update(1000);
+    ASSERT_EQ(hero->getSpeed(), sf::Vector2f(0, 1500));
+    ASSERT_EQ(hero->getPosition(), sf::Vector2f(posx, posx + 10 + 300 + 1500));
+}
+
+TEST_F(EntitiesTest, HeroFallDown) {
+    dynamic_cast<MockGameConfig*>(CONFIG)->setGravity({0,1000});
+    auto hero = FACTORY->createHero();
+    float posx = CONFIG->getHeroPosX();
+    float posy = CONFIG->getBottomLevel();
+    hero->setPosition(posx, posx);
+    while(posy<CONFIG->getHeroMaxPosY()) {
+        ASSERT_FALSE(hero->isDestroyed());
+        hero->update(100);
+        posy = hero->getPosition().y;
+    }
+    hero->update(100);
+    ASSERT_TRUE(hero->isDestroyed());
+}
+
+TEST_F(EntitiesTest, HeroEnemyCollision) {
+    dynamic_cast<MockGameConfig*>(CONFIG)->setGravity({0, 0});
+    auto hero = FACTORY->createHero();
+    float posx = CONFIG->getHeroPosX();
+    float posy = CONFIG->getBottomLevel();
+    hero->setPosition(posx, posx);
+    hero->setSpeed(0,0);
+    hero->update(100);
+    auto enemy = FACTORY->createEnemy(EntityType::EmeraldEnemy);
+    enemy->setPosition(posx + hero->getBounds().width - 1, posy);
+    enemy->update(100);
+    int health = STATS->getInt(Stats::Health);
+    ASSERT_EQ(health, CONFIG->getHeroMaxHealth());
+    while(health > 0) {
+        ASSERT_EQ(hero->isEnabled(), true);
+        hero->event(GameEvent::Collision, enemy.get());
+        health -= enemy->getDamage();
+        if(health<0) health =0;
+        ASSERT_EQ(STATS->getInt(Stats::Health), health);
+    }
+    ASSERT_EQ(hero->isEnabled(), false);
+}
+
+TEST_F(EntitiesTest, HeroObstacleCollision) {
+    dynamic_cast<MockGameConfig*>(CONFIG)->setGravity({0, 0});
+    auto hero = FACTORY->createHero();
+    float posx = CONFIG->getHeroPosX();
+    float posy = CONFIG->getBottomLevel();
+    hero->setPosition(posx, posx);
+    hero->setSpeed(0,0);
+    hero->update(100);
+    auto obstacle = FACTORY->createObstacle(EntityType::Block);
+    obstacle->setPosition(posx + hero->getBounds().width - 1, posy);
+    obstacle->update(100);
+    int health = STATS->getInt(Stats::Health);
+    ASSERT_EQ(health, CONFIG->getHeroMaxHealth());
+    hero->event(GameEvent::Collision, obstacle.get());
+    health -= obstacle->getDamage();
+    ASSERT_EQ(STATS->getInt(Stats::Health), health);
+}
+
+TEST_F(EntitiesTest, HeroBulletCollision) {
+    dynamic_cast<MockGameConfig*>(CONFIG)->setGravity({0, 0});
+    auto hero = FACTORY->createHero();
+    float posx = CONFIG->getHeroPosX();
+    float posy = CONFIG->getBottomLevel();
+    hero->setPosition(posx, posx);
+    hero->setSpeed(0,0);
+    hero->update(100);
+    auto bullet = FACTORY->createBullet(EntityType::FireBullet);
+    bullet->setPosition(posx + hero->getBounds().width - 1, posy);
+    bullet->update(100);
+    int health = STATS->getInt(Stats::Health);
+    ASSERT_EQ(health, CONFIG->getHeroMaxHealth());
+    hero->event(GameEvent::Collision, bullet.get());
+    health -= bullet->getDamage();
+    ASSERT_EQ(STATS->getInt(Stats::Health), health);
+}
+
 /* Enemies */
 
 TEST_F(EntitiesTest, EmeraldEnemyCreation) {

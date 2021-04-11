@@ -1,5 +1,9 @@
 #include "MockGameConfig.h"
 
+void MockGameConfig::setGravity(sf::Vector2f gravity) {
+    m_gravity = gravity;
+}
+
 void MockGameConfig::setSceneSpeed(sf::Vector2f speed) {
     m_scene_speed = speed;
 }

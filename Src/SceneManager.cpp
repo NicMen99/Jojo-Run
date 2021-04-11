@@ -480,7 +480,7 @@ void SceneManager::createPowerup(EntityType pt, sf::Vector2f position) {
 
 void SceneManager::createHero() {
     m_hero = FACTORY->createHero();
-    m_hero->setPosition(sf::Vector2f(200.f, CONFIG->getBottomLevel() - m_hero->getBounds().height));
+    m_hero->setPosition(sf::Vector2f(CONFIG->getHeroPosX(), CONFIG->getBottomLevel() - m_hero->getBounds().height));
 }
 
 void SceneManager::createScoreHUD() {

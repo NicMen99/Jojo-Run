@@ -11,6 +11,7 @@ class MockGameConfig : public GameConfig {
 public:
     void init() override;
     void clear();
+    void setGravity(sf::Vector2f gravity);
     void setSceneSpeed(sf::Vector2f speed);
     void setMapResource(const std::string & name, const std::string & asset_path);
     void setTextureResource(const std::string & name, const std::string & asset_path);
