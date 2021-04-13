@@ -23,12 +23,13 @@ void EmeraldEnemy::update(int32_t delta_time) {
         changeState(State::Idle);
         m_shootTimer.restart();
         m_shootTime = sf::milliseconds(RAND(1000)+1000);
-        m_shoot_left = RAND(2); // 0 - 1
+        m_shoot_left = RAND(3); // 0 - 2
         setStarted(true);
     }
     if(State::Idle == m_state) {
         if(getPosition().x < CONFIG->getWindowSize().x) {
             if (m_shoot_left > 0 && m_shootTimer.getElapsedTime() >= m_shootTime) {
+                applyImpulse({0.f, -CONFIG->getGravity().y*600.f}, 50);
                 changeState(State::Attack);
             }
         }

@@ -17,6 +17,7 @@ struct WidgetTheme {
     unsigned int font_size = 20;
     sf::Color font_color = sf::Color::White;
     float font_outline_thinckness = 0;
+    sf::Color font_outline_color = sf::Color::Black;
 };
 
 

@@ -38,11 +38,12 @@ void SoundManager::playSound(const std::string &sound_name, float volume) {
     m_sound.play();
 }
 
-void SoundManager::playMusic(const std::string &sound_name, float volume, float pitch) {
+void SoundManager::playMusic(const std::string &sound_name, float volume, float pitch, bool loop) {
     if(!sound_name.empty())
         m_music.openFromFile(CONFIG->getAssetPath(sound_name));
     m_music.setVolume(volume);
     m_music.setPitch(pitch);
+    m_music.setLoop(loop);
     m_music.play();
 }
 
@@ -56,4 +57,8 @@ void SoundManager::setPitch(float pitch) {
 
 void SoundManager::stopMusic() {
     m_music.stop();
+}
+
+void SoundManager::setLoop(bool loop) {
+    m_music.setLoop(loop);
 }

@@ -144,6 +144,7 @@ TEST_F(ResourceManagerTest, LoadAllResources) {
     ASSERT_NE(RESOURCE->getFont("GAME_OVER_FONT"), nullptr);
     ASSERT_NE(RESOURCE->getFont("RETRO_GAMING_FONT"), nullptr);
     ASSERT_NE(RESOURCE->getSound("SOUND_TRACK"), nullptr);
+    ASSERT_NE(RESOURCE->getSound("SOUND_TRACK2"), nullptr);
     ASSERT_NE(RESOURCE->getSound("PLAYER_ATTACK_SOUND"), nullptr);
     ASSERT_NE(RESOURCE->getSound("PLAYER_DEATH_SOUND"), nullptr);
     ASSERT_NE(RESOURCE->getSound("PLAYER_HIT_SOUND"), nullptr);

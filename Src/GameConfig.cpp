@@ -61,6 +61,7 @@ const KeyVal resource_table [] = {
 
         /* Sounds */
         { "SOUND_TRACK",                "Music/SoundTrack.wav"},
+        { "SOUND_TRACK2",               "Music/SoundTrack2.wav"},
         { "PLAYER_ATTACK_SOUND",        "Music/PlayerAttackSound.wav"},
         { "PLAYER_DEATH_SOUND",         "Music/PlayerDeathSound.wav"},
         { "PLAYER_HIT_SOUND",           "Music/PlayerHitSound.wav"},

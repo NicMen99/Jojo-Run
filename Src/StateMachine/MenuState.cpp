@@ -104,6 +104,8 @@ void MenuState::createMenuScreen(){
     mlabel2->setString("C R E D I T S");
     mlabel2->setPosition({mitem2->getSize().x, 0});
     mitem2->add(mlabel2);
+
+    m_soundManager.stopMusic();
 }
 
 void MenuState::createCreditScreen() {
@@ -111,9 +113,10 @@ void MenuState::createCreditScreen() {
 
     WidgetTheme theme;
     theme.font_name = "RETRO_GAMING_FONT";
-    theme.font_size = 24;
+    theme.font_size = 20;
     theme.font_color = sf::Color::White;
-    theme.font_outline_thinckness = 2;
+    theme.font_outline_thinckness = 0.3;
+    theme.font_outline_color = sf::Color::Blue;
 
     m_root = new Widget("Root");
 
@@ -128,14 +131,16 @@ void MenuState::createCreditScreen() {
         return;
 
     std::string line;
-    float posy = 100;
+    float posy = 0;
     while (std::getline(infile, line)) {
         auto *rank = new TextWidget("");
         rank->init(theme);
+        if(line.empty())
+            line = "\n";
         rank->setString(line);
         rank->setPosition((CONFIG->getWindowSize().x - rank->getSize().x) / 2, posy);
-        rank->setFillColor(sf::Color::Yellow);
         m_root->add(rank);
         posy += rank->getSize().y + 5.f;
     }
+    m_soundManager.playMusic("SOUND_TRACK2", 70.f, 1.f, true);
 }

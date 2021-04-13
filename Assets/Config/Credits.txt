@@ -1,19 +1,38 @@
-gioco sviluppato da
 
-Angiolo Giandonati <angiolo.giandonati@stud.unifi.it>
-Niccolò Menghini  <niccolo.menghini@stud.unifi.it>
+Gioco sviluppato da
 
-per esame I anno etc etc
+Angiolo Giandonati < angiolo.giandonati @ stud.unifi.it >
+Niccolò Menghini  < niccolo.menghini @ stud.unifi.it >
 
-basato sulle librerie SFML
-email
+per l'esame di "Fondamenti di Programmazione"
+I anno corso di Laurea Triennale in Ingegneria Informatica
 
-JOJO è un marchio registrato di BANDAI NAMCO Entrateinment
+Basato sulle librerie SFML (www.sfml-dev.org)
+rilasciate con licenza ZLIB/PNG
 
-le risorse tratte liberamente da internet
-sono rielaborate ed utilizzate nel software
-al fine di conseguimento dell'esame
+Tutte le risorse tratte da internet, rielaborate ed caricate dal software per le demo
+sono utilizzate a scopo esclusivamente educativo e personale
 
-sono pertanto da considerarsi come impiegate
- ad uso esclusivamente personale
+Contenuti
 
+"Le Bizzarre Avventure Di JoJo" è un manga scritto e disegnato da Hirohiko Araki,
+edito dalla casa editrice giapponese Shueisha
+L'anime de "Le Bizzarre Avventure Di JoJo" è prodotto dalla casa David Productions
+"JoJo's Bizarre Adventure: Heritage for the Future"
+è un videogioco sviluppato e pubblicato da Capcom Co., Ltd. nel 1998
+
+Textures
+
+https://www.spriters-resource.com
+
+Effetti sonori
+
+https://www.sounds-resource.com
+
+Musica
+
+"Il Vento D'Oro [8bit/VRC6]" by branflakes
+(https://www.youtube.com/channel/UCDTfibJPnxyb6wAZep7Z-hA)
+
+"Girl From Ipanema (8-bit remix)" by Dragonoflegend
+(https://www.youtube.com/channel/UCj8B7TWtbrGxmGtpCeul23Q)

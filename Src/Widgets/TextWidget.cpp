@@ -17,6 +17,7 @@ void TextWidget::init(const WidgetTheme & theme) {
     setCharacterSize(theme.font_size);
     setFillColor(theme.font_color);
     setOutlineThickness(theme.font_outline_thinckness);
+    setOutlineColor(theme.font_outline_color);
 }
 
 void TextWidget::_update(int32_t delta_time) {

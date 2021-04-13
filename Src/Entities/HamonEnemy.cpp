@@ -28,7 +28,7 @@ void HamonEnemy::update(int32_t delta_time) {
     if(State::Idle == m_state) {
         if(getPosition().x < CONFIG->getWindowSize().x) {
             if (m_shoot_left > 0 && m_shootTimer.getElapsedTime() >= m_shootTime) {
-                applyImpulse({0.f, -CONFIG->getGravity().y*600.f}, 20);
+                applyImpulse({0.f, -CONFIG->getGravity().y*600.f}, 50);
                 setDamage(150);
                 changeState(State::Attack);
             }
