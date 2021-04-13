@@ -2,9 +2,18 @@
 // Created by Niccolo on 23/03/2021.
 //
 #include <iostream>
+#include <utility>
 
 #include "Game.h"
 #include "AnimationManager.h"
+
+Animation::Animation(std::string  name) :
+    m_name(std::move(name)) {
+}
+
+Animation::~Animation() {
+
+}
 
 void Animation::addFrame(const FrameParams & frame_params) {
     uint8_t count = frame_params.count;
@@ -44,9 +53,26 @@ AnimationManager::~AnimationManager() {
 
 }
 
+void AnimationManager::clear() {
+    m_current_sprite = std::make_shared<sf::Sprite>();
+    m_current_animation = nullptr;
+    m_animations.clear();
+}
+
+
 std::shared_ptr<sf::Sprite> Animation::update(int32_t delta_time) {
-    if(total_frames() == 0) return nullptr;
-    return m_frames.at(m_count++%m_frames.size()).first;
+    if (total_frames() == 0) return nullptr;
+    return m_loop ?
+            m_frames.at(m_count++ % total_frames()).first :
+            m_count < total_frames() ?
+             m_frames.at(m_count++).first :
+             nullptr;
+}
+
+/**/
+
+bool AnimationManager::isCurrentAnimation(const std::string & animation_name) {
+    return (m_current_animation != nullptr) && m_current_animation->name() == animation_name;
 }
 
 
@@ -58,10 +84,11 @@ void AnimationManager::update(int32_t delta_time) {
     }
 }
 
-void AnimationManager::play(const std::string & animation_name, int repetitions) {
+void AnimationManager::play(const std::string & animation_name, bool loop) {
     auto it = m_animations.find(animation_name);
     if(it != m_animations.end()) {
         m_current_animation = it->second;
+        m_current_animation->reset(loop);
         update(0);
     }
 }
@@ -74,17 +101,13 @@ std::shared_ptr<sf::Sprite> AnimationManager::getCurrentFrame() {
     return m_current_sprite;
 }
 
-std::shared_ptr<sf::Sprite> AnimationManager::getCurrentFrame() const {
-    return m_current_sprite;
-}
-
 void AnimationManager::addAnimation(const std::string & animation_name, const std::list<FrameParams>& frames) {
     auto animation = createAnimation(animation_name);
     for(const auto& frame : frames) {
         animation->addFrame(frame);
     }
     if(m_animations.size()==1) {
-        play(animation_name, 0);
+        play(animation_name, false);
     }
 }
 
@@ -93,7 +116,7 @@ std::shared_ptr<Animation> AnimationManager::createAnimation(const std::string &
     if(it != m_animations.end()) {
         return it->second;
     }
-    std::shared_ptr<Animation> animation = std::make_shared<Animation>();
+    std::shared_ptr<Animation> animation = std::make_shared<Animation>(animation_name);
     m_animations.insert(std::make_pair(animation_name, animation));
     return animation;
 }

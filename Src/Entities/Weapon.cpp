@@ -5,20 +5,22 @@
 #include "Weapon.h"
 
 Weapon::Weapon(std::string id) :
-    PowerUp(EntityType::Weapon, "Weapons")
-{
-
+    PowerUp(EntityType::Weapon, "Weapons") {
 }
 
 Weapon::~Weapon() {
-
 }
 
 void Weapon::init() {
     setSpeed({0.f, 0.f});
-    setQuantity(2);
+    setGain(2);
 }
 
 void Weapon::event(GameEvent event, Entity *collider) {
-    setDestroyed();
+    if (event == GameEvent::Collection) {
+        setDestroyed();
+    }
+    else if (event == GameEvent::OutOfBound) {
+        setDestroyed();
+    }
 }

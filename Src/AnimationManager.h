@@ -22,13 +22,18 @@ struct FrameParams {
 
 class Animation {
 public:
+    explicit Animation(std::string  name);
+    virtual ~Animation();
+    const std::string & name() { return m_name; }
     unsigned int total_frames() const { return m_frames.size(); }
     void addFrame(const FrameParams & frame_params);
-    bool isDone() const { return m_count > total_frames(); }
+    bool isDone() const { return m_count >= total_frames(); }
     std::shared_ptr<sf::Sprite> update(int32_t delta_time);
-    void reset() { m_count = 0; }
+    void reset(bool loop) { m_loop=loop; m_count = 0; }
 
 private:
+    std::string m_name;
+    bool m_loop = false;
     unsigned int m_count = 0;
     std::vector< std::pair< std::shared_ptr<sf::Sprite>, uint32_t> > m_frames;
 };
@@ -38,18 +43,18 @@ public:
     AnimationManager();
     virtual ~AnimationManager();
 
+    void clear();
 
+    bool isCurrentAnimation(const std::string & animation_name);
     void addAnimation(const std::string & animation_name, const std::list<FrameParams>& frames);
     void update(int32_t delta_time);
 
-    void play(const std::string & animation_name, int repetitions= -1);
+    void play(const std::string & animation_name, bool loop=false);
     bool done() const;
     std::shared_ptr<sf::Sprite> getCurrentFrame();
-    std::shared_ptr<sf::Sprite> getCurrentFrame() const;
 
 private:
     std::shared_ptr<Animation> createAnimation(const std::string & animation_name);
-
     std::shared_ptr<sf::Sprite> m_current_sprite;
     std::shared_ptr<Animation> m_current_animation;
     std::map<std::string, std::shared_ptr<Animation>> m_animations;

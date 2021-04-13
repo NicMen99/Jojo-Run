@@ -16,13 +16,21 @@ public:
     SoundManager();
     virtual ~SoundManager();
 
+    void clear();
+
     void addSound(const std::string & sound_name, const std::string & sound_resource);
     void playSound(const std::string & sound_name, float volume = 100.f);
+    void playMusic(const std::string & sound_name = "", float volume = 100.f, float pitch = 1.f, bool loop = false);
+    void setVolume(float volume);
+    void setPitch(float pitch);
+    void setLoop(bool loop);
+    void stopMusic();
 
 private:
     sf::Sound m_sound;
     std::string m_active_sound;
     std::map<std::string, std::string> m_sound_map;
+    sf::Music m_music;
 };
 
 

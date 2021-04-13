@@ -17,6 +17,7 @@ void TextWidget::init(const WidgetTheme & theme) {
     setCharacterSize(theme.font_size);
     setFillColor(theme.font_color);
     setOutlineThickness(theme.font_outline_thinckness);
+    setOutlineColor(theme.font_outline_color);
 }
 
 void TextWidget::_update(int32_t delta_time) {
@@ -38,7 +39,7 @@ void TextWidget::setFont(const std::string & font_name) {
     m_text.setFont(*RESOURCE->getFont(font_name));
 }
 
-sf::Vector2f TextWidget::getSize() {
+sf::Vector2f TextWidget::getSize() const {
     sf::FloatRect size = m_text.getGlobalBounds();
     return sf::Vector2f{size.width, size.height};
 }

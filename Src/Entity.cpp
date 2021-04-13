@@ -1,9 +1,6 @@
 //
 // Created by Niccolo on 25/02/2021.
 //
-#include <cassert>
-#include <iostream>
-
 #include "Game.h"
 #include "AnimationManager.h"
 #include "SoundManager.h"
@@ -29,7 +26,6 @@ void Entity::update(int32_t delta_time) {
     setPosition(getPrevPosition());
     move(delta_time);
     m_animationManager->update(delta_time);
-    setStarted(true);
 }
 
 void Entity::render(sf::RenderWindow & window) {
@@ -40,7 +36,7 @@ void Entity::render(sf::RenderWindow & window) {
     window.draw(*frame);
 
     /**/
-#ifdef HIT_BOX_DEBUG
+#ifdef GAMEDEBUG
     m_frame = getBounds();
     sf::RectangleShape hitbox;
     hitbox.setPosition(m_frame.left, m_frame.top);
@@ -55,18 +51,15 @@ void Entity::render(sf::RenderWindow & window) {
 
 void Entity::move(int32_t delta_time) {
     sf::Vector2f speed = m_speed - CONFIG->getSceneSpeed();
-    sf::Vector2f offset = {speed.x * delta_time / 1000, speed.y * delta_time / 1000};
+    sf::Vector2f offset = {speed.x * (float)delta_time / 1000, speed.y * (float)delta_time / 1000};
     setPosition(getPosition() + offset);
     if((getPosition().x + getBounds().width) < 0) {
-        if(getGroup() == EntityGroup::Enemy) {
-            STATS->setInt(Stats::ConsecutiveKilled, 0);
-        }
-        setDestroyed();
+        event(GameEvent::OutOfBound, nullptr);
     }
 }
 
 void Entity::applyImpulse(const sf::Vector2f & acceleration, int32_t delta_time) {
-    m_speed += {acceleration.x * delta_time / 1000, acceleration.y * delta_time / 1000};
+    m_speed += {acceleration.x * (float)delta_time / 1000, acceleration.y * (float)delta_time / 1000};
 }
 
 void Entity::addAnimation(const std::string & animation_name, const std::list<FrameParams>& frames) {
@@ -76,16 +69,18 @@ void Entity::addAnimation(const std::string & animation_name, const std::list<Fr
     m_frame = frame;
 }
 
-void Entity::playAnimation(const std::string & animation_name, int repetitions) {
-    m_animationManager->play(animation_name, repetitions);
-}
-
-
 void Entity::addSound(const std::string & sound_name, const std::string & sound_resource) {
     m_soundManager->addSound(sound_name, sound_resource);
+}
+
+void Entity::playAnimation(const std::string & animation_name, bool loop) {
+    m_animationManager->play(animation_name, loop);
+}
+
+bool Entity::animationCompleted() {
+    return m_animationManager->done();
 }
 
 void Entity::playSound(const std::string & sound_name, float volume) {
     m_soundManager->playSound(sound_name, volume);
 }
-

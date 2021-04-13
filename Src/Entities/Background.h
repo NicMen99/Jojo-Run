@@ -14,6 +14,9 @@ public:
     explicit Background(std::string id);
     ~Background() override;
     void init(EntityType type);
+
+private:
+    void event(GameEvent event, Entity *collider) override;
 };
 
 

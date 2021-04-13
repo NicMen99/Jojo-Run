@@ -40,6 +40,7 @@ void SceneManager::init()
     m_scorehud.reset();
 
     m_last_platform = {0, 0, 0, 0};
+    m_platforms_count = 0;
     m_enemies_count = 0;
     m_obstacles_count = 0;
     m_powerups_count = 0;
@@ -255,6 +256,9 @@ bool SceneManager::generatePlatforms() {
         /* dimensione */
         std::vector<float> horizontal_size = {
                 0.3f * CONFIG->getWindowSize().x,
+                0.3f * CONFIG->getWindowSize().x,
+                0.3f * CONFIG->getWindowSize().x,
+                0.5f * CONFIG->getWindowSize().x,
                 0.5f * CONFIG->getWindowSize().x,
                 0.7f * CONFIG->getWindowSize().x,
                 (float)CONFIG->getWindowSize().x};
@@ -269,11 +273,7 @@ bool SceneManager::generatePlatforms() {
         posy = vertical_position[RAND(vertical_position.size())];
 
         /* spazio di salto */
-        std::vector<float> horizontal_spacing = {
-                150,
-                250,
-                375,
-                500};
+        std::vector<float> horizontal_spacing = {150, 250, 375, 500};
         if(last->getPosition().y < posy) { horizontal_size.pop_back(); }
         m_platform_space = horizontal_spacing[RAND(horizontal_spacing.size())];
     }
@@ -282,6 +282,8 @@ bool SceneManager::generatePlatforms() {
 }
 
 bool SceneManager::generateEnemies(bool random) {
+    if(m_platforms_count < 2)
+        return false;
     if(random) {
         static std::vector<bool> generate = { true, true, false, true, true, true, false, true, true, true, true};
         if(!generate[RAND(generate.size())])
@@ -298,6 +300,8 @@ bool SceneManager::generateEnemies(bool random) {
 }
 
 bool SceneManager::generateObstacles(bool random) {
+    if(m_platforms_count < 2 || m_platforms_count % 13 == 0)
+        return false;
     if(random) {
         static std::vector<bool> generate = {true, true, false, true};
         if (!generate[RAND(generate.size())])
@@ -305,7 +309,7 @@ bool SceneManager::generateObstacles(bool random) {
     }
     if(m_obstacles.empty()) {
         std::vector<EntityType> choice = {EntityType::Wall, EntityType::Block};
-        static std::vector<float> pos = {0.4, 0.6, 0.8};
+        static std::vector<float> pos = {0.25, 0.5, 0.75};
         createObstacle(choice[RAND(choice.size())], sf::Vector2f(m_last_platform.left+m_last_platform.width * pos[RAND(pos.size())], m_last_platform.top));
         m_obstacles_count++;
         return true;
@@ -314,14 +318,16 @@ bool SceneManager::generateObstacles(bool random) {
 }
 
 bool SceneManager::generatePowerups(bool random) {
+    if(m_platforms_count < 2 || m_platforms_count % 53 == 0)
+        return false;
     if(random) {
-        static std::vector<bool> generate = {true, false, true};
+        static std::vector<bool> generate = {true, false, true, true};
         if (!generate[RAND(generate.size())])
             return false;
     }
     if (m_powerups.empty()) {
         std::vector<EntityType> choice = {EntityType::Weapon, EntityType::Shield, EntityType::Weapon};
-        static std::vector<float> pos = {0.3, 0.6, 0.9};
+        static std::vector<float> pos = {0.25, 0.5, 0.75};
         createPowerup(choice[RAND(choice.size())], sf::Vector2f(m_last_platform.left+m_last_platform.width * pos[RAND(pos.size())], m_last_platform.top));
         m_powerups_count++;
         return true;
@@ -330,20 +336,26 @@ bool SceneManager::generatePowerups(bool random) {
 }
 
 void SceneManager::manageCollisions() {
+    CollisionTag tag1;
+    CollisionTag tag2;
 
-    if(m_hero!= nullptr && m_hero->isEnabled()) {
+    if(m_hero != nullptr) {
         /*
          * Collisione Eroe Piattaforma
          */
-        for (auto & platform : m_platforms) {
-            if(m_collisionManager->collisionCheck(m_hero.get(), platform.get()))
-                m_hero->event(GameEvent::Collision, platform.get());
+        for (auto &platform : m_platforms) {
+            if (m_collisionManager->collisionCheck(m_hero.get(), platform.get(), tag1, tag2)) {
+                GameEvent ev = tag1 == CollisionTag::Top ? GameEvent::CollisionTop :
+                               tag1 == CollisionTag::Bottom ? GameEvent::CollisionBottom :
+                               GameEvent::Collision;
+                m_hero->event(ev, platform.get());
+            }
         }
         /*
          * Collisione Eroe Nemici
          */
-        for (auto & enemy : m_enemies) {
-            if (m_collisionManager->collisionCheck(m_hero.get(), enemy.get())) {
+        for (auto &enemy : m_enemies) {
+            if (m_collisionManager->collisionCheck(m_hero.get(), enemy.get(), tag1, tag2)) {
                 m_hero->event(GameEvent::Collision, enemy.get());
                 enemy->event(GameEvent::Collision, m_hero.get());
             }
@@ -351,8 +363,8 @@ void SceneManager::manageCollisions() {
         /*
          * Collisione Eroe Ostacoli
          */
-        for (auto & obstacle : m_obstacles) {
-            if (m_collisionManager->collisionCheck(m_hero.get(), obstacle.get())) {
+        for (auto &obstacle : m_obstacles) {
+            if (m_collisionManager->collisionCheck(m_hero.get(), obstacle.get(), tag1, tag2)) {
                 m_hero->event(GameEvent::Collision, obstacle.get());
                 obstacle->event(GameEvent::Collision, m_hero.get());
             }
@@ -360,31 +372,44 @@ void SceneManager::manageCollisions() {
         /*
          * Collisione Eroe Potenziamenti
          */
-        for (auto & powerup : m_powerups) {
-            if (m_collisionManager->collisionCheck(m_hero.get(), powerup.get())) {
-                m_hero->event(GameEvent::Collision, powerup.get());
-                powerup->event(GameEvent::Collision, m_hero.get());
+        for (auto &powerup : m_powerups) {
+            if (m_collisionManager->collisionCheck(m_hero.get(), powerup.get(), tag1, tag2)) {
+                m_hero->event(GameEvent::Collection, powerup.get());
+                powerup->event(GameEvent::Collection, m_hero.get());
             }
         }
         /*
          * Collisione Eroe Proiettili
          */
-        for (auto & bullet : m_bullets) {
-            if (m_collisionManager->collisionCheck(m_hero.get(), bullet.get())) {
+        for (auto &bullet : m_bullets) {
+            if (m_collisionManager->collisionCheck(m_hero.get(), bullet.get(), tag1, tag2)) {
                 m_hero->event(GameEvent::Collision, bullet.get());
                 bullet->event(GameEvent::Collision, m_hero.get());
             }
         }
-        /*
-         * Collisione Nemici Proiettili
-         */
-        for (auto & bullet : m_bullets) {
-            for(auto & enemy : m_enemies) {
-                if (m_collisionManager->collisionCheck(enemy.get(), bullet.get())) {
-                    enemy->event(GameEvent::Collision, bullet.get());
-                    bullet->event(GameEvent::Collision, enemy.get());
-                    m_hero->event(GameEvent::EnemyKilled, enemy.get());
-                }
+    }
+    /*
+     * Collisione Piattaforme Nemici
+     */
+    for (auto & platform : m_platforms) {
+        for(auto & enemy : m_enemies) {
+            if (m_collisionManager->collisionCheck(enemy.get(), platform.get(), tag1, tag2)) {
+                GameEvent ev = tag1==CollisionTag::Top ? GameEvent::CollisionTop :
+                               tag1==CollisionTag::Bottom ? GameEvent::CollisionBottom :
+                               GameEvent::Collision;
+                enemy->event(ev, platform.get());
+            }
+        }
+    }
+    /*
+     * Collisione Nemici Proiettili
+     */
+    for (auto & bullet : m_bullets) {
+        for(auto & enemy : m_enemies) {
+            if (m_collisionManager->collisionCheck(enemy.get(), bullet.get(), tag1, tag2)) {
+                enemy->event(GameEvent::Collision, bullet.get());
+                bullet->event(GameEvent::Collision, enemy.get());
+                m_hero->event(GameEvent::EnemyKilled, enemy.get());
             }
         }
     }
@@ -428,6 +453,7 @@ void SceneManager::createPlatform(EntityType platformtype, float size, sf::Vecto
         m_last_platform.height += pl->getBounds().height;
         m_platforms.emplace_back(std::move(pl));
     }
+    m_platforms_count ++;
 }
 
 void SceneManager::createObstacle(EntityType ot, sf::Vector2f position) {
@@ -448,13 +474,13 @@ void SceneManager::createEnemy(EntityType et, sf::Vector2f position) {
 
 void SceneManager::createPowerup(EntityType pt, sf::Vector2f position) {
     auto pu = FACTORY->createPowerUp(pt);
-    pu->setPosition(sf::Vector2f(0, -2*pu->getBounds().height) + position);
+    pu->setPosition(sf::Vector2f(0, -CONFIG->getLevelDeltaH()*2/3) + position);
     m_powerups.emplace_back(std::move(pu));
 }
 
 void SceneManager::createHero() {
     m_hero = FACTORY->createHero();
-    m_hero->setPosition(sf::Vector2f(200.f, CONFIG->getBottomLevel() - m_hero->getBounds().height));
+    m_hero->setPosition(sf::Vector2f(CONFIG->getHeroPosX(), CONFIG->getBottomLevel() - m_hero->getBounds().height));
 }
 
 void SceneManager::createScoreHUD() {

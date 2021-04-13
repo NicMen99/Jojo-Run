@@ -6,13 +6,10 @@
 #include "Background.h"
 
 Background::Background(const std::string id) :
-        Entity(EntityGroup::Background, EntityType::SkyScrapers, id)
-{
-
+        Entity(EntityGroup::Scene, EntityType::Background, id) {
 }
 
 Background::~Background() {
-
 }
 
 void Background::init(EntityType type) {
@@ -27,5 +24,11 @@ void Background::init(EntityType type) {
     }
     else if(type == EntityType::Bridge) {
         setSpeed({(0.f),0.f});
+    }
+}
+
+void Background::event(GameEvent event, Entity *collider) {
+    if (event == GameEvent::OutOfBound) {
+        setDestroyed();
     }
 }

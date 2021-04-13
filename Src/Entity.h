@@ -15,12 +15,9 @@ class AnimationManager;
 class SoundManager;
 class FrameParams;
 
-#define HIT_BOX_DEBUG
-
 enum class EntityGroup {
     Scene,
     Platform,
-    Background,
     Bullet,
     Enemy,
     Powerup,
@@ -33,14 +30,14 @@ enum class EntityType {
     FireEnemy, HamonEnemy, EmeraldEnemy,
     Weapon, Shield,
     Knife, FireBullet, EmeraldBullet,
-    StonePlatform,
+    Platform, StonePlatform,
     Hero,
     Hud,
-    Sky, City, SkyScrapers, Bridge
+    Background, Sky, City, SkyScrapers, Bridge
 };
 
 enum class GameEvent {
-    Collision, EnemyKilled
+    Collision, CollisionTop, CollisionBottom, Collection, EnemyKilled, OutOfBound
 };
 
 class Entity {
@@ -63,6 +60,8 @@ public:
     sf::FloatRect getBounds() const { return m_frame; }
     sf::FloatRect getPrevBounds() const { return m_prev_frame; }
     sf::Vector2f getSpeed() const {return m_speed;}
+    virtual int getGain() const { return 0; };
+    virtual int getDamage() const { return 0; };
     bool isStarted() const { return m_started; }
     bool isEnabled() const { return m_enabled; }
     bool isVisible() const { return m_visible; }
@@ -84,7 +83,8 @@ protected:
     virtual void move(int32_t delta_time);
     virtual void applyImpulse(const sf::Vector2f & acceleration, int32_t delta_time);
 
-    void playAnimation(const std::string & animation_name, int repetitions= -1);
+    void playAnimation(const std::string & animation_name, bool loop = false);
+    bool animationCompleted();
     void playSound(const std::string & sound_name, float volume = 100.f);
 
 private:

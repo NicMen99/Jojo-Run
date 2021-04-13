@@ -5,14 +5,13 @@
 #include "Emerald.h"
 
 Emerald::Emerald(const std::string& id) :
-    Bullet(EntityType::EmeraldBullet, id) {}
+    Bullet(EntityType::EmeraldBullet, id) {
+}
 
-Emerald::~Emerald(){
-
+Emerald::~Emerald() {
 }
 
 void Emerald::init() {
-    setSpeed({0.f, 0.f});
     setDamage(150);
 }
 
@@ -23,8 +22,12 @@ void Emerald::update(int32_t delta_time) {
 }
 
 void Emerald::event(GameEvent event, Entity *collider) {
-    Entity::event(GameEvent::Collision, collider);
-    if (collider->getType() == EntityType::Hero)
+    if(GameEvent::Collision == event) {
+        if (collider->getType() == EntityType::Hero)
+            setDestroyed();
+    }
+    else if(GameEvent::OutOfBound == event) {
         setDestroyed();
+    }
 }
 

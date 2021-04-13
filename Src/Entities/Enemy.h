@@ -11,24 +11,27 @@
 class Bullet;
 
 class Enemy: public Entity {
-private:
-    enum State {Alive, Dying, Dead};
+protected:
+    enum State {Init, Idle, Attack, Dead};
 
 public:
     Enemy(EntityType mtype, const std::string & name);
     ~Enemy() override;
     void init(const std::string & texture_name, sf::Vector2f scale, sf::Vector2f speed, int damage);
 
-    void update(int32_t delta_time) override;
-    void event(GameEvent event, Entity *collider) override;
-
     void setDamage(int damage) { m_damage = damage; }
-    int getDamage() const { return m_damage; };
+    int getDamage() const override { return m_damage; };
     void setLifeBonus(int damage) { m_lifebonus = damage; }
-    int getLifeBonus() const { return m_lifebonus; };
+    int getGain() const override { return m_lifebonus; };
 
 protected:
-    State m_state = State::Alive;
+    void update(int32_t delta_time) override;
+    void event(GameEvent event, Entity *collider) override;
+    void updatePhysics(int32_t delta_time);
+    void speedCap();
+    virtual void changeState(State){}
+
+    State m_state = State::Init;
     int m_damage = 0;
     int m_lifebonus = 0;
 

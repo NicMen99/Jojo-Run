@@ -16,7 +16,7 @@ public:
     void setFillColor(const sf::Color & color);
     void setSize(sf::Vector2f size);
 
-    sf::Vector2f getSize() const;
+    sf::Vector2f getSize() const override;
 
 protected:
     void _update(int32_t delta_time) override;

@@ -14,7 +14,7 @@ public:
     ~Bullet() override {};
 
     void setDamage(int damage) { m_damage = damage; }
-    int getDamage() const { return m_damage; };
+    int getDamage() const override { return m_damage; };
 
 private:
     int m_damage = 0;

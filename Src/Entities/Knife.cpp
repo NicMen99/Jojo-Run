@@ -10,21 +10,28 @@ Knife::Knife(std::string id) :
 }
 
 Knife::~Knife() {
-
 }
 
 void Knife::init() {
-    setSpeed({0.f, 0.f});
     setDamage(100);
 }
 
 void Knife::update(int32_t delta_time) {
+    if(!isStarted()) {
+        playAnimation("DEFAULT", true);
+        setStarted(true);
+    }
     Entity::update(delta_time);
     if(getPosition().x > CONFIG->getWindowSize().x)
         setDestroyed();
 }
 
 void Knife::event(GameEvent event, Entity *collider) {
-    Entity::event(GameEvent::Collision, collider);
-    setDestroyed();
+    if(event == GameEvent::Collision) {
+        if (collider->getType() != EntityType::Hero)
+            setDestroyed();
+    }
+    else if (event == GameEvent::OutOfBound) {
+        setDestroyed();
+    }
 }

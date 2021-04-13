@@ -59,6 +59,7 @@ protected:
 
     sf::FloatRect m_last_platform;
     float m_platform_space;
+    int m_platforms_count;
     int m_enemies_count;
     int m_obstacles_count;
     int m_powerups_count;

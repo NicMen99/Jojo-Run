@@ -13,13 +13,18 @@ add_executable(testrunner "" )
 target_sources(testrunner
         PUBLIC
         runner.cpp
+        Mock/MockGameConfig.h
+        Mock/MockGameConfig.cpp
+        Mock/MockSceneManager.h
+        Mock/MockSceneManager.cpp
         # add test files here
-        EntityTest.cpp
-        WidgetTest.cpp
-        CollisionTest.cpp
-        SceneTest.cpp
-        InputTest.cpp
-        ResourcesTest.cpp
+        CollisionManagerTest.cpp
+        EntitiesTest.cpp
+        InputManagerTest.cpp
+        ResourcesManagerTest.cpp
+        SceneManagerTest.cpp
+        ScoreManagerTest.cpp
+        WidgetsTest.cpp
 )
 
 #
@@ -137,7 +142,7 @@ target_link_libraries(testrunner
 #
 # Setup
 #
-file(COPY TestAsset DESTINATION ${CMAKE_BINARY_DIR}/Test)
+file(COPY TestAssets DESTINATION ${CMAKE_BINARY_DIR}/Test)
 
 enable_testing()
 include(CTest)

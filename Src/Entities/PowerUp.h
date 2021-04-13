@@ -13,11 +13,11 @@ public:
             Entity(EntityGroup::Powerup, mtype, name) {}
     ~PowerUp() override {};
 
-    void setQuantity(int quantity) { m_quantity = quantity; }
-    int getQuantity() const { return m_quantity; };
+    void setGain(int quantity) { m_gain = quantity; }
+    int getGain() const override { return m_gain; };
 
 private:
-    int m_quantity = 0;
+    int m_gain = 0;
 };
 
 #endif //JOJO_RUN_POWERUP_H

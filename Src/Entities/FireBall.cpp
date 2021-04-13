@@ -9,27 +9,30 @@
 
 FireBall::FireBall(std::string id) :
     Bullet(EntityType::FireBullet, id) {
-
 }
 
 FireBall::~FireBall() {
-
 }
 
 void FireBall::init() {
-    setSpeed({0.f, 0.f});
     setDamage(50);
 }
 
 void FireBall::update(int32_t delta_time) {
+    if(!isStarted()) {
+        playAnimation("DEFAULT", true);
+        setStarted(true);
+    }
     Entity::update(delta_time);
-    if(getPosition().x < 0)
-        setDestroyed();
 }
 
 void FireBall::event(GameEvent event, Entity *collider) {
-    Entity::event(GameEvent::Collision, collider);
-    if (collider->getType() == EntityType::Hero)
+    if(GameEvent::Collision == event) {
+        if (collider->getType() == EntityType::Hero)
+            setDestroyed();
+    }
+    else if (event == GameEvent::OutOfBound) {
         setDestroyed();
+    }
 }
 
