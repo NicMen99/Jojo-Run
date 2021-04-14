@@ -8,12 +8,12 @@
 #include "StateMachine/AbsGameState.h"
 
 class InitState: public AbsGameState {
-
+private:
     static InitState* m_instance;
+
 public:
     static InitState* instance();
 
-public:
     void onEnter() override;
 };
 

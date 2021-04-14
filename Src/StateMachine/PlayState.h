@@ -16,13 +16,9 @@
 
 class PlayState: public AbsGameState{
 
-    enum Action {Play, Pause};
-
-    static PlayState* m_instance;
 public:
     static PlayState* instance();
 
-public:
     void init() override;
     void onEnter() override;
     void onExit() override;
@@ -32,11 +28,14 @@ public:
 private:
     void createOverlay();
 
-private:
+    enum Action {Play, Pause, End};
+
+    static PlayState* m_instance;
+
     Action       m_action = Action::Play;
     InputManager m_inputManager;
-    sf::Music    m_music{};
     Widget *     m_root = nullptr;
+    sf::Clock    m_timer;
 };
 
 

@@ -12,7 +12,7 @@ public:
     ~Shield() override;
     void init();
 
-public:
+private:
     void event(GameEvent event, Entity *collider) override;
 };
 

@@ -24,6 +24,13 @@ Game* Game::instance(AbsGameState* fsm, GameConfig* cfg, ResourceManager* resm, 
     return m_instance;
 }
 
+void Game::deleteInstance() {
+    if(m_instance!= nullptr){
+        delete m_instance;
+        m_instance= nullptr;
+    }
+}
+
 Game::Game():
     m_gameMachine(new GameStateMachine(State::Init)),
     m_gameConfig(new GameConfig()),
@@ -47,11 +54,14 @@ Game::Game(AbsGameState* fsm, GameConfig* cfg, ResourceManager* resm, Factory* f
 
 }
 
-Game::~Game() = default;
+Game::~Game() {
+    m_instance = nullptr;
+};
 
 void Game::init()
 {
     m_gen.seed(m_rd());
+    m_dist = std::uniform_int_distribution<int>(0,65535);
     m_gameConfig->init();
 }
 
@@ -69,7 +79,9 @@ void Game::loop()
 
         sf::Time elapsedTime = m_clock.restart();
         if(elapsedTime > sf::milliseconds(100)) {
+#ifdef GAMEDEBUG
             std::cout << elapsedTime.asMilliseconds() << std::endl;
+#endif
             elapsedTime = sf::milliseconds(100);
         }
         m_accumulator += elapsedTime;

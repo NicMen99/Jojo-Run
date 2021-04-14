@@ -10,37 +10,58 @@
 #include <vector>
 
 class ScoreManager {
-
+public:
     struct Record {
-        bool        added;
+        int         added;
+        int         rank;
         std::string nickname;
         int         score;
+        int         distance;
+        int         clean_distance;
+        int         killed;
+        int         consec_killed;
+        int         time;
+        void clear() {
+            added=false;
+            rank=0;
+            nickname="";
+            score=0;
+            distance=0;
+            clean_distance=0;
+            killed=0;
+            consec_killed=0;
+            time=0;
+        }
     };
 
     /* achievement management */
-public:
     void init();
     void update();
 
     /* Record file management */
-public:
     void loadFromFile();
     void setName(const std::string & nickname);
     void saveToFile();
-    std::vector<Record> getScoreRecord();
+    std::vector<Record> getScoreRecords() { return m_records; }
+    Record getRecord() { return m_score_record; }
 
 private:
     void sort();
-
-private:
-    const std::string m_fileName = "ScoreManager.txt";
+    const std::string m_fileName = "Score.txt";
     std::vector<Record> m_records;
     Record m_score_record;
 
-    int m_last_distance = 0;
+    static const int m_distance_unit = 100;
+    static const int m_distance_bonus_factor = 200;
+    static const int m_clean_distance_bonus_factor = 50;
+    static const int m_killed_factor = 10;
+    static const int m_killed_bonus_factor = 20;
+    static const int m_consecutive_killed_bonus_factor = 50;
+    int m_score_bonus = 0;
     std::pair<int, int> m_distance_achiev = {0, 0};
+    std::pair<int, int> m_clean_distance_achiev = {0, 0};
     std::pair<int, int> m_killed_achiev = {0, 0};
-    std::pair<int, int> m_conseckilled_achiev = {0, 0};
+    std::pair<int, int> m_consecutive_killed_achiev = {0, 0};
 };
 
 

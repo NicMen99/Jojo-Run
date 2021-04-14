@@ -14,7 +14,7 @@ public:
     void init(const WidgetTheme & theme);
 
     void setTexture(const std::string & texture_name, const sf::Vector2u & texture_size = {0, 0});
-    sf::Vector2f getSize() const;
+    sf::Vector2f getSize() const override;
 
 protected:
     void _update(int32_t delta_time) override;

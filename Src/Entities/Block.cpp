@@ -2,34 +2,36 @@
 // Created by angiolo99 on 23/01/20.
 //
 
-#include <list>
 #include "Game.h"
-#include "AnimationManager.h"
-
 #include "Block.h"
 
 
 Block::Block(const std::string& id) :
     Obstacle(EntityType::Block, id) {
-
 }
 
-Block::~Block(){
-
+Block::~Block() {
 }
 
 void Block::init() {
-    const std::list<FrameParams> frames = {
-            {1, "blockTexture", {0,0,0,0}, {0,0}, {false, false}}
-    };
-    addAnimation("DEFAULT", frames);
     setSpeed({0.f, 0.f});
-    setDamage(70);
+    setDamage(75);
+}
+
+void Block::update(int32_t delta_time) {
+    if(!isStarted()) {
+        playAnimation("DEFAULT", true);
+        setStarted(true);
+    }
+    Entity::update(delta_time);
 }
 
 void Block::event(GameEvent event, Entity *collider) {
-    if(collider->getType() == EntityType::Hero) {
+    if(GameEvent::Collision == event) {
+        if (collider->getType() == EntityType::Hero)
+            setEnabled(false);
+    }
+    else if(GameEvent::OutOfBound == event) {
         setDestroyed();
     }
 }
-

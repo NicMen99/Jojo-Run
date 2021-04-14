@@ -17,6 +17,7 @@ struct WidgetTheme {
     unsigned int font_size = 20;
     sf::Color font_color = sf::Color::White;
     float font_outline_thinckness = 0;
+    sf::Color font_outline_color = sf::Color::Black;
 };
 
 
@@ -30,18 +31,24 @@ public:
 
     Widget* add(Widget* widget);
     Widget* findObjectByName(const std::string & name);
-    void setPosition(const sf::Vector2f & position);
+    void setPosition(const sf::Vector2f & position) { m_position = position; }
+    void setPosition(float posx, float posy) { m_position = {posx, posy}; }
+    sf::Vector2f getPosition() { return m_position; }
     void setVisible(bool visible) { m_visible = visible; }
     void startTimer(sf::Time time);
+    bool isVisible(Widget* widget) { return m_visible; }
+    virtual sf::Vector2f getSize() const { return {0,0}; };
+
+    /* observer interface */
+
+    void observe(Subject * observed, const std::string & item_name);
 
 protected:
     virtual void _update(int32_t delta_time) {}
     virtual void _render(sf::RenderWindow & window, const sf::Vector2f & parent_position) {}
     void setParent(Widget *);
     Widget * getParent() const;
-    sf::Vector2f getPosition() { return m_position; }
 
-protected:
     sf::Clock m_clock;
     sf::Time m_time = sf::seconds(0);
     bool m_timer_started = false;
@@ -53,12 +60,8 @@ private:
     Widget * m_parent = nullptr;
     std::list<Widget*> m_children;
 
- /* observer interface */
+    /* observer interface */
 
-public:
-    void observe(Subject * observed, const std::string & item_name);
-
-private:
     void data_update(const std::string & item_name, const std::string & item_value) override {}
     void attach() override;
     void detach() override;

@@ -16,13 +16,9 @@
 
 class MenuState: public AbsGameState {
 
-    enum Action {MainMenu, Credits };
-
-    static MenuState* m_instance;
 public:
     static MenuState* instance();
 
-public:
     void init() override;
     void onEnter() override;
     void onExit() override;
@@ -30,13 +26,15 @@ public:
     void render(sf::RenderWindow &window) override;
 
 private:
+    enum Action {MainMenu, Credits };
+
+    static MenuState* m_instance;
+
     void createMenuScreen();
     void createCreditScreen();
 
-private:
     Action       m_action = Action::MainMenu;
     InputManager m_inputManager;
-    sf::Music    m_music{};
     Widget *     m_root = nullptr;
 };
 

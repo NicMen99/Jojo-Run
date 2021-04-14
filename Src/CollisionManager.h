@@ -9,13 +9,16 @@
 #include <SFML/Graphics.hpp>
 class Entity;
 
+enum class CollisionTag { None, Any, Top, Bottom, Left, Right };
+
 class CollisionManager {
 
 public:
-    bool collisionCheck(Entity * item1, Entity * item2);
+    bool collisionCheck(Entity * item1, Entity * item2, CollisionTag & tag1, CollisionTag & tag2);
 
 private:
-    bool checkHeroPlatform(Entity * hero, Entity * platform);
+    bool checkHeroPlatform(Entity * hero, Entity * platform, CollisionTag & hero_tag, CollisionTag & platform_tag);
+    bool checkEnemyPlatform(Entity * enemy, Entity * platform, CollisionTag & enemy_tag, CollisionTag & platform_tag);
     std::shared_ptr<sf::FloatRect> intersectionRect(Entity * hero, Entity * platform);
 };
 

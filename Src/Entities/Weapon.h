@@ -14,10 +14,8 @@ public:
     ~Weapon() override;
     void init();
 
-public:
-    void event(GameEvent event, Entity *collider) override;
-
 private:
+    void event(GameEvent event, Entity *collider) override;
     int m_knives = 2;
 };
 

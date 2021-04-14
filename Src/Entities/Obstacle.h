@@ -11,12 +11,11 @@ class Obstacle : public Entity
 {
 public:
     Obstacle(EntityType mtype, const std::string & name) :
-            Entity(EntityGroup::Map, mtype, name) { }
+            Entity(EntityGroup::Obstacle, mtype, name) { }
     ~Obstacle() override {};
 
-public:
     void setDamage(int damage) { m_damage = damage; }
-    int getDamage() const { return m_damage; };
+    int getDamage() const override { return m_damage; };
 
 private:
     int m_damage = 0;

@@ -53,10 +53,6 @@ void Widget::update(int32_t delta_time) {
         widget->update(delta_time);
 }
 
-void Widget::setPosition(const sf::Vector2f & position) {
-    m_position = position;
-}
-
 void Widget::startTimer(sf::Time time) {
     if(time > sf::seconds(0)) {
         setVisible(true);

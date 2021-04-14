@@ -23,22 +23,20 @@ public:
     void update(int32_t delta_time) override;
     void render(sf::RenderWindow & window) override;
 
+    void observe(Subject * observed, const std::string & item_name);
+
 private:
     Widget * m_score{};
     Widget * m_achievements{};
     Widget * m_hero_status{};
 
-    /**/
-public:
-    void observe(Subject * observed, const std::string & item_name);
+    SoundManager m_soundManager;
 
-private:
     void data_update(const std::string & item_name, const std::string & item_value) override;
     void attach() override;
     void detach() override;
     Subject * m_observed = nullptr;
     std::string m_observed_value;
-
 };
 
 

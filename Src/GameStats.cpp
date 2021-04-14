@@ -5,19 +5,19 @@
 #include "GameStats.h"
 
 
-const char * Stats::Time                        = "TIME_STAT";
-const char * Stats::Score                       = "SCORE_STAT";
-const char * Stats::Distance                    = "DISTANCE_STAT";
-const char * Stats::Health                      = "HEALTH_STAT";
-const char * Stats::Knives                      = "KNIVES_STAT";
-const char * Stats::Killed                      = "KILLED_STAT";
-const char * Stats::ConsecutiveKilled           = "CONSECKILLED_STAT";
-const char * Stats::CleanDistance               = "CLEANDISTANCE_STAT";
-const char * Achievements::Score                = "SCORE_ACHIEVEMENT";
-const char * Achievements::Distance             = "DISTANCE_ACHIEVEMENT";
-const char * Achievements::Killed               = "KILLED_ACHIEVEMENT";
-const char * Achievements::ConsecutiveKilled    = "CONSECKILLED_ACHIEVEMENT";
-const char * Achievements::CleanDistance        = "CLEANDISTANCE_ACHIEVEMENT";
+const std::string Stats::Time                        = "TIME_STAT";
+const std::string Stats::Score                       = "SCORE_STAT";
+const std::string Stats::Distance                    = "DISTANCE_STAT";
+const std::string Stats::Health                      = "HEALTH_STAT";
+const std::string Stats::Knives                      = "KNIVES_STAT";
+const std::string Stats::Killed                      = "KILLED_STAT";
+const std::string Stats::ConsecutiveKilled           = "CONSECKILLED_STAT";
+const std::string Stats::CleanDistance               = "CLEANDISTANCE_STAT";
+const std::string Achievements::Score                = "SCORE_ACHIEVEMENT";
+const std::string Achievements::Distance             = "DISTANCE_ACHIEVEMENT";
+const std::string Achievements::Killed               = "KILLED_ACHIEVEMENT";
+const std::string Achievements::ConsecutiveKilled    = "CONSECKILLED_ACHIEVEMENT";
+const std::string Achievements::CleanDistance        = "CLEANDISTANCE_ACHIEVEMENT";
 
 
 void GameStats::subscribe(Observer * observer, const std::string & item_name) {

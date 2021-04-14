@@ -13,9 +13,18 @@ add_executable(testrunner "" )
 target_sources(testrunner
         PUBLIC
         runner.cpp
+        Mock/MockGameConfig.h
+        Mock/MockGameConfig.cpp
+        Mock/MockSceneManager.h
+        Mock/MockSceneManager.cpp
         # add test files here
-        EntityTest.cpp
-        WidgetTest.cpp
+        CollisionManagerTest.cpp
+        EntitiesTest.cpp
+        InputManagerTest.cpp
+        ResourcesManagerTest.cpp
+        SceneManagerTest.cpp
+        ScoreManagerTest.cpp
+        WidgetsTest.cpp
 )
 
 #
@@ -133,7 +142,7 @@ target_link_libraries(testrunner
 #
 # Setup
 #
-file(COPY TestAsset DESTINATION ${CMAKE_BINARY_DIR}/Test)
+file(COPY TestAssets DESTINATION ${CMAKE_BINARY_DIR}/Test)
 
 enable_testing()
 include(CTest)
@@ -152,6 +161,36 @@ add_test(WidgetTest, EmptyWidget)
 add_test(WidgetTest, AddWidget)
 add_test(WidgetTest, WidgetPosition)
 add_test(WidgetTest, TestObserver)
+add_test(WidgetTest, SetString)
+add_test(WidgetTest, SetStringTimer)
+add_test(WidgetTest, SetImage)
+add_test(WidgetTest, SetShape)
 
+add_test(CollisionTest, NoOverlap)
+add_test(CollisionTest, AdjacentEntitiesOnX)
+add_test(CollisionTest, AdjacentEntitiesOnY)
+add_test(CollisionTest, OverlapX)
+add_test(CollisionTest, OverlapY)
+add_test(CollisionTest, OverlapXY)
+add_test(CollisionTest, HeroPlatformCase1)
+add_test(CollisionTest, HeroPlatformCase2)
+add_test(CollisionTest, HeroPlatformCase3)
+add_test(CollisionTest, HeroPlatformCase4)
+add_test(CollisionTest, SinglePixelEntities)
 
+add_test(InputTest, KeyPressed)
+add_test(InputTest, KeyJustPressed)
+add_test(InputTest, KeyReleased)
+add_test(InputTest, KeyJustReleased)
 
+add_test(ResourcesTest, TestExistingFont)
+add_test(ResourcesTest, TestExistingTexture)
+add_test(ResourcesTest, TestExistingSound)
+add_test(ResourcesTest, TestCachedFont)
+add_test(ResourcesTest, TestCachedTexture)
+add_test(ResourcesTest, TestCachedSound)
+add_test(ResourcesTest, TestNonExistingFont)
+add_test(ResourcesTest, TestNonExistingTexture)
+add_test(ResourcesTest, TestNonExistingSound)
+add_test(ResourcesTest, WrongResourceType)
+#add_test()
