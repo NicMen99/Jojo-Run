@@ -135,7 +135,7 @@ A completamento viene visualizzata la top ten ed un eventuale messaggio di grati
 
 ## Demo
 
-###Videoclip
+## Videoclip
 
 Clip1
 ![alt text](ReadmeContent/Clip1.gif)
@@ -149,7 +149,7 @@ Clip3
 Clip4
 ![alt text](ReadmeContent/Clip4.gif)
 
-###Screen shots
+## Screen shots
 
 Menu iniziale
 ![alt text](./ReadmeContent/Menu.png)
