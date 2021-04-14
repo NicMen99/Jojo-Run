@@ -13,8 +13,8 @@ HamonEnemy::~HamonEnemy() {
 }
 
 void HamonEnemy::init() {
-    setDamage(70);
-    setLifeBonus(10);
+    setDamage(50);
+    setLifeBonus(30);
 }
 
 void HamonEnemy::update(int32_t delta_time) {
@@ -39,7 +39,7 @@ void HamonEnemy::update(int32_t delta_time) {
             m_shoot_left--;
             m_shootTimer.restart();
             m_shootTime = sf::milliseconds(RAND(1000) + 500);
-            setDamage(70);
+            setDamage(50);
             changeState(State::Idle);
         }
     }

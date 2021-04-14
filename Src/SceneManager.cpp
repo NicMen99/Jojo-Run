@@ -382,6 +382,8 @@ void SceneManager::manageCollisions() {
          * Collisione Eroe Proiettili
          */
         for (auto &bullet : m_bullets) {
+            if(bullet->getType() == EntityType::Knife)
+                continue;
             if (m_collisionManager->collisionCheck(m_hero.get(), bullet.get(), tag1, tag2)) {
                 m_hero->event(GameEvent::Collision, bullet.get());
                 bullet->event(GameEvent::Collision, m_hero.get());
@@ -402,9 +404,11 @@ void SceneManager::manageCollisions() {
         }
     }
     /*
-     * Collisione Nemici Proiettili
+     * Collisione Nemici Coltello
      */
     for (auto & bullet : m_bullets) {
+        if(bullet->getType() != EntityType::Knife)
+            continue;
         for(auto & enemy : m_enemies) {
             if (m_collisionManager->collisionCheck(enemy.get(), bullet.get(), tag1, tag2)) {
                 enemy->event(GameEvent::Collision, bullet.get());

@@ -15,8 +15,8 @@ FireEnemy::~FireEnemy() {
 }
 
 void FireEnemy::init() {
-    setDamage(90);
-    setLifeBonus(30);
+    setDamage(70);
+    setLifeBonus(50);
 }
 
 void FireEnemy::update(int32_t delta_time) {

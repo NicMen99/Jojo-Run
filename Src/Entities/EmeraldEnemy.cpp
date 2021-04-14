@@ -15,7 +15,7 @@ EmeraldEnemy::~EmeraldEnemy() {
 
 void EmeraldEnemy::init() {
     setDamage(90);
-    setLifeBonus(20);
+    setLifeBonus(70);
 }
 
 void EmeraldEnemy::update(int32_t delta_time) {

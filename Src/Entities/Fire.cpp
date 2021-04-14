@@ -13,7 +13,7 @@ Fire::~Fire() {
 
 void Fire::init() {
     setSpeed({0.f, 0.f});
-    setDamage(1);
+    setDamage(25);
 }
 
 void Fire::update(int32_t delta_time) {
