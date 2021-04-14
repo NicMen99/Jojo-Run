@@ -135,23 +135,45 @@ A completamento viene visualizzata la top ten ed un eventuale messaggio di grati
 
 ## Demo
 
-Video1 [link] 
-descrizione
+Menu iniziale
+![alt text](./ReadmeContent/Menu.png)
 
-Video2 [link]
-descrizione
+Credits
+![alt text](./ReadmeContent/Credits.png)
 
-Video3 [link]
-descrizione
+Partenza
+![alt text](./ReadmeContent/Partenza.png)
 
-Video4 [link]
-descrizione
+Salto
+![alt text](./ReadmeContent/Salto.png)
 
-Video5 [link]
-descrizione
+Collisione nemici
+![alt text](./ReadmeContent/CollisioneNemici.png)
 
-Video6 [link]
-descrizione
+Fuoco nemico
+![alt text](./ReadmeContent/FuocoNemico.png)
 
-Video7 [link]
-descrizione
+Lancio coltello
+![alt text](./ReadmeContent/LancioColtello.png)
+
+Azioni combinate
+![alt text](./ReadmeContent/AzioniCombinate.png)
+
+Ostacoli
+![alt text](./ReadmeContent/Ostacoli.png)
+
+Morte nemico
+![alt text](./ReadmeContent/MorteNemico.png)
+
+Score ed achievements
+![alt text](./ReadmeContent/PunteggioConPremi.png)
+
+Morte eroe
+![alt text](./ReadmeContent/MorteEroe.png)
+
+Registrazione finale
+![alt text](./ReadmeContent/Registrazione.png)
+
+Record, statistiche e salvatggio su file
+![alt text](./ReadmeContent/RecordStatistiche.png)
+
