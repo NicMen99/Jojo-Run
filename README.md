@@ -1,5 +1,22 @@
 # Jojo-Run
-Progetto esame programmazione
+Gioco sviluppato da
+
+* **Niccolò Menghini**  <niccolo.menghini@stud.unifi.it>
+
+* **Angiolo Giandonati** <angiolo.giandonati@stud.unifi.it>
+
+per l'esame di "Fondamenti di Programmazione", 
+I del anno corso di Laurea Triennale in Ingegneria Informatica.
+
+# Descrizione
+Gioco endless-runner 2D con gestione della gravità e delle collisioni.
+
+Ispirato al manga "Le Bizzarre Avventure di JoJo" di Hirohiko Araki.
+
+#Struttura del gioco
+Il gioco è sviluppato in c++11 e basato sulle [librerie SFML](www.sfml-dev.org) rilasciate con licenza ZLIB/PNG.
+
+Di seguito i componenti principali e loro breve descrizione:
 
 ## Game
 
@@ -12,7 +29,7 @@ Nel game loop viene fatto il calcolo del tempo trascorso per la gestione del fra
 
 **MenuState** è il menu iniziale [1] gioca [2] credits
 
-**PlayState** è lo stato che crea e gestisce i livelli di gioco (1 solo). Qui è integrata la pausa [P]
+**PlayState** è lo stato che crea e gestisce il livello di gioco. Qui è integrata la pausa [P]
 
 **GameOverState** è lo stato finale del gioco che chiede il nome, fa vedere e salva lo score, e permette di uscire [Q] o ripartire con un nuovo gioco [N]
 
@@ -45,7 +62,7 @@ La classe **ScoreHUD** è infine una Entity in 'overlay' sulla scena costituito 
 
 **ScoreManager** controlla gli stats e produce i dati di punteggio, implementa le regole dei bonus, crea e riordina i record di punteggio, gestisce il salvataggio su file (creazione e rilettura).
 
-**InputManager** gestisce gli eventi della tastiera e comunica se un tasto è premuto/rilasciato o 'appena' stato premuto/rislasciato.
+**InputManager** gestisce gli eventi della tastiera e comunica se un tasto è premuto/rilasciato o 'appena' stato premuto/rilasciato.
 
 ## Widgets
 Oggetti generici per la visualizzazione di testo e immagini.
@@ -106,6 +123,7 @@ I proiettili (fuoco, smeraldo, coltello) sono eliminati se escono dalla scena.
 * FireEnemy spara
 * HamonEnemy salta
 * EmeraldEnemy salta e spara. 
+
 I nemici sono eliminati in caso di collisione con l'eroe o se escono dalla scena.
 
 Il calcolo del punteggio è basato sulla distanza percorsa (unita=numero di pixel/100) e numero di nemici uccisi.
