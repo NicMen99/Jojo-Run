@@ -133,7 +133,6 @@ percorsa senza ricevere danni.
 Come step finale è presentata una statistica dell'ultima sessione di gioco e il ranking.
 A completamento viene visualizzata la top ten ed un eventuale messaggio di gratificazione.
 
-## Demo
 
 ## Videoclip
 
