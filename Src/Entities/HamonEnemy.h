@@ -13,10 +13,12 @@ public:
     explicit HamonEnemy(const std::string& id);
     ~HamonEnemy() override;
     void init();
+    void update(int32_t delta_time) override;
+
+protected:
+    void changeState(Enemy::State new_state) override;
 
 private:
-    void update(int32_t delta_time) override;
-    void changeState(Enemy::State new_state) override;
     sf::Time m_shootTime;
     sf::Clock m_shootTimer;
     int m_shoot_left = 1;

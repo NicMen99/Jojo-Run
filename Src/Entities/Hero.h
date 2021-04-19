@@ -15,12 +15,12 @@ public:
     ~Hero() override;
 
     void init();
+    void event(GameEvent event, Entity * entity) override;
+    void update(int32_t delta_time) override;
 
 private:
     enum class State {Init, Grounded, Jumping, Falling, Dead};
 
-    void event(GameEvent event, Entity * entity) override;
-    void update(int32_t delta_time) override;
     void updatePhysics(int32_t delta_time);
     void speedCap();
     void manageAttack();

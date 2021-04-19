@@ -22,13 +22,13 @@ public:
     std::string getString() const { return m_text.getString(); }
     sf::Vector2f getSize() const override;
 
+    void data_update(const std::string & item_name, const std::string & item_value) override;
+
 protected:
     void _update(int32_t delta_time) override;
     void _render(sf::RenderWindow & window, const sf::Vector2f & parent_position) override;
 
 private:
-    void data_update(const std::string & item_name, const std::string & item_value) override;
-
     sf::Text m_text;
 };
 

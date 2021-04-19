@@ -14,6 +14,7 @@ private:
 public:
     static InitState* instance();
 
+protected:
     void onEnter() override;
 };
 

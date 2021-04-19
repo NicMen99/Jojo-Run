@@ -15,7 +15,6 @@ public:
     ~Background() override;
     void init(EntityType type);
 
-private:
     void event(GameEvent event, Entity *collider) override;
 };
 

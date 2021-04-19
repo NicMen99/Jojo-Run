@@ -20,10 +20,12 @@ public:
     static MenuState* instance();
 
     void init() override;
-    void onEnter() override;
-    void onExit() override;
     void update(int32_t delta_time) override;
     void render(sf::RenderWindow &window) override;
+
+protected:
+    void onEnter() override;
+    void onExit() override;
 
 private:
     enum Action {MainMenu, Credits };

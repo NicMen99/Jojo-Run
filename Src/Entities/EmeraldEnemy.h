@@ -14,11 +14,12 @@ class EmeraldEnemy final : public Enemy
     explicit EmeraldEnemy(const std::string& id);
     ~EmeraldEnemy() override;
     void init();
-
-private:
     void update(int32_t delta_time) override;
+
+protected:
     void changeState(Enemy::State new_state) override;
 
+private:
     sf::Time m_shootTime;
     sf::Clock m_shootTimer;
     int m_shoot_left = 1;

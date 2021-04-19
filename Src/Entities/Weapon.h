@@ -13,9 +13,9 @@ public:
     explicit Weapon (std::string id);
     ~Weapon() override;
     void init();
+    void event(GameEvent event, Entity *collider) override;
 
 private:
-    void event(GameEvent event, Entity *collider) override;
     int m_knives = 2;
 };
 

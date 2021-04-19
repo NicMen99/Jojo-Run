@@ -42,6 +42,9 @@ public:
     /* observer interface */
 
     void observe(Subject * observed, const std::string & item_name);
+    void data_update(const std::string & item_name, const std::string & item_value) override {}
+    void attach() override;
+    void detach() override;
 
 protected:
     virtual void _update(int32_t delta_time) {}
@@ -62,9 +65,6 @@ private:
 
     /* observer interface */
 
-    void data_update(const std::string & item_name, const std::string & item_value) override {}
-    void attach() override;
-    void detach() override;
     Subject * m_observed = nullptr;
     std::string m_observed_value;
 };
