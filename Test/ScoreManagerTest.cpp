@@ -43,7 +43,7 @@ TEST_F(ScoreManagerTest, Init) {
 }
 
 /*
- * Distanza
+ * Aggiornamento distanza
  */
 TEST_F(ScoreManagerTest, Distance) {
     STATS->init();
@@ -54,14 +54,19 @@ TEST_F(ScoreManagerTest, Distance) {
     ScoreManager::Record record = SCORE->getRecord();
     ASSERT_EQ(record.distance, 1500);
 
-    STATS->setInt(Stats::Distance, 5000);
+    STATS->setInt(Stats::Distance, 5555);
     SCORE->update();
     record = SCORE->getRecord();
-    ASSERT_EQ(record.distance, 5000);
+    ASSERT_EQ(record.distance, 5555);
+
+    STATS->setInt(Stats::Distance, 10001);
+    SCORE->update();
+    record = SCORE->getRecord();
+    ASSERT_EQ(record.distance, 10001);
 }
 
 /*
- * Calcolo base punteggio
+ * Calcolo base punteggio : 1 punto ogni 100px distanza
  */
 TEST_F(ScoreManagerTest, Score) {
     STATS->init();
@@ -79,21 +84,31 @@ TEST_F(ScoreManagerTest, Score) {
     ASSERT_EQ(record.score, 1);
     ASSERT_EQ(record.distance, 150);
     ASSERT_EQ(STATS->getInt(Stats::Score), 1);
+
+    STATS->setInt(Stats::Distance, 9999);
+    SCORE->update();
+    record = SCORE->getRecord();
+    ASSERT_EQ(record.score, 99);
+    ASSERT_EQ(record.distance, 9999);
+    ASSERT_EQ(STATS->getInt(Stats::Score), 99);
 }
 
 /*
- * Distanza bonus
+ * Calcolo bonus distanza
+ *  ogni 10000/15000/20000.. -> bonus = distanza/200
  */
 TEST_F(ScoreManagerTest, DistanceBonus) {
     STATS->init();
     SCORE->init();
+    int score;
+    int bonus=0;
 
-    STATS->setInt(Stats::Distance, 3000);
+    STATS->setInt(Stats::Distance, 3001);
     SCORE->update();
     ScoreManager::Record record = SCORE->getRecord();
-    ASSERT_EQ(record.distance, 3000);
+    ASSERT_EQ(record.distance, 3001);
     ASSERT_EQ(STATS->getInt(Achievements::Distance), 0);
-    int score = 30;
+    score = 3001/100 + bonus;
     ASSERT_EQ(record.score, score);
     ASSERT_EQ(STATS->getInt(Stats::Score), score);
 
@@ -102,7 +117,8 @@ TEST_F(ScoreManagerTest, DistanceBonus) {
     record = SCORE->getRecord();
     ASSERT_EQ(record.distance, 11111);
     ASSERT_EQ(STATS->getInt(Achievements::Distance), 10000);
-    score = 111 + 50;
+    bonus += 10000/200;
+    score = 11111/100 + bonus;
     ASSERT_EQ(record.score, score);
     ASSERT_EQ(STATS->getInt(Stats::Score), score);
 
@@ -111,7 +127,8 @@ TEST_F(ScoreManagerTest, DistanceBonus) {
     record = SCORE->getRecord();
     ASSERT_EQ(record.distance, 16134);
     ASSERT_EQ(STATS->getInt(Achievements::Distance), 15000);
-    score = 161 + 50 + 75;
+    bonus += 15000/200;
+    score = 16134/100 + bonus;
     ASSERT_EQ(record.score, score);
     ASSERT_EQ(STATS->getInt(Stats::Score), score);
 
@@ -120,17 +137,21 @@ TEST_F(ScoreManagerTest, DistanceBonus) {
     record = SCORE->getRecord();
     ASSERT_EQ(record.distance, 21789);
     ASSERT_EQ(STATS->getInt(Achievements::Distance), 20000);
-    score = 217 + 50 + 75 + 100;
+    bonus += 20000/200;
+    score = 21789/100 + bonus;
     ASSERT_EQ(record.score, score);
     ASSERT_EQ(STATS->getInt(Stats::Score), score);
 }
 
 /*
- * Distanza senza danni bonus
+ * Calcolo bonus distanza senza danni
+ *  bonus ogni 5000/8000/13000.. -> bonus = distanzasenzadanni/50
  */
 TEST_F(ScoreManagerTest, CleanDistanceBonus) {
     STATS->init();
     SCORE->init();
+    int score;
+    int bonus=0;
 
     STATS->setInt(Stats::Distance, 3210);
     STATS->setInt(Stats::CleanDistance, 1111);
@@ -140,7 +161,7 @@ TEST_F(ScoreManagerTest, CleanDistanceBonus) {
     ASSERT_EQ(record.clean_distance, 1111);
     ASSERT_EQ(STATS->getInt(Achievements::Distance), 0);
     ASSERT_EQ(STATS->getInt(Achievements::CleanDistance), 0);
-    int score = 32;
+    score = 3210/100 + bonus;
     ASSERT_EQ(record.score, score);
     ASSERT_EQ(STATS->getInt(Stats::Score), score);
 
@@ -152,7 +173,8 @@ TEST_F(ScoreManagerTest, CleanDistanceBonus) {
     ASSERT_EQ(record.clean_distance, 5011);
     ASSERT_EQ(STATS->getInt(Achievements::Distance), 0);
     ASSERT_EQ(STATS->getInt(Achievements::CleanDistance), 5000);
-    score = 74 + 100;
+    bonus += 5000/50;
+    score = 7450/100 + bonus;
     ASSERT_EQ(record.score, score);
     ASSERT_EQ(STATS->getInt(Stats::Score), score);
 
@@ -164,7 +186,8 @@ TEST_F(ScoreManagerTest, CleanDistanceBonus) {
     ASSERT_EQ(record.clean_distance, 5011);
     ASSERT_EQ(STATS->getInt(Achievements::Distance), 10000);
     ASSERT_EQ(STATS->getInt(Achievements::CleanDistance), 5000);
-    score = 114 + 50 + 100;
+    bonus += 10000/200;
+    score = 11450/100 + bonus;
     ASSERT_EQ(record.score, score);
     ASSERT_EQ(STATS->getInt(Stats::Score), score);
 
@@ -176,17 +199,21 @@ TEST_F(ScoreManagerTest, CleanDistanceBonus) {
     ASSERT_EQ(record.clean_distance, 8150);
     ASSERT_EQ(STATS->getInt(Achievements::Distance), 15000);
     ASSERT_EQ(STATS->getInt(Achievements::CleanDistance), 8000);
-    score = 199 + 50 + 100 + 75 + 160;
+    bonus += 15000/200 + 8000/50;
+    score = 19999/100 + bonus;
     ASSERT_EQ(record.score, score);
     ASSERT_EQ(STATS->getInt(Stats::Score), score);
 }
 
 /*
- * Uccisioni
+ * Calcolo punteggio uccisioni : 10 punti per ogni nemico ucciso
+ *
  */
 TEST_F(ScoreManagerTest, Killed) {
     STATS->init();
     SCORE->init();
+    int score;
+    int bonus=0;
 
     STATS->setInt(Stats::Distance, 3333);
     STATS->setInt(Stats::Killed, 1);
@@ -194,7 +221,7 @@ TEST_F(ScoreManagerTest, Killed) {
     ScoreManager::Record record = SCORE->getRecord();
     ASSERT_EQ(record.distance, 3333);
     ASSERT_EQ(record.killed, 1);
-    int score = 33 + 10;
+    score = 3333/100 + 1*10 + bonus;
     ASSERT_EQ(record.score, score);
     ASSERT_EQ(STATS->getInt(Stats::Score), score);
 
@@ -204,17 +231,20 @@ TEST_F(ScoreManagerTest, Killed) {
     record = SCORE->getRecord();
     ASSERT_EQ(record.distance, 9999);
     ASSERT_EQ(record.killed, 4);
-    score = 99 + 40;
+    score = 9999/100 + 4*10 + bonus;
     ASSERT_EQ(record.score, score);
     ASSERT_EQ(STATS->getInt(Stats::Score), score);
 }
 
 /*
- * Uccisioni bonus
+ * Calcolo bonus uccisioni
+ *  bonus ogni 5/10/15.. -> bonus = 20 * uccisioni
  */
-TEST_F(ScoreManagerTest, ConsecutiveKilledBonus) {
+TEST_F(ScoreManagerTest, KilledBonus) {
     STATS->init();
     SCORE->init();
+    int score;
+    int bonus = 0;
 
     STATS->setInt(Stats::Distance, 9999);
     STATS->setInt(Stats::Killed, 4);
@@ -223,7 +253,7 @@ TEST_F(ScoreManagerTest, ConsecutiveKilledBonus) {
     ASSERT_EQ(record.distance, 9999);
     ASSERT_EQ(record.killed, 4);
     ASSERT_EQ(STATS->getInt(Achievements::Killed), 0);
-    int score = 99 + 40;
+    score = 9999/100 + 4*10 + bonus;
     ASSERT_EQ(record.score, score);
     ASSERT_EQ(STATS->getInt(Stats::Score), score);
 
@@ -234,7 +264,8 @@ TEST_F(ScoreManagerTest, ConsecutiveKilledBonus) {
     ASSERT_EQ(record.distance, 9999);
     ASSERT_EQ(record.killed, 7);
     ASSERT_EQ(STATS->getInt(Achievements::Killed), 5);
-    score = 99 + 70 + 100;
+    bonus += 5*20;
+    score = 9999/100 + 7*10 + bonus;
     ASSERT_EQ(record.score, score);
     ASSERT_EQ(STATS->getInt(Stats::Score), score);
 
@@ -245,17 +276,21 @@ TEST_F(ScoreManagerTest, ConsecutiveKilledBonus) {
     ASSERT_EQ(record.distance, 9999);
     ASSERT_EQ(record.killed, 10);
     ASSERT_EQ(STATS->getInt(Achievements::Killed), 10);
-    score = 99 + 100 + 100 + 200;
+    bonus += 10*20;
+    score = 9999/100 + 10*10 + bonus;
     ASSERT_EQ(record.score, score);
     ASSERT_EQ(STATS->getInt(Stats::Score), score);
 }
 
 /*
- * Uccisioni consecutive bonus
+ * Calcolo bonus uccisioni consecutive
+ *  bonus ogni 3/5/8.. -> bounus = 50 * uccisoniconsecutive
  */
-TEST_F(ScoreManagerTest, KilledBonus) {
+TEST_F(ScoreManagerTest, ConsecutiveKilledBonus) {
     STATS->init();
     SCORE->init();
+    int bonus = 0;
+    int score;
 
     STATS->setInt(Stats::Distance, 9999);
     STATS->setInt(Stats::Killed, 4);
@@ -267,7 +302,7 @@ TEST_F(ScoreManagerTest, KilledBonus) {
     ASSERT_EQ(record.consec_killed, 2);
     ASSERT_EQ(STATS->getInt(Achievements::Killed), 0);
     ASSERT_EQ(STATS->getInt(Achievements::ConsecutiveKilled), 0);
-    int score = 99 + 40;
+    score = 9999/100 + 4*10 + bonus;
     ASSERT_EQ(record.score, score);
     ASSERT_EQ(STATS->getInt(Stats::Score), score);
 
@@ -281,7 +316,8 @@ TEST_F(ScoreManagerTest, KilledBonus) {
     ASSERT_EQ(record.consec_killed, 3);
     ASSERT_EQ(STATS->getInt(Achievements::Killed), 5);
     ASSERT_EQ(STATS->getInt(Achievements::ConsecutiveKilled), 3);
-    score = 99 + 50 + 100 + 150;
+    bonus += 5*20 + 3*50;
+    score = 9999/100 + 5*10 + bonus;
     ASSERT_EQ(record.score, score);
     ASSERT_EQ(STATS->getInt(Stats::Score), score);
 
@@ -295,20 +331,24 @@ TEST_F(ScoreManagerTest, KilledBonus) {
     ASSERT_EQ(record.consec_killed, 6);
     ASSERT_EQ(STATS->getInt(Achievements::Killed), 5);
     ASSERT_EQ(STATS->getInt(Achievements::ConsecutiveKilled), 5);
-    score = 99 + 80 + 100 + 150 + 250;
+    bonus += 5*50;
+    score = 9999/100 + 8*10 + bonus;
     ASSERT_EQ(record.score, score);
     ASSERT_EQ(STATS->getInt(Stats::Score), score);
 }
 
 /*
  * Score File
+ *  test srittura su file, lettura su file, ordinamento record
  */
 TEST_F(ScoreManagerTest, ScoreFileInitTest) {
     SCORE->init();
-    SCORE->saveToFile();
+    SCORE->saveToFile();    // azzeramento file
     SCORE->loadFromFile();
     ASSERT_EQ(SCORE->getScoreRecords().size(), 0);
 
+
+    // Nuovo record
     STATS->setInt(Stats::Distance, 3210);
     STATS->setInt(Stats::CleanDistance, 1111);
     STATS->setInt(Stats::Killed, 2);
@@ -320,7 +360,6 @@ TEST_F(ScoreManagerTest, ScoreFileInitTest) {
     STATS->setInt(Stats::ConsecutiveKilled, 8);
     STATS->setInt(Stats::Time, 33);
     SCORE->update();
-
     SCORE->setName("TESTER1");
     SCORE->saveToFile();
     SCORE->loadFromFile();
@@ -336,6 +375,7 @@ TEST_F(ScoreManagerTest, ScoreFileInitTest) {
     ASSERT_EQ(records[0].consec_killed, 8);
     ASSERT_EQ(records[0].time, 33);
 
+    // Nuovo record
     STATS->setInt(Stats::Distance, 3210);
     STATS->setInt(Stats::CleanDistance, 1111);
     STATS->setInt(Stats::Killed, 2);
@@ -347,7 +387,6 @@ TEST_F(ScoreManagerTest, ScoreFileInitTest) {
     STATS->setInt(Stats::ConsecutiveKilled, 10);
     STATS->setInt(Stats::Time, 63);
     SCORE->update();
-
     SCORE->setName("TESTER2");
     SCORE->saveToFile();
     SCORE->loadFromFile();
@@ -372,6 +411,7 @@ TEST_F(ScoreManagerTest, ScoreFileInitTest) {
     ASSERT_EQ(records[1].consec_killed, 8);
     ASSERT_EQ(records[1].time, 33);
 
+    // Nuovo record
     STATS->setInt(Stats::Distance, 3210);
     STATS->setInt(Stats::CleanDistance, 1111);
     STATS->setInt(Stats::Killed, 2);
@@ -383,8 +423,7 @@ TEST_F(ScoreManagerTest, ScoreFileInitTest) {
     STATS->setInt(Stats::ConsecutiveKilled, 10);
     STATS->setInt(Stats::Time, 53);
     SCORE->update();
-
-    SCORE->setName("TESTER1");
+    SCORE->setName("TESTER3");
     SCORE->saveToFile();
     SCORE->loadFromFile();
     records = SCORE->getScoreRecords();
@@ -400,7 +439,7 @@ TEST_F(ScoreManagerTest, ScoreFileInitTest) {
     ASSERT_EQ(records[0].time, 63);
     ASSERT_EQ(records[1].added, false);
     ASSERT_EQ(records[1].rank, 2);
-    ASSERT_EQ(records[1].nickname, "TESTER1");
+    ASSERT_EQ(records[1].nickname, "TESTER3");
     ASSERT_EQ(records[1].score, 1221);
     ASSERT_EQ(records[1].distance, 12101);
     ASSERT_EQ(records[1].clean_distance, 7009);

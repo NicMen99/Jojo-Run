@@ -72,25 +72,25 @@ public:
 };
 
 TEST_F(WidgetsTest, EmptyWidget){
-    auto widget = std::unique_ptr<Widget>(new Widget("TEST"));
-    ASSERT_EQ(widget->findObjectByName("TEST"), widget.get());
+    auto widget = std::unique_ptr<Widget>(new Widget("WIDGET"));
+    ASSERT_EQ(widget->findObjectByName("WIDGET"), widget.get());
 }
 
 TEST_F(WidgetsTest, AddWidget){
-    auto widget = std::unique_ptr<Widget>(new Widget("TEST"));
-    auto child_widget = new Widget("TEST_CHILD");
+    auto widget = std::unique_ptr<Widget>(new Widget("WIDGET"));
+    auto child_widget = new Widget("CHILD_WIDGET");
     widget->add(child_widget);
-    ASSERT_EQ(widget->findObjectByName("TEST_CHILD"), child_widget);
+    ASSERT_EQ(widget->findObjectByName("CHILD_WIDGET"), child_widget);
 }
 
 TEST_F(WidgetsTest, WidgetPosition){
-    auto widget = std::unique_ptr<TestWidget>(new TestWidget("TEST"));
+    auto widget = std::unique_ptr<TestWidget>(new TestWidget("WIDGET"));
     widget->setPosition(sf::Vector2f(10,10));
-    auto widget_2 = new TestWidget("TEST_2");
+    auto widget_2 = new TestWidget("WIDGET_2");
     widget->add(widget_2);
     widget_2->setPosition(sf::Vector2f(10,10));
     widget_2->render(window);
-    auto widget_3 = new TestWidget("TEST_3");
+    auto widget_3 = new TestWidget("WIDGET_3");
     widget_2->add(widget_3);
     widget_3->setPosition(sf::Vector2f(10,10));
     widget->render(window);
@@ -100,37 +100,50 @@ TEST_F(WidgetsTest, WidgetPosition){
 }
 
 TEST_F(WidgetsTest, TestObserver){
-    auto widget = std::unique_ptr<TestWidget>(new TestWidget("TEST"));
+    auto widget = std::unique_ptr<TestWidget>(new TestWidget("WIDGET"));
     auto subject = std::unique_ptr<TestSubject>(new TestSubject);
     auto subject2 = std::unique_ptr<TestSubject>(new TestSubject);
-    widget->observe(subject.get(), "TEST_ITEM");
-    ASSERT_EQ(subject->m_item_name, "TEST_ITEM");
+    widget->observe(subject.get(), "WIDGET_ITEM");
+    ASSERT_EQ(subject->m_item_name, "WIDGET_ITEM");
     ASSERT_EQ(subject->m_observer, widget.get());
-    subject->notify("TEST_VALUE");
-    ASSERT_EQ(widget->getItemName(), "TEST_ITEM");
-    ASSERT_EQ(widget->getItemValue(), "TEST_VALUE");
-    widget->observe(subject2.get(), "TEST_ITEM");
+    subject->notify("WIDGET_VALUE");
+    ASSERT_EQ(widget->getItemName(), "WIDGET_ITEM");
+    ASSERT_EQ(widget->getItemValue(), "WIDGET_VALUE");
+    widget->observe(subject2.get(), "WIDGET_ITEM");
     ASSERT_EQ(subject->m_item_name, "");
     ASSERT_EQ(subject->m_observer, nullptr);
 }
 
 TEST_F(WidgetsTest, SetString){
-    auto text_widget = std::unique_ptr<TextWidget>(new TextWidget("TEST"));
-    text_widget->setString("TEST");
-    ASSERT_EQ(text_widget->getString(), "TEST");
+    auto text_widget = std::unique_ptr<TextWidget>(new TextWidget("WIDGET"));
+    text_widget->setFont("RETRO_GAMING_FONT");
+    text_widget->setString("");
+    ASSERT_EQ(text_widget->getString(), "");
+    ASSERT_EQ(text_widget->getSize(), sf::Vector2f(0,0));
+    text_widget->setString("TestString");
+    ASSERT_EQ(text_widget->getString(), "TestString");
+    sf::Vector2f size = text_widget->getSize();
+    ASSERT_NE(size, sf::Vector2f(0,0));
+    text_widget->setString("LongTestString");
+    ASSERT_EQ(text_widget->getString(), "LongTestString");
+    sf::Vector2f size2 = text_widget->getSize();
+    ASSERT_EQ(size2.y, size.y);
+    ASSERT_GT(size2.x, size.x);
 }
 
 TEST_F(WidgetsTest, SetStringTimer){
-    auto text_widget = std::unique_ptr<TextWidget>(new TextWidget("TEST"));
+    auto text_widget = std::unique_ptr<TextWidget>(new TextWidget("WIDGET"));
+    text_widget->setString("Test string");
     text_widget->startTimer(sf::seconds(1));
     ASSERT_EQ(text_widget->isVisible(text_widget.get()), true);
     sf::sleep(sf::seconds(1));
     text_widget->update(1000);
     ASSERT_EQ(text_widget->isVisible(text_widget.get()), false);
+    ASSERT_EQ(text_widget->getString(), "");
 }
 
 TEST_F(WidgetsTest, SetImage){
-    auto image_widget = std::unique_ptr<ImageWidget>(new ImageWidget("TEST"));
+    auto image_widget = std::unique_ptr<ImageWidget>(new ImageWidget("WIDGET"));
     image_widget->setPosition(sf::Vector2f(0,0));
     image_widget->setTexture("Texture");
     image_widget->update(1000);
@@ -141,7 +154,7 @@ TEST_F(WidgetsTest, SetImage){
 }
 
 TEST_F(WidgetsTest, SetShape){
-    auto shape_widget = std::unique_ptr<ShapeWidget>(new ShapeWidget("TEST"));
+    auto shape_widget = std::unique_ptr<ShapeWidget>(new ShapeWidget("WIDGET"));
     shape_widget->setSize(sf::Vector2f(10,10));
     shape_widget->update(1000);
     ASSERT_EQ(shape_widget->getSize(), sf::Vector2f(10,10));
